@@ -5,7 +5,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `O nas | ${SITE_NAME}`,
+  title: `O nas`,
   description:
     "Uniwersytet Beauty łączy kobiety planujące karierę w branży beauty z certyfikowanymi trenerkami i pomaga zdobyć dofinansowanie do 100% z programu BUR.",
   alternates: { canonical: "/o-nas" },

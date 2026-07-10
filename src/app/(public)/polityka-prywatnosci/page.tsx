@@ -3,7 +3,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { CONTACT_EMAIL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Polityka prywatności | ${SITE_NAME}`,
+  title: `Polityka prywatności`,
   description: "Polityka prywatności serwisu Uniwersytet Beauty — zasady przetwarzania danych osobowych (RODO).",
   alternates: { canonical: "/polityka-prywatnosci" },
 };

@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { course } = row;
   const title = `${course.title}${course.city ? ` ${course.city}` : ""} z dofinansowaniem do ${course.subsidyPercent}%`;
   return {
-    title: `${title} | ${SITE_NAME}`,
+    title: `${title}`,
     description: course.shortDescription ?? title,
     alternates: { canonical: `/kurs/${course.slug}` },
     openGraph: {

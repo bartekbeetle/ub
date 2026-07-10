@@ -9,12 +9,12 @@ import { SITE_NAME } from "@/lib/constants";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: `Szkolenia beauty z dofinansowaniem do 100% | ${SITE_NAME}`,
+  title: `Szkolenia beauty z dofinansowaniem do 100%`,
   description:
     "Zacznij karierę w beauty bez ryzyka finansowego. Szkolenia z PMU, rzęs, paznokci i medycyny estetycznej z dofinansowaniem do 100% z programu BUR. Nie potrzebujesz doświadczenia.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: `Szkolenia beauty z dofinansowaniem do 100% | ${SITE_NAME}`,
+    title: `Szkolenia beauty z dofinansowaniem do 100%`,
     description: "Profesjonalne szkolenia beauty z dofinansowaniem BUR. Nie potrzebujesz doświadczenia.",
     url: "/",
     images: [{ url: "/images/akademia-sala.jpg", width: 1600, height: 872, alt: "Sala szkoleniowa akademii beauty" }],

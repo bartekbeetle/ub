@@ -26,8 +26,8 @@ export const leadSchema = z.object({
   utmSource: z.string().max(120).optional().or(z.literal("")),
   utmMedium: z.string().max(120).optional().or(z.literal("")),
   utmCampaign: z.string().max(160).optional().or(z.literal("")),
-  // honeypot — musi być puste
-  website: z.string().max(0, "Spam").optional().or(z.literal("")),
+  // honeypot — bot wypełnia, człowiek nie; handler zwraca cichy "sukces" bez zapisu
+  website: z.string().max(300).optional().or(z.literal("")),
 });
 
 export const submissionSchema = z.object({
@@ -36,7 +36,7 @@ export const submissionSchema = z.object({
   email: z.string().trim().email().max(255),
   phone: z.string().trim().max(40).optional().or(z.literal("")),
   message: z.string().trim().max(4000).optional().or(z.literal("")),
-  website: z.string().max(0).optional().or(z.literal("")),
+  website: z.string().max(300).optional().or(z.literal("")),
 });
 
 export const loginSchema = z.object({

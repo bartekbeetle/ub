@@ -5,7 +5,7 @@ import { IconMail, IconClock } from "@/components/icons";
 import { CONTACT_EMAIL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Kontakt | ${SITE_NAME}`,
+  title: `Kontakt`,
   description: "Skontaktuj się z Uniwersytet Beauty — pytania o szkolenia, dofinansowania BUR i współpracę trenerską.",
   alternates: { canonical: "/kontakt" },
 };

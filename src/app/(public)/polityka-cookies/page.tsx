@@ -3,7 +3,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Polityka cookies | ${SITE_NAME}`,
+  title: `Polityka cookies`,
   description: "Polityka plików cookies serwisu Uniwersytet Beauty.",
   alternates: { canonical: "/polityka-cookies" },
 };

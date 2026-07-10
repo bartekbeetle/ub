@@ -11,7 +11,7 @@ import { IconClock } from "@/components/icons";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: `Blog — porady i trendy beauty | ${SITE_NAME}`,
+  title: `Blog — porady i trendy beauty`,
   description:
     "Porady, trendy i inspiracje dla przyszłych profesjonalistek branży beauty. Dofinansowania, kariera, techniki PMU, stylizacja rzęs i paznokci.",
   alternates: { canonical: "/blog" },

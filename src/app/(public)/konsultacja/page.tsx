@@ -5,7 +5,7 @@ import { IconCheck } from "@/components/icons";
 import { SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Bezpłatna konsultacja — sprawdź swoje dofinansowanie | ${SITE_NAME}`,
+  title: `Bezpłatna konsultacja — sprawdź swoje dofinansowanie`,
   description:
     "Umów bezpłatną konsultację: sprawdzimy, jaki poziom dofinansowania na szkolenie beauty przysługuje Ci w Twoim województwie i połączymy Cię z certyfikowaną trenerką.",
   alternates: { canonical: "/konsultacja" },

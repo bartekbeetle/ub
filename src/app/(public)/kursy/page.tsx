@@ -28,7 +28,7 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
   if (kat) qs.set("kategoria", kat);
   const canonical = "/kursy" + (qs.size ? `?${qs.toString()}` : "");
   return {
-    title: `${title} | ${SITE_NAME}`,
+    title: `${title}`,
     description: `${title}. Certyfikowane trenerki, wsparcie w zdobyciu dofinansowania BUR, realne umiejętności od pierwszego dnia.`,
     alternates: { canonical },
     openGraph: { title, url: canonical },

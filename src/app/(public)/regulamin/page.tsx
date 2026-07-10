@@ -3,7 +3,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { CONTACT_EMAIL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Regulamin serwisu | ${SITE_NAME}`,
+  title: `Regulamin serwisu`,
   description: "Regulamin korzystania z serwisu Uniwersytet Beauty.",
   alternates: { canonical: "/regulamin" },
 };

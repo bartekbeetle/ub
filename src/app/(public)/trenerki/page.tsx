@@ -11,7 +11,7 @@ import { SITE_NAME } from "@/lib/constants";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: `Certyfikowane trenerki beauty | ${SITE_NAME}`,
+  title: `Certyfikowane trenerki beauty`,
   description:
     "Poznaj certyfikowane trenerki beauty współpracujące z Uniwersytet Beauty. PMU, rzęsy, paznokcie, medycyna estetyczna — wszystkie zarejestrowane w BUR.",
   alternates: { canonical: "/trenerki" },

@@ -5,7 +5,7 @@ import { IconCheck } from "@/components/icons";
 import { SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Dziękujemy za zgłoszenie | ${SITE_NAME}`,
+  title: `Dziękujemy za zgłoszenie`,
   robots: { index: false },
 };
 

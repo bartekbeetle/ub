@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const post = await getPost(slug);
   if (!post) return { title: "Nie znaleziono artykułu" };
   return {
-    title: post.metaTitle || `${post.title} | ${SITE_NAME}`,
+    title: post.metaTitle || `${post.title}`,
     description: post.metaDescription || post.excerpt.slice(0, 160),
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {

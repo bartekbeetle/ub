@@ -10,7 +10,7 @@ import { SITE_NAME } from "@/lib/constants";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: `Dofinansowania na szkolenia beauty — BUR, UP, KFS | ${SITE_NAME}`,
+  title: `Dofinansowania na szkolenia beauty — BUR, UP, KFS`,
   description:
     "Szkolenie beauty za 0 zł? Sprawdź programy dofinansowań: BUR do 100%, Urząd Pracy 85%+, KFS. Kalkulator oszczędności i wsparcie w całym procesie wniosku.",
   alternates: { canonical: "/dofinansowania" },

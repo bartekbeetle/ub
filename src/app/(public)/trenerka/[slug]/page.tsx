@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!trainer) return { title: "Nie znaleziono trenerki" };
   const title = `${trainer.name} — trenerka ${trainer.specializations[0] ?? "beauty"}${trainer.city ? `, ${trainer.city}` : ""}`;
   return {
-    title: `${title} | ${SITE_NAME}`,
+    title: `${title}`,
     description: trainer.bio?.slice(0, 160) ?? title,
     alternates: { canonical: `/trenerka/${trainer.slug}` },
     openGraph: { title, description: trainer.bio?.slice(0, 200) ?? "", url: `/trenerka/${trainer.slug}` },
