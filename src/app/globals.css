@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+@theme {
+  /* === Fonty (next/font zmienne) === */
+  --font-serif: var(--font-playfair), "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-inter), Inter, system-ui, sans-serif;
+
+  /* === Paleta: baza beż/złoto (z referencji unibeauty) === */
+  --color-cream: #faf8f7; /* tło bazowe */
+  --color-cream-warm: #fff9f5; /* hero / sekcje ciepłe */
+  --color-sand-50: #fbf7f1;
+  --color-sand-100: #f5ede4;
+  --color-sand-200: #e8d5c4;
+  --color-sand-300: #d4b896;
+  --color-sand-400: #c8a882; /* przyciski główne */
+  --color-sand-500: #b8956a;
+  --color-sand-600: #a5825b;
+  --color-sand-700: #8b6f5c; /* hover przycisków */
+  --color-gold: #c9a227;
+
+  /* === Zieleń: WYŁĄCZNIE pieniądze/dofinansowanie === */
+  --color-money: #10b981;
+  --color-money-dark: #2e9e6b;
+  --color-money-bg: #ecfdf5;
+
+  /* === Tekst === */
+  --color-ink: #1f2937;
+  --color-ink-soft: #2d2424;
+  --color-muted: #6b7280;
+
+  /* === Panel admina === */
+  --color-navy: #1a1a2e;
+  --color-navy-light: #2d2d4a;
+
+  --radius-card: 12px;
+
+  --shadow-soft: 0 4px 20px rgba(45, 36, 36, 0.07);
+  --shadow-card: 0 5px 25px rgba(45, 36, 36, 0.09);
+  --shadow-sand: 0 5px 20px rgba(200, 168, 130, 0.3);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream text-ink font-sans antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif text-ink-soft;
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-sand-500);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  /* Przycisk główny — piaskowy pill (wzór: "Zobacz szczegóły" z referencji) */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-sand-400 px-7 py-3.5 font-sans text-base font-semibold text-white transition-all duration-300 hover:bg-sand-700 hover:-translate-y-0.5 min-h-[44px];
+    box-shadow: var(--shadow-sand);
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-sand-400 px-7 py-3 font-sans text-base font-semibold text-sand-700 transition-all duration-300 hover:bg-sand-50 min-h-[44px];
+  }
+  /* Zielony CTA — tylko konteksty pieniędzy/dofinansowania */
+  .btn-money {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-money px-7 py-3.5 font-sans text-base font-semibold text-white transition-all duration-300 hover:bg-money-dark hover:-translate-y-0.5 min-h-[44px];
+    box-shadow: 0 5px 20px rgba(16, 185, 129, 0.3);
+  }
+  .card {
+    @apply rounded-[12px] bg-white transition-shadow duration-300;
+    box-shadow: var(--shadow-soft);
+  }
+  .card:hover {
+    box-shadow: var(--shadow-card);
+  }
+  .badge-money {
+    @apply inline-flex items-center gap-1 rounded-full bg-money-bg px-3 py-1 text-xs font-semibold text-money-dark;
+  }
+  .badge-tag {
+    @apply inline-flex items-center rounded-full bg-sand-100 px-3 py-1 text-xs font-semibold text-sand-700;
+  }
+  .input {
+    @apply w-full rounded-[10px] border border-sand-200 bg-white px-4 py-3 text-base text-ink placeholder:text-muted focus:border-sand-400 focus:outline-none focus:ring-2 focus:ring-sand-200 min-h-[44px];
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-semibold text-ink-soft;
+  }
+  /* Treść artykułów (markdown) */
+  .prose-ub {
+    @apply text-ink leading-relaxed;
+  }
+  .prose-ub h2 {
+    @apply mt-10 mb-4 text-2xl md:text-3xl;
+  }
+  .prose-ub h3 {
+    @apply mt-8 mb-3 text-xl md:text-2xl;
+  }
+  .prose-ub p {
+    @apply my-4;
+  }
+  .prose-ub ul,
+  .prose-ub ol {
+    @apply my-4 space-y-2 pl-6;
+  }
+  .prose-ub ul {
+    @apply list-disc;
+  }
+  .prose-ub ol {
+    @apply list-decimal;
+  }
+  .prose-ub a {
+    @apply font-semibold text-sand-700 underline decoration-sand-300 underline-offset-2 hover:text-sand-500;
+  }
+  .prose-ub blockquote {
+    @apply my-6 border-l-4 border-sand-300 bg-sand-50 px-5 py-3 italic;
+  }
+  .prose-ub strong {
+    @apply font-bold text-ink-soft;
+  }
+}
