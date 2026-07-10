@@ -1,0 +1,20 @@
+# deps
+node_modules/
+
+# next
+.next/
+out/
+next-env.d.ts
+
+# env / sekrety
+.env
+.env.local
+.env.*.local
+
+# baza dev (PGlite)
+.pglite/
+
+# system
+.DS_Store
+*.log
+*.tsbuildinfo
