@@ -71,3 +71,10 @@ export async function requireAdmin(): Promise<User | null> {
   if (!user || user.role !== "admin") return null;
   return user;
 }
+
+/** Guard dla API panelu trenerki — zwraca usera tylko gdy rola trenerka i ma przypisany trainerId. */
+export async function requireTrainer(): Promise<User | null> {
+  const user = await getSessionUser();
+  if (!user || user.role !== "trenerka" || !user.trainerId) return null;
+  return user;
+}
