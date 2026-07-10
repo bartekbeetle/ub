@@ -149,13 +149,16 @@ export default function DofinansowaniaPage() {
       <section className="bg-cream-warm py-16 md:py-20" aria-labelledby="timeline-h">
         <div className="mx-auto max-w-4xl px-4 md:px-6">
           <h2 id="timeline-h" className="text-center text-3xl font-bold md:text-4xl">Jak uzyskać dofinansowanie?</h2>
-          <ol className="relative mt-14 space-y-8 before:absolute before:left-6 before:top-0 before:h-full before:w-0.5 before:bg-sand-200 md:before:left-1/2">
+          <ol className="mt-14 space-y-6">
             {TIMELINE.map((step, i) => (
-              <li key={step.title} className={`relative flex md:w-1/2 ${i % 2 ? "md:ml-auto md:pl-12" : "md:pr-12"} pl-16 md:pl-0 ${i % 2 ? "" : "md:pl-0"}`}>
-                <span className={`absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full bg-sand-400 font-serif text-lg font-bold text-white md:left-auto ${i % 2 ? "md:-left-6" : "md:-right-6"}`}>
+              <li
+                key={step.title}
+                className={`flex items-start gap-4 md:w-[calc(50%+3.5rem)] ${i % 2 ? "md:ml-auto md:flex-row-reverse" : ""}`}
+              >
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sand-400 font-serif text-lg font-bold text-white shadow-[0_5px_20px_rgba(200,168,130,0.3)]">
                   {i + 1}
                 </span>
-                <div className={`card w-full p-5 ${i % 2 ? "md:pl-8" : ""}`}>
+                <div className="card min-w-0 flex-1 p-5">
                   <h3 className="font-serif text-lg font-semibold">{step.title}</h3>
                   <p className="mt-1.5 text-sm text-muted">{step.text}</p>
                 </div>
