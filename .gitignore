@@ -18,3 +18,6 @@ next-env.d.ts
 .DS_Store
 *.log
 *.tsbuildinfo
+
+# Lockfile usuniety — wymusza npm install na Railway (fix bug oxide/optional-deps)
+package-lock.json
