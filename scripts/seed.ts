@@ -142,6 +142,11 @@ async function main() {
     .returning();
   console.log("✓ 4 trenerki");
 
+  // === KONTA LOGOWANIA TRENEREK (panel self-service) ===
+  const { seedTrainerUsers } = await import("./seed-trainer-users-lib");
+  const trainerAccounts = await seedTrainerUsers(db as never, schema);
+  console.log(`✓ ${trainerAccounts.filter((a) => a.created).length} kont trenerek (hasło startowe: Trenerka!2026)`);
+
   // === OPINIE ===
   await db.insert(reviews).values([
     { trainerId: kasia.id, authorName: "Patrycja M.", rating: 5, content: "Najlepsza decyzja w moim życiu zawodowym. Kasia tłumaczy wszystko od podstaw, a po szkoleniu naprawdę umiałam zrobić brwi ombre od A do Z. Dofinansowanie z BUR załatwione praktycznie za mnie.", courseTitle: "Makijaż permanentny brwi — ombre & microblading" },

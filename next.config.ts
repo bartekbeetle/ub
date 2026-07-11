@@ -1,12 +1,15 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV !== "production";
+
 const securityHeaders = [
   {
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      // GA4 + Meta Pixel wymagają zewnętrznych skryptów; inline dla JSON-LD i init pixela
-      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net",
+      // GA4 + Meta Pixel wymagają zewnętrznych skryptów; inline dla JSON-LD i init pixela.
+      // 'unsafe-eval' TYLKO w dev — Next.js React Refresh (HMR) go wymaga; na prod CSP zostaje ostry.
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://connect.facebook.net`,
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https://www.facebook.com https://www.google-analytics.com",
       "font-src 'self' data:",
