@@ -31,6 +31,9 @@ const nextConfig: NextConfig = {
   // Standalone: produkuje samowystarczalny `.next/standalone/server.js` (plain node),
   // dużo stabilniejszy w kontenerze niż `next start` (który tu cicho nie serwował).
   output: "standalone",
+  // Bez tego Next.js zgaduje root workspace po zabłąkanym lockfile w katalogu domowym
+  // i zagnieżdża standalone w podkatalogu (server.js ląduje w złym miejscu).
+  outputFileTracingRoot: process.cwd(),
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
