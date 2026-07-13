@@ -24,7 +24,12 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error("Błąd migracji:", err);
-  process.exit(1);
-});
+main()
+  // Wymuszony exit: pg Pool na Railway (SSL keepalive) potrafi zostawić wiszący
+  // uchwyt po pool.end(), przez co proces migracji nie kończy się i `&& npm start`
+  // nigdy nie rusza -> 502. process.exit(0) gwarantuje przejście do next start.
+  .then(() => process.exit(0))
+  .catch((err) => {
+    console.error("Błąd migracji:", err);
+    process.exit(1);
+  });
