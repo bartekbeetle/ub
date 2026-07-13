@@ -7,7 +7,14 @@ async function getDb() {
     const { drizzle } = await import("drizzle-orm/node-postgres");
     const { Pool } = await import("pg");
     const schema = await import("../src/db/schema");
-    const pool = new Pool({ connectionString: url });
+    // Timeouty ratunkowe: bez nich seed potrafi wisieć w nieskończoność
+    // (blokując `next start`). connectionTimeoutMillis = ile czekać na
+    // połączenie z puli; statement_timeout = twardy limit na pojedyncze zapytanie.
+    const pool = new Pool({
+      connectionString: url,
+      connectionTimeoutMillis: 15000,
+      statement_timeout: 30000,
+    });
     return { db: drizzle(pool, { schema }), close: () => pool.end(), schema };
   }
   const { drizzle } = await import("drizzle-orm/pglite");
@@ -587,7 +594,9 @@ async function main() {
   await close();
 }
 
-main().catch((err) => {
-  console.error("Błąd seeda:", err);
-  process.exit(1);
-});
+main()
+  .then(() => process.exit(0))
+  .catch((err) => {
+    console.error("Błąd seeda:", err);
+    process.exit(1);
+  });
