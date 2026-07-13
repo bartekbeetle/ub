@@ -16,14 +16,18 @@ RUN npm install --no-audit --no-fund
 # Kod aplikacji (bez node_modules/.next/.pglite — patrz .dockerignore).
 COPY . .
 
-# Produkcyjny build Next.js.
+# Produkcyjny build Next.js (output: standalone -> .next/standalone/server.js).
 RUN npm run build
 
-# Runtime = produkcja. tsx nadal w node_modules, więc migracja/seed działają.
+# Standalone server oczekuje static i public względem swojego katalogu.
+RUN cp -r .next/static .next/standalone/.next/static \
+ && cp -r public .next/standalone/public
+
+# Runtime = produkcja. Pełny node_modules zostaje (tsx/pg do migracji).
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 EXPOSE 3000
 
-# Migracja + seed + start (jak dotychczasowy startCommand).
-CMD ["sh", "-c", "npm run db:migrate && npm run db:seed && npm start"]
+# Migracja (pełny node_modules) + standalone server (plain node, stabilny w kontenerze).
+CMD ["sh", "-c", "npm run db:migrate && node .next/standalone/server.js"]
