@@ -37,6 +37,13 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
+  async redirects() {
+    return [
+      // Zakładka w menu nazywa się „Szkolenia" — ludzie wpisują /szkolenia z ręki.
+      { source: "/szkolenia", destination: "/kursy", permanent: true },
+      { source: "/szkolenia/:slug", destination: "/kurs/:slug", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -67,13 +67,15 @@ async function main() {
       certificates: [
         { title: "II Wicemistrzyni Świata w Makijażu Permanentnym", description: "Mediolan" },
         { title: "I Mistrzyni Polski w Microbladingu Brwi", description: "Poznań" },
+        { title: "II Wicemistrzyni międzynarodowych mistrzostw GOLD", description: "Gdynia" },
+        { title: "I Wicemistrzyni Polski w Microbladingu Brwi", description: "Kraków" },
         { title: "Sędzia międzynarodowych mistrzostw PMU", description: "Wietnam, Czechy, Irlandia, Polska" },
         { title: "Certyfikowana trenerka PROARTIST" },
         { title: "Certyfikowana trenerka AIPMUA" },
         { title: "Podmiot zarejestrowany w Bazie Usług Rozwojowych (PARP)", description: "uslugirozwojowe.parp.gov.pl" },
       ],
       instagram: "https://www.instagram.com/weronika_kachel_pmu",
-      facebook: "https://www.facebook.com/WeronikaKachelMicrobladingandPMU",
+      facebook: "https://www.facebook.com/WKmicrobladingandPmu",
       website: "https://weronikakachelpmu.com",
       rating: 50, // 5.0 w Google (371 opinii, stan 2026-07-18)
       reviewCount: 371,

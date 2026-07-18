@@ -98,9 +98,11 @@ export default async function TrenerkaPage({ params }: { params: Params }) {
             </div>
             <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted">
               <StarRating rating={trainer.rating} reviewCount={trainer.reviewCount} />
-              <span className="inline-flex items-center gap-1.5">
-                <IconUsers width={16} height={16} /> {trainer.studentsCount} przeszkolonych osób
-              </span>
+              {trainer.studentsCount > 0 && (
+                <span className="inline-flex items-center gap-1.5">
+                  <IconUsers width={16} height={16} /> {trainer.studentsCount} przeszkolonych osób
+                </span>
+              )}
               {trainer.city && (
                 <span className="inline-flex items-center gap-1.5">
                   <IconPin width={16} height={16} /> {trainer.city}, {voivodeshipName(trainer.voivodeship)}
@@ -168,7 +170,7 @@ export default async function TrenerkaPage({ params }: { params: Params }) {
                       <IconStar key={i} width={16} height={16} className={i < Math.round(trainer.rating / 10) ? "text-gold" : "text-sand-200"} />
                     ))}
                   </div>
-                  <p className="mt-1 text-sm text-muted">{trainer.reviewCount} opinii kursantek</p>
+                  <p className="mt-1 text-sm text-muted">{trainer.reviewCount} opinii w Google</p>
                 </div>
               </div>
             )}

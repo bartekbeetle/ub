@@ -52,9 +52,11 @@ export default async function TrenerkiPage() {
               </div>
               <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
                 <StarRating rating={t.rating} reviewCount={t.reviewCount} />
-                <span className="inline-flex items-center gap-1">
-                  <IconUsers width={15} height={15} /> {t.studentsCount} przeszkolonych
-                </span>
+                {t.studentsCount > 0 && (
+                  <span className="inline-flex items-center gap-1">
+                    <IconUsers width={15} height={15} /> {t.studentsCount} przeszkolonych
+                  </span>
+                )}
                 {t.city && (
                   <span className="inline-flex items-center gap-1">
                     <IconPin width={15} height={15} /> {t.city}
