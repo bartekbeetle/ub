@@ -12,7 +12,7 @@ export function Footer() {
           </p>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-sand-200">
             Łączymy kobiety, które chcą zacząć karierę w beauty, z certyfikowanymi trenerkami — i pomagamy
-            zdobyć dofinansowanie do 100% z programu BUR.
+            zdobyć dofinansowanie do 90% z programu BUR.
           </p>
           <a
             href={`mailto:${CONTACT_EMAIL}`}

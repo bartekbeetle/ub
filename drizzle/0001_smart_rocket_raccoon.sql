@@ -1,0 +1,1 @@
+ALTER TABLE "courses" ALTER COLUMN "subsidy_percent" SET DEFAULT 90;

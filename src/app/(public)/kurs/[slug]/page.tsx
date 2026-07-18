@@ -167,7 +167,7 @@ export default async function KursPage({ params }: { params: Params }) {
             <div>
               <p className="text-base text-muted line-through">{formatPln(course.price)}</p>
               <p className="text-4xl font-bold text-money">
-                {priceAfter === 0 ? "Od 0 zł" : `Od ${formatPln(priceAfter)}`}
+                {priceAfter === 0 ? "Pełne dofinansowanie" : `Od ${formatPln(priceAfter)}`}
               </p>
               {savings > 0 && (
                 <p className="mt-1 text-sm font-semibold text-money-dark">

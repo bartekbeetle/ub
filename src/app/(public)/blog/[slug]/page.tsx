@@ -84,7 +84,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       <aside className="card mt-12 bg-cream-warm p-8 text-center">
         <h2 className="font-serif text-2xl font-bold">Gotowa na start w beauty?</h2>
         <p className="mx-auto mt-2 max-w-md text-muted">
-          Sprawdź certyfikowane szkolenia z dofinansowaniem do 100% — pomożemy Ci przejść przez cały proces.
+          Sprawdź certyfikowane szkolenia z dofinansowaniem do 90% — pomożemy Ci przejść przez cały proces.
         </p>
         <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
           <Link href="/kursy" className="btn-primary">Przeglądaj kursy</Link>

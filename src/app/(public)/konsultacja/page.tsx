@@ -30,7 +30,7 @@ export default function KonsultacjaPage() {
               Bezpłatna Konsultacja — <span className="text-money">sprawdź swoje dofinansowanie</span>
             </h1>
             <p className="mt-5 text-lg text-muted">
-              Zostaw kontakt, a w ciągu 24 godzin sprawdzimy, jaki poziom dofinansowania (nawet 100%)
+              Zostaw kontakt, a w ciągu 24 godzin sprawdzimy, jaki poziom dofinansowania (zwykle 80–90%)
               przysługuje Ci w Twoim województwie — i pokażemy Ci konkretne szkolenia, na które możesz je
               wykorzystać.
             </p>
@@ -43,8 +43,8 @@ export default function KonsultacjaPage() {
               ))}
             </ul>
             <p className="mt-8 text-sm text-muted">
-              Dołącz do <strong className="text-ink-soft">500+ kobiet</strong>, które zaczęły karierę w beauty z
-              naszym wsparciem — <strong className="text-money-dark">98% otrzymało pełne dofinansowanie</strong>.
+              Konsultacja jest <strong className="text-ink-soft">bezpłatna i niezobowiązująca</strong> — zarabiamy
+              na współpracy z trenerkami, <strong className="text-money-dark">nie na kursantkach</strong>.
             </p>
           </div>
 

@@ -56,7 +56,7 @@ export function CourseCard({ course, trainer }: { course: Course; trainer?: Trai
           <div>
             <p className="text-sm text-muted line-through">{formatPln(course.price)}</p>
             <p className="text-xl font-bold text-money-dark">
-              {priceAfter === 0 ? "Od 0 zł" : `Od ${formatPln(priceAfter)}`}
+              {priceAfter === 0 ? "Pełne dofinansowanie" : `Od ${formatPln(priceAfter)}`}
             </p>
           </div>
           <Link href={`/kurs/${course.slug}`} className="btn-primary !px-5 !py-2.5 !text-sm">

@@ -3,12 +3,14 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:30
 export const CONTACT_EMAIL = "biuro@uniwersytetbeauty.pl";
 
 export const CATEGORIES = [
-  "Medycyna estetyczna",
   "PMU / Makijaż permanentny",
-  "Fryzjerstwo",
+  "Stylizacja rzęs",
+  "Stylizacja brwi",
   "Stylizacja paznokci",
+  "Medycyna estetyczna",
   "Kosmetologia",
   "Manicure & Pedicure",
+  "Fryzjerstwo",
   "Masaż",
   "Depilacja",
   "Inne",

@@ -19,10 +19,10 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
   const woj = typeof sp.wojewodztwo === "string" ? voivodeshipName(sp.wojewodztwo) : "";
   const kat = asArray(sp.kategoria)[0] ?? "";
   // programmatic SEO: unikalny title dla kombinacji filtrów
-  let title = "Kursy i szkolenia beauty z dofinansowaniem do 100%";
-  if (kat && woj) title = `Kurs ${kat} ${woj} z dofinansowaniem do 100%`;
-  else if (kat) title = `Kurs ${kat} z dofinansowaniem do 100%`;
-  else if (woj) title = `Kursy beauty ${woj} z dofinansowaniem do 100%`;
+  let title = "Kursy i szkolenia beauty z dofinansowaniem do 90%";
+  if (kat && woj) title = `Kurs ${kat} ${woj} z dofinansowaniem do 90%`;
+  else if (kat) title = `Kurs ${kat} z dofinansowaniem do 90%`;
+  else if (woj) title = `Kursy beauty ${woj} z dofinansowaniem do 90%`;
   const qs = new URLSearchParams();
   if (typeof sp.wojewodztwo === "string" && sp.wojewodztwo) qs.set("wojewodztwo", sp.wojewodztwo);
   if (kat) qs.set("kategoria", kat);

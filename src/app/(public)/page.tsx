@@ -9,12 +9,12 @@ import { SITE_NAME } from "@/lib/constants";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: `Szkolenia beauty z dofinansowaniem do 100%`,
+  title: `Szkolenia beauty z dofinansowaniem do 90%`,
   description:
-    "Zacznij karierę w beauty bez ryzyka finansowego. Szkolenia z PMU, rzęs, paznokci i medycyny estetycznej z dofinansowaniem do 100% z programu BUR. Nie potrzebujesz doświadczenia.",
+    "Zacznij karierę w beauty bez ryzyka finansowego. Szkolenia z PMU, rzęs, paznokci i medycyny estetycznej z dofinansowaniem do 90% z programu BUR. Nie potrzebujesz doświadczenia.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: `Szkolenia beauty z dofinansowaniem do 100%`,
+    title: `Szkolenia beauty z dofinansowaniem do 90%`,
     description: "Profesjonalne szkolenia beauty z dofinansowaniem BUR. Nie potrzebujesz doświadczenia.",
     url: "/",
     images: [{ url: "/images/akademia-sala.jpg", width: 1600, height: 872, alt: "Sala szkoleniowa akademii beauty" }],
@@ -25,7 +25,7 @@ const STEPS = [
   { title: "Wybierz Szkolenie", text: "Przejrzyj katalog certyfikowanych kursów i wybierz ten, który pasuje do Twoich planów." },
   { title: "Skontaktuj Się z Nami", text: "Wypełnij krótki formularz — sprawdzimy Twoje dofinansowanie i pomożemy w całym procesie." },
   { title: "Złóż Wniosek", text: "Wspieramy Cię w przygotowaniu wniosku do operatora BUR w Twoim województwie." },
-  { title: "Rozpocznij Naukę", text: "Po przyznaniu środków zaczynasz szkolenie u certyfikowanej trenerki — nawet za 0 zł." },
+  { title: "Rozpocznij Naukę", text: "Po przyznaniu środków zaczynasz szkolenie u certyfikowanej trenerki — płacisz kilkaset złotych zamiast kilku tysięcy." },
 ];
 
 const WHY = [
@@ -51,14 +51,14 @@ export default async function HomePage() {
       <section className="bg-gradient-to-b from-sand-100 via-cream-warm to-cream">
         <div className="mx-auto max-w-4xl px-4 py-16 text-center md:py-24">
           <span className="badge-money mb-6 inline-flex !px-4 !py-1.5 !text-sm">
-            <IconGraduation width={16} height={16} /> Szkolenia z dofinansowaniem do 100%
+            <IconGraduation width={16} height={16} /> Szkolenia z dofinansowaniem do 90%
           </span>
           <h1 className="text-4xl font-bold leading-tight md:text-6xl">
             Zacznij Karierę w Beauty <span className="text-sand-500">BEZ Ryzyka Finansowego</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted md:text-xl">
-            Profesjonalne szkolenia z linergistyki, PMU i medycyny estetycznej z dofinansowaniem do 100% z
-            programu BUR. <strong className="text-ink-soft">Nie potrzebujesz doświadczenia.</strong>
+            Profesjonalne szkolenia z linergistyki, PMU i medycyny estetycznej z dofinansowaniem do 90% z
+            programu BUR — płacisz ułamek ceny kursu. <strong className="text-ink-soft">Nie potrzebujesz doświadczenia.</strong>
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link href="/kursy" className="btn-primary !px-10 !py-4 !text-lg">
@@ -136,13 +136,13 @@ export default async function HomePage() {
       <section className="bg-ink-soft py-14 text-center" aria-label="Nasze wyniki">
         <div className="mx-auto flex max-w-4xl flex-col items-center justify-center gap-10 px-4 sm:flex-row">
           <div>
-            <p className="font-serif text-4xl font-bold text-sand-300">500+</p>
-            <p className="mt-2 text-sand-100">przeszkolonych specjalistek beauty</p>
+            <p className="font-serif text-4xl font-bold text-sand-300">do 90%</p>
+            <p className="mt-2 text-sand-100">dofinansowania z programów BUR i KFS</p>
           </div>
           <div className="hidden h-14 w-px bg-white/20 sm:block" aria-hidden />
           <div>
-            <p className="font-serif text-4xl font-bold text-money">98%</p>
-            <p className="mt-2 text-sand-100">kursantek otrzymało pełne dofinansowanie</p>
+            <p className="font-serif text-4xl font-bold text-money">0 zł</p>
+            <p className="mt-2 text-sand-100">za naszą pomoc — konsultacja i wsparcie w formalnościach są bezpłatne</p>
           </div>
         </div>
         <ul className="mx-auto mt-10 flex max-w-3xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-4 text-sm text-sand-200">

@@ -95,8 +95,8 @@ export const trainers = pgTable("trainers", {
   rating: integer("rating_x10").notNull().default(0), // ocena × 10 (49 = 4.9)
   reviewCount: integer("review_count").notNull().default(0),
   studentsCount: integer("students_count").notNull().default(0),
-  billingModel: billingModelEnum("billing_model").notNull().default("per_lead"),
-  rate: integer("rate_pln").notNull().default(100), // PLN
+  billingModel: billingModelEnum("billing_model").notNull().default("per_zapis"),
+  rate: integer("rate_pln").notNull().default(500), // PLN
   leadLimitMonthly: integer("lead_limit_monthly").notNull().default(50),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -131,7 +131,7 @@ export const courses = pgTable(
     includes: jsonb("includes").$type<string[]>().notNull().default([]),
     forWhom: text("for_whom"),
     price: integer("price_pln").notNull(), // PLN
-    subsidyPercent: integer("subsidy_percent").notNull().default(100),
+    subsidyPercent: integer("subsidy_percent").notNull().default(90),
     nextDate: varchar("next_date", { length: 40 }), // ISO date
     totalSpots: integer("total_spots").notNull().default(8),
     takenSpots: integer("taken_spots").notNull().default(0),

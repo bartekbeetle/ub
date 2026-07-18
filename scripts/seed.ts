@@ -25,6 +25,15 @@ async function getDb() {
 }
 
 async function main() {
+  // Bezpiecznik: ten seed zawiera FIKCYJNE dane demo (trenerki, kursy, opinie).
+  // Na bazie zdalnej (DATABASE_URL) odpali się tylko z jawnym ALLOW_DEMO_SEED=1.
+  if (process.env.DATABASE_URL?.trim() && process.env.ALLOW_DEMO_SEED !== "1") {
+    console.error(
+      "STOP: seed demo na zdalnej bazie zablokowany. To dane fikcyjne (trenerki, opinie) — nie na produkcję.\n" +
+        "Na produkcji użyj: npm run db:seed-core. Jeśli NA PEWNO chcesz demo: ALLOW_DEMO_SEED=1."
+    );
+    process.exit(1);
+  }
   const { db, close, schema } = await getDb();
   const { users, trainers, courses, blogPosts, reviews, settings } = schema;
   const { sql } = await import("drizzle-orm");
@@ -86,7 +95,7 @@ async function main() {
         email: "kontakt@przyklad-magdabeauty.pl",
         phone: "+48 604 772 158",
         bio: "Stylistka rzęs i brwi, trenerka z 8-letnim stażem. Prowadzi butikowe studio szkoleniowe w Warszawie, gdzie stawia na małe grupy (max 4 osoby) i pracę na modelkach od pierwszego dnia. Jej kursantki chwalą przede wszystkim opiekę poszkoleniową — każda absolwentka ma 3 miesiące konsultacji online w cenie kursu.",
-        specializations: ["PMU / Makijaż permanentny", "Kosmetologia"],
+        specializations: ["Stylizacja rzęs", "Stylizacja brwi"],
         city: "Warszawa",
         voivodeship: "mazowieckie",
         certificates: [
@@ -205,7 +214,7 @@ async function main() {
       ],
       forWhom: "Kurs dla początkujących — nie potrzebujesz żadnego doświadczenia w branży beauty. Idealny dla kosmetyczek chcących rozszerzyć ofertę oraz osób planujących przebranżowienie.",
       price: 5900,
-      subsidyPercent: 100,
+      subsidyPercent: 90,
       nextDate: in3weeks,
       totalSpots: 8,
       takenSpots: 5,
@@ -241,7 +250,7 @@ async function main() {
       ],
       forWhom: "Dla linergistek z podstawami PMU. Wymagane ukończone szkolenie podstawowe z makijażu permanentnego.",
       price: 4200,
-      subsidyPercent: 100,
+      subsidyPercent: 90,
       nextDate: in5weeks,
       totalSpots: 6,
       takenSpots: 2,
@@ -255,7 +264,7 @@ async function main() {
     {
       slug: "stylizacja-rzes-od-podstaw-warszawa",
       title: "Stylizacja rzęs od podstaw — metoda 1:1 i objętościowa",
-      category: "PMU / Makijaż permanentny",
+      category: "Stylizacja rzęs",
       level: "Podstawowy",
       mode: "Stacjonarny",
       shortDescription: "Kurs stylizacji rzęs w kameralnej 4-osobowej grupie. Metoda klasyczna 1:1 oraz wprowadzenie do objętości 2D-3D. Warszawa, praca na modelkach od pierwszego dnia.",
@@ -277,7 +286,7 @@ async function main() {
       ],
       forWhom: "Dla początkujących bez doświadczenia. Kurs przygotowuje do samodzielnej pracy z klientkami od pierwszego tygodnia po szkoleniu.",
       price: 2800,
-      subsidyPercent: 100,
+      subsidyPercent: 90,
       nextDate: in4weeks,
       totalSpots: 4,
       takenSpots: 1,
@@ -291,7 +300,7 @@ async function main() {
     {
       slug: "przedluzanie-i-laminacja-rzes-brwi-warszawa",
       title: "Laminacja rzęs i brwi z henną pudrową",
-      category: "Kosmetologia",
+      category: "Stylizacja rzęs",
       level: "Podstawowy",
       mode: "Stacjonarny",
       shortDescription: "Jednodniowe szkolenie łączone: laminacja rzęs, laminacja brwi i henna pudrowa. Trzy dochodowe usługi w jeden dzień, komplet produktów w cenie.",
@@ -311,7 +320,7 @@ async function main() {
       ],
       forWhom: "Dla początkujących oraz kosmetyczek rozszerzających ofertę.",
       price: 1900,
-      subsidyPercent: 100,
+      subsidyPercent: 90,
       nextDate: in3weeks,
       totalSpots: 6,
       takenSpots: 3,
@@ -347,7 +356,7 @@ async function main() {
       ],
       forWhom: "Dla osób bez doświadczenia, które chcą zacząć zarabiać w branży nail — także dorywczo.",
       price: 2400,
-      subsidyPercent: 100,
+      subsidyPercent: 90,
       nextDate: in4weeks,
       totalSpots: 8,
       takenSpots: 6,
@@ -382,7 +391,7 @@ async function main() {
       ],
       forWhom: "Wymagana znajomość podstaw manicure hybrydowego (ukończony kurs podstawowy lub doświadczenie).",
       price: 3200,
-      subsidyPercent: 100,
+      subsidyPercent: 90,
       nextDate: in6weeks,
       totalSpots: 6,
       takenSpots: 2,
@@ -419,7 +428,7 @@ async function main() {
       ],
       forWhom: "Dla kosmetologów, kosmetyczek i pielęgniarek. Wymagane min. wykształcenie kierunkowe lub doświadczenie w zabiegach kosmetycznych.",
       price: 3800,
-      subsidyPercent: 100,
+      subsidyPercent: 90,
       nextDate: in4weeks,
       totalSpots: 6,
       takenSpots: 4,
@@ -480,7 +489,7 @@ async function main() {
       includes: ["Certyfikat ukończenia", "Skrypt z sekwencjami zabiegowymi", "Kosmetyki na czas kursu"],
       forWhom: "Dla kosmetyczek, masażystek i osób początkujących — masaż nie wymaga wcześniejszego doświadczenia.",
       price: 2600,
-      subsidyPercent: 100,
+      subsidyPercent: 90,
       nextDate: in5weeks,
       totalSpots: 8,
       takenSpots: 3,

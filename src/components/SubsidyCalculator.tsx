@@ -5,7 +5,7 @@ import Link from "next/link";
 import { formatPln } from "@/lib/utils";
 
 const PROGRAMS = [
-  { id: "bur", label: "BUR — do 100%", percent: 100 },
+  { id: "bur", label: "BUR — do 90%", percent: 90 },
   { id: "up", label: "Powiatowy Urząd Pracy — 85%", percent: 85 },
   { id: "kfs", label: "KFS (przez pracodawcę) — 80%", percent: 80 },
 ];

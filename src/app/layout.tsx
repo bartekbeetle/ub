@@ -20,11 +20,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — Szkolenia beauty z dofinansowaniem do 100%`,
+    default: `${SITE_NAME} — Szkolenia beauty z dofinansowaniem do 90%`,
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "Profesjonalne szkolenia beauty z dofinansowaniem do 100% z programu BUR. PMU, stylizacja rzęs i paznokci, medycyna estetyczna. Certyfikowane trenerki, wsparcie w całym procesie.",
+    "Profesjonalne szkolenia beauty z dofinansowaniem do 90% z programu BUR. PMU, stylizacja rzęs i paznokci, medycyna estetyczna. Certyfikowane trenerki, wsparcie w całym procesie.",
   alternates: { canonical: "/", languages: { pl: "/" } },
   openGraph: {
     type: "website",

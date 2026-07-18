@@ -5,6 +5,7 @@ import { getSessionUser } from "@/lib/auth";
 import { getDb, schema } from "@/db";
 import { PanelNav } from "@/components/panel/PanelNav";
 import { PanelLogoutButton } from "@/components/panel/PanelLogoutButton";
+import { ForcePasswordChange } from "@/components/ForcePasswordChange";
 
 export const dynamic = "force-dynamic";
 
@@ -41,10 +42,13 @@ export default async function TrainerPanelLayout({ children }: { children: React
 
       <div className="ml-60 flex-1 p-8">
         {user.mustChangePassword && (
-          <div className="mb-6 rounded-[12px] border border-amber-300 bg-amber-50 px-5 py-4 text-sm text-amber-900">
-            <strong>Zmień hasło startowe.</strong> Twoje konto używa hasła tymczasowego —{" "}
-            <Link href="/panel/haslo" className="font-semibold underline">ustaw własne hasło teraz</Link>.
-          </div>
+          <>
+            <ForcePasswordChange passwordPath="/panel/haslo" />
+            <div className="mb-6 rounded-[12px] border border-amber-300 bg-amber-50 px-5 py-4 text-sm text-amber-900">
+              <strong>Zmień hasło startowe.</strong> Twoje konto używa hasła tymczasowego —{" "}
+              <Link href="/panel/haslo" className="font-semibold underline">ustaw własne hasło teraz</Link>.
+            </div>
+          </>
         )}
         {children}
       </div>

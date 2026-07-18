@@ -7,7 +7,7 @@ import { SITE_NAME } from "@/lib/constants";
 export const metadata: Metadata = {
   title: `O nas`,
   description:
-    "Uniwersytet Beauty łączy kobiety planujące karierę w branży beauty z certyfikowanymi trenerkami i pomaga zdobyć dofinansowanie do 100% z programu BUR.",
+    "Uniwersytet Beauty łączy kobiety planujące karierę w branży beauty z certyfikowanymi trenerkami i pomaga zdobyć dofinansowanie do 90% z programu BUR.",
   alternates: { canonical: "/o-nas" },
 };
 
@@ -25,7 +25,7 @@ export default function ONasPage() {
         <p>
           <strong>Uniwersytet Beauty</strong> powstał z jednej obserwacji: tysiące kobiet w Polsce marzy o karierze
           w branży beauty, ale odkłada ją na później, bo dobre szkolenie kosztuje kilka tysięcy złotych.
-          Tymczasem istnieją programy, które pokrywają <strong>do 100% ceny kursu</strong> — tylko mało kto o nich
+          Tymczasem istnieją programy, które pokrywają <strong>nawet 90% ceny kursu</strong> — tylko mało kto o nich
           wie, a jeszcze mniej osób umie przejść przez proces wniosku.
         </p>
         <p>
@@ -39,15 +39,16 @@ export default function ONasPage() {
           <li><strong>Weryfikujemy trenerki</strong> — na platformie znajdziesz wyłącznie doświadczone szkoleniowczynie z certyfikatami i realnymi opiniami kursantek.</li>
           <li><strong>Prowadzimy Cię za rękę</strong> — od wyboru kursu, przez wniosek, po rozliczenie dofinansowania.</li>
         </ul>
-        <h2>Nasze wyniki</h2>
+        <h2>Jak działamy</h2>
         <p>
-          Do dziś pomogłyśmy ponad <strong>500 kobietom</strong> rozpocząć karierę w beauty, a{" "}
-          <strong>98% naszych kursantek</strong> otrzymało pełne dofinansowanie na wybrane szkolenie.
+          Nasza pomoc jest dla kandydatek <strong>całkowicie bezpłatna</strong> — sprawdzamy poziom dofinansowania
+          w Twoim województwie, pomagamy założyć konto w BUR i prowadzimy Cię przez wniosek aż do rozliczenia.
+          Zarabiamy na współpracy z trenerkami, nie na kursantkach.
         </p>
       </div>
 
       <div className="card mt-10 bg-cream-warm p-8 text-center">
-        <h2 className="font-serif text-2xl font-bold">Chcesz dołączyć do nich?</h2>
+        <h2 className="font-serif text-2xl font-bold">Chcesz zacząć karierę w beauty?</h2>
         <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
           <Link href="/konsultacja" className="btn-primary">Umów bezpłatną konsultację</Link>
           <Link href="/kursy" className="btn-outline">Zobacz szkolenia</Link>

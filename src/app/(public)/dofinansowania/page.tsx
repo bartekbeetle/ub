@@ -12,19 +12,19 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: `Dofinansowania na szkolenia beauty — BUR, UP, KFS`,
   description:
-    "Szkolenie beauty za 0 zł? Sprawdź programy dofinansowań: BUR do 100%, Urząd Pracy 85%+, KFS. Kalkulator oszczędności i wsparcie w całym procesie wniosku.",
+    "Do 90% dofinansowania na szkolenia beauty — płacisz kilkaset złotych zamiast kilku tysięcy. Programy: BUR, Urząd Pracy, KFS. Kalkulator oszczędności i wsparcie we wniosku.",
   alternates: { canonical: "/dofinansowania" },
 };
 
 const PROGRAMS = [
   {
     name: "Baza Usług Rozwojowych (BUR)",
-    percent: "100%",
+    percent: "do 90%",
     description:
       "Największy program dofinansowań szkoleń w Polsce, finansowany z Funduszy Europejskich. Nie musisz być bezrobotna!",
     requirements: [
       "Dla pracujących, studentek, przedsiębiorczyń i mam",
-      "Dofinansowanie 80-100% zależnie od województwa",
+      "Dofinansowanie zwykle 80–90% zależnie od województwa",
       "Szkolenie musi być w Bazie Usług Rozwojowych",
       "Wniosek składasz do operatora regionalnego",
     ],
@@ -61,7 +61,7 @@ const TIMELINE = [
   { title: "Bezpłatna konsultacja", text: "Nasza doradczyni omówi z Tobą warunki programu i zbierze potrzebne informacje." },
   { title: "Przygotowanie dokumentów", text: "Pomagamy założyć konto w BUR i przygotować komplet dokumentów do wniosku." },
   { title: "Złożenie wniosku", text: "Wspólnie składamy wniosek do operatora i monitorujemy jego status aż do decyzji." },
-  { title: "Rozpoczęcie szkolenia", text: "Po przyznaniu środków zapisujesz się na kurs i zaczynasz naukę — nawet za 0 zł." },
+  { title: "Rozpoczęcie szkolenia", text: "Po przyznaniu środków zapisujesz się na kurs i zaczynasz naukę — z dopłatą ułamka ceny." },
 ];
 
 const FAQ = [
@@ -73,7 +73,7 @@ const FAQ = [
   {
     question: "Ile wynosi dofinansowanie na szkolenie beauty?",
     answer:
-      "W zależności od województwa i programu: od 80% do nawet 100% ceny szkolenia. W wielu przypadkach kursantka nie płaci nic — szkolenie jest w całości pokrywane ze środków europejskich.",
+      "W zależności od województwa i programu: najczęściej 80–90% ceny szkolenia. W praktyce oznacza to dopłatę kilkuset złotych zamiast kilku tysięcy. Pełne 100% zdarza się w wybranych programach (np. KFS dla mikrofirm), ale to wyjątek, nie reguła.",
   },
   {
     question: "Jak długo trwa proces uzyskania dofinansowania?",
@@ -109,10 +109,10 @@ export default function DofinansowaniaPage() {
             <Breadcrumbs items={[{ name: "Strona główna", url: "/" }, { name: "Dofinansowania", url: "/dofinansowania" }]} />
           </div>
           <h1 className="mt-6 text-4xl font-bold md:text-5xl">
-            Szkolenie beauty za <span className="text-money">0 zł</span>? To możliwe!
+            Dofinansowanie pokrywa <span className="text-money">do 90%</span> ceny szkolenia
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted">
-            Programy dofinansowań pokrywają do 100% ceny certyfikowanych szkoleń. Sprawdź, który program
+            Zamiast kilku tysięcy złotych płacisz zwykle kilkaset. Sprawdź, który program
             pasuje do Twojej sytuacji — i ile możesz zaoszczędzić.
           </p>
           <Link href="/kursy" className="btn-money mt-8">

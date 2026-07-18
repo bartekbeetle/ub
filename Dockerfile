@@ -29,5 +29,5 @@ ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 EXPOSE 3000
 
-# Migracja (pełny node_modules) + standalone server (plain node, stabilny w kontenerze).
-CMD ["sh", "-c", "npm run db:migrate && node .next/standalone/server.js"]
+# Migracja + seed-core (admin/ustawienia, idempotentny, ZERO danych demo) + standalone server.
+CMD ["sh", "-c", "npm run db:migrate && npm run db:seed-core && node .next/standalone/server.js"]

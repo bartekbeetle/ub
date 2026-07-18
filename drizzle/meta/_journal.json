@@ -8,6 +8,20 @@
       "when": 1783703121679,
       "tag": "0000_keen_marvel_apes",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1784395309739,
+      "tag": "0001_smart_rocket_raccoon",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784395554763,
+      "tag": "0002_keen_vertigo",
+      "breakpoints": true
     }
   ]
 }

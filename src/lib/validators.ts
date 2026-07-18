@@ -65,8 +65,8 @@ export const trainerSchema = z.object({
   facebook: z.string().trim().max(300).optional().or(z.literal("")),
   website: z.string().trim().max(300).optional().or(z.literal("")),
   studentsCount: z.coerce.number().int().min(0).default(0),
-  billingModel: z.enum(["per_lead", "per_zapis"]).default("per_lead"),
-  rate: z.coerce.number().int().min(0).default(100),
+  billingModel: z.enum(["per_lead", "per_zapis"]).default("per_zapis"),
+  rate: z.coerce.number().int().min(0).default(500),
   leadLimitMonthly: z.coerce.number().int().min(0).default(50),
   isActive: z.coerce.boolean().default(true),
 });

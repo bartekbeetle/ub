@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { LogoutButton } from "@/components/admin/LogoutButton";
+import { ForcePasswordChange } from "@/components/ForcePasswordChange";
 
 export const dynamic = "force-dynamic";
 
@@ -31,10 +32,13 @@ export default async function AdminPanelLayout({ children }: { children: React.R
 
       <div className="ml-60 flex-1 p-8">
         {user.mustChangePassword && (
-          <div className="mb-6 rounded-[12px] border border-amber-300 bg-amber-50 px-5 py-4 text-sm text-amber-900">
-            <strong>Zmień hasło startowe.</strong> Konto używa hasła z seeda —{" "}
-            <Link href="/admin/haslo" className="font-semibold underline">ustaw własne hasło teraz</Link>.
-          </div>
+          <>
+            <ForcePasswordChange passwordPath="/admin/haslo" />
+            <div className="mb-6 rounded-[12px] border border-amber-300 bg-amber-50 px-5 py-4 text-sm text-amber-900">
+              <strong>Zmień hasło startowe.</strong> Konto używa hasła z seeda —{" "}
+              <Link href="/admin/haslo" className="font-semibold underline">ustaw własne hasło teraz</Link>.
+            </div>
+          </>
         )}
         {children}
       </div>

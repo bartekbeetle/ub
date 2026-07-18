@@ -37,7 +37,7 @@ export function TrainerForm({ trainer }: { trainer?: Trainer }) {
       website: String(fd.get("website") ?? ""),
       studentsCount: Number(fd.get("studentsCount") ?? 0),
       billingModel: String(fd.get("billingModel")) as "per_lead" | "per_zapis",
-      rate: Number(fd.get("rate") ?? 100),
+      rate: Number(fd.get("rate") ?? 500),
       leadLimitMonthly: Number(fd.get("leadLimitMonthly") ?? 50),
       isActive: fd.get("isActive") === "on",
     };
@@ -182,14 +182,14 @@ export function TrainerForm({ trainer }: { trainer?: Trainer }) {
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
             <label className="label" htmlFor="t-model">Model rozliczenia</label>
-            <select id="t-model" name="billingModel" defaultValue={trainer?.billingModel ?? "per_lead"} className="input">
+            <select id="t-model" name="billingModel" defaultValue={trainer?.billingModel ?? "per_zapis"} className="input">
               <option value="per_lead">Opłata za lead</option>
               <option value="per_zapis">Opłata za zapis</option>
             </select>
           </div>
           <div>
             <label className="label" htmlFor="t-rate">Stawka (PLN)</label>
-            <input id="t-rate" name="rate" type="number" min={0} defaultValue={trainer?.rate ?? 100} className="input" />
+            <input id="t-rate" name="rate" type="number" min={0} defaultValue={trainer?.rate ?? 500} className="input" />
           </div>
           <div>
             <label className="label" htmlFor="t-limit">Limit leadów / mies.</label>
