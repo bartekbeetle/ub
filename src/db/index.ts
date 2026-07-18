@@ -1,6 +1,7 @@
 import * as schema from "./schema";
 
-// Fabryka bazy: produkcja = Postgres (DATABASE_URL z env, np. Railway),
+// Fabryka bazy: produkcja = Postgres (DATABASE_URL z env; Supabase — appka przez
+// pooler :6543/transaction mode, migracje/seedy przez direct :5432),
 // dev bez Postgresa = wbudowany PGlite (plik ./.pglite).
 // Singleton przez globalThis — Next.js w dev przeładowuje moduły.
 
@@ -16,7 +17,12 @@ async function createDb() {
   if (url && url.trim() !== "") {
     const { drizzle } = await import("drizzle-orm/node-postgres");
     const { Pool } = await import("pg");
-    const pool = new Pool({ connectionString: url, max: 10 });
+    // Na Vercelu każda instancja funkcji ma własny pool — mały max, żeby nie
+    // zjadać połączeń poolera Supabase; poza serverless (lokalnie) 10.
+    const pool = new Pool({
+      connectionString: url,
+      max: process.env.VERCEL ? 2 : 10,
+    });
     return drizzle(pool, { schema });
   }
   const { drizzle } = await import("drizzle-orm/pglite");
