@@ -12,7 +12,8 @@
     "db:seed": "tsx scripts/seed.ts",
     "db:seed-blog": "tsx scripts/seed-blog.ts",
     "db:setup": "npm run db:migrate && npm run db:seed",
-    "db:seed-core": "tsx scripts/seed-core.ts"
+    "db:seed-core": "tsx scripts/seed-core.ts",
+    "db:seed-weronika": "tsx scripts/seed-weronika.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.3.0",
