@@ -135,4 +135,27 @@
   .prose-ub strong {
     @apply font-bold text-ink-soft;
   }
+  /* Tabele w treści — responsywne (scroll na mobile), czytelne */
+  .prose-ub table {
+    @apply my-6 w-full text-sm;
+    display: block;
+    overflow-x: auto;
+    border-collapse: collapse;
+    min-width: 0;
+  }
+  .prose-ub th,
+  .prose-ub td {
+    @apply px-4 py-2.5 text-left align-top;
+    border: 1px solid var(--color-sand-200);
+    min-width: 9rem;
+  }
+  .prose-ub thead th {
+    @apply bg-sand-100 font-semibold text-ink-soft;
+  }
+  .prose-ub tbody td:first-child {
+    @apply font-semibold text-ink-soft;
+  }
+  .prose-ub tbody tr:nth-child(even) {
+    @apply bg-sand-50;
+  }
 }
