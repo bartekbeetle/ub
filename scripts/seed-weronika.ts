@@ -74,6 +74,9 @@ async function main() {
         { title: "Certyfikowana trenerka AIPMUA" },
         { title: "Podmiot zarejestrowany w Bazie Usług Rozwojowych (PARP)", description: "uslugirozwojowe.parp.gov.pl" },
       ],
+      // Zdjęcia z FB strony Weroniki (zgoda partnerska), pliki w public/images/wk/
+      avatarUrl: "/images/wk/wk-avatar-2.jpg",
+      coverUrl: "/images/wk/wk-avatar-1.jpg",
       instagram: "https://www.instagram.com/weronika_kachel_pmu",
       facebook: "https://www.facebook.com/WKmicrobladingandPmu",
       website: "https://weronikakachelpmu.com",
@@ -137,13 +140,15 @@ async function main() {
     level: string;
     durationHours: number;
     program?: string[];
+    imageUrl?: string;
   }[] = [
-    { slug: "wk-basic-pmu-brwi-usta-kreska", title: "Basic PMU — brwi, usta, kreska", level: "Podstawowy", durationHours: 5 * dzien },
+    { slug: "wk-basic-pmu-brwi-usta-kreska", title: "Basic PMU — brwi, usta, kreska", level: "Podstawowy", durationHours: 5 * dzien, imageUrl: "/images/wk/wk-micro-2.jpg" },
     {
       slug: "wk-brwi-ombre-basic",
       title: "Brwi ombre basic",
       level: "Podstawowy",
       durationHours: 3 * dzien,
+      imageUrl: "/images/wk/wk-ombre-1.jpg",
       program: [
         "Teoria: BHP w gabinecie, stanowisko pracy, sterylizacja",
         "Karta klienta, przeciwwskazania, choroby skóry",
@@ -155,13 +160,14 @@ async function main() {
         "Dzień 3 gratis — umawiany indywidualnie",
       ],
     },
-    { slug: "wk-brwi-microblading-basic", title: "Brwi microblading basic", level: "Podstawowy", durationHours: 3 * dzien },
-    { slug: "wk-wlos-maszynowy", title: "Włos maszynowy", level: "Średniozaawansowany", durationHours: 3 * dzien },
+    { slug: "wk-brwi-microblading-basic", title: "Brwi microblading basic", level: "Podstawowy", durationHours: 3 * dzien, imageUrl: "/images/wk/wk-micro-1.jpg" },
+    { slug: "wk-wlos-maszynowy", title: "Włos maszynowy", level: "Średniozaawansowany", durationHours: 3 * dzien, imageUrl: "/images/wk/wk-wlos-1.jpg" },
     {
       slug: "wk-masterclass-brwi-ombre",
       title: "Masterclass brwi ombre",
       level: "Zaawansowany",
       durationHours: dzien,
+      imageUrl: "/images/wk/wk-ombre-2.jpg",
       program: [
         "Pokaz zabiegu na modelce wykonywany przez trenerkę",
         "Ćwiczenia praktyczne na modelce",
@@ -169,12 +175,12 @@ async function main() {
         "Rozdanie certyfikatów",
       ],
     },
-    { slug: "wk-usta-basic", title: "Usta basic", level: "Podstawowy", durationHours: 3 * dzien },
-    { slug: "wk-masterclass-usta", title: "Masterclass usta", level: "Zaawansowany", durationHours: 2 * dzien },
-    { slug: "wk-kreski-basic", title: "Kreski basic", level: "Podstawowy", durationHours: 3 * dzien },
-    { slug: "wk-masterclass-kreski-cieniowane", title: "Masterclass kreski cieniowane", level: "Zaawansowany", durationHours: 2 * dzien },
-    { slug: "wk-masterclass-eyeliner-klasyczny", title: "Masterclass kreski — eyeliner klasyczny", level: "Zaawansowany", durationHours: dzien },
-    { slug: "wk-usuwanie-laserowe", title: "Usuwanie laserowe PMU i tatuażu", level: "Średniozaawansowany", durationHours: dzien },
+    { slug: "wk-usta-basic", title: "Usta basic", level: "Podstawowy", durationHours: 3 * dzien, imageUrl: "/images/wk/wk-usta-1.jpg" },
+    { slug: "wk-masterclass-usta", title: "Masterclass usta", level: "Zaawansowany", durationHours: 2 * dzien, imageUrl: "/images/wk/wk-usta-2.jpg" },
+    { slug: "wk-kreski-basic", title: "Kreski basic", level: "Podstawowy", durationHours: 3 * dzien, imageUrl: "/images/wk/wk-kreski-1.jpg" },
+    { slug: "wk-masterclass-kreski-cieniowane", title: "Masterclass kreski cieniowane", level: "Zaawansowany", durationHours: 2 * dzien, imageUrl: "/images/wk/wk-kreski-2.jpg" },
+    { slug: "wk-masterclass-eyeliner-klasyczny", title: "Masterclass kreski — eyeliner klasyczny", level: "Zaawansowany", durationHours: dzien, imageUrl: "/images/wk/wk-kreski-3.jpg" },
+    { slug: "wk-usuwanie-laserowe", title: "Usuwanie laserowe PMU i tatuażu", level: "Średniozaawansowany", durationHours: dzien, imageUrl: "/images/wk/wk-laser-1.jpg" },
     { slug: "wk-brodawka-piersiowa", title: "Pigmentacja brodawki piersiowej 3D", level: "Zaawansowany", durationHours: 2 * dzien },
   ];
 
@@ -191,6 +197,7 @@ async function main() {
       price: 5000,
       subsidyPercent: 85,
       durationHours: k.durationHours,
+      imageUrl: k.imageUrl ?? null,
       city: "Tychy",
       voivodeship: "śląskie",
       trainerId: trainer.id,
