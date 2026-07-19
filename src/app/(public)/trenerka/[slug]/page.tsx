@@ -66,14 +66,14 @@ export default async function TrenerkaPage({ params }: { params: Params }) {
       {/* COVER BANNER */}
       <div className="relative h-48 bg-gradient-to-r from-sand-300 via-sand-200 to-sand-100 md:h-64">
         {trainer.coverUrl && (
-          <Image src={trainer.coverUrl} alt="" fill priority sizes="100vw" className="object-cover opacity-90" />
+          <Image src={trainer.coverUrl} alt="" fill priority sizes="100vw" className="object-cover object-[center_22%] opacity-90" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-ink-soft/30 to-transparent" aria-hidden />
       </div>
 
       <div className="mx-auto max-w-6xl px-4 md:px-6">
-        <div className="-mt-14 md:-mt-16">
-          <TrainerAvatar name={trainer.name} avatarUrl={trainer.avatarUrl} size={120} className="ring-4 ring-cream" />
+        <div className="relative z-10 -mt-14 md:-mt-16 w-fit">
+          <TrainerAvatar name={trainer.name} avatarUrl={trainer.avatarUrl} size={120} className="ring-4 ring-cream shadow-lg" />
         </div>
 
         <div className="mt-4">

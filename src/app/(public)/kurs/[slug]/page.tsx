@@ -207,18 +207,19 @@ export default async function KursPage({ params }: { params: Params }) {
             </ul>
           </div>
 
-          {/* MINI-KARTA TRENERKI */}
+          {/* MINI-KARTA TRENERKI — cała karta klikalna */}
           {trainer && (
-            <div className="card mt-5 flex items-center gap-4 p-5">
+            <Link
+              href={`/trenerka/${trainer.slug}`}
+              aria-label={`Profil trenerki ${trainer.name}`}
+              className="card mt-5 flex items-center gap-4 p-5 transition-shadow hover:shadow-md"
+            >
               <TrainerAvatar name={trainer.name} avatarUrl={trainer.avatarUrl} size={56} />
               <div className="min-w-0">
                 <p className="truncate font-serif text-base font-semibold">{trainer.name}</p>
                 <StarRating rating={trainer.rating} reviewCount={trainer.reviewCount} />
-                <Link href={`/trenerka/${trainer.slug}`} className="text-sm font-semibold text-sand-700 hover:text-sand-500 transition-colors">
-                  Zobacz profil →
-                </Link>
               </div>
-            </div>
+            </Link>
           )}
         </aside>
       </div>

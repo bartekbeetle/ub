@@ -49,11 +49,11 @@ async function main() {
       name: "Weronika Kachel",
       email: "wkachelpmu@gmail.com", // wewnętrzne — NIE renderować publicznie (uszczelnienie)
       phone: "+48 513 276 200", // wewnętrzne — NIE renderować publicznie (uszczelnienie)
+      // Bio w głosie UB (voice.md): promocja przez dowody, nie wyliczanka
       bio:
-        "Właścicielka studia Weronika Kachel Microblading and PMU w Tychach. W branży makijażu permanentnego od 2014 roku, od ponad 10 lat szkoli z PMU najnowocześniejszymi technikami. " +
-        "II Wicemistrzyni Świata w Makijażu Permanentnym (Mediolan), I Mistrzyni Polski w Microbladingu Brwi (Poznań). " +
-        "Sędzia na międzynarodowych mistrzostwach PMU w Wietnamie, Czechach, Irlandii i Polsce. " +
-        "Certyfikowana trenerka PROARTIST i AIPMUA. Jej studio ma ocenę 5.0 z ponad 370 opinii w Google.",
+        "Weronika Kachel uczy makijażu permanentnego od ponad 10 lat i należy do wąskiego grona polskich trenerek z medalami mistrzostw świata: II Wicemistrzyni Świata w Makijażu Permanentnym (Mediolan), I Mistrzyni Polski w Microbladingu Brwi (Poznań). Na międzynarodowych mistrzostwach w Wietnamie, Czechach, Irlandii i Polsce zasiada w jury — ocenia prace innych linergistek.\n\n" +
+        "Szkoli w autorskim studiu w Tychach, w małych grupach i z naciskiem na praktykę: teoria, ćwiczenia na skórkach, pokaz na modelce, a potem Twoja praca na modelce pod jej okiem. Dodatkowy dzień ćwiczeń przy szkoleniach basic jest gratis, umawiany indywidualnie. Kursantki kończą z certyfikatem i techniką przećwiczoną na tyle, żeby zacząć pracę z klientkami.\n\n" +
+        "Poziom łatwo zweryfikować: 5,0 z ponad 370 opinii w Google i 19 tysięcy obserwujących na Facebooku. Szkolenia w studiu Weroniki obejmuje dofinansowanie BUR — do 85% ceny, zależnie od województwa i naboru.",
       specializations: [
         "Makijaż permanentny brwi",
         "Microblading",
@@ -76,7 +76,9 @@ async function main() {
       ],
       // Zdjęcia z FB strony Weroniki (zgoda partnerska), pliki w public/images/wk/
       avatarUrl: "/images/wk/wk-avatar-2.jpg",
-      coverUrl: "/images/wk/wk-avatar-1.jpg",
+      // Cover: dedykowany banner UB z Canvy (reużywalny dla trenerek PMU);
+      // alternatywa: brandowy banner Weroniki w /images/wk/wk-avatar-1.jpg
+      coverUrl: "/images/ub-cover-trenerka.png",
       instagram: "https://www.instagram.com/weronika_kachel_pmu",
       facebook: "https://www.facebook.com/WKmicrobladingandPmu",
       website: "https://weronikakachelpmu.com",
