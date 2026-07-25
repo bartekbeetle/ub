@@ -14,6 +14,9 @@ export function TrainerForm({ trainer }: { trainer?: Trainer }) {
   const [slug, setSlug] = useState(trainer?.slug ?? "");
   const [specs, setSpecs] = useState<string[]>(trainer?.specializations ?? []);
   const [certs, setCerts] = useState<{ title: string; description?: string }[]>(trainer?.certificates ?? []);
+  // Wartości zapisane w bazie, których nie ma w CATEGORIES: checkboxy ich nie pokażą,
+  // a API i tak odrzuci zapis — lepiej powiedzieć to wprost, niż zostawić cichy błąd.
+  const unknownSpecs = specs.filter((s) => !(CATEGORIES as readonly string[]).includes(s));
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -91,6 +94,20 @@ export function TrainerForm({ trainer }: { trainer?: Trainer }) {
 
       <div>
         <span className="label">Specjalizacje * (dopasowanie leadów)</span>
+        {unknownSpecs.length > 0 && (
+          <p className="mb-2 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            Ten profil ma specjalizacje spoza listy: <strong>{unknownSpecs.join(", ")}</strong>. Nie biorą udziału
+            w dopasowaniu leadów i blokują zapis formularza.{" "}
+            <button
+              type="button"
+              onClick={() => setSpecs(specs.filter((s) => (CATEGORIES as readonly string[]).includes(s)))}
+              className="font-semibold underline"
+            >
+              Usuń je
+            </button>{" "}
+            i zaznacz właściwe kategorie poniżej.
+          </p>
+        )}
         <div className="grid gap-2 sm:grid-cols-3">
           {CATEGORIES.map((c) => (
             <label key={c} className="flex cursor-pointer items-center gap-2 text-sm">
