@@ -3,6 +3,8 @@ import Link from "next/link";
 import { desc, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { JsonLd } from "@/components/JsonLd";
+import { itemListJsonLd } from "@/lib/seo";
 import { TrainerAvatar } from "@/components/TrainerAvatar";
 import { StarRating } from "@/components/StarRating";
 import { IconPin, IconUsers } from "@/components/icons";
@@ -27,6 +29,12 @@ export default async function TrenerkiPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 md:px-6">
+      <JsonLd
+        data={itemListJsonLd(
+          "Certyfikowane trenerki beauty współpracujące z Uniwersytetem Beauty",
+          trainers.map((t) => ({ name: t.name, url: `/trenerka/${t.slug}` }))
+        )}
+      />
       <Breadcrumbs items={[{ name: "Strona główna", url: "/" }, { name: "Trenerki", url: "/trenerki" }]} />
       <h1 className="mt-4 text-3xl font-bold md:text-4xl">Nasze trenerki</h1>
       <p className="mt-2 max-w-2xl text-muted">

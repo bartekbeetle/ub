@@ -4,6 +4,8 @@ import { desc, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { CourseCard } from "@/components/CourseCard";
 import { IconGraduation, IconShield, IconUsers, IconAward, IconArrowRight, IconCheck } from "@/components/icons";
+import { JsonLd } from "@/components/JsonLd";
+import { faqJsonLd, itemListJsonLd } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
@@ -28,6 +30,49 @@ const STEPS = [
   { title: "Rozpocznij Naukę", text: "Po przyznaniu środków zaczynasz szkolenie u certyfikowanej trenerki — płacisz kilkaset złotych zamiast kilku tysięcy." },
 ];
 
+/**
+ * FAQ pisane pod cytowanie: pierwsze zdanie odpowiedzi jest samodzielną,
+ * kompletną odpowiedzią (tak wybierają fragmenty AI Overviews, ChatGPT i Perplexity).
+ * Ceny zgodne z guardrailem — „do 90%", „kilkaset zł", nigdy „0 zł" jako obietnica.
+ */
+const FAQ = [
+  {
+    question: "Czy muszę być bezrobotna, żeby dostać dofinansowanie na szkolenie beauty?",
+    answer:
+      "Nie. Dofinansowanie z Bazy Usług Rozwojowych (BUR) przysługuje również osobom pracującym na etacie, studentkom, przedsiębiorczyniom i mamom na urlopie macierzyńskim. BUR to program rozwojowy finansowany ze środków europejskich, a nie pomoc dla osób zarejestrowanych w urzędzie pracy — to najczęstsze nieporozumienie wśród kandydatek.",
+  },
+  {
+    question: "Ile realnie zapłacę za kurs z dofinansowaniem?",
+    answer:
+      "Najczęściej dopłacasz kilkaset złotych zamiast kilku tysięcy. Dofinansowanie z BUR pokrywa zwykle 80–90% ceny szkolenia, a resztę wnosisz jako wkład własny. Dokładny poziom dopłaty zależy od operatora w Twoim województwie, Twojej sytuacji zawodowej i ceny wybranego kursu — sprawdzamy to bezpłatnie przed zapisem.",
+  },
+  {
+    question: "Czym jest BUR i kto wypłaca pieniądze?",
+    answer:
+      "BUR (Baza Usług Rozwojowych) to prowadzony przez PARP rejestr szkoleń, w którym można rozliczyć dofinansowanie ze środków Funduszy Europejskich. Pieniądze przyznaje i rozlicza operator regionalny wybrany dla Twojego województwa, a szkolenie musi być zarejestrowane w bazie — dlatego pracujemy wyłącznie z trenerkami wpisanymi do BUR.",
+  },
+  {
+    question: "Jakie szkolenia beauty można sfinansować z dofinansowania?",
+    answer:
+      "Z dofinansowania rozliczysz m.in. makijaż permanentny (PMU), microblading, stylizację rzęs i brwi, stylizację paznokci, kosmetologię, medycynę estetyczną i depilację. Warunek jest jeden: usługa musi być wystawiona w Bazie Usług Rozwojowych przez zarejestrowaną trenerkę lub firmę szkoleniową.",
+  },
+  {
+    question: "Ile trwa proces od zgłoszenia do rozpoczęcia szkolenia?",
+    answer:
+      "Zwykle od trzech do ośmiu tygodni. Na czas składa się rejestracja konta w BUR, złożenie wniosku u operatora, oczekiwanie na decyzję i podpisanie umowy. Terminy różnią się między województwami, a niektórzy operatorzy prowadzą nabory w turach — dlatego warto zgłosić się przed startem naboru, a nie po nim.",
+  },
+  {
+    question: "Ile kosztuje pomoc Uniwersytetu Beauty?",
+    answer:
+      "Nasza pomoc jest dla kursantki bezpłatna. Konsultacja, sprawdzenie kwalifikacji i wsparcie przy wniosku nie generują żadnych kosztów po Twojej stronie — rozliczamy się z trenerką, u której ostatecznie zapiszesz się na szkolenie. Za samo szkolenie płacisz wyłącznie wkład własny nieobjęty dofinansowaniem.",
+  },
+  {
+    question: "Czy dofinansowanie trzeba zwrócić po ukończeniu kursu?",
+    answer:
+      "Nie, jeśli ukończysz szkolenie zgodnie z umową. Dofinansowanie jest bezzwrotne pod warunkiem obecności na zajęciach, zaliczenia szkolenia i wypełnienia ankiet rozliczeniowych. Obowiązek zwrotu pojawia się realnie tylko przy rezygnacji w trakcie kursu lub nieusprawiedliwionych nieobecnościach.",
+  },
+];
+
 const WHY = [
   { icon: IconGraduation, title: "Doświadczenie w branży", text: "Współpracujemy wyłącznie z trenerkami z wieloletnią praktyką i setkami przeszkolonych kursantek." },
   { icon: IconShield, title: "Ekspertki od BUR", text: "Znamy proces dofinansowań od podszewki — prowadzimy Cię od wniosku po rozliczenie." },
@@ -47,6 +92,16 @@ export default async function HomePage() {
 
   return (
     <>
+      <JsonLd
+        data={[
+          faqJsonLd(FAQ),
+          itemListJsonLd(
+            "Polecane szkolenia beauty z dofinansowaniem",
+            featured.map(({ course }) => ({ name: course.title, url: `/kurs/${course.slug}` }))
+          ),
+        ]}
+      />
+
       {/* HERO */}
       <section className="bg-gradient-to-b from-sand-100 via-cream-warm to-cream">
         <div className="mx-auto max-w-4xl px-4 py-16 text-center md:py-24">
@@ -129,6 +184,42 @@ export default async function HomePage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* FAQ — treść pod AI Overviews / czaty AI + FAQPage schema */}
+      <section className="bg-sand-50 py-16 md:py-20" aria-labelledby="faq-h">
+        <div className="mx-auto max-w-3xl px-4 md:px-6">
+          <h2 id="faq-h" className="text-center text-3xl font-bold md:text-4xl">
+            Najczęstsze pytania o dofinansowanie
+          </h2>
+          <div className="mt-10 divide-y divide-sand-200 border-y border-sand-200">
+            {FAQ.map(({ question, answer }) => (
+              <details key={question} className="group py-5">
+                <summary className="flex cursor-pointer items-center justify-between gap-4 font-serif text-lg font-semibold marker:content-['']">
+                  <h3 className="font-serif text-lg font-semibold">{question}</h3>
+                  <span
+                    aria-hidden
+                    className="shrink-0 text-2xl leading-none text-sand-500 transition-transform group-open:rotate-45"
+                  >
+                    +
+                  </span>
+                </summary>
+                <p className="mt-3 leading-relaxed text-muted">{answer}</p>
+              </details>
+            ))}
+          </div>
+          <p className="mt-8 text-center text-muted">
+            Nie znalazłaś odpowiedzi?{" "}
+            <Link href="/konsultacja" className="link-inline">
+              Zapytaj na bezpłatnej konsultacji
+            </Link>{" "}
+            albo sprawdź{" "}
+            <Link href="/dofinansowania" className="link-inline">
+              pełny przewodnik po dofinansowaniach
+            </Link>
+            .
+          </p>
         </div>
       </section>
 

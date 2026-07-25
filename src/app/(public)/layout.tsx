@@ -1,10 +1,14 @@
 import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { JsonLd } from "@/components/JsonLd";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      {/* Encja marki na każdej podstronie — fundament pod Knowledge Panel i rozpoznanie w czatach AI. */}
+      <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
       <Navbar />
       <main id="tresc">{children}</main>
       <Footer />

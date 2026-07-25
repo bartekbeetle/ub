@@ -3,6 +3,8 @@ import { and, desc, eq, ilike, or, type SQL } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { CourseCard } from "@/components/CourseCard";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { JsonLd } from "@/components/JsonLd";
+import { itemListJsonLd } from "@/lib/seo";
 import { CATEGORIES, LEVELS, MODES, VOIVODESHIPS, voivodeshipName, SITE_NAME } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
@@ -27,11 +29,21 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
   if (typeof sp.wojewodztwo === "string" && sp.wojewodztwo) qs.set("wojewodztwo", sp.wojewodztwo);
   if (kat) qs.set("kategoria", kat);
   const canonical = "/kursy" + (qs.size ? `?${qs.toString()}` : "");
+  // Indeksujemy TYLKO kombinacje programmatic SEO (kategoria × województwo).
+  // Wyszukiwarka (?q=), poziom, tryb i multi-kategoria tworzą setki wariantów tej samej listy
+  // → noindex, żeby nie rozmyć crawl budgetu i nie generować duplikatów.
+  const isIndexable =
+    !sp.q &&
+    !sp.poziom &&
+    !sp.tryb &&
+    asArray(sp.kategoria).length <= 1 &&
+    !Array.isArray(sp.wojewodztwo);
   return {
     title: `${title}`,
     description: `${title}. Certyfikowane trenerki, wsparcie w zdobyciu dofinansowania BUR, realne umiejętności od pierwszego dnia.`,
     alternates: { canonical },
     openGraph: { title, url: canonical },
+    ...(isIndexable ? {} : { robots: { index: false, follow: true } }),
   };
 }
 
@@ -78,6 +90,7 @@ export default async function KursyPage({ searchParams }: { searchParams: Promis
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 md:px-6">
+      <JsonLd data={itemListJsonLd(heading, rows.map(({ course }) => ({ name: course.title, url: `/kurs/${course.slug}` })))} />
       <Breadcrumbs items={[{ name: "Strona główna", url: "/" }, { name: "Kursy", url: "/kursy" }]} />
 
       <div className="mt-4 flex flex-wrap items-end justify-between gap-3">

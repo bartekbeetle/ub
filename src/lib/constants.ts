@@ -2,6 +2,34 @@ export const SITE_NAME = "Uniwersytet Beauty";
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 export const CONTACT_EMAIL = "biuro@uniwersytetbeauty.pl";
 
+/** Docelowa domena produkcyjna. Wszystko poza nią (sslip.io, localhost, preview) NIE MOŻE trafić do indeksu. */
+export const CANONICAL_DOMAIN = "uniwersytetbeauty.pl";
+
+/**
+ * Czy ta instancja jest publiczną, indeksowalną produkcją.
+ * Adresy tymczasowe (Coolify sslip.io, localhost) zwracają false → robots.txt blokuje wszystko
+ * + każda strona dostaje `noindex`. Chroni przed zaindeksowaniem tymczasowego hosta
+ * i duplikatem treści po przepięciu domeny.
+ */
+export const IS_PRODUCTION_HOST = (() => {
+  try {
+    const h = new URL(SITE_URL).hostname;
+    return h === CANONICAL_DOMAIN || h.endsWith(`.${CANONICAL_DOMAIN}`);
+  } catch {
+    return false;
+  }
+})();
+
+/** Profile społecznościowe do `sameAs` w schema.org — konsolidują encję dla Google i modeli AI. */
+export const SOCIAL_URLS = (process.env.NEXT_PUBLIC_SOCIAL_URLS || "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+/** Jednozdaniowa definicja encji — używana w schema.org, llms.txt i OG. Trzymamy JEDNĄ wersję. */
+export const ORG_DESCRIPTION =
+  "Uniwersytet Beauty to polska platforma, która łączy kobiety chcące zdobyć zawód w branży beauty z certyfikowanymi trenerkami i prowadzi je przez proces dofinansowania szkolenia z Bazy Usług Rozwojowych (BUR) — do 90% ceny kursu.";
+
 export const CATEGORIES = [
   "PMU / Makijaż permanentny",
   "Stylizacja rzęs",

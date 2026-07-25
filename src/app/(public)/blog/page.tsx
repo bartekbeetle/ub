@@ -4,20 +4,33 @@ import Image from "next/image";
 import { and, desc, eq, ilike, type SQL } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { JsonLd } from "@/components/JsonLd";
+import { itemListJsonLd } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 import { BLOG_CATEGORIES, SITE_NAME } from "@/lib/constants";
 import { IconClock } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: `Blog — porady i trendy beauty`,
-  description:
-    "Porady, trendy i inspiracje dla przyszłych profesjonalistek branży beauty. Dofinansowania, kariera, techniki PMU, stylizacja rzęs i paznokci.",
-  alternates: { canonical: "/blog" },
-};
-
 type Search = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export async function generateMetadata({ searchParams }: { searchParams: Search }): Promise<Metadata> {
+  const sp = await searchParams;
+  const kat =
+    typeof sp.kategoria === "string" && (BLOG_CATEGORIES as readonly string[]).includes(sp.kategoria)
+      ? sp.kategoria
+      : "";
+  const title = kat ? `${kat} — baza wiedzy beauty` : "Blog — porady i trendy beauty";
+  return {
+    title,
+    description: kat
+      ? `Artykuły z kategorii ${kat}: dofinansowania BUR, kariera w beauty i praktyczne poradniki dla przyszłych profesjonalistek.`
+      : "Porady, trendy i inspiracje dla przyszłych profesjonalistek branży beauty. Dofinansowania, kariera, techniki PMU, stylizacja rzęs i paznokci.",
+    alternates: { canonical: kat ? `/blog?kategoria=${encodeURIComponent(kat)}` : "/blog" },
+    // Wyniki wyszukiwarki wewnętrznej nie mają trafiać do indeksu.
+    ...(sp.q ? { robots: { index: false, follow: true } } : {}),
+  };
+}
 
 export default async function BlogPage({ searchParams }: { searchParams: Search }) {
   const sp = await searchParams;
@@ -39,6 +52,12 @@ export default async function BlogPage({ searchParams }: { searchParams: Search 
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 md:px-6">
+      <JsonLd
+        data={itemListJsonLd(
+          "Baza wiedzy Uniwersytet Beauty — dofinansowania i kariera w branży beauty",
+          posts.map((p) => ({ name: p.title, url: `/blog/${p.slug}` }))
+        )}
+      />
       <Breadcrumbs items={[{ name: "Strona główna", url: "/" }, { name: "Blog", url: "/blog" }]} />
       <h1 className="mt-4 text-3xl font-bold md:text-4xl">Blog Uniwersytet Beauty</h1>
       <p className="mt-2 max-w-2xl text-muted">
