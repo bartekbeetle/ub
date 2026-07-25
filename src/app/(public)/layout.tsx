@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { JsonLd } from "@/components/JsonLd";
+import { CookieConsent } from "@/components/CookieConsent";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
@@ -19,6 +20,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         </Link>
       </div>
       <div className="h-20 md:hidden" aria-hidden />
+      <CookieConsent />
     </>
   );
 }

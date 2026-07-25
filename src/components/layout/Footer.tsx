@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CONTACT_EMAIL } from "@/lib/constants";
+import { CookieSettingsLink } from "@/components/CookieConsent";
 import { IconMail } from "@/components/icons";
 
 export function Footer() {
@@ -40,6 +41,7 @@ export function Footer() {
             <li><Link href="/regulamin" className="hover:text-cream-warm transition-colors">Regulamin</Link></li>
             <li><Link href="/polityka-prywatnosci" className="hover:text-cream-warm transition-colors">Polityka prywatności</Link></li>
             <li><Link href="/polityka-cookies" className="hover:text-cream-warm transition-colors">Polityka cookies</Link></li>
+            <li><CookieSettingsLink className="hover:text-cream-warm transition-colors" /></li>
             <li><Link href="/kontakt" className="hover:text-cream-warm transition-colors">Kontakt</Link></li>
           </ul>
         </nav>

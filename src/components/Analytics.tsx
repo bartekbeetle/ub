@@ -1,10 +1,29 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Script from "next/script";
+import { CONSENT_EVENT, readConsent, type ConsentState } from "@/lib/consent";
 
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;
 
-/** Meta Pixel + GA4 — ładują się tylko gdy env ustawione. */
+/**
+ * Meta Pixel + GA4 — ładują się WYŁĄCZNIE po zgodzie z banera cookies.
+ * Wcześniej na stronie nie ma ani jednego skryptu śledzącego: samo wczytanie pikselu
+ * (nawet bez zdarzeń) zapisuje cookie i jest przetwarzaniem wymagającym zgody.
+ */
 export function Analytics() {
+  const [consent, setConsent] = useState<ConsentState>(null);
+
+  useEffect(() => {
+    setConsent(readConsent());
+    const onChange = (e: Event) => setConsent((e as CustomEvent).detail as ConsentState);
+    window.addEventListener(CONSENT_EVENT, onChange);
+    return () => window.removeEventListener(CONSENT_EVENT, onChange);
+  }, []);
+
+  if (consent !== "granted") return null;
+
   return (
     <>
       {PIXEL_ID ? (
@@ -25,7 +44,7 @@ fbq('track', 'PageView');`}
             {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', '${GA4_ID}');`}
+gtag('config', '${GA4_ID}', { anonymize_ip: true });`}
           </Script>
         </>
       ) : null}
