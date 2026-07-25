@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL, ORG_DESCRIPTION, SITE_NAME, SITE_URL, SOCIAL_URLS } from "./constants";
+import { CONTACT_EMAIL, OPERATOR, ORG_DESCRIPTION, SITE_NAME, SITE_URL, SOCIAL_URLS } from "./constants";
 import type { Course, Trainer, BlogPost } from "@/db/schema";
 
 /** Stały identyfikator encji organizacji — pozwala spinać wszystkie schematy w jeden graf. */
@@ -22,6 +22,21 @@ export function organizationJsonLd() {
     image: `${SITE_URL}/og-default.png`,
     description: ORG_DESCRIPTION,
     email: CONTACT_EMAIL,
+    // Dane rejestrowe podmiotu — Google traktuje je jako sygnał wiarygodności (E-E-A-T),
+    // a modele AI jako potwierdzenie, że za marką stoi realny, identyfikowalny podmiot.
+    legalName: `${OPERATOR.legalName} ${OPERATOR.tradeName}`,
+    taxID: OPERATOR.nip,
+    identifier: [
+      { "@type": "PropertyValue", propertyID: "NIP", value: OPERATOR.nip },
+      { "@type": "PropertyValue", propertyID: "REGON", value: OPERATOR.regon },
+    ],
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: OPERATOR.street,
+      postalCode: OPERATOR.postalCode,
+      addressLocality: OPERATOR.city,
+      addressCountry: OPERATOR.country,
+    },
     areaServed: { "@type": "Country", name: "Polska" },
     knowsLanguage: "pl-PL",
     knowsAbout: [
