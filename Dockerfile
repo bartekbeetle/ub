@@ -8,8 +8,9 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 # ---- build ----
 FROM base AS builder
-COPY package.json package-lock.json ./
-RUN npm ci
+# Lockfile jest celowo w .gitignore (fix bug oxide/optional-deps) — używamy npm install, nie npm ci.
+COPY package.json ./
+RUN npm install
 COPY . .
 # next.config: output "standalone" -> .next/standalone/server.js.
 # Standalone nie kopiuje static/public sam — dokładamy je OBOK server.js,
