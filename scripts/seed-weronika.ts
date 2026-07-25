@@ -54,16 +54,13 @@ async function main() {
         "Weronika Kachel uczy makijażu permanentnego od ponad 10 lat i należy do wąskiego grona polskich trenerek z medalami mistrzostw świata: II Wicemistrzyni Świata w Makijażu Permanentnym (Mediolan), I Mistrzyni Polski w Microbladingu Brwi (Poznań). Na międzynarodowych mistrzostwach w Wietnamie, Czechach, Irlandii i Polsce zasiada w jury — ocenia prace innych linergistek.\n\n" +
         "Szkoli w autorskim studiu w Tychach, w małych grupach i z naciskiem na praktykę: teoria, ćwiczenia na skórkach, pokaz na modelce, a potem Twoja praca na modelce pod jej okiem. Dodatkowy dzień ćwiczeń przy szkoleniach basic jest gratis, umawiany indywidualnie. Kursantki kończą z certyfikatem i techniką przećwiczoną na tyle, żeby zacząć pracę z klientkami.\n\n" +
         "Poziom łatwo zweryfikować: 5,0 z ponad 370 opinii w Google i 19 tysięcy obserwujących na Facebooku. Szkolenia w studiu Weroniki obejmuje dofinansowanie BUR — do 85% ceny, zależnie od województwa i naboru.",
-      specializations: [
-        "Makijaż permanentny brwi",
-        "Microblading",
-        "Makijaż permanentny ust",
-        "Kreski / eyeliner",
-        "Usuwanie PMU (laserowe i bezlaserowe)",
-        "Pigmentacja medyczna",
-      ],
+      // UWAGA: to jest klucz DOPASOWANIA leadów (matching.ts porównuje 1:1 z CATEGORIES
+      // z src/lib/constants.ts), a nie pole opisowe. Wartość spoza słownika = zero leadów
+      // i błąd zapisu w panelu. Konkretne techniki (brwi, usta, kreski, microblading,
+      // usuwanie PMU, pigmentacja medyczna) opisujemy w bio i w tytułach szkoleń.
+      specializations: ["PMU / Makijaż permanentny"],
       city: "Tychy",
-      voivodeship: "śląskie",
+      voivodeship: "slaskie", // slug z VOIVODESHIPS, nie nazwa — matching porównuje slugi
       certificates: [
         { title: "II Wicemistrzyni Świata w Makijażu Permanentnym", description: "Mediolan" },
         { title: "I Mistrzyni Polski w Microbladingu Brwi", description: "Poznań" },
@@ -190,7 +187,7 @@ async function main() {
     kursy.map((k) => ({
       slug: k.slug,
       title: k.title,
-      category: "Makijaż permanentny",
+      category: "PMU / Makijaż permanentny", // wartość ze słownika CATEGORIES — filtry i matching porównują dokładnie
       level: k.level,
       mode: "Stacjonarny",
       shortDescription: `Szkolenie stacjonarne w studiu Weroniki Kachel w Tychach. Certyfikat ukończenia, praca na modelkach.`,
@@ -201,7 +198,7 @@ async function main() {
       durationHours: k.durationHours,
       imageUrl: k.imageUrl ?? null,
       city: "Tychy",
-      voivodeship: "śląskie",
+      voivodeship: "slaskie",
       trainerId: trainer.id,
       status: "opublikowane" as const,
     }))

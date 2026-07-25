@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { logAudit, actorLabel } from "@/lib/audit";
-import { courseSchema } from "@/lib/validators";
+import { courseSchema, zodErrorMessage } from "@/lib/validators";
 
 export const runtime = "nodejs";
 
@@ -14,9 +14,12 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
   if (!user) return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
   const { id } = await params;
   const courseId = Number(id);
+  if (!Number.isInteger(courseId)) {
+    return NextResponse.json({ error: "Nieprawidłowe ID." }, { status: 400 });
+  }
   const parsed = courseSchema.partial().safeParse(await req.json().catch(() => null));
-  if (!Number.isInteger(courseId) || !parsed.success) {
-    return NextResponse.json({ error: "Nieprawidłowe dane." }, { status: 400 });
+  if (!parsed.success) {
+    return NextResponse.json({ error: zodErrorMessage(parsed.error) }, { status: 400 });
   }
   const db = await getDb();
   const [updated] = await db

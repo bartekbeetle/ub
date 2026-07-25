@@ -3,6 +3,17 @@ import { CATEGORIES, EMPLOYMENT_STATUSES, VOIVODESHIPS, LEVELS, MODES, BLOG_CATE
 
 const voivodeshipSlugs = VOIVODESHIPS.map((v) => v.slug) as [string, ...string[]];
 
+/**
+ * Zamienia błąd zod na komunikat, z którego admin coś wie: nazwa pola + powód.
+ * Samo "Nieprawidłowe dane." nie mówi, które z ~20 pól formularza jest do poprawki.
+ */
+export function zodErrorMessage(error: z.ZodError): string {
+  const issue = error.errors[0];
+  if (!issue) return "Nieprawidłowe dane.";
+  const field = issue.path.join(".");
+  return field ? `Pole "${field}": ${issue.message}` : issue.message;
+}
+
 export const leadSchema = z.object({
   name: z.string().trim().min(3, "Podaj imię i nazwisko").max(160),
   phone: z
