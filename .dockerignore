@@ -8,3 +8,6 @@ node_modules
 npm-debug.log*
 .DS_Store
 *.md
+# ...ale artykuły bloga to content-as-files (scripts/seed-blog.ts czyta content/blog/*.md),
+# więc muszą trafić do obrazu, żeby dało się odpalić seed bloga z kontenera.
+!content/blog/*.md
