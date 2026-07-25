@@ -2,6 +2,32 @@ export const SITE_NAME = "Uniwersytet Beauty";
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 export const CONTACT_EMAIL = "biuro@uniwersytetbeauty.pl";
 
+/**
+ * Podmiot prowadzący serwis = administrator danych osobowych.
+ * Uniwersytet Beauty działa jako marka w ramach JDG Bartosza Chrząszcza (decyzja 2026-07-25,
+ * tymczasowa — rewizja przed startem FB Ads, patrz docs/podatki/rejestr.md w vaulcie).
+ *
+ * Te dane MUSZĄ być publicznie dostępne w serwisie: art. 13 RODO (tożsamość administratora)
+ * + art. 5 ustawy o świadczeniu usług drogą elektroniczną (identyfikacja usługodawcy).
+ *
+ * TODO(Bartek) przed deployem na domenę: potwierdź (1) pełną nazwę firmy z CEIDG —
+ * wykaz VAT zwraca samo imię i nazwisko, a w CEIDG jest zwykle „Bartosz Chrząszcz <nazwa>";
+ * (2) adres do publikacji — poniższy pochodzi z rejestru i BĘDZIE WIDOCZNY PUBLICZNIE.
+ */
+export const OPERATOR = {
+  legalName: "Bartosz Chrząszcz",
+  tradeName: "Niezależny Przedsiębiorca",
+  nip: "8883009310",
+  regon: "222042995",
+  street: "ul. Józefa Czyżewskiego 25/70",
+  postalCode: "80-336",
+  city: "Gdańsk",
+  country: "PL",
+} as const;
+
+/** Jednolinijkowa identyfikacja do stopki i dokumentów. */
+export const OPERATOR_LINE = `${OPERATOR.legalName} — ${OPERATOR.tradeName}, ${OPERATOR.street}, ${OPERATOR.postalCode} ${OPERATOR.city}, NIP ${OPERATOR.nip}, REGON ${OPERATOR.regon}`;
+
 /** Docelowa domena produkcyjna. Wszystko poza nią (sslip.io, localhost, preview) NIE MOŻE trafić do indeksu. */
 export const CANONICAL_DOMAIN = "uniwersytetbeauty.pl";
 

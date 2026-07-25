@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CONTACT_EMAIL } from "@/lib/constants";
+import { CONTACT_EMAIL, OPERATOR_LINE, SITE_NAME } from "@/lib/constants";
 import { CookieSettingsLink } from "@/components/CookieConsent";
 import { IconMail } from "@/components/icons";
 
@@ -46,8 +46,13 @@ export function Footer() {
           </ul>
         </nav>
       </div>
-      <div className="border-t border-white/10 px-4 py-5 text-center text-xs text-sand-200/70">
-        © {new Date().getFullYear()} Uniwersytet Beauty. Wszelkie prawa zastrzeżone.
+      {/* Identyfikacja usługodawcy — wymóg art. 5 ustawy o świadczeniu usług drogą elektroniczną
+          i art. 13 RODO (tożsamość administratora danych musi być łatwo dostępna). */}
+      <div className="border-t border-white/10 px-4 py-5 text-center text-xs leading-relaxed text-sand-200/70">
+        <p>{OPERATOR_LINE}</p>
+        <p className="mt-1">
+          © {new Date().getFullYear()} {SITE_NAME}. Wszelkie prawa zastrzeżone.
+        </p>
       </div>
     </footer>
   );

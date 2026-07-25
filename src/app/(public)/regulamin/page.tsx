@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { CONTACT_EMAIL, SITE_NAME } from "@/lib/constants";
+import { CONTACT_EMAIL, OPERATOR, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: `Regulamin serwisu`,
@@ -16,10 +16,12 @@ export default function RegulaminPage() {
       <div className="prose-ub mt-8">
         <h2>§1. Postanowienia ogólne</h2>
         <p>
-          1. Serwis internetowy Uniwersytet Beauty (dalej: „Serwis”) prowadzony jest pod adresem
-          uniwersytetbeauty.pl. 2. Serwis pełni funkcję platformy informacyjnej łączącej osoby zainteresowane
-          szkoleniami z branży beauty (dalej: „Kandydatki”) z niezależnymi trenerkami i firmami szkoleniowymi
-          (dalej: „Trenerki”). 3. Kontakt z operatorem Serwisu: {CONTACT_EMAIL}.
+          1. Serwis internetowy {SITE_NAME} (dalej: „Serwis”) prowadzony jest pod adresem uniwersytetbeauty.pl
+          przez {OPERATOR.legalName}, prowadzącego działalność gospodarczą pod firmą {OPERATOR.legalName}{" "}
+          {OPERATOR.tradeName}, {OPERATOR.street}, {OPERATOR.postalCode} {OPERATOR.city}, NIP {OPERATOR.nip},
+          REGON {OPERATOR.regon} (dalej: „Operator”). 2. Serwis pełni funkcję platformy informacyjnej łączącej
+          osoby zainteresowane szkoleniami z branży beauty (dalej: „Kandydatki”) z niezależnymi trenerkami i
+          firmami szkoleniowymi (dalej: „Trenerki”). 3. Kontakt z Operatorem: {CONTACT_EMAIL}.
         </p>
         <h2>§2. Charakter usług</h2>
         <p>

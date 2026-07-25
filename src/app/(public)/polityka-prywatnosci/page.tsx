@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { CONTACT_EMAIL, SITE_NAME } from "@/lib/constants";
+import { CONTACT_EMAIL, OPERATOR, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: `Polityka prywatności`,
@@ -16,8 +16,14 @@ export default function PolitykaPrywatnosciPage() {
       <div className="prose-ub mt-8">
         <h2>1. Administrator danych</h2>
         <p>
-          Administratorem danych osobowych przekazywanych w serwisie uniwersytetbeauty.pl jest operator serwisu
-          Uniwersytet Beauty. Kontakt w sprawach danych osobowych: {CONTACT_EMAIL}.
+          Administratorem Twoich danych osobowych jest <strong>{OPERATOR.legalName}</strong>, prowadzący
+          działalność gospodarczą pod firmą {OPERATOR.legalName} {OPERATOR.tradeName}, {OPERATOR.street},{" "}
+          {OPERATOR.postalCode} {OPERATOR.city}, NIP {OPERATOR.nip}, REGON {OPERATOR.regon} — operator serwisu
+          uniwersytetbeauty.pl działającego pod marką {SITE_NAME}.
+        </p>
+        <p>
+          Kontakt w sprawach danych osobowych: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+          Administrator nie wyznaczył inspektora ochrony danych — wszystkie sprawy prowadzi bezpośrednio.
         </p>
         <h2>2. Jakie dane przetwarzamy i po co</h2>
         <p>Przetwarzamy dane podane w formularzach: imię i nazwisko, numer telefonu, adres e-mail, województwo, wybraną kategorię szkolenia oraz status zawodowy. Cele przetwarzania:</p>
