@@ -37,12 +37,11 @@ export async function POST(req: Request, { params }: { params: Params }) {
   if (existing[0]) return NextResponse.json({ error: "Lead już przydzielony do tej trenerki." }, { status: 409 });
 
   const settings = await getSettings();
-  const [{ count }] = await db
-    .select({ count: schema.leadAssignments.id })
-    .from(schema.leadAssignments)
-    .where(eq(schema.leadAssignments.leadId, leadId));
-  void count; // liczba przydziałów sprawdzana niżej (multi-sell)
-
+  // Uwaga: NIE liczymy przydziałów osobnym zapytaniem. Wcześniej stało tu
+  // `const [{ count }] = await db.select(...)`, które przy leadzie BEZ przydziałów
+  // dostawało pustą tablicę i wywalało się na destrukturyzacji undefined (HTTP 500) —
+  // czyli sypał się dokładnie pierwszy przydział, jedyny, który zawsze robimy.
+  // `all` niżej i tak zwraca komplet wierszy, więc licznik był martwym kodem.
   const all = await db.select().from(schema.leadAssignments).where(eq(schema.leadAssignments.leadId, leadId));
   if (all.length >= 3) {
     return NextResponse.json({ error: "Osiągnięto twardy limit 3 trenerek per lead." }, { status: 409 });
