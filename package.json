@@ -14,6 +14,7 @@
     "db:setup": "npm run db:migrate && npm run db:seed",
     "db:seed-core": "tsx scripts/seed-core.ts",
     "db:seed-weronika": "tsx scripts/seed-weronika.ts",
+    "db:seed-trainer-users": "tsx scripts/seed-trainer-users.ts",
     "admin:reset-password": "tsx scripts/reset-admin-password.ts",
     "db:fix-taxonomy": "tsx scripts/fix-taxonomy.ts"
   },

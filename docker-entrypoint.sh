@@ -13,5 +13,12 @@ npm run db:migrate
 echo "→ [entrypoint] Seed konta admina (idempotentny)..."
 npm run db:seed-core || echo "⚠ [entrypoint] seed-core nie przeszedł (sprawdź ADMIN_EMAIL / ADMIN_INITIAL_PASSWORD w env). Startuję serwer mimo to."
 
+# Konta logowania trenerek (panel /panel/login). Idempotentny: upsert po mailu, istniejące
+# konta pomija — więc gdy trenerka zmieni sobie hasło, kolejny deploy go NIE nadpisze.
+# Nowa trenerka dodana w panelu admina dostaje login przy najbliższym starcie kontenera.
+# Też NIEfatalny — brak kont trenerek nie może wywalić działającej strony publicznej.
+echo "→ [entrypoint] Seed kont trenerek (idempotentny)..."
+npm run db:seed-trainer-users || echo "⚠ [entrypoint] seed kont trenerek nie przeszedł. Startuję serwer mimo to."
+
 echo "→ [entrypoint] Start serwera Next standalone..."
 exec "$@"
