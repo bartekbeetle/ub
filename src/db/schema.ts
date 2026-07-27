@@ -98,6 +98,10 @@ export const trainers = pgTable("trainers", {
   billingModel: billingModelEnum("billing_model").notNull().default("per_zapis"),
   rate: integer("rate_pln").notNull().default(500), // PLN
   leadLimitMonthly: integer("lead_limit_monthly").notNull().default(50),
+  // Bramka umowy: dopóki false, trenerka NIE dostaje leadów automatem — tylko ręcznie z panelu.
+  // Domyślnie false, bo lead = dane osobowe kursantki i bez umowy nie wolno ich przekazać.
+  // Włączamy dopiero po podpisaniu umowy partnerskiej.
+  autoAssign: boolean("auto_assign").notNull().default(false),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });

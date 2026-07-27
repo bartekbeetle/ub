@@ -1,0 +1,1 @@
+ALTER TABLE "trainers" ADD COLUMN "auto_assign" boolean DEFAULT false NOT NULL;

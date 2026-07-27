@@ -42,6 +42,7 @@ export function TrainerForm({ trainer }: { trainer?: Trainer }) {
       billingModel: String(fd.get("billingModel")) as "per_lead" | "per_zapis",
       rate: Number(fd.get("rate") ?? 500),
       leadLimitMonthly: Number(fd.get("leadLimitMonthly") ?? 50),
+      autoAssign: fd.get("autoAssign") === "on",
       isActive: fd.get("isActive") === "on",
     };
     const res = await fetch(trainer ? `/api/admin/trenerki/${trainer.id}` : "/api/admin/trenerki", {
@@ -222,9 +223,20 @@ export function TrainerForm({ trainer }: { trainer?: Trainer }) {
         </div>
         <label className="mt-7 flex cursor-pointer items-center gap-2.5 text-sm font-semibold">
           <input type="checkbox" name="isActive" defaultChecked={trainer?.isActive ?? true} className="h-5 w-5 accent-sand-500" />
-          Aktywna (bierze udział w dystrybucji leadów)
+          Aktywna (widoczna w serwisie)
         </label>
       </div>
+
+      <label className="flex cursor-pointer items-start gap-2.5 rounded-lg border border-sand-200 bg-sand-50/60 p-4 text-sm font-semibold">
+        <input type="checkbox" name="autoAssign" defaultChecked={trainer?.autoAssign ?? false} className="mt-0.5 h-5 w-5 accent-sand-500" />
+        <span>
+          Umowa podpisana — może dostawać leady automatycznie
+          <span className="mt-1 block text-xs font-normal text-muted">
+            Wyłączone = trenerka jest widoczna w serwisie, ale leady trafiają do niej wyłącznie ręcznie,
+            po Twojej decyzji. Włączaj dopiero po podpisaniu umowy — automat wysyła dane osobowe kursantki.
+          </span>
+        </span>
+      </label>
 
       {error && <p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{error}</p>}
 

@@ -23,6 +23,9 @@ export async function distributeLead(lead: Lead): Promise<{ assignedTo: Trainer[
     .where(
       and(
         eq(schema.trainers.isActive, true),
+        // Bramka umowy — automat dotyka WYŁĄCZNIE trenerek z podpisaną umową.
+        // Reszta jest widoczna w serwisie, ale leady trafiają do niej tylko ręcznie z panelu admina.
+        eq(schema.trainers.autoAssign, true),
         eq(schema.trainers.voivodeship, lead.voivodeship),
         sql`${schema.trainers.specializations} @> ${JSON.stringify([lead.category])}::jsonb`
       )
