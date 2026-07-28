@@ -5,7 +5,7 @@ category: "Dla trenerek"
 excerpt: "Akredytacja w Bazie Usług Rozwojowych zamienia cenę kursu w argument sprzedażowy: kursantka dopłaca kilkaset zł zamiast kilku tysięcy. Poniżej wymagania (RIS, znak jakości), rejestracja podmiotu i karta usługi krok po kroku oraz błędy, przez które usługa nie przechodzi weryfikacji."
 meta_description: "Jak dodać usługę do BUR jako trenerka beauty: wpis do RIS, znak jakości, rejestracja podmiotu i karta usługi krok po kroku. Wymagania, koszty, czas i najczęstsze błędy."
 metaTitle: "Jak wpisać szkolenie do BUR - poradnik dla trenerki"
-metaDescription: "Jak dodać usługę do BUR jako trenerka beauty: wpis do RIS, znak jakości, karta usługi krok po kroku. Wymagania, koszty, czas i najczęstsze błędy przy weryfikacji."
+metaDescription: "Jak trenerka beauty wpisuje szkolenie do BUR: wpis do RIS, znak jakości i karta usługi krok po kroku - wymagania, koszty i najczęstsze błędy weryfikacji."
 data: 2026-07-19
 target: trenerka (B2B)
 fraza_glowna: "jak dodać usługę do BUR"

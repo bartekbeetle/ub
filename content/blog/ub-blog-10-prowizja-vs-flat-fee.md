@@ -5,7 +5,7 @@ category: "Dla trenerek"
 excerpt: "Trzy sposoby pozyskiwania kursantek na dofinansowane szkolenia: reklama własna, prowizja procentowa i opłata za wynik. Na liczbach pokazujemy, dlaczego prowizja od każdej sprzedaży boli najbardziej, gdzie chowa się jej ukryty koszt i kiedy który model realnie się opłaca."
 meta_description: "Prowizja vs flat fee w pozyskaniu kursantek beauty: reklama własna, prowizja procentowa i opłata za wynik na liczbach. Ukryty koszt prowizji od stałych klientek i kiedy który model się opłaca."
 metaTitle: "Prowizja czy flat fee? Modele pozyskania kursantek"
-metaDescription: "Prowizja vs flat fee w pozyskaniu kursantek beauty: reklama własna, prowizja procentowa, opłata za wynik na liczbach. Ukryty koszt prowizji od stałych klientek."
+metaDescription: "Prowizja czy flat fee? Trzy modele pozyskania kursantek na dofinansowane szkolenia na liczbach - ukryty koszt prowizji i kiedy który model się opłaca."
 data: 2026-07-19
 target: trenerka (B2B)
 fraza_glowna: "pozyskiwanie kursantek prowizja alternatywa"

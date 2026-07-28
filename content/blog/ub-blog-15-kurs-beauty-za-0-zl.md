@@ -5,7 +5,7 @@ category: "Dofinansowania"
 excerpt: "Hasło „kurs beauty za darmo” jest i prawdziwe, i mylące. Kiedy 0 zł jest realne (KFS dla mikrofirm, wybrane nabory), a kiedy to clickbait. I ile naprawdę dopłacasz przy standardowym BUR."
 meta_description: "Kurs beauty za 0 zł - kiedy naprawdę nic nie dopłacasz, a kiedy to clickbait. Standardowy BUR to 80-90% zwrotu i kilkaset zł wkładu. Pełne finansowanie zdarza się przez KFS i wybrane nabory."
 metaTitle: "Kurs beauty za 0 zł - kiedy to naprawdę realne"
-metaDescription: "Kurs beauty za 0 zł - kiedy naprawdę nic nie dopłacasz, a kiedy to clickbait. Standardowy BUR to 80-90% zwrotu i kilkaset zł wkładu. Pełne 0 zł przez KFS i wybrane nabory."
+metaDescription: "Kurs beauty za 0 zł - kiedy to prawda, a kiedy clickbait. Standardowy BUR to 80-90% zwrotu i wkład kilkuset złotych, pełne 0 zł zdarza się rzadko."
 data: 2026-07-19
 target: kursantka (B2C)
 fraza_glowna: "kurs beauty za 0 zł"

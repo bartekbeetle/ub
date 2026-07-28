@@ -16,7 +16,10 @@
     "db:seed-weronika": "tsx scripts/seed-weronika.ts",
     "db:seed-trainer-users": "tsx scripts/seed-trainer-users.ts",
     "admin:reset-password": "tsx scripts/reset-admin-password.ts",
-    "db:fix-taxonomy": "tsx scripts/fix-taxonomy.ts"
+    "db:fix-taxonomy": "tsx scripts/fix-taxonomy.ts",
+    "blog:generuj": "tsx scripts/blog-factory/generuj.ts",
+    "blog:qa": "tsx scripts/blog-factory/qa.ts",
+    "blog:build": "npm run blog:generuj && npm run blog:qa && npm run db:seed-blog"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.3.0",

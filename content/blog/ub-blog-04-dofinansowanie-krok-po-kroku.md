@@ -3,9 +3,9 @@ title: "Dofinansowanie na szkolenie - krok po kroku (BUR)"
 slug: "jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku"
 category: "Dofinansowania"
 excerpt: "Jak dostać dofinansowanie na kurs beauty z BUR - cała procedura krok po kroku. Co przygotować, gdzie złożyć wniosek, ile trwa rozpatrzenie i przez jakie błędy wnioski przepadają."
-meta_description: "Jak dostać dofinansowanie na szkolenie BUR krok po kroku: co przygotować, jak wypełnić wniosek, ile trwa rozpatrzenie i najczęstsze błędy, przez które zwrot przepada."
+meta_description: "Jak krok po kroku dostać dofinansowanie BUR na kurs beauty: co przygotować, jak złożyć wniosek, ile trwa rozpatrzenie i najczęstsze błędy wniosków."
 metaTitle: "Dofinansowanie na szkolenie - krok po kroku (BUR)"
-metaDescription: "Jak dostać dofinansowanie na szkolenie BUR krok po kroku: co przygotować, jak wypełnić wniosek, ile trwa rozpatrzenie i najczęstsze błędy, przez które zwrot przepada."
+metaDescription: "Jak krok po kroku dostać dofinansowanie BUR na kurs beauty: co przygotować, jak złożyć wniosek, ile trwa rozpatrzenie i najczęstsze błędy wniosków."
 data: 2026-07-18
 target: kursantka (B2C)
 fraza_glowna: "jak dostać dofinansowanie na szkolenie BUR"

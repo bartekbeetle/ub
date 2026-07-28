@@ -3,9 +3,9 @@ title: "Jak wybrać dobrą trenerkę i akademię beauty"
 slug: "jak-wybrac-dobra-trenerke-beauty"
 category: "Poradnik"
 excerpt: "Wybór trenerki waży więcej niż cena kursu - od jakości szkolenia zależy, czy zaczniesz zarabiać. Sześć kryteriów dobrego kursu, czerwone flagi słabego i rola akredytacji BUR jako podwójnego filtra."
-meta_description: "Jak wybrać kurs beauty i dobrą trenerkę - 6 kryteriów jakości, czerwone flagi słabego kursu i akredytacja BUR jako filtr. Lista pytań do trenerki przed zapisem."
+meta_description: "Jak wybrać dobrą trenerkę i akademię beauty: 6 kryteriów jakości, czerwone flagi słabego kursu i akredytacja BUR jako podwójny filtr przed zapisem."
 metaTitle: "Jak wybrać dobrą trenerkę i akademię beauty"
-metaDescription: "Jak wybrać kurs beauty i dobrą trenerkę - 6 kryteriów jakości, czerwone flagi słabego kursu i akredytacja BUR jako filtr. Lista pytań do trenerki przed zapisem."
+metaDescription: "Jak wybrać dobrą trenerkę i akademię beauty: 6 kryteriów jakości, czerwone flagi słabego kursu i akredytacja BUR jako podwójny filtr przed zapisem."
 data: 2026-07-19
 target: kursantka (B2C)
 fraza_glowna: "jak wybrać kurs beauty"

@@ -21,8 +21,12 @@ export type Kategoria = {
   slug: string;
   /** Mianownik do tytułów: „Kurs stylizacji paznokci". */
   nazwaKursu: string;
-  /** Krótka etykieta do meta i nagłówków. */
+  /** Krótka etykieta (mianownik) do meta i nagłówków. */
   etykieta: string;
+  /** Dopełniacz: „stylizacji paznokci" — do konstrukcji „ceny kursów ...". */
+  etykietaDopelniacz: string;
+  /** Gotowa fraza z przyimkiem: „ze stylizacji paznokci" (alternacja z/ze zależy od zbitki spółgłosek). */
+  zEtykieta: string;
   godzinyOd: number;
   godzinyDo: number;
   cenaOd: number;
@@ -43,6 +47,8 @@ export const KATEGORIE: Kategoria[] = [
     slug: "stylizacja-paznokci",
     nazwaKursu: "Kurs stylizacji paznokci",
     etykieta: "stylizacja paznokci",
+    etykietaDopelniacz: "stylizacji paznokci",
+    zEtykieta: "ze stylizacji paznokci",
     godzinyOd: 24,
     godzinyDo: 40,
     cenaOd: 1200,
@@ -92,7 +98,7 @@ export const KATEGORIE: Kategoria[] = [
           "Kurs sam hybrydy daje usługę wycenianą zwykle w widełkach stu kilkudziesięciu złotych. Przedłużanie żelem podnosi cenę jednej wizyty mniej więcej o połowę przy podobnym czasie pracy. Jeżeli budżet pozwala tylko na jedno szkolenie, wersja z przedłużaniem zwraca się szybciej.",
       },
       {
-        lead: "Reklamy obiecujące kurs paznokci „za zero złotych" pojawiają się w tej kategorii najczęściej i najczęściej są skrótem myślowym — realny mechanizm wygląda inaczej.",
+        lead: "Reklamy obiecujące kurs paznokci „za zero złotych” pojawiają się w tej kategorii najczęściej i najczęściej są skrótem myślowym — realny mechanizm wygląda inaczej.",
         sekcjaTytul: "Skąd biorą się hasła o kursie bez opłat",
         sekcjaTresc:
           "Z dofinansowania rozliczanego po fakcie. Podpisujesz umowę na pełną cenę, operator refunduje jej większość, a Ty pokrywasz wkład własny. To wciąż różnica między kilkuset złotymi a kilkoma tysiącami, ale nie jest to szkolenie bez kosztu i żaden operator tak tego nie nazywa.",
@@ -120,6 +126,21 @@ export const KATEGORIE: Kategoria[] = [
         odpowiedz:
           "Najczęściej od sześciu do dwunastu tygodni pracy na modelkach. Skrócenie tego etapu kończy się reklamacjami, które kosztują więcej niż dodatkowy miesiąc ćwiczeń.",
       },
+      {
+        pytanie: "Czy lepiej wybrać kurs stacjonarny czy online?",
+        odpowiedz:
+          "Przy stylizacji paznokci praktyka pod okiem trenerki jest trudna do zastąpienia — frezarką uczy się pracować rękami, nie z nagrania. Materiały online sprawdzają się jako uzupełnienie po szkoleniu stacjonarnym.",
+      },
+      {
+        pytanie: "Ile kosztuje wyposażenie stanowiska po kursie?",
+        odpowiedz:
+          "Lampa, frezarka, komplet żeli i narzędzia to wydatek porównywalny z ceną samego szkolenia. Część operatorów rozlicza wyłącznie usługę szkoleniową, więc sprzęt planuje się w osobnym budżecie.",
+      },
+      {
+        pytanie: "Czy trzeba mieć działalność gospodarczą, żeby pójść na kurs?",
+        odpowiedz:
+          "Na sam kurs nie. Warunki dofinansowania bywają jednak różne dla osób prowadzących działalność i pracujących na etacie — status zawodowy sprawdza się na etapie wniosku.",
+      },
     ],
   },
 
@@ -127,6 +148,8 @@ export const KATEGORIE: Kategoria[] = [
     slug: "przedluzanie-rzes",
     nazwaKursu: "Kurs przedłużania rzęs",
     etykieta: "przedłużanie rzęs",
+    etykietaDopelniacz: "przedłużania rzęs",
+    zEtykieta: "z przedłużania rzęs",
     godzinyOd: 16,
     godzinyDo: 24,
     cenaOd: 1200,
@@ -173,7 +196,7 @@ export const KATEGORIE: Kategoria[] = [
         lead: "Praca z klejem cyjanoakrylowym wymaga wentylacji i świadomości przeciwwskazań — to część zawodu, którą programy szkoleń traktują bardzo różnie.",
         sekcjaTytul: "Bezpieczeństwo pracy, o które warto zapytać przed zapisem",
         sekcjaTresc:
-          "Zapytaj wprost, ile czasu kurs poświęca na reakcje alergiczne, wentylację stanowiska i procedurę przy podrażnieniu. Jeżeli odpowiedź brzmi „to omawiamy na bieżąco", program prawdopodobnie tego nie zawiera, a odpowiedzialność za zabieg spoczywa na Tobie.",
+          "Zapytaj wprost, ile czasu kurs poświęca na reakcje alergiczne, wentylację stanowiska i procedurę przy podrażnieniu. Jeżeli odpowiedź brzmi „to omawiamy na bieżąco”, program prawdopodobnie tego nie zawiera, a odpowiedzialność za zabieg spoczywa na Tobie.",
       },
       {
         lead: "Stylizacja rzęs pozwala pracować w modelu mobilnym albo z jednego stanowiska wynajmowanego na godziny — koszt startu jest niższy niż w większości usług beauty.",
@@ -204,6 +227,21 @@ export const KATEGORIE: Kategoria[] = [
         odpowiedz:
           "Na dobrym kursie tak, i to jest kryterium wyboru. Szkolenie prowadzone wyłącznie na główkach treningowych nie przygotowuje do pracy z żywym okiem, ruchem powieki i łzawieniem.",
       },
+      {
+        pytanie: "Czy po kursie od razu można przyjmować klientki?",
+        odpowiedz:
+          "Technicznie tak, ale pierwsze stylizacje trwają dwa razy dłużej niż docelowo. Większość stylistek przez pierwsze tygodnie pracuje na modelkach w niższej cenie, zanim wejdzie w pełny cennik.",
+      },
+      {
+        pytanie: "Czy przedłużanie rzęs niszczy rzęsy naturalne?",
+        odpowiedz:
+          "Przy poprawnej izolacji i dobranej wadze nie. Uszkodzenia biorą się ze sklejania kilku rzęs naturalnych i z przeciążenia — czyli z błędu wykonania, nie z samej metody.",
+      },
+      {
+        pytanie: "Jaka jest różnica między metodą 1:1 a objętościową?",
+        odpowiedz:
+          "W metodzie 1:1 na jedną rzęsę naturalną przypada jedna sztuczna. W objętościowej aplikuje się wachlarz z kilku cieńszych włókien, co daje gęstszy efekt przy zbliżonym obciążeniu.",
+      },
     ],
   },
 
@@ -211,6 +249,8 @@ export const KATEGORIE: Kategoria[] = [
     slug: "makijaz-permanentny",
     nazwaKursu: "Kurs makijażu permanentnego",
     etykieta: "makijaż permanentny",
+    etykietaDopelniacz: "makijażu permanentnego",
+    zEtykieta: "z makijażu permanentnego",
     godzinyOd: 24,
     godzinyDo: 40,
     cenaOd: 3500,
@@ -289,6 +329,21 @@ export const KATEGORIE: Kategoria[] = [
         odpowiedz:
           "Bywa różnie i to jedna z głównych przyczyn rozbieżności cenowych. Pytaj wprost, bo zestaw startowy to wydatek porównywalny z częścią ceny samego szkolenia.",
       },
+      {
+        pytanie: "Jak długo utrzymuje się makijaż permanentny?",
+        odpowiedz:
+          "Zwykle od roku do trzech lat, zależnie od techniki, typu skóry i pielęgnacji. Po tym czasie wykonuje się odświeżenie, co dla gabinetu oznacza powracającą klientkę.",
+      },
+      {
+        pytanie: "Czy w cenie kursu jest wizyta kontrolna po zagojeniu?",
+        odpowiedz:
+          "W dobrych programach tak i jest to istotne kryterium wyboru. Dopiero zagojony pigment pokazuje, czy głębokość pracy była prawidłowa — bez tej wizyty nie masz informacji zwrotnej.",
+      },
+      {
+        pytanie: "Ile modelek przypada na jedną kursantkę?",
+        odpowiedz:
+          "To pytanie warto zadać przed zapisem. Liczba modelek i liczba kursantek na trenerkę tłumaczą większość różnic w cenie szkoleń z tej kategorii.",
+      },
     ],
   },
 
@@ -296,6 +351,8 @@ export const KATEGORIE: Kategoria[] = [
     slug: "laminacja-brwi-rzes",
     nazwaKursu: "Kurs laminacji brwi i rzęs",
     etykieta: "laminacja brwi i rzęs",
+    etykietaDopelniacz: "laminacji brwi i rzęs",
+    zEtykieta: "z laminacji brwi i rzęs",
     godzinyOd: 8,
     godzinyDo: 16,
     cenaOd: 800,
@@ -372,6 +429,21 @@ export const KATEGORIE: Kategoria[] = [
         pytanie: "Czy można łączyć laminację z innymi usługami?",
         odpowiedz:
           "Tak i na tym polega jej wartość w gabinecie. Najczęściej łączy się ją z regulacją i henną brwi albo dokłada do wizyty stylizacyjnej.",
+      },
+      {
+        pytanie: "Jak długo utrzymuje się efekt laminacji?",
+        odpowiedz:
+          "Od czterech do sześciu tygodni, zależnie od tempa wzrostu włosa i pielęgnacji. Po tym czasie włos wraca do naturalnego układu i zabieg się powtarza.",
+      },
+      {
+        pytanie: "Czy laminację można wykonywać w ciąży?",
+        odpowiedz:
+          "Wiele producentów preparatów wskazuje ciążę jako przeciwwskazanie względne. Decyzję podejmuje się indywidualnie, a informacja o niej powinna znaleźć się w dokumentacji zabiegowej.",
+      },
+      {
+        pytanie: "Czy ten kurs wystarczy, żeby otworzyć własny gabinet?",
+        odpowiedz:
+          "Jako jedyna usługa raczej nie — zabieg jest krótki i tani, więc utrzymanie gabinetu wymaga uzupełnienia go o inne pozycje w cenniku. Jako dodatek do istniejącej oferty sprawdza się bardzo dobrze.",
       },
     ],
   },

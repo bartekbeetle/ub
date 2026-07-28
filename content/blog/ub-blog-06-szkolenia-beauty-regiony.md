@@ -5,7 +5,7 @@ category: "Dofinansowania"
 excerpt: "Dofinansowane szkolenia beauty w śląskiem, mazowieckiem i małopolskiem - jak to działa region po regionie. Dlaczego Twoje województwo decyduje o tym, ile dopłacisz, i jak znaleźć akredytowaną trenerkę blisko siebie."
 meta_description: "Dofinansowane szkolenia beauty: śląskie, mazowieckie, małopolskie. Jak działają regionalne nabory z BUR, ile dopłacisz i jak znaleźć trenerkę w Katowicach, Warszawie i Krakowie."
 metaTitle: "Dofinansowane szkolenia beauty - śląskie, mazowieckie"
-metaDescription: "Dofinansowane szkolenia beauty w śląskiem, mazowieckiem i małopolskiem. Jak działają regionalne nabory z BUR, ile realnie dopłacisz i jak znaleźć trenerkę blisko siebie."
+metaDescription: "Dofinansowane szkolenia beauty w śląskiem, mazowieckiem i małopolskiem: jak działają regionalne nabory BUR i jak znaleźć akredytowaną trenerkę blisko siebie."
 data: 2026-07-18
 target: kursantka (B2C)
 fraza_glowna: "dofinansowane szkolenia beauty śląskie"

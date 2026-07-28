@@ -5,7 +5,7 @@ category: "Dofinansowania"
 excerpt: "Największy mit o dofinansowaniu na kurs beauty: że jest tylko dla bezrobotnych. Nieprawda - BUR obejmuje pracujące, mamy, studentki i osoby na działalności. Sprawdź, komu naprawdę się należy."
 meta_description: "Dofinansowanie BUR dla osoby pracującej istnieje - nie musisz być bezrobotna. Kto się kwalifikuje, czym BUR różni się od urzędu pracy i KFS, kiedy nie dostaniesz zwrotu."
 metaTitle: "Dofinansowanie BUR - nie musisz być bezrobotna"
-metaDescription: "Dofinansowanie BUR dla osoby pracującej istnieje - nie musisz być bezrobotna. Kto się kwalifikuje, czym różni się od urzędu pracy i KFS, kiedy zwrotu nie dostaniesz."
+metaDescription: "Dofinansowanie BUR obejmuje też pracujące, mamy i studentki - nie tylko bezrobotne. Sprawdź, kto się kwalifikuje i czym BUR różni się od urzędu pracy."
 data: 2026-07-17
 target: kursantka (B2C)
 fraza_glowna: "dofinansowanie BUR dla osoby pracującej"

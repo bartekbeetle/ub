@@ -5,7 +5,7 @@ category: "Dofinansowania"
 excerpt: "Kurs microbladingu kosztuje zwykle od 2000 do 4500 zł. Z dofinansowaniem BUR dopłacasz ułamek tej kwoty. Wyjaśniamy różnicę między microbladingiem manualnym a PMU maszynowym i pokazujemy, kto się kwalifikuje."
 meta_description: "Kurs microbladingu z dofinansowaniem BUR - realny koszt po zwrocie 80-90%, różnica między microbladingiem manualnym a PMU maszynowym i kto się kwalifikuje. Nie musisz być bezrobotna."
 metaTitle: "Kurs microbladingu z dofinansowaniem - ile zapłacisz"
-metaDescription: "Kurs microbladingu z dofinansowaniem BUR - ile realnie dopłacasz, czym różni się od PMU maszynowego i kto się kwalifikuje. Nie musisz być bezrobotna, by dostać zwrot."
+metaDescription: "Kurs microbladingu z dofinansowaniem BUR: realny koszt po zwrocie, różnica między microbladingiem manualnym a PMU maszynowym i kto się kwalifikuje."
 data: 2026-07-19
 target: kursantka (B2C)
 fraza_glowna: "kurs microblading z dofinansowaniem"

@@ -5,7 +5,7 @@ category: "Kariera w beauty"
 excerpt: "Zmiana zawodu na beauty po 30 lub 40 nie jest ani za późna, ani zależna od oszczędności. Realna oś czasu, wybór kategorii pod siebie i dofinansowanie, które zbija koszt kursu do kilkuset złotych."
 meta_description: "Przebranżowienie na beauty po 30 i 40 - od czego zacząć, czy to za późno, jak wybrać kurs i skąd wziąć pieniądze na start. Dofinansowanie BUR należy się też pracującym."
 metaTitle: "Przebranżowienie na beauty po 30 i 40"
-metaDescription: "Zmiana zawodu na beauty po 30 i 40 - od czego zacząć, czy to za późno i jak sfinansować kurs. Dofinansowanie BUR należy się też pracującym, nie tylko bezrobotnym."
+metaDescription: "Zmiana zawodu na beauty po 30 i 40 - od czego zacząć, jak wybrać kurs i jak sfinansować go dofinansowaniem BUR, które należy się też pracującym."
 data: 2026-07-19
 target: kursantka (B2C)
 fraza_glowna: "przebranżowienie na beauty od czego zacząć"

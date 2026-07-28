@@ -5,7 +5,7 @@ category: "Dofinansowania"
 excerpt: "Kurs stylizacji paznokci kosztuje zwykle od 800 do 2500 zł, w zależności od poziomu. Z dofinansowaniem BUR dopłacasz ułamek tej kwoty - najczęściej kilkaset złotych. Sprawdź realny koszt i kto się kwalifikuje."
 meta_description: "Kurs paznokci z dofinansowaniem BUR - realny koszt po zwrocie, widełki cen manicure hybrydowego, kto się kwalifikuje (nie tylko bezrobotne) i jak wybrać akredytowaną trenerkę."
 metaTitle: "Kurs paznokci z dofinansowaniem - ile dopłacasz"
-metaDescription: "Kurs paznokci z dofinansowaniem BUR - ile realnie dopłacasz po zwrocie 80-90%, widełki cen manicure hybrydowego i kto się kwalifikuje. Nie musisz być bezrobotna."
+metaDescription: "Kurs paznokci z dofinansowaniem BUR: ile realnie dopłacasz po zwrocie, widełki cen manicure hybrydowego i kto się kwalifikuje - nie tylko bezrobotne."
 data: 2026-07-19
 target: kursantka (B2C)
 fraza_glowna: "kurs paznokci z dofinansowaniem"

@@ -18,6 +18,8 @@ export type Lokalizacja = {
   wWojewodztwie: string;
   /** Realne miasta w zasięgu dojazdu — materiał na sekcję lokalną, nie ozdobnik. */
   okolica: string[];
+  /** Poziom cen szkoleń w mieście. Realnie różnicuje treść — w metropolii stawki stoją przy górnej granicy widełek. */
+  tier: "metropolia" | "duze" | "mniejsze";
 };
 
 export const LOKALIZACJE: Lokalizacja[] = [
@@ -29,6 +31,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wojewodztwo: "mazowieckie",
     wWojewodztwie: "w województwie mazowieckim",
     okolica: ["Pruszków", "Piaseczno", "Legionowo", "Otwock", "Wołomin"],
+    tier: "metropolia",
   },
   {
     slug: "krakow",
@@ -38,6 +41,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wojewodztwo: "małopolskie",
     wWojewodztwie: "w województwie małopolskim",
     okolica: ["Wieliczka", "Skawina", "Niepołomice", "Wadowice"],
+    tier: "metropolia",
   },
   {
     slug: "wroclaw",
@@ -47,6 +51,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wojewodztwo: "dolnośląskie",
     wWojewodztwie: "w województwie dolnośląskim",
     okolica: ["Oleśnica", "Oława", "Trzebnica", "Środa Śląska"],
+    tier: "duze",
   },
   {
     slug: "poznan",
@@ -56,6 +61,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wojewodztwo: "wielkopolskie",
     wWojewodztwie: "w województwie wielkopolskim",
     okolica: ["Swarzędz", "Luboń", "Środa Wielkopolska", "Oborniki"],
+    tier: "duze",
   },
   {
     slug: "gdansk",
@@ -65,6 +71,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wojewodztwo: "pomorskie",
     wWojewodztwie: "w województwie pomorskim",
     okolica: ["Gdynia", "Sopot", "Tczew", "Pruszcz Gdański"],
+    tier: "duze",
   },
   {
     slug: "lodz",
@@ -74,6 +81,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wojewodztwo: "łódzkie",
     wWojewodztwie: "w województwie łódzkim",
     okolica: ["Pabianice", "Zgierz", "Aleksandrów Łódzki", "Konstantynów Łódzki"],
+    tier: "duze",
   },
   {
     slug: "lublin",
@@ -83,6 +91,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wojewodztwo: "lubelskie",
     wWojewodztwie: "w województwie lubelskim",
     okolica: ["Świdnik", "Lubartów", "Puławy", "Kraśnik"],
+    tier: "duze",
   },
   {
     slug: "katowice",
@@ -92,6 +101,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wojewodztwo: "śląskie",
     wWojewodztwie: "w województwie śląskim",
     okolica: ["Sosnowiec", "Chorzów", "Tychy", "Gliwice", "Zabrze"],
+    tier: "duze",
   },
   {
     slug: "szczecin",
@@ -101,6 +111,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wojewodztwo: "zachodniopomorskie",
     wWojewodztwie: "w województwie zachodniopomorskim",
     okolica: ["Police", "Stargard", "Goleniów", "Gryfino"],
+    tier: "duze",
   },
   {
     slug: "gdynia",
@@ -110,6 +121,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wojewodztwo: "pomorskie",
     wWojewodztwie: "w województwie pomorskim",
     okolica: ["Gdańsk", "Sopot", "Rumia", "Wejherowo"],
+    tier: "duze",
   },
   {
     slug: "opole",
@@ -119,6 +131,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wojewodztwo: "opolskie",
     wWojewodztwie: "w województwie opolskim",
     okolica: ["Kędzierzyn-Koźle", "Brzeg", "Krapkowice", "Strzelce Opolskie"],
+    tier: "mniejsze",
   },
   {
     slug: "legnica",
@@ -128,6 +141,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wojewodztwo: "dolnośląskie",
     wWojewodztwie: "w województwie dolnośląskim",
     okolica: ["Lubin", "Głogów", "Jawor", "Chojnów"],
+    tier: "mniejsze",
   },
   {
     slug: "plock",
@@ -137,6 +151,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wojewodztwo: "mazowieckie",
     wWojewodztwie: "w województwie mazowieckim",
     okolica: ["Gostynin", "Sierpc", "Płońsk", "Wyszogród"],
+    tier: "mniejsze",
   },
 ];
 
