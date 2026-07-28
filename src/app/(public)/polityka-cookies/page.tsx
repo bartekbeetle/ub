@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: `Polityka cookies`,
   description: "Polityka plików cookies serwisu Uniwersytet Beauty.",
   alternates: { canonical: "/polityka-cookies" },
+  // Boilerplate prawny — noindex,follow: nie ma wartości rankingowej, a linki wewnętrzne
+  // (do polityki prywatności itd.) mają być dalej crawlowane.
+  robots: { index: false, follow: true },
 };
 
 export default function PolitykaCookiesPage() {

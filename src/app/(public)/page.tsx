@@ -11,14 +11,19 @@ import { SITE_NAME } from "@/lib/constants";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: `Szkolenia beauty z dofinansowaniem do 90%`,
+  // Strona główna: marka z przodu (jedyna strona, gdzie brand ma pierwszeństwo nad frazą),
+  // całość 54 znaki — mieści się bez ucięcia w SERP-ie.
+  title: { absolute: `${SITE_NAME} — szkolenia z dofinansowaniem do 90%` },
   description:
-    "Zacznij karierę w beauty bez ryzyka finansowego. Szkolenia z PMU, rzęs, paznokci i medycyny estetycznej z dofinansowaniem do 90% z programu BUR. Nie potrzebujesz doświadczenia.",
+    "Zacznij karierę w beauty bez ryzyka finansowego. Szkolenia PMU, rzęs, paznokci i medycyny estetycznej z dofinansowaniem do 90% z BUR.",
   alternates: { canonical: "/" },
   openGraph: {
     title: `Szkolenia beauty z dofinansowaniem do 90%`,
     description: "Profesjonalne szkolenia beauty z dofinansowaniem BUR. Nie potrzebujesz doświadczenia.",
     url: "/",
+    type: "website",
+    locale: "pl_PL",
+    siteName: SITE_NAME,
     images: [{ url: "/images/akademia-sala.jpg", width: 1600, height: 872, alt: "Sala szkoleniowa akademii beauty" }],
   },
 };

@@ -10,10 +10,19 @@ import { SITE_NAME } from "@/lib/constants";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: `Dofinansowania na szkolenia beauty — BUR, UP, KFS`,
+  title: { absolute: `Dofinansowania na szkolenia beauty — BUR, UP, KFS` },
   description:
-    "Do 90% dofinansowania na szkolenia beauty — płacisz kilkaset złotych zamiast kilku tysięcy. Programy: BUR, Urząd Pracy, KFS. Kalkulator oszczędności i wsparcie we wniosku.",
+    "Do 90% dofinansowania na szkolenia beauty — płacisz kilkaset złotych zamiast kilku tysięcy. Programy BUR, Urząd Pracy i KFS oraz wsparcie we wniosku.",
   alternates: { canonical: "/dofinansowania" },
+  openGraph: {
+    title: `Dofinansowania na szkolenia beauty — BUR, UP, KFS`,
+    description:
+      "Do 90% dofinansowania na szkolenia beauty — płacisz kilkaset złotych zamiast kilku tysięcy. Sprawdź programy BUR, Urząd Pracy i KFS.",
+    url: "/dofinansowania",
+    type: "website",
+    locale: "pl_PL",
+    siteName: SITE_NAME,
+  },
 };
 
 const PROGRAMS = [

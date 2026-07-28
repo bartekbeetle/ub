@@ -30,11 +30,22 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const trainer = await getTrainer(slug);
   if (!trainer) return { title: "Nie znaleziono trenerki" };
   const title = `${trainer.name} — trenerka ${trainer.specializations[0] ?? "beauty"}${trainer.city ? `, ${trainer.city}` : ""}`;
+  const ogDescription = trainer.bio?.slice(0, 200) ?? title;
   return {
     title: `${title}`,
     description: trainer.bio?.slice(0, 160) ?? title,
     alternates: { canonical: `/trenerka/${trainer.slug}` },
-    openGraph: { title, description: trainer.bio?.slice(0, 200) ?? "", url: `/trenerka/${trainer.slug}` },
+    openGraph: {
+      title,
+      description: ogDescription,
+      url: `/trenerka/${trainer.slug}`,
+      type: "profile",
+      locale: "pl_PL",
+      siteName: SITE_NAME,
+      ...(trainer.avatarUrl
+        ? { images: [{ url: trainer.avatarUrl, alt: `${trainer.name} — zdjęcie profilowe trenerki` }] }
+        : {}),
+    },
   };
 }
 

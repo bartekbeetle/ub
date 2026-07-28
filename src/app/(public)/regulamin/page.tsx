@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: `Regulamin serwisu`,
   description: "Regulamin korzystania z serwisu Uniwersytet Beauty.",
   alternates: { canonical: "/regulamin" },
+  // Boilerplate prawny — noindex,follow: nie ma wartości rankingowej, a linki wewnętrzne
+  // mają być dalej crawlowane.
+  robots: { index: false, follow: true },
 };
 
 export default function RegulaminPage() {

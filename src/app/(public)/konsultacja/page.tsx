@@ -5,10 +5,19 @@ import { IconCheck } from "@/components/icons";
 import { SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Bezpłatna konsultacja — sprawdź swoje dofinansowanie`,
+  title: { absolute: `Bezpłatna konsultacja — sprawdź swoje dofinansowanie` },
   description:
-    "Umów bezpłatną konsultację: sprawdzimy, jaki poziom dofinansowania na szkolenie beauty przysługuje Ci w Twoim województwie i połączymy Cię z certyfikowaną trenerką.",
+    "Sprawdzimy, jakie dofinansowanie na szkolenie beauty przysługuje Ci w Twoim województwie, i połączymy Cię z certyfikowaną trenerką.",
   alternates: { canonical: "/konsultacja" },
+  openGraph: {
+    title: `Bezpłatna konsultacja — sprawdź swoje dofinansowanie`,
+    description:
+      "Sprawdzimy, jaki poziom dofinansowania na szkolenie beauty przysługuje Ci w Twoim województwie, i połączymy Cię z certyfikowaną trenerką.",
+    url: "/konsultacja",
+    type: "website",
+    locale: "pl_PL",
+    siteName: SITE_NAME,
+  },
 };
 
 const BENEFITS = [

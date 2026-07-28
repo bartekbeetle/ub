@@ -5,8 +5,10 @@ import { SITE_URL } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
-/** Strony formalne — mają być w indeksie (wiarygodność), ale z niskim priorytetem. */
-const LEGAL_PAGES = ["/regulamin", "/polityka-prywatnosci", "/polityka-cookies"];
+// Strony formalne (regulamin, polityka prywatności, polityka cookies) dostały 28.07.2026
+// `robots: noindex, follow` (audyt on-page) — boilerplate prawny bez wartości rankingowej.
+// Sitemapa nie powinna promować URL-i oznaczonych noindex (mieszany sygnał dla Google),
+// dlatego nie ma tu już osobnej listy LEGAL_PAGES.
 const MAIN_PAGES = ["", "/kursy", "/trenerki", "/dofinansowania", "/blog", "/kontakt", "/konsultacja", "/o-nas"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -39,7 +41,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const comboUrls = combos.flatMap(({ category, voivodeship }) => {
     const base = `${SITE_URL}/kursy?kategoria=${encodeURIComponent(category)}`;
     const urls = [base];
-    if (voivodeship) urls.push(`${base}&wojewodztwo=${voivodeship}`);
+    // Sitemapa to XML: surowy `&` w <loc> to błąd składni, który unieważnia CAŁY plik
+    // (28.07.2026: Google raportował „Błąd analizy składni, wiersz 232" i 0 wykrytych stron).
+    // Next 15 nie escapuje `&` za nas, więc encodujemy encję ręcznie.
+    if (voivodeship) urls.push(`${base}&amp;wojewodztwo=${encodeURIComponent(voivodeship)}`);
     return urls.map((url) => ({ url, lastModified: now, changeFrequency: "weekly" as const, priority: 0.6 }));
   });
 
@@ -69,11 +74,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     })),
     ...Array.from(new Map(comboUrls.map((c) => [c.url, c])).values()),
-    ...LEGAL_PAGES.map((p) => ({
-      url: SITE_URL + p,
-      lastModified: now,
-      changeFrequency: "yearly" as const,
-      priority: 0.2,
-    })),
   ];
 }

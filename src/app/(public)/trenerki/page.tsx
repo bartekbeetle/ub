@@ -17,6 +17,15 @@ export const metadata: Metadata = {
   description:
     "Poznaj certyfikowane trenerki beauty współpracujące z Uniwersytet Beauty. PMU, rzęsy, paznokcie, medycyna estetyczna — wszystkie zarejestrowane w BUR.",
   alternates: { canonical: "/trenerki" },
+  openGraph: {
+    title: `Certyfikowane trenerki beauty`,
+    description:
+      "Poznaj certyfikowane trenerki beauty współpracujące z Uniwersytet Beauty — PMU, rzęsy, paznokcie, medycyna estetyczna, wszystkie zarejestrowane w BUR.",
+    url: "/trenerki",
+    type: "website",
+    locale: "pl_PL",
+    siteName: SITE_NAME,
+  },
 };
 
 export default async function TrenerkiPage() {

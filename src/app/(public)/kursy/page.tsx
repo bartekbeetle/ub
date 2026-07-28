@@ -4,7 +4,7 @@ import { getDb, schema } from "@/db";
 import { CourseCard } from "@/components/CourseCard";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
-import { itemListJsonLd } from "@/lib/seo";
+import { clampText, itemListJsonLd, metaDescription, pageTitle } from "@/lib/seo";
 import { CATEGORIES, LEVELS, MODES, VOIVODESHIPS, voivodeshipName, SITE_NAME } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
@@ -21,9 +21,11 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
   const woj = typeof sp.wojewodztwo === "string" ? voivodeshipName(sp.wojewodztwo) : "";
   const kat = asArray(sp.kategoria)[0] ?? "";
   // programmatic SEO: unikalny title dla kombinacji filtrów
-  let title = "Kursy i szkolenia beauty z dofinansowaniem do 90%";
-  if (kat && woj) title = `Kurs ${kat} ${woj} z dofinansowaniem do 90%`;
-  else if (kat) title = `Kurs ${kat} z dofinansowaniem do 90%`;
+  // Nazwy kategorii w słowniku są długie („Usuwanie PMU (laserowe i bezlaserowe)"),
+  // więc tytuł składamy kaskadowo i przycinamy do 60 znaków — inaczej Google ucina frazę.
+  let title = "Kursy beauty z dofinansowaniem do 90%";
+  if (kat && woj) title = clampText(`Kurs ${kat} ${woj} — dofinansowanie do 90%`, 60);
+  else if (kat) title = clampText(`Kurs ${kat} z dofinansowaniem do 90%`, 60);
   else if (woj) title = `Kursy beauty ${woj} z dofinansowaniem do 90%`;
   const qs = new URLSearchParams();
   if (typeof sp.wojewodztwo === "string" && sp.wojewodztwo) qs.set("wojewodztwo", sp.wojewodztwo);
@@ -38,11 +40,14 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
     !sp.tryb &&
     asArray(sp.kategoria).length <= 1 &&
     !Array.isArray(sp.wojewodztwo);
+  const description = metaDescription(
+    `${title}. Certyfikowane trenerki, wsparcie w zdobyciu dofinansowania BUR, realne umiejętności od pierwszego dnia.`
+  );
   return {
-    title: `${title}`,
-    description: `${title}. Certyfikowane trenerki, wsparcie w zdobyciu dofinansowania BUR, realne umiejętności od pierwszego dnia.`,
+    title: pageTitle(title),
+    description,
     alternates: { canonical },
-    openGraph: { title, url: canonical },
+    openGraph: { title, description, url: canonical, type: "website", locale: "pl_PL", siteName: SITE_NAME },
     ...(isIndexable ? {} : { robots: { index: false, follow: true } }),
   };
 }

@@ -21,12 +21,15 @@ export async function generateMetadata({ searchParams }: { searchParams: Search 
       ? sp.kategoria
       : "";
   const title = kat ? `${kat} — baza wiedzy beauty` : "Blog — porady i trendy beauty";
+  const description = kat
+    ? `Artykuły z kategorii ${kat}: dofinansowania BUR, kariera w beauty i praktyczne poradniki dla przyszłych profesjonalistek.`
+    : "Porady, trendy i inspiracje dla przyszłych profesjonalistek branży beauty. Dofinansowania, kariera, techniki PMU, stylizacja rzęs i paznokci.";
+  const canonical = kat ? `/blog?kategoria=${encodeURIComponent(kat)}` : "/blog";
   return {
     title,
-    description: kat
-      ? `Artykuły z kategorii ${kat}: dofinansowania BUR, kariera w beauty i praktyczne poradniki dla przyszłych profesjonalistek.`
-      : "Porady, trendy i inspiracje dla przyszłych profesjonalistek branży beauty. Dofinansowania, kariera, techniki PMU, stylizacja rzęs i paznokci.",
-    alternates: { canonical: kat ? `/blog?kategoria=${encodeURIComponent(kat)}` : "/blog" },
+    description,
+    alternates: { canonical },
+    openGraph: { title, description, url: canonical, type: "website", locale: "pl_PL", siteName: SITE_NAME },
     // Wyniki wyszukiwarki wewnętrznej nie mają trafiać do indeksu.
     ...(sp.q ? { robots: { index: false, follow: true } } : {}),
   };
@@ -71,7 +74,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Search 
             <article className="card grid overflow-hidden md:grid-cols-2">
               <Link href={`/blog/${featured.slug}`} className="relative block aspect-[16/10] bg-sand-100 md:aspect-auto md:min-h-[280px]">
                 {featured.imageUrl && (
-                  <Image src={featured.imageUrl} alt={featured.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                  <Image src={featured.imageUrl} alt={featured.title} fill priority sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 )}
               </Link>
               <div className="flex flex-col justify-center gap-3 p-6 md:p-8">

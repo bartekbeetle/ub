@@ -5,6 +5,60 @@ import type { Course, Trainer, BlogPost } from "@/db/schema";
 export const ORG_ID = `${SITE_URL}/#organizacja`;
 const WEBSITE_ID = `${SITE_URL}/#strona`;
 
+const BRAND_SUFFIX = ` | ${SITE_NAME}`;
+
+/**
+ * Ucina tekst do `max` znaków po granicy słowa — bez wielokropka i bez rozjechanych wyrazów.
+ * Google obcina snippet w SERP-ie; lepiej sterować tym u siebie niż oddawać decyzję wyszukiwarce.
+ */
+export function clampText(text: string, max: number): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max);
+  const lastSpace = cut.lastIndexOf(" ");
+  return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.–—-]+$/, "");
+}
+
+/**
+ * Tytuł ≤60 znaków. Marka doklejana TYLKO wtedy, gdy się mieści — inaczej zjada
+ * miejsce na frazę i Google ucina tytuł w połowie zdania. Zwraca `absolute`,
+ * żeby ominąć `title.template` z root layoutu (który dokleja markę bezwarunkowo).
+ */
+export function pageTitle(base: string, max = 60): { absolute: string } {
+  const clean = base.replace(/\s+/g, " ").trim();
+  if (clean.length + BRAND_SUFFIX.length <= max) return { absolute: clean + BRAND_SUFFIX };
+  return { absolute: clampText(clean, max) };
+}
+
+/** Meta description ≤158 znaków (limit snippetu Google ~160). */
+export function metaDescription(text: string, max = 158): string {
+  return clampText(text, max);
+}
+
+/**
+ * Unikalny opis kursu składany z danych kursu.
+ * Powód: wszystkie kursy w bazie mają identyczny `shortDescription`, więc 12 stron kursów
+ * dostawało jeden i ten sam meta description (duplikat = Google ignoruje i pisze snippet sam).
+ * Guardrail ceny: NIE piszemy „0 zł" ani „darmowe" — przy dofinansowaniu 100% podajemy
+ * sam procent, bez kwoty dopłaty.
+ */
+export function courseMetaDescription(course: Course, trainerName?: string | null): string {
+  const priceAfter = Math.round(course.price * (1 - course.subsidyPercent / 100));
+  // Miasto po przecinku, nie „w {miasto}" — nazwy miast wymagałyby odmiany
+  // przez przypadki („w Katowicach", nie „w Katowice"), a tego z bazy nie wyliczymy.
+  const base = [
+    `${course.title}${course.city ? `, ${course.city}` : ""} — dofinansowanie do ${course.subsidyPercent}% z BUR.`,
+    priceAfter > 0
+      ? `Dopłacasz ${priceAfter} zł zamiast ${course.price} zł.`
+      : `Wysokość dopłaty ustalasz z operatorem dofinansowania.`,
+    `${course.durationHours} h praktyki.`,
+  ].join(" ");
+  // Trenerkę dopisujemy tylko wtedy, gdy zmieści się CAŁA — ucięte nazwisko
+  // w snippetcie wygląda na błąd strony, a nie na skrót.
+  const withTrainer = trainerName ? `${base} Prowadzi ${trainerName}.` : base;
+  return metaDescription(withTrainer.length <= 158 ? withTrainer : base);
+}
+
 /**
  * Organizacja + WebSite — wstrzykiwane na KAŻDEJ stronie publicznej.
  * To jest fundament pod Knowledge Panel w Google i pod rozpoznanie marki przez modele AI:
@@ -128,7 +182,9 @@ export function courseJsonLd(course: Course, trainerName?: string | null) {
     url,
     inLanguage: "pl-PL",
     provider: { "@type": "Organization", "@id": ORG_ID, name: SITE_NAME, url: SITE_URL },
-    ...(course.imageUrl ? { image: SITE_URL + course.imageUrl } : {}),
+    ...(course.imageUrl
+      ? { image: course.imageUrl.startsWith("http") ? course.imageUrl : SITE_URL + course.imageUrl }
+      : {}),
     ...(course.program.length ? { teaches: course.program.slice(0, 12) } : {}),
     educationalLevel: course.level,
     educationalCredentialAwarded: "Certyfikat ukończenia szkolenia",
@@ -198,7 +254,8 @@ export function articleJsonLd(post: BlogPost) {
   const published = post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined;
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    // BlogPosting (subtyp Article) — dokładniejsza kategoryzacja dla Google i modeli AI.
+    "@type": ["Article", "BlogPosting"],
     headline: post.title.slice(0, 110),
     description: post.metaDescription || post.excerpt,
     url,
@@ -207,7 +264,9 @@ export function articleJsonLd(post: BlogPost) {
     author: { "@type": "Organization", name: post.author, url: SITE_URL },
     publisher: { "@id": ORG_ID },
     ...(published ? { datePublished: published, dateModified: published } : {}),
-    ...(post.imageUrl ? { image: [SITE_URL + post.imageUrl] } : { image: [`${SITE_URL}/og-default.png`] }),
+    ...(post.imageUrl
+      ? { image: [post.imageUrl.startsWith("http") ? post.imageUrl : SITE_URL + post.imageUrl] }
+      : { image: [`${SITE_URL}/og-default.png`] }),
     timeRequired: `PT${post.readingMinutes}M`,
     isAccessibleForFree: true,
     inLanguage: "pl-PL",

@@ -9,6 +9,16 @@ export const metadata: Metadata = {
   description:
     "Uniwersytet Beauty łączy kobiety planujące karierę w branży beauty z certyfikowanymi trenerkami i pomaga zdobyć dofinansowanie do 90% z programu BUR.",
   alternates: { canonical: "/o-nas" },
+  openGraph: {
+    title: `O nas — ${SITE_NAME}`,
+    description:
+      "Uniwersytet Beauty łączy kobiety planujące karierę w branży beauty z certyfikowanymi trenerkami i pomaga zdobyć dofinansowanie do 90% z programu BUR.",
+    url: "/o-nas",
+    type: "website",
+    locale: "pl_PL",
+    siteName: SITE_NAME,
+    images: [{ url: "/images/akademia-sala.jpg", width: 1600, height: 872, alt: "Sala szkoleniowa akademii beauty" }],
+  },
 };
 
 export default function ONasPage() {

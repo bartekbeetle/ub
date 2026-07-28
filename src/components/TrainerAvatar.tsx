@@ -34,7 +34,8 @@ export function TrainerAvatar({
     return (
       <Image
         src={avatarUrl}
-        alt={`Zdjęcie: ${name}`}
+        // Komponent reużywany dla trenerek i dla autorek opinii — alt musi zostać neutralny co do roli.
+        alt={`Zdjęcie profilowe — ${name}`}
         width={size}
         height={size}
         className={`rounded-full object-cover ${className}`}

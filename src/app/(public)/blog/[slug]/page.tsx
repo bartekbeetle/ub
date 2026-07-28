@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
-import { articleJsonLd } from "@/lib/seo";
+import { articleJsonLd, metaDescription, pageTitle } from "@/lib/seo";
 import { renderMarkdown } from "@/lib/markdown";
 import { formatDate } from "@/lib/utils";
 import { SITE_NAME } from "@/lib/constants";
@@ -29,15 +29,20 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const post = await getPost(slug);
   if (!post) return { title: "Nie znaleziono artykułu" };
   return {
-    title: post.metaTitle || `${post.title}`,
-    description: post.metaDescription || post.excerpt.slice(0, 160),
+    title: pageTitle(post.metaTitle || post.title),
+    description: metaDescription(post.metaDescription || post.excerpt),
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title: post.metaTitle || post.title,
       description: post.metaDescription || post.excerpt.slice(0, 200),
       url: `/blog/${post.slug}`,
       type: "article",
+      locale: "pl_PL",
+      siteName: SITE_NAME,
       images: post.imageUrl ? [{ url: post.imageUrl, alt: post.title }] : [],
+      publishedTime: post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined,
+      authors: [post.author],
+      section: post.category,
     },
   };
 }

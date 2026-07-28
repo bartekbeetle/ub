@@ -10,7 +10,7 @@ import { StarRating } from "@/components/StarRating";
 import { TrainerAvatar } from "@/components/TrainerAvatar";
 import { LeadFormModal } from "@/components/LeadFormModal";
 import { TrackEvent } from "@/components/TrackEvent";
-import { courseJsonLd } from "@/lib/seo";
+import { courseJsonLd, courseMetaDescription, pageTitle } from "@/lib/seo";
 import { formatPln, formatDate } from "@/lib/utils";
 import { voivodeshipName, SITE_NAME } from "@/lib/constants";
 import { IconPin, IconClock, IconCheck, IconCalendar } from "@/components/icons";
@@ -36,17 +36,28 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { slug } = await params;
   const row = await getCourse(slug);
   if (!row) return { title: "Nie znaleziono kursu" };
-  const { course } = row;
-  const title = `${course.title}${course.city ? ` ${course.city}` : ""} z dofinansowaniem do ${course.subsidyPercent}%`;
+  const { course, trainer } = row;
+  // Tytuł budowany kaskadowo: pełny → bez miasta → bez sufiksu o dofinansowaniu.
+  // Bez tego tytuły kursów dochodziły do 91 znaków i Google ucinał je w połowie frazy.
+  const subsidy = ` z dofinansowaniem do ${course.subsidyPercent}%`;
+  const candidates = [
+    `${course.title}${course.city ? ` ${course.city}` : ""}${subsidy}`,
+    `${course.title}${subsidy}`,
+    course.title,
+  ];
+  const title = candidates.find((c) => c.length <= 60) ?? course.title;
+  const description = courseMetaDescription(course, trainer?.name);
   return {
-    title: `${title}`,
-    description: course.shortDescription ?? title,
+    title: pageTitle(title),
+    description,
     alternates: { canonical: `/kurs/${course.slug}` },
     openGraph: {
       title,
-      description: course.shortDescription ?? "",
+      description,
       url: `/kurs/${course.slug}`,
       type: "website",
+      locale: "pl_PL",
+      siteName: SITE_NAME,
       images: course.imageUrl ? [{ url: course.imageUrl, width: 1600, height: 1600, alt: course.title }] : [],
     },
   };

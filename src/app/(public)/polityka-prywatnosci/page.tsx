@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: `Polityka prywatności`,
   description: "Polityka prywatności serwisu Uniwersytet Beauty — zasady przetwarzania danych osobowych (RODO).",
   alternates: { canonical: "/polityka-prywatnosci" },
+  // Boilerplate prawny — noindex,follow: nie ma wartości rankingowej, a linki wewnętrzne
+  // mają być dalej crawlowane.
+  robots: { index: false, follow: true },
 };
 
 export default function PolitykaPrywatnosciPage() {

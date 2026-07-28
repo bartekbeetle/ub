@@ -8,6 +8,14 @@ export const metadata: Metadata = {
   title: `Kontakt`,
   description: "Skontaktuj się z Uniwersytet Beauty — pytania o szkolenia, dofinansowania BUR i współpracę trenerską.",
   alternates: { canonical: "/kontakt" },
+  openGraph: {
+    title: `Kontakt — ${SITE_NAME}`,
+    description: "Skontaktuj się z Uniwersytet Beauty — pytania o szkolenia, dofinansowania BUR i współpracę trenerską.",
+    url: "/kontakt",
+    type: "website",
+    locale: "pl_PL",
+    siteName: SITE_NAME,
+  },
 };
 
 export default function KontaktPage() {
