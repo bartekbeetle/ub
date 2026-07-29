@@ -27,11 +27,36 @@ const DEPRECATED_SLUGS = [
   "trendy-beauty-2026-jakie-uslugi-beda-zarabiac",
 ];
 
-// Obraz nagłówkowy dobierany po slugu (pliki w /public/images).
+/**
+ * Obraz nagłówkowy dobierany po slugu (pliki w /public/images).
+ *
+ * Poprzednia wersja miała 3 zdjęcia i dwa z nich obsługiwały 400 z 415 odwołań na blogu —
+ * po wejściu 21 wpisów geo ten sam kadr powtarzał się na całej liście. Teraz każdy temat ma
+ * własną pulę, a wybór w puli jest deterministyczny (hash slugu), więc sąsiadujące wpisy
+ * tej samej kategorii dostają różne kadry, a ten sam wpis zawsze to samo zdjęcie.
+ */
+const PULE: { test: (s: string) => boolean; obrazy: string[] }[] = [
+  // Kategorie zabiegowe — najpierw te bardziej szczegółowe, bo slugi się zazębiają
+  // („kurs-laminacja-brwi-rzes-*" zawiera i „brwi", i „rzes").
+  { test: (s) => s.includes("laminacja"), obrazy: ["laminacja-brwi", "laminacja-rzes"] },
+  { test: (s) => s.includes("paznokci"), obrazy: ["paznokcie-stanowisko", "paznokcie-detal"] },
+  { test: (s) => s.includes("rzes"), obrazy: ["rzes-praca", "rzes-detal"] },
+  { test: (s) => s.includes("pmu") || s.includes("makijaz-permanentny") || s.includes("microblading"), obrazy: ["pmu-zabieg", "pmu-projekt"] },
+  { test: (s) => s.includes("brwi"), obrazy: ["pmu-projekt", "laminacja-brwi"] },
+  // Tematy okołobiznesowe
+  { test: (s) => s.includes("zarabia") || s.includes("przebranzowienie") || s.includes("kariera") || s.includes("zawod"), obrazy: ["kariera-wlasny-gabinet"] },
+  { test: (s) => s.includes("trenerk") || s.includes("kursantki") || s.includes("prowizja") || s.includes("bur"), obrazy: ["trenerka-szkolenie", "akademia-grupa"] },
+  { test: (s) => s.includes("dofinansowan") || s.includes("0-zl") || s.includes("krok-po-kroku"), obrazy: ["dofinansowanie-wniosek"] },
+];
+
+const OBRAZ_DOMYSLNY = ["akademia-grupa", "trenerka-szkolenie"];
+
 function pickImage(slug: string): string {
-  if (slug.includes("pmu") || slug.includes("rzes") || slug.includes("brwi")) return "/images/pmu-brwi.jpg";
-  if (slug.includes("region") || slug.includes("slaskie") || slug.includes("mazowieckie")) return "/images/medycyna-estetyczna.jpg";
-  return "/images/akademia-sala.jpg";
+  const pula = PULE.find((p) => p.test(slug))?.obrazy ?? OBRAZ_DOMYSLNY;
+  // Prosty deterministyczny hash — ten sam slug zawsze dostaje ten sam kadr.
+  let h = 0;
+  for (let i = 0; i < slug.length; i++) h = (h * 31 + slug.charCodeAt(i)) >>> 0;
+  return `/images/blog/${pula[h % pula.length]}.jpg`;
 }
 
 type ParsedPost = {
