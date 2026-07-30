@@ -5,7 +5,7 @@ category: "Poradniki"
 excerpt: "Ile kosztuje kurs przedłużania rzęs w Poznaniu, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie wielkopolskim."
 metaTitle: "Kurs przedłużania rzęs Poznań — cena i dofinansowanie"
 metaDescription: "Kurs przedłużania rzęs w Poznaniu: rynkowa cena 1200-2500 zł, przy dofinansowaniu z BUR wkład własny zwykle 120-500 zł. Program i zasady naboru."
-data: 2026-07-28
+data: 2026-07-30
 reading_minutes: 4
 target: kursantka (B2C)
 fraza_glowna: "kurs przedłużania rzęs poznań"

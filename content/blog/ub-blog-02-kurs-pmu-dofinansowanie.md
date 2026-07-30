@@ -120,3 +120,16 @@ Po pracy na żywych modelkach (nie tylko sztucznej skórze), portfolio trenerki 
 
 **Czy każdy kurs PMU kwalifikuje się do dofinansowania z BUR?**
 Nie. Szkolenie musi być wpisane do Bazy Usług Rozwojowych przez certyfikowaną trenerkę albo firmę. Kurs spoza BUR możesz zrobić, ale bez zwrotu z tego programu - dlatego wybór trenerki z akredytacją to warunek konieczny.
+
+<!-- geo-links:start (blok zarządzany przez blog-factory — nie edytuj ręcznie) -->
+
+## Kursy w konkretnych miastach
+
+Ceny, terminy i ścieżka dofinansowania różnią się między regionami — poniżej rozpisane osobno:
+
+- [Kurs makijażu permanentnego Kraków](/blog/kurs-makijaz-permanentny-krakow)
+- [Kurs makijażu permanentnego Poznań](/blog/kurs-makijaz-permanentny-poznan)
+- [Kurs makijażu permanentnego Warszawa](/blog/kurs-makijaz-permanentny-warszawa)
+- [Kurs makijażu permanentnego Wrocław](/blog/kurs-makijaz-permanentny-wroclaw)
+
+<!-- geo-links:end -->

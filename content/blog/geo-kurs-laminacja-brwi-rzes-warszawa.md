@@ -5,7 +5,7 @@ category: "Poradniki"
 excerpt: "Ile kosztuje kurs laminacji brwi i rzęs w Warszawie, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie mazowieckim."
 metaTitle: "Kurs laminacji brwi i rzęs Warszawa — cena i dofinansowanie"
 metaDescription: "Kurs laminacji brwi i rzęs w Warszawie: rynkowa cena 800-1800 zł, przy dofinansowaniu z BUR wkład własny zwykle 80-360 zł. Program i zasady naboru."
-data: 2026-07-28
+data: 2026-07-30
 reading_minutes: 4
 target: kursantka (B2C)
 fraza_glowna: "kurs laminacji brwi i rzęs warszawa"

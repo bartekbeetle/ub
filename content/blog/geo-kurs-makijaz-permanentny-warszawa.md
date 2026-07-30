@@ -5,7 +5,7 @@ category: "Poradniki"
 excerpt: "Ile kosztuje kurs makijażu permanentnego w Warszawie, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie mazowieckim."
 metaTitle: "Kurs makijażu permanentnego Warszawa — cena i dofinansowanie"
 metaDescription: "Kurs makijażu permanentnego w Warszawie: rynkowa cena 3500-7000 zł, przy dofinansowaniu z BUR wkład własny zwykle 350-1400 zł. Program i zasady naboru."
-data: 2026-07-28
+data: 2026-07-30
 reading_minutes: 4
 target: kursantka (B2C)
 fraza_glowna: "szkolenie makijaż permanentny warszawa"

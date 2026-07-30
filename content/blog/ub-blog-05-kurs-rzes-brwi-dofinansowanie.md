@@ -123,3 +123,23 @@ Tak, w większości regionalnych naborów BUR osoby pracujące się kwalifikują
 
 **Czy każdy kurs rzęs łapie się na dofinansowanie?**
 Nie. Szkolenie musi być wpisane do Bazy Usług Rozwojowych przez certyfikowaną trenerkę. Kurs spoza BUR zrobisz, ale bez zwrotu z tego programu - dlatego wybór trenerki z bazy jest warunkiem koniecznym.
+
+<!-- geo-links:start (blok zarządzany przez blog-factory — nie edytuj ręcznie) -->
+
+## Kursy w konkretnych miastach
+
+Ceny, terminy i ścieżka dofinansowania różnią się między regionami — poniżej rozpisane osobno:
+
+- [Kurs laminacji brwi i rzęs Gdańsk](/blog/kurs-laminacja-brwi-rzes-gdansk)
+- [Kurs laminacji brwi i rzęs Katowice](/blog/kurs-laminacja-brwi-rzes-katowice)
+- [Kurs laminacji brwi i rzęs Kraków](/blog/kurs-laminacja-brwi-rzes-krakow)
+- [Kurs laminacji brwi i rzęs Lublin](/blog/kurs-laminacja-brwi-rzes-lublin)
+- [Kurs laminacji brwi i rzęs Warszawa](/blog/kurs-laminacja-brwi-rzes-warszawa)
+- [Kurs przedłużania rzęs Gdańsk](/blog/kurs-przedluzanie-rzes-gdansk)
+- [Kurs przedłużania rzęs Kraków](/blog/kurs-przedluzanie-rzes-krakow)
+- [Kurs przedłużania rzęs Lublin](/blog/kurs-przedluzanie-rzes-lublin)
+- [Kurs przedłużania rzęs Poznań](/blog/kurs-przedluzanie-rzes-poznan)
+- [Kurs przedłużania rzęs Warszawa](/blog/kurs-przedluzanie-rzes-warszawa)
+- [Kurs przedłużania rzęs Wrocław](/blog/kurs-przedluzanie-rzes-wroclaw)
+
+<!-- geo-links:end -->

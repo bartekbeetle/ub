@@ -198,6 +198,64 @@ wariant: ${plan.wariant}
   return { slug, plik: `${PREFIX}${slug}.md`, tresc: frontmatter + body };
 }
 
+const MARKER_START = "<!-- geo-links:start (blok zarządzany przez blog-factory — nie edytuj ręcznie) -->";
+const MARKER_END = "<!-- geo-links:end -->";
+
+/**
+ * Dopisuje do wpisów-filarów listę linków W DÓŁ, do wpisów kategoria × miasto.
+ *
+ * Powód: wpisy geo linkują w górę do filara, ale filar nie linkował do nich wcale. Nowe strony
+ * były osiągalne tylko z sitemapy i z paginowanej listy bloga, co spowalnia indeksację i marnuje
+ * link equity filara. Klaster ma działać w obie strony.
+ *
+ * Blok jest ograniczony markerami i przepisywany w całości przy każdym uruchomieniu, więc ręcznie
+ * pisana treść filara pozostaje nietknięta.
+ */
+function podlinkujFilary(plan: Plan[]): void {
+  const wgFilara = new Map<string, { tytul: string; sciezka: string }[]>();
+  for (const p of plan) {
+    const k = KATEGORIA_PO_SLUGU.get(p.kategoria)!;
+    const l = LOKALIZACJA_PO_SLUGU.get(p.lokalizacja)!;
+    const lista = wgFilara.get(k.hubSlug) ?? [];
+    lista.push({ tytul: `${k.nazwaKursu} ${l.nazwa}`, sciezka: `/blog/kurs-${k.slug}-${l.slug}` });
+    wgFilara.set(k.hubSlug, lista);
+  }
+
+  const pliki = readdirSync(BLOG_DIR).filter((f) => f.endsWith(".md") && !f.startsWith(PREFIX));
+  for (const [hubSlug, linki] of wgFilara) {
+    const plik = pliki.find((f) => {
+      const m = readFileSync(join(BLOG_DIR, f), "utf8").match(/^slug:\s*"?([^"\n]+)"?/m);
+      return m?.[1].trim() === hubSlug;
+    });
+    if (!plik) {
+      console.warn(`⚠ nie znalazłem filara o slugu "${hubSlug}" — pomijam linkowanie`);
+      continue;
+    }
+
+    linki.sort((a, b) => a.tytul.localeCompare(b.tytul, "pl"));
+    const blok = [
+      MARKER_START,
+      "",
+      "## Kursy w konkretnych miastach",
+      "",
+      "Ceny, terminy i ścieżka dofinansowania różnią się między regionami — poniżej rozpisane osobno:",
+      "",
+      ...linki.map((l) => `- [${l.tytul}](${l.sciezka})`),
+      "",
+      MARKER_END,
+    ].join("\n");
+
+    const sciezka = join(BLOG_DIR, plik);
+    const tresc = readFileSync(sciezka, "utf8");
+    const wzorzec = new RegExp(`${MARKER_START.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[\\s\\S]*?${MARKER_END}`);
+    const nowa = wzorzec.test(tresc) ? tresc.replace(wzorzec, blok) : `${tresc.trimEnd()}\n\n${blok}\n`;
+    if (nowa !== tresc) {
+      writeFileSync(sciezka, nowa, "utf8");
+      console.log(`  ↳ filar ${plik}: ${linki.length} linków w dół`);
+    }
+  }
+}
+
 function main() {
   mkdirSync(BLOG_DIR, { recursive: true });
   const zajete = zajeteSlugi();
@@ -220,6 +278,8 @@ function main() {
       zapisane++;
     }
   }
+
+  if (!dry) podlinkujFilary(plan);
 
   console.log(
     dry

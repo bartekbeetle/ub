@@ -5,7 +5,7 @@ category: "Poradniki"
 excerpt: "Ile kosztuje kurs stylizacji paznokci we Wrocławiu, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie dolnośląskim."
 metaTitle: "Kurs stylizacji paznokci Wrocław — cena i dofinansowanie"
 metaDescription: "Kurs stylizacji paznokci we Wrocławiu: rynkowa cena 1200-2500 zł, przy dofinansowaniu z BUR wkład własny zwykle 120-500 zł. Program i zasady naboru."
-data: 2026-07-28
+data: 2026-07-30
 reading_minutes: 4
 target: kursantka (B2C)
 fraza_glowna: "kurs stylizacji paznokci wrocław"

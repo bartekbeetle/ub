@@ -123,3 +123,18 @@ Nie. Szkolenie musi być wpisane do Bazy Usług Rozwojowych przez akredytowaną 
 
 **Czy manicure to dobry pierwszy zawód w beauty?**
 Ma najniższy próg wejścia spośród popularnych usług: tańszy sprzęt na start, stały lokalny popyt i szybką powracalność klientek. Można zacząć obok etatu i sprawdzić, czy ten zawód jest dla Ciebie, zanim zrezygnujesz z pewnego dochodu. To praca z klientem i reżimem higieny, nie łatwe pieniądze, ale daje najszybszą informację zwrotną ze wszystkich kategorii.
+
+<!-- geo-links:start (blok zarządzany przez blog-factory — nie edytuj ręcznie) -->
+
+## Kursy w konkretnych miastach
+
+Ceny, terminy i ścieżka dofinansowania różnią się między regionami — poniżej rozpisane osobno:
+
+- [Kurs stylizacji paznokci Legnica](/blog/kurs-stylizacja-paznokci-legnica)
+- [Kurs stylizacji paznokci Łódź](/blog/kurs-stylizacja-paznokci-lodz)
+- [Kurs stylizacji paznokci Płock](/blog/kurs-stylizacja-paznokci-plock)
+- [Kurs stylizacji paznokci Poznań](/blog/kurs-stylizacja-paznokci-poznan)
+- [Kurs stylizacji paznokci Warszawa](/blog/kurs-stylizacja-paznokci-warszawa)
+- [Kurs stylizacji paznokci Wrocław](/blog/kurs-stylizacja-paznokci-wroclaw)
+
+<!-- geo-links:end -->
