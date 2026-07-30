@@ -91,6 +91,8 @@ Rzetelny rachunek pokazuje obie strony. Beauty nie jest dobrym wyborem dla każd
 
 Zawód opłaca się tej osobie, która wchodzi w niego z otwartymi oczami: wie, że to praca z człowiekiem i higieną, akceptuje chudy start i traktuje kurs jak początek budowania bazy, a nie przełącznik do gotowej wypłaty. Dla takiej osoby matematyka - cena razy klientki razy powtarzalność - działa na jej korzyść z każdym kolejnym miesiącem.
 
+Jeśli te liczby przekonują Cię do zmiany zawodu, zacznij od wpisu [przebranżowienie na beauty po 30 i 40](/blog/przebranzowienie-na-beauty-po-30). Koszt wejścia do najlepiej płatnej specjalizacji rozliczamy w tekście [kurs PMU z dofinansowaniem](/blog/kurs-pmu-z-dofinansowaniem-ile-zaplacisz), a całą ścieżkę — [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
+
 ## Sprawdź, od czego zacząć
 
 Jeśli po tym rachunku myślisz „to ma sens, chcę spróbować", następny krok nie jest wielki. Nie musisz od razu rzucać obecnej pracy ani wykładać kilku tysięcy na kurs.

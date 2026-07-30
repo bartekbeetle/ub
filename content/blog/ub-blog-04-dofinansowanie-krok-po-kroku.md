@@ -80,6 +80,8 @@ Reszta - ustalenie, który operator obsługuje Twój region, jaki nabór jest ot
 
 Tę samą rolę pełni Uniwersytet Beauty. Zamiast samodzielnie przeszukiwać strony kilku operatorów i zgadywać, czy się kwalifikujesz, odpowiadasz na kilka pytań, a my dopasowujemy Cię do trenerki i naboru, w którym możesz otrzymać zwrot. Wniosku nie wypełniamy za Ciebie - to Twoje dane - ale prowadzimy Cię przez każdy krok i łączymy z osobą, która przechodzi tę procedurę na co dzień. Różnica jest podobna do tej między samodzielnym poruszaniem się po urzędzie a wizytą z kimś, kto zna procedurę od środka.
 
+Jeżeli nie masz pewności, czy w ogóle się kwalifikujesz, zacznij od wpisu [dofinansowanie BUR — nie musisz być bezrobotna](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych). Kwotę, która zostaje po Twojej stronie, rozbijamy w tekście [kurs beauty za 0 zł](/blog/kurs-beauty-za-0-zl-kiedy-realne), a wybór kierunku i trenerki omawia [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
+
 ## Twój następny krok
 
 Cała procedura sprowadza się do jednej pierwszej decyzji: sprawdzić, czy i na jakich zasadach przysługuje Ci dofinansowanie w Twoim regionie. Bez tej informacji trudno zaplanować cokolwiek dalej. Z nią - masz gotową ścieżkę.

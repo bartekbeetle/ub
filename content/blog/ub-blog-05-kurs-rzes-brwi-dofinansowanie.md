@@ -63,7 +63,7 @@ Powód jest praktyczny. **Brwi** to najtańsze wejście i najkrótsze szkolenie.
 
 Rozsądna ścieżka dla większości kobiet wygląda tak: start od rzęs albo brwi za kilkaset złotych wkładu własnego, budowa pierwszej bazy klientek, pierwsze przychody w zawodzie. Po roku, kiedy decyzja o branży jest już sprawdzona w praktyce, PMU można sfinansować z drugiego dofinansowania. Każdy z tych kursów jest w BUR dostępny osobno.
 
-<!-- TODO wewnętrzny link: [kurs PMU z dofinansowaniem] → podtemat „Kurs makijażu permanentnego z dofinansowaniem" (brief 4) -->
+Ile kosztuje ten drugi krok i jak wygląda przy nim dopłata, liczymy we wpisie [kurs PMU z dofinansowaniem](/blog/kurs-pmu-z-dofinansowaniem-ile-zaplacisz). Całą ścieżkę zawodową od zera opisuje wpis [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
 
 ## Kto może dostać dofinansowanie na kurs rzęs i brwi
 
@@ -80,7 +80,7 @@ W praktyce najczęściej kwalifikują się:
 
 Zasady różnią się między województwami i konkretnymi naborami - jeden operator kieruje program do mieszkanek jednego powiatu, inny do kobiet po 30. roku życia, jeszcze inny do osób planujących przekwalifikowanie. Dlatego rzetelna odpowiedź nie brzmi „każda dostanie" - warunki trzeba zweryfikować dla konkretnego naboru. Najczęstszym powodem, dla którego kobieta nie otrzymuje zwrotu, nie jest jednak to, że pracuje. Jest to, że w ogóle nie sprawdziła.
 
-<!-- TODO wewnętrzny link: [komu należy się dofinansowanie z BUR] → podtemat „BUR ≠ urząd pracy - kto się kwalifikuje" (brief 3) -->
+Kto realnie łapie się na dofinansowanie — i dlaczego status osoby bezrobotnej nie jest do tego potrzebny — wyjaśniamy we wpisie [dofinansowanie BUR dla osób pracujących](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych). Samą procedurę wniosku rozkłada [krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku).
 
 ## Jak dobrać kurs i trenerkę w swoim mieście
 

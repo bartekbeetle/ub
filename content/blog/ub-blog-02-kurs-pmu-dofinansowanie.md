@@ -91,6 +91,8 @@ Droga od decyzji do pierwszego dnia szkolenia sprowadza się do trzech kroków.
 
 Dalej zostaje szkolenie, przepracowanie modelek i pierwsze płacące klientki.
 
+Jeżeli interesuje Cię wyłącznie metoda manualna, osobno rozliczamy [kurs microbladingu z dofinansowaniem](/blog/kurs-microblading-z-dofinansowaniem). Szerszy obraz — od wyboru zawodu po pierwsze klientki — daje wpis [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac), a kryteria oceny szkoły zebraliśmy w poradniku [jak wybrać trenerkę beauty](/blog/jak-wybrac-dobra-trenerke-beauty).
+
 ## Dobierzemy Ci trenerkę PMU z akredytacją BUR
 
 Następny krok po lekturze jest jeden: sprawdzić własną sytuację pod aktualne nabory i znaleźć trenerkę z kursem wpisanym do BUR. Możesz to zrobić samodzielnie na uslugirozwojowe.parp.gov.pl - albo skrócić drogę.

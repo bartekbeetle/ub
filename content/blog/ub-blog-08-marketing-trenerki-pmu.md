@@ -60,6 +60,8 @@ Do tego dochodzi rachunek czasu. Prowadzenie Instagrama, tworzenie contentu, obs
 
 Sedno nie brzmi „rób więcej marketingu". Brzmi: marketing własny ma sufit, powyżej którego dokładanie kolejnych godzin przestaje się zwracać, a zapisy dalej skaczą. W tym punkcie sensowniej dołożyć źródło, które daje przewidywalny strumień kursantek i nie zżera Twojego czasu.
 
+Pełny przegląd kanałów pozyskania, wraz z kosztem czasu każdego z nich, znajdziesz we wpisie [jak pozyskać kursantki na szkolenia beauty](/blog/jak-pozyskac-kursantki-na-szkolenia-beauty). Sam sposób rozliczenia z zewnętrznym źródłem porównujemy w tekście [prowizja czy flat fee](/blog/prowizja-vs-flat-fee-pozyskanie-kursantek).
+
 ## Kiedy dołożyć zewnętrzne źródło kursantek na wynik
 
 Zewnętrzne źródło kursantek na wynik wchodzi tam, gdzie marketing własny sięga sufitu. Zamiast płacić za dotarcie i mieć nadzieję na zapis, płacisz dopiero za kursantkę, która realnie się zapisała. Ryzyko pustej kampanii przechodzi na partnera, a Ty księgujesz wydatek wtedy, kiedy pojawia się po nim przychód.

@@ -28,7 +28,7 @@ Zarobki zależą od miasta, techniki i tego, ile pracy włożysz w zbudowanie ba
 
 Druga rzecz to elastyczność. Możesz pracować na etacie i przyjmować klientki po godzinach. Możesz wynająć jedno stanowisko w cudzym salonie, zamiast od razu otwierać własny lokal. Możesz robić zabiegi mobilnie, u klientek w domu. Dla wielu kobiet - zwłaszcza mam, które chcą wrócić do pracy na własnych warunkach - to właśnie ta elastyczność przesądza. Nie musisz od razu rzucać wszystkiego. Zaczynasz obok tego, co już masz.
 
-Niski próg wejścia robi się jeszcze niższy, gdy dołożyć do tego dofinansowanie.
+Niski próg wejścia robi się jeszcze niższy, gdy dołożyć do tego dofinansowanie. Jeśli zmieniasz zawód po trzydziestce lub czterdziestce, osobno opisujemy tę drogę: [przebranżowienie na beauty po 30 i 40](/blog/przebranzowienie-na-beauty-po-30).
 
 ## Skąd wziąć pieniądze na szkolenie - BUR, KFS, EFS+ w pigułce
 
@@ -48,7 +48,7 @@ Najczęstsze przekonanie brzmi tak: „dofinansowanie jest dla bezrobotnych, a j
 
 Dofinansowanie z BUR nie jest zarezerwowane dla osób zarejestrowanych w urzędzie pracy. W większości regionalnych naborów mogą z niego korzystać osoby pracujące na etacie, prowadzące działalność, studentki, a w wielu projektach szczególnie zachęca się mamy wracające na rynek pracy oraz osoby po 30. czy 45. roku życia. Zasady różnią się między województwami i konkretnymi naborami - jeden operator kieruje program do osób o niskich kwalifikacjach, inny do mieszkańców konkretnego powiatu, jeszcze inny do kobiet planujących zmianę zawodu.
 
-<!-- TODO wewnętrzny link: [komu należy się dofinansowanie z BUR] → podtemat „BUR ≠ urząd pracy - kto się kwalifikuje" (brief 2/3) -->
+Kto dokładnie się kwalifikuje i gdzie są prawdziwe wyjątki, rozkładamy w osobnym wpisie: [dofinansowanie BUR — nie musisz być bezrobotna](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych).
 
 Dlatego jednej odpowiedzi na pytanie „czy mnie to obejmuje?" nie da się zamknąć w artykule. Trzeba sprawdzić Twoją sytuację pod aktualne nabory w Twoim regionie. Zajmuje to chwilę - wróć do tego na końcu, przy teście kwalifikacji.
 
@@ -58,17 +58,15 @@ Przez BUR finansuje się właściwie cały przekrój kursów beauty. Cztery kier
 
 **Makijaż permanentny (PMU).** Najbardziej dochodowy z tej listy i dlatego najczęściej wybierany przez kobiety, które traktują przekwalifikowanie poważnie, jako nowy zawód, a nie dodatek. Pełne szkolenie PMU od podstaw to zwykle kilka tysięcy złotych, więc tu dofinansowanie robi największą różnicę w portfelu.
 
-<!-- TODO wewnętrzny link: [kurs PMU z dofinansowaniem] → podtemat „Kurs makijażu permanentnego z dofinansowaniem" (brief 4) -->
+Ceny, widełki dopłaty i na co patrzeć przy wyborze szkolenia: [kurs PMU z dofinansowaniem — ile realnie zapłacisz](/blog/kurs-pmu-z-dofinansowaniem-ile-zaplacisz). Jeśli interesuje Cię wyłącznie metoda manualna, osobno opisujemy [kurs microbladingu z dofinansowaniem](/blog/kurs-microblading-z-dofinansowaniem).
 
 **Stylizacja rzęs.** Niższy próg wejścia, szybki start, klientki wracają regularnie co kilka tygodni - dobry pierwszy zawód, jeśli chcesz sprawdzić, czy praca z klientką „na fotelu" w ogóle Ci odpowiada.
 
-<!-- TODO wewnętrzny link: [kurs stylizacji rzęs z dofinansowaniem] → podtemat „Kurs rzęs z dofinansowaniem" (brief 5) -->
+Ile kosztuje szkolenie i ile z tego dopłacasz: [kurs rzęs i brwi z dofinansowaniem](/blog/kurs-rzes-brwi-z-dofinansowaniem-ile-doplacasz).
 
-**Stylizacja i laminacja brwi.** Często łączona z rzęsami albo z PMU. Krótkie szkolenia, tanie w wejściu, łatwo dosprzedać istniejącym klientkom.
+**Stylizacja i laminacja brwi.** Często łączona z rzęsami albo z PMU. Krótkie szkolenia, tanie w wejściu, łatwo dosprzedać istniejącym klientkom. Rozliczenie kosztów brwi omawiamy w tym samym wpisie, co rzęsy — techniki i nabory zwykle idą w parze.
 
-<!-- TODO wewnętrzny link: [kurs brwi z dofinansowaniem] → podtemat „Kursy brwi z dofinansowaniem" (brief 6) -->
-
-**Stylizacja paznokci (manicure).** Klasyka, największy rynek, ale i największa konkurencja. Dobry wybór, jeśli lubisz precyzyjną pracę i chcesz zawodu z przewidywalnym, stałym popytem.
+**Stylizacja paznokci (manicure).** Klasyka, największy rynek, ale i największa konkurencja. Dobry wybór, jeśli lubisz precyzyjną pracę i chcesz zawodu z przewidywalnym, stałym popytem. Widełki cen i dopłaty: [kurs paznokci z dofinansowaniem](/blog/kurs-paznokci-z-dofinansowaniem).
 
 Nie musisz wybierać jednego na całe życie. Wiele osób zaczyna od tańszego kursu (rzęsy albo brwi), buduje pierwszą bazę klientek, a po roku dokłada PMU z drugiego dofinansowania. Każdy z tych kierunków ma osobne szkolenia dostępne w BUR - do której grupy Ci bliżej, zależy od tego, czy wolisz szybki start, czy od razu celujesz w najwyższą stawkę za zabieg.
 
@@ -77,12 +75,12 @@ Nie musisz wybierać jednego na całe życie. Wiele osób zaczyna od tańszego k
 Cały proces, od decyzji do pierwszego dnia szkolenia, wygląda tak:
 
 1. **Sprawdzasz swoją kwalifikowalność.** Zanim wybierzesz kurs, ustal, czy i na jakich zasadach należy Ci się dofinansowanie w Twoim województwie. Bez tego wybierasz kurs w ciemno.
-2. **Wybierasz zawód i trenerkę.** Znajdujesz certyfikowaną trenerkę albo firmę szkoleniową, która ma kurs wpisany do Bazy Usług Rozwojowych. Kurs spoza BUR nie łapie się na to dofinansowanie - to warunek konieczny.
+2. **Wybierasz zawód i trenerkę.** Znajdujesz certyfikowaną trenerkę albo firmę szkoleniową, która ma kurs wpisany do Bazy Usług Rozwojowych. Kurs spoza BUR nie łapie się na to dofinansowanie - to warunek konieczny. Po czym poznać dobrą akademię: [jak wybrać trenerkę beauty](/blog/jak-wybrac-dobra-trenerke-beauty).
 3. **Składasz wniosek u operatora.** Kontaktujesz się z regionalnym operatorem programu i przechodzisz przez formalności: dokumenty, kwalifikacja do projektu, umowa. W praktyce to kilka dokumentów.
 4. **Zapisujesz się na kurs i dopłacasz wkład własny.** Rezerwujesz miejsce, wpłacasz swoją część (o tym za chwilę), operator pokrywa resztę bezpośrednio szkoleniu albo zwraca Ci ją po zakończeniu.
 5. **Kończysz szkolenie i zaczynasz przyjmować klientki.** Certyfikat w ręce, pierwsze modelki, budowanie grafiku.
 
-<!-- TODO wewnętrzny link: [ścieżka krok po kroku do kursu z BUR] → podtemat „Jak zapisać się na kurs z dofinansowaniem - krok po kroku" (brief X) -->
+Każdy z tych kroków — z dokumentami, terminami i błędami, przez które wnioski przepadają — rozpisujemy szczegółowo we wpisie [dofinansowanie na szkolenie krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku).
 
 Najczęściej ludzie zacinają się na kroku pierwszym - bo nie wiedzą, gdzie sprawdzić, albo z góry zakładają, że im się nie należy. Tymczasem to krok, który zajmuje najmniej czasu i przesądza o całej reszcie.
 
@@ -98,9 +96,11 @@ Mechanizm zwrotu bywa różny i trzeba go rozumieć. W jednym modelu płacisz sz
 
 Uczciwie: dofinansowanie nie robi z kursu prezentu. Robi z niego wydatek, na który stać znacznie więcej kobiet, niż sądzi, że je stać. Kilkaset złotych za zawód, który potrafi zwrócić się po kilku pierwszych klientkach - tak warto na to patrzeć. Nie jako darmo, tylko jako opłacalny start.
 
+Samo hasło „kurs za 0 zł" rozbieramy na czynniki pierwsze — kiedy jest prawdziwe, a kiedy to clickbait — w osobnym wpisie: [kurs beauty za 0 zł](/blog/kurs-beauty-za-0-zl-kiedy-realne). Jeśli zastanawiasz się, czy ta inwestycja się zwróci, sprawdź też [ile zarabia linergistka i stylistka beauty](/blog/ile-zarabia-linergistka-stylistka-beauty).
+
 ## Sprawdź, czy należy Ci się dofinansowanie
 
-Wszystko sprowadza się do jednego kroku: sprawdzenia własnej sytuacji. Nie przez godziny czytania regulaminów operatorów, tylko przez krótki test.
+Wszystko sprowadza się do jednego kroku: sprawdzenia własnej sytuacji. Nie przez godziny czytania regulaminów operatorów, tylko przez krótki test. Warunki różnią się między regionami — przegląd największych województw znajdziesz we wpisie [dofinansowane szkolenia beauty w śląskim, mazowieckim i małopolskim](/blog/dofinansowane-szkolenia-beauty-slaskie-mazowieckie-malopolskie).
 
 Sprawdź w 2 minuty, czy przysługuje Ci dofinansowanie na kurs beauty. Odpowiadasz na kilka pytań o swoją sytuację - czy pracujesz, w jakim jesteś województwie, jaki kierunek Cię interesuje - a portal dopasowuje Cię do trenerki i naboru, w którym możesz załapać się na zwrot. Sprawdzenie nie wiąże się z żadną opłatą ani zobowiązaniem.
 

@@ -76,6 +76,8 @@ Realny koszt wejścia to certyfikat znaku jakości. Cena audytu i certyfikacji z
 
 Czas liczony jest przede wszystkim procesem certyfikacji: przygotowanie dokumentacji, audyt, ewentualne uzupełnienia. W praktyce oznacza to raczej tygodnie niż dni, a przy nieuporządkowanym zapleczu potrafi rozciągnąć się na kilka miesięcy. Rejestracja w samym systemie BUR i weryfikacja karty usługi to kwestia znacznie krótsza, o ile warunki wstępne są już spełnione. Planując wejście, licz od najdłuższego elementu, czyli od certyfikatu, i cofaj się do tyłu.
 
+Wpis do Bazy sam z siebie nie zapełnia terminów — co robić dalej, zbieramy we wpisie [jak pozyskać kursantki na szkolenia beauty](/blog/jak-pozyskac-kursantki-na-szkolenia-beauty), a koszt poszczególnych modeli współpracy porównujemy w tekście [prowizja czy flat fee](/blog/prowizja-vs-flat-fee-pozyskanie-kursantek).
+
 ## Masz akredytację. Jak teraz przyciągnąć kursantki
 
 Akredytacja w BUR odblokowuje dostęp do dofinansowania, ale sama nie wypełnia grafiku. Widoczność w bazie działa dla kursantek, które już świadomie w niej szukają. Reszta, a jest jej sporo, wciąż nie wie, że kurs z jej marzeń da się sfinansować w 80-90%. Do nich trzeba dotrzeć aktywnie: przez treści, które tłumaczą mechanizm dofinansowania, przez reklamę kierowaną na właściwą grupę, przez konkretny przekaz „nie musisz być bezrobotna, żeby dostać zwrot".

@@ -78,6 +78,8 @@ Zmiana zawodu przestaje straszyć, kiedy rozpiszesz ją na konkretne tygodnie. O
 
 Po tych 90 dniach nie masz jeszcze pełnego grafiku - masz działającą podstawę: technikę, portfolio, pierwsze opinie i pierwsze powtarzające się klientki. Pełny, przewidywalny dochód buduje się dalej, miesiącami, wraz z bazą stałych wizyt. Kto rozumie tę oś czasu, nie zniechęca się chudym startem, bo wie, że to inwestycja, a nie porażka.
 
+Zanim policzysz budżet, sprawdź, czy dofinansowanie w ogóle Cię obejmuje — wyjaśnia to wpis [dofinansowanie BUR dla osób pracujących](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych). Ile da się zarobić w poszczególnych specjalizacjach, pokazuje [ile zarabia linergistka i stylistka beauty](/blog/ile-zarabia-linergistka-stylistka-beauty), a pełną ścieżkę opisuje [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
+
 ## Twój pierwszy krok w tym tygodniu
 
 Zmiana zawodu wygląda na wielką decyzję, ale pierwszy krok jest mały i niezobowiązujący. Nie musisz dziś rzucać pracy, wybierać kategorii na całe życie ani wykładać pieniędzy.

@@ -81,6 +81,8 @@ Dofinansowanie z BUR nie przysługuje w każdym przypadku. Poniżej cztery sytua
 
 Dofinansowanie to system z zasadami, nie automatyczna zniżka dla każdego. Te zasady są jednak znacznie szersze, niż sugeruje mit o bezrobotnych - a najczęstszym powodem, dla którego kobieta nie otrzymuje zwrotu, nie jest to, że pracuje, tylko to, że w ogóle nie sprawdziła swojej sytuacji.
 
+Gdy już wiesz, że się kwalifikujesz, zostaje procedura — rozkładamy ją we wpisie [dofinansowanie na szkolenie krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku). Ile realnie zostaje do dopłaty, liczymy w tekście [kurs beauty za 0 zł](/blog/kurs-beauty-za-0-zl-kiedy-realne), a całą ścieżkę zawodową opisuje [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
+
 ## Sprawdź swoją sytuację w 2 minuty
 
 Ponieważ zasady zależą od województwa i aktualnych naborów, wiążącej odpowiedzi na pytanie „czy mi się należy" nie daje żadna ogólna reguła - daje ją sprawdzenie Twojej konkretnej sytuacji.

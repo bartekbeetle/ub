@@ -78,6 +78,8 @@ BUR działa inaczej i jest finansowany z innego źródła. Programy z EFS+ powst
 
 I tu leży sedno, ważniejsze niż samo słowo „darmo". Nawet jeśli w Twoim przypadku nie wyjdzie okrągłe zero, tylko dopłata kilkuset złotych, to i tak jest to ułamek pełnej ceny. Zawód, który normalnie kosztuje 3000 zł na wejściu, zaczynasz za paręset. Pytanie „czy naprawdę za 0 zł" jest mniej istotne niż pytanie „ile realnie w moim województwie" - bo nawet gorszy z realnych scenariuszy nadal zdejmuje z drogi największą przeszkodę: cenę.
 
+Kto łapie się na dofinansowanie, tłumaczy wpis [dofinansowanie BUR — nie musisz być bezrobotna](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych), a całą procedurę wniosku — [dofinansowanie na szkolenie krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku). Konkretne kwoty per kierunek znajdziesz we wpisach o [kursie PMU](/blog/kurs-pmu-z-dofinansowaniem-ile-zaplacisz) i [kursie rzęs i brwi](/blog/kurs-rzes-brwi-z-dofinansowaniem-ile-doplacasz).
+
 ## Sprawdź swój realny koszt
 
 Ponieważ 0 zł zależy od źródła, naboru i Twojej sytuacji, żadna reklama nie odpowie uczciwie na pytanie „ile zapłacę" bez poznania szczegółów. Odpowiedź daje sprawdzenie konkretnej sytuacji, nie hasło z banera.

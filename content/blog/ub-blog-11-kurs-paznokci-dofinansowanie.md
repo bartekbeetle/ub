@@ -97,6 +97,8 @@ Cena to nie pierwsze kryterium. Pierwszym jest to, czy po kursie realnie umiesz 
 
 Znalezienie trenerki, która spełnia te warunki i ma akredytację BUR akurat w Twoim regionie, potrafi zająć godziny przekopywania Instagrama. To robota, którą można sobie odpuścić - platforma dopasuje Ci akredytowaną trenerkę pod region i kierunek.
 
+Jeśli rozważasz też inne kierunki, porównaj koszty z wpisem [kurs rzęs i brwi z dofinansowaniem](/blog/kurs-rzes-brwi-z-dofinansowaniem-ile-doplacasz) oraz z najdroższym, ale najbardziej dochodowym [kursem PMU](/blog/kurs-pmu-z-dofinansowaniem-ile-zaplacisz). Całą ścieżkę wejścia do zawodu opisuje [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
+
 ## Twój następny krok
 
 Zasady zależą od województwa i aktualnego naboru, dlatego wiążącej odpowiedzi na pytanie „ile realnie dopłacę za kurs paznokci" nie da żadna tabela - da ją sprawdzenie Twojej sytuacji.

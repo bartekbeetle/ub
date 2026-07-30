@@ -73,6 +73,8 @@ Dwie rzeczy, na które zwróć uwagę przy wyborze trenerki - niezależnie od te
 - **Kurs musi być w BUR.** To warunek konieczny dofinansowania. Nawet najlepsza trenerka bez szkolenia wpisanego do Bazy nie zapewni Ci zwrotu z tego programu - zapłacisz pełną cenę.
 - **Trenerka powinna umieć pomóc z formalnościami.** Doświadczona linergistka czy stylistka, która regularnie przyjmuje kursantki z dofinansowaniem, przeprowadzi Cię przez wniosek sprawnie. To duża różnica względem samodzielnego przechodzenia przez procedurę po raz pierwszy.
 
+Dla największych miast rozpisujemy warunki osobno: [kurs makijażu permanentnego w Warszawie](/blog/kurs-makijaz-permanentny-warszawa), [kurs makijażu permanentnego w Krakowie](/blog/kurs-makijaz-permanentny-krakow), [kurs laminacji brwi i rzęs w Katowicach](/blog/kurs-laminacja-brwi-rzes-katowice) oraz [kurs stylizacji paznokci w Łodzi](/blog/kurs-stylizacja-paznokci-lodz). Zasady samego dofinansowania są wspólne dla całej Polski — opisuje je [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
+
 ## Sprawdź nabór w swoim województwie
 
 Następny logiczny krok po lekturze to sprawdzenie aktualnego naboru i dostępnej trenerki w Twoim regionie - nie przez godzinę czytania regulaminów operatorów, tylko przez krótki formularz.

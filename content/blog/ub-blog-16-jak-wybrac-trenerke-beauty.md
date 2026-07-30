@@ -90,6 +90,8 @@ Rozmowa przed zapisem powie Ci o kursie więcej niż najładniejsza strona. Dobr
 
 To ostatnie pytanie jest testem uczciwości. Trenerka, która przyzna, czego kurs nie uczy, jest wiarygodniejsza od tej, która obiecuje, że po dwóch dniach będziesz umiała wszystko.
 
+Wybór szkoły to jeden z kroków większej ścieżki — całość opisuje [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac). Formalności po stronie wniosku rozkłada [dofinansowanie na szkolenie krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku), a ceny w najczęściej wybieranej specjalizacji — [kurs PMU z dofinansowaniem](/blog/kurs-pmu-z-dofinansowaniem-ile-zaplacisz).
+
 ## Jak szybko znaleźć dopasowaną, akredytowaną trenerkę
 
 Przejście tej całej checklisty samodzielnie oznacza godziny na Instagramie, przeglądanie stron akademii, dopytywanie w wiadomościach i sprawdzanie każdej z osobna w bazie BUR. Da się - tylko kosztuje czas, którego zwykle nie ma.

@@ -70,6 +70,8 @@ Przy poleceniach koszt gotówkowy jest bliski zeru, ale wolumen jest poza Twoją
 
 Sedno: zanim uznasz, że dany kanał jest „za drogi" albo „darmowy", policz w nim oba składniki. Reklama, która wygląda na kosztowną, bywa tańsza od „darmowego" Instagrama, jeśli doliczysz do tego drugiego dziesięć godzin tygodniowo Twojej pracy.
 
+Poszczególne wątki rozwijamy osobno: co realnie działa w promocji szkoleń opisuje [marketing dla trenerki PMU](/blog/marketing-dla-trenerki-pmu), modele rozliczeń porównujemy w tekście [prowizja czy flat fee](/blog/prowizja-vs-flat-fee-pozyskanie-kursantek), a formalności po stronie akredytacji — w poradniku [jak wpisać szkolenie do BUR](/blog/jak-wpisac-szkolenie-do-bur).
+
 ## Od czego zacząć w tym miesiącu
 
 Nie próbuj uruchamiać pięciu kanałów naraz. Rozłożysz siły i nie dowieziesz żadnego. Trzy konkretne ruchy na najbliższe tygodnie wyglądają tak.

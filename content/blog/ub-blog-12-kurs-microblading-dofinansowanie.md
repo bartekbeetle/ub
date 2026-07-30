@@ -95,6 +95,8 @@ Przy technice, która narusza skórę, wybór trenerki waży więcej niż przy j
 
 Znalezienie trenerki, która spełnia te warunki i ma akredytację BUR w Twoim regionie, to godziny przeglądania profili. Tę robotę można sobie odpuścić - platforma dopasuje Ci akredytowaną trenerkę pod region i technikę.
 
+Jeżeli rozważasz również metodę maszynową, pełne widełki cen i dopłat zebraliśmy we wpisie [kurs PMU z dofinansowaniem](/blog/kurs-pmu-z-dofinansowaniem-ile-zaplacisz). Warunki kwalifikacji do BUR wyjaśnia [dofinansowanie BUR — nie musisz być bezrobotna](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych).
+
 ## Jak zapisać się na dofinansowany kurs - następny krok
 
 Zasady zależą od województwa i aktualnego naboru, dlatego wiążącej odpowiedzi na pytanie „ile realnie zapłacę za kurs microbladingu" nie da żadna tabela - da ją sprawdzenie Twojej sytuacji.

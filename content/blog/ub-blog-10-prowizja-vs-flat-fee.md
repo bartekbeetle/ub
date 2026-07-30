@@ -78,6 +78,8 @@ Zestawienie trzech modeli na jednym scenariuszu: akademia PMU, kurs 3500 zł, dz
 
 Liczby zależą od Twojej ceny, liczby zapisów i udziału stałych klientek. Podstaw własne, a proporcje się utrzymają: prowizja wygrywa tylko wtedy, gdy sprzedajesz mało, tanio i prawie bez powrotów.
 
+Zanim zdecydujesz o modelu, warto zobaczyć całą mapę kanałów: [jak pozyskać kursantki na szkolenia beauty](/blog/jak-pozyskac-kursantki-na-szkolenia-beauty). Co da się zrobić własnymi siłami, opisuje [marketing dla trenerki PMU](/blog/marketing-dla-trenerki-pmu), a warunek wejścia w dofinansowania — [jak wpisać szkolenie do BUR](/blog/jak-wpisac-szkolenie-do-bur).
+
 ## Kiedy który model ma sens dla Twojej akademii
 
 Żaden model nie jest dobry zawsze. Każdy pasuje do innej sytuacji.
