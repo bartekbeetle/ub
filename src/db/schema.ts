@@ -191,7 +191,18 @@ export const leads = pgTable(
     status: leadStatusEnum("status").notNull().default("nowy"),
     rejectionReason: text("rejection_reason"),
     notes: text("notes"),
+    // === ZGODY — każda osobno, bo to trzy różne cele i trzy różne podstawy ===
+    // 1. Przetwarzanie danych i przekazanie ich maks. 3 trenerkom (art. 6 ust. 1 lit. a RODO). Wymagana.
     rodoConsentAt: timestamp("rodo_consent_at", { withTimezone: true }).notNull(),
+    // 2. Kontakt telefoniczny/SMS w celu przedstawienia oferty (art. 398 Prawa komunikacji
+    //    elektronicznej — telefon marketingowy wymaga ODRĘBNEJ, uprzedniej zgody). Wymagana:
+    //    bez niej trenerka nie ma jak zadzwonić, a cały model opiera się na telefonie.
+    //    NULL w starych rekordach = zgoda nie została odebrana (formularz jej nie zbierał).
+    contactConsentAt: timestamp("contact_consent_at", { withTimezone: true }),
+    // 3. Marketing własny UB e-mailem (newsletter, oferty). Opcjonalna — brak nie blokuje zgłoszenia.
+    marketingConsentAt: timestamp("marketing_consent_at", { withTimezone: true }),
+    /** Wersja klauzul zgód pokazanych przy tym zgłoszeniu — dowód, NA CO konkretnie się zgodziła. */
+    consentVersion: varchar("consent_version", { length: 20 }),
     anonymizedAt: timestamp("anonymized_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },

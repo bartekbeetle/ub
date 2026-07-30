@@ -31,7 +31,14 @@ export const leadSchema = z.object({
     errorMap: () => ({ message: "Wybierz status zawodowy" }),
   }),
   preferredDate: z.string().trim().max(120).optional().or(z.literal("")),
-  rodoConsent: z.literal(true, { errorMap: () => ({ message: "Zgoda RODO jest wymagana" }) }),
+  // Zgody rozdzielone — patrz komentarz przy tabeli `leads` w src/db/schema.ts.
+  rodoConsent: z.literal(true, {
+    errorMap: () => ({ message: "Zgoda na przekazanie danych trenerkom jest wymagana" }),
+  }),
+  contactConsent: z.literal(true, {
+    errorMap: () => ({ message: "Zgoda na kontakt telefoniczny jest wymagana" }),
+  }),
+  marketingConsent: z.boolean().optional().default(false),
   courseId: z.number().int().positive().optional().nullable(),
   source: z.enum(["kurs", "landing", "konsultacja"]).default("landing"),
   utmSource: z.string().max(120).optional().or(z.literal("")),

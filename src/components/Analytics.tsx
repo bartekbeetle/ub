@@ -8,9 +8,10 @@ const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;
 
 /**
- * Meta Pixel + GA4 — ładują się WYŁĄCZNIE po zgodzie z banera cookies.
+ * Meta Pixel + GA4 — ładują się WYŁĄCZNIE po zgodzie z banera cookies, KAŻDY ZE SWOJEJ zgody.
  * Wcześniej na stronie nie ma ani jednego skryptu śledzącego: samo wczytanie pikselu
  * (nawet bez zdarzeń) zapisuje cookie i jest przetwarzaniem wymagającym zgody.
+ * Zgoda na analitykę nie uruchamia pikselu marketingowego i odwrotnie.
  */
 export function Analytics() {
   const [consent, setConsent] = useState<ConsentState>(null);
@@ -22,11 +23,11 @@ export function Analytics() {
     return () => window.removeEventListener(CONSENT_EVENT, onChange);
   }, []);
 
-  if (consent !== "granted") return null;
+  if (!consent) return null;
 
   return (
     <>
-      {PIXEL_ID ? (
+      {consent.marketing && PIXEL_ID ? (
         <Script id="meta-pixel" strategy="afterInteractive">
           {`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -37,7 +38,7 @@ fbq('init', '${PIXEL_ID}');
 fbq('track', 'PageView');`}
         </Script>
       ) : null}
-      {GA4_ID ? (
+      {consent.analytics && GA4_ID ? (
         <>
           <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`} strategy="afterInteractive" />
           <Script id="ga4" strategy="afterInteractive">

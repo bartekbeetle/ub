@@ -4,6 +4,7 @@ import { leadSchema } from "@/lib/validators";
 import { rateLimit, getClientIp } from "@/lib/ratelimit";
 import { distributeLead } from "@/lib/matching";
 import { logAudit } from "@/lib/audit";
+import { CONSENT_VERSION } from "@/lib/constants";
 
 export const runtime = "nodejs";
 
@@ -49,7 +50,12 @@ export async function POST(req: Request) {
       utmMedium: data.utmMedium || null,
       utmCampaign: data.utmCampaign || null,
       status: "nowy",
+      // Znacznik czasu zapisujemy osobno dla każdej zgody — to jest dowód rozliczalności.
+      // Marketingowa jest dobrowolna, więc bez niej zostaje NULL (a nie „false").
       rodoConsentAt: new Date(),
+      contactConsentAt: new Date(),
+      marketingConsentAt: data.marketingConsent ? new Date() : null,
+      consentVersion: CONSENT_VERSION,
     })
     .returning();
 

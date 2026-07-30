@@ -58,6 +58,8 @@ export function LeadForm({ courseId, defaultCategory, defaultVoivodeship, source
       employmentStatus: String(fd.get("employmentStatus") ?? ""),
       preferredDate: String(fd.get("preferredDate") ?? ""),
       rodoConsent: fd.get("rodoConsent") === "on",
+      contactConsent: fd.get("contactConsent") === "on",
+      marketingConsent: fd.get("marketingConsent") === "on",
       website: String(fd.get("website") ?? ""), // honeypot
       courseId: courseId ?? null,
       source,
@@ -144,17 +146,46 @@ export function LeadForm({ courseId, defaultCategory, defaultVoivodeship, source
         <input id="lead-date" name="preferredDate" type="text" className="input" placeholder="np. weekendy, od marca" />
       </div>
 
-      <label className="flex cursor-pointer items-start gap-3 text-sm text-muted">
-        <input type="checkbox" name="rodoConsent" required className="mt-1 h-5 w-5 shrink-0 accent-sand-500" />
-        <span>
-          Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przedstawienia oferty szkoleniowej i
-          kontaktu ze strony trenerek współpracujących z Uniwersytet Beauty, zgodnie z{" "}
-          <a href="/polityka-prywatnosci" target="_blank" className="font-semibold text-sand-700 underline">
-            polityką prywatności
-          </a>
-          . *
-        </span>
-      </label>
+      {/*
+        Trzy ODRĘBNE zgody, nie jedna zbiorcza. Zgoda musi być „konkretna" (art. 4 pkt 11 RODO),
+        a telefon marketingowy wymaga własnej, uprzedniej zgody (art. 398 Prawa komunikacji
+        elektronicznej). Zgoda marketingowa UB jest dobrowolna i NIE warunkuje wysłania zgłoszenia.
+      */}
+      <div className="space-y-3">
+        <label className="flex cursor-pointer items-start gap-3 text-sm text-muted">
+          <input type="checkbox" name="rodoConsent" required className="mt-1 h-5 w-5 shrink-0 accent-sand-500" />
+          <span>
+            Wyrażam zgodę na przetwarzanie moich danych osobowych i przekazanie ich maksymalnie trzem
+            trenerkom współpracującym z Uniwersytetem Beauty, dopasowanym do wybranej kategorii szkolenia i
+            województwa, w celu przedstawienia mi oferty, zgodnie z{" "}
+            <a href="/polityka-prywatnosci" target="_blank" className="font-semibold text-sand-700 underline">
+              polityką prywatności
+            </a>
+            . *
+          </span>
+        </label>
+
+        <label className="flex cursor-pointer items-start gap-3 text-sm text-muted">
+          <input type="checkbox" name="contactConsent" required className="mt-1 h-5 w-5 shrink-0 accent-sand-500" />
+          <span>
+            Wyrażam zgodę na kontakt telefoniczny i SMS — ze strony Uniwersytetu Beauty oraz dopasowanych
+            trenerek — w celu omówienia szkolenia i dofinansowania. *
+          </span>
+        </label>
+
+        <label className="flex cursor-pointer items-start gap-3 text-sm text-muted">
+          <input type="checkbox" name="marketingConsent" className="mt-1 h-5 w-5 shrink-0 accent-sand-500" />
+          <span>
+            Chcę otrzymywać e-mailem informacje o naborach, terminach szkoleń i zmianach w dofinansowaniach
+            (dobrowolne — możesz wypisać się w każdej chwili).
+          </span>
+        </label>
+
+        <p className="text-xs text-muted">
+          Zgody oznaczone * są niezbędne, żebyśmy mogli przekazać zgłoszenie trenerce. Każdą zgodę możesz
+          wycofać w dowolnym momencie, pisząc na biuro@uniwersytetbeauty.pl.
+        </p>
+      </div>
 
       {error && (
         <p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-sm font-medium text-red-700">

@@ -82,8 +82,15 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <dd>{SOURCE_LABELS[lead.source]}{course ? <> — <Link className="text-sand-700 hover:underline" href={`/kurs/${course.slug}`}>{course.title}</Link></> : null}</dd>
             <dt className="text-muted">UTM</dt>
             <dd className="text-xs">{[lead.utmSource, lead.utmMedium, lead.utmCampaign].filter(Boolean).join(" / ") || "—"}</dd>
-            <dt className="text-muted">Zgoda RODO</dt>
+            {/* Każda zgoda osobno — przy kontroli trzeba pokazać, na co i kiedy zgodziła się ta osoba. */}
+            <dt className="text-muted">Zgoda: dane + trenerki</dt>
             <dd>{formatDateTime(lead.rodoConsentAt)}</dd>
+            <dt className="text-muted">Zgoda: telefon / SMS</dt>
+            <dd>{lead.contactConsentAt ? formatDateTime(lead.contactConsentAt) : <span className="text-red-700">brak — nie dzwonić</span>}</dd>
+            <dt className="text-muted">Zgoda: marketing e-mail</dt>
+            <dd>{lead.marketingConsentAt ? formatDateTime(lead.marketingConsentAt) : "—"}</dd>
+            <dt className="text-muted">Wersja klauzul</dt>
+            <dd className="text-xs">{lead.consentVersion ?? "—"}</dd>
             <dt className="text-muted">Utworzony</dt>
             <dd>{formatDateTime(lead.createdAt)}</dd>
             {lead.rejectionReason && (

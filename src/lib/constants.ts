@@ -28,6 +28,13 @@ export const OPERATOR = {
 /** Jednolinijkowa identyfikacja do stopki i dokumentów. */
 export const OPERATOR_LINE = `${OPERATOR.legalName} — ${OPERATOR.tradeName}, ${OPERATOR.street}, ${OPERATOR.postalCode} ${OPERATOR.city}, NIP ${OPERATOR.nip}, REGON ${OPERATOR.regon}`;
 
+/**
+ * Wersja klauzul zgód w formularzu zgłoszeniowym. Zapisywana przy każdym leadzie.
+ * Podbij datę ZAWSZE, gdy zmienia się treść którejkolwiek zgody — inaczej nie da się odtworzyć,
+ * na co konkretnie zgodziła się osoba, która zgłosiła się w przeszłości (rozliczalność, art. 5 ust. 2 RODO).
+ */
+export const CONSENT_VERSION = "2026-07-30";
+
 /** Docelowa domena produkcyjna. Wszystko poza nią (sslip.io, localhost, preview) NIE MOŻE trafić do indeksu. */
 export const CANONICAL_DOMAIN = "uniwersytetbeauty.pl";
 
