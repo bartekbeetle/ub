@@ -36,7 +36,7 @@ const nextConfig: NextConfig = {
   output: "standalone",
   // Bez tego Next.js zgaduje root workspace po zabłąkanym lockfile w katalogu domowym
   // i zagnieżdża standalone w podkatalogu (server.js ląduje w złym miejscu).
-  // TEST
+  outputFileTracingRoot: process.cwd(),
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
