@@ -21,7 +21,7 @@ export function Footer() {
           </p>
           <a
             href={`mailto:${CONTACT_EMAIL}`}
-            className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-sand-300 hover:text-cream-warm transition-colors"
+            className="mt-4 inline-flex items-center gap-2 py-2 text-sm font-semibold text-sand-300 hover:text-cream-warm transition-colors"
           >
             <IconMail width={16} height={16} /> {CONTACT_EMAIL}
           </a>

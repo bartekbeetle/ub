@@ -34,7 +34,7 @@ export function SubsidyCalculator() {
           step={100}
           value={price}
           onChange={(e) => setPrice(Number(e.target.value))}
-          className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-full bg-sand-100 accent-sand-500"
+          className="mt-3 h-6 w-full cursor-pointer appearance-none bg-transparent accent-sand-700 [&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-sand-100 [&::-webkit-slider-thumb]:mt-[-8px] [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-sand-700 [&::-moz-range-track]:h-2 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-sand-100 [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-sand-700"
         />
         <div className="mt-1 flex justify-between text-xs text-muted">
           <span>1 000 zł</span>

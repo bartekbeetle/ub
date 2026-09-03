@@ -133,13 +133,13 @@ export default async function KursyPage({ searchParams }: { searchParams: Promis
               <legend className="label">Kategoria</legend>
               <div className="space-y-2">
                 {CATEGORIES.map((c) => (
-                  <label key={c} className="flex cursor-pointer items-center gap-2.5 text-sm text-ink">
+                  <label key={c} className="flex min-h-[32px] cursor-pointer items-center gap-2.5 py-1 text-sm text-ink">
                     <input
                       type="checkbox"
                       name="kategoria"
                       value={c}
                       defaultChecked={kategorie.includes(c)}
-                      className="h-4 w-4 accent-sand-500"
+                      className="h-5 w-5 accent-sand-700"
                     />
                     {c}
                   </label>
@@ -161,13 +161,13 @@ export default async function KursyPage({ searchParams }: { searchParams: Promis
               <legend className="label">Poziom</legend>
               <div className="space-y-2">
                 {LEVELS.map((l) => (
-                  <label key={l} className="flex cursor-pointer items-center gap-2.5 text-sm text-ink">
+                  <label key={l} className="flex min-h-[32px] cursor-pointer items-center gap-2.5 py-1 text-sm text-ink">
                     <input
                       type="checkbox"
                       name="poziom"
                       value={l}
                       defaultChecked={poziomy.includes(l)}
-                      className="h-4 w-4 accent-sand-500"
+                      className="h-5 w-5 accent-sand-700"
                     />
                     {l}
                   </label>
