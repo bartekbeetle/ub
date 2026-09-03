@@ -12,6 +12,10 @@ FROM base AS builder
 COPY package.json ./
 RUN npm install
 COPY . .
+# UWAGA: świadomie NIE deklarujemy tu ARG/ENV dla NEXT_PUBLIC_*. Pusta wartość ENV
+# w Dockerfile ma pierwszeństwo nad plikiem .env generowanym przez Coolify i wywaliłaby
+# NEXT_PUBLIC_SITE_URL (canonical/OG na stronach prerenderowanych statycznie).
+# Identyfikatory analityki idą ścieżką runtime: GA4_ID / META_PIXEL_ID -> /api/analytics-config.
 # next.config: output "standalone" -> .next/standalone/server.js.
 # Standalone nie kopiuje static/public sam — dokładamy je OBOK server.js,
 # żeby serwer je znalazł w runtime.

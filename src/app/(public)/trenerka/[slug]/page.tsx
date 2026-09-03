@@ -9,7 +9,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { TrainerAvatar } from "@/components/TrainerAvatar";
 import { StarRating } from "@/components/StarRating";
 import { CourseCard } from "@/components/CourseCard";
-import { personJsonLd } from "@/lib/seo";
+import { personJsonLd, pageTitle, metaDescription, clampText } from "@/lib/seo";
 import { voivodeshipName, SITE_NAME } from "@/lib/constants";
 import { IconPin, IconUsers, IconStar, IconAward, IconInstagram, IconFacebook, IconGlobe } from "@/components/icons";
 
@@ -30,10 +30,12 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const trainer = await getTrainer(slug);
   if (!trainer) return { title: "Nie znaleziono trenerki" };
   const title = `${trainer.name} — trenerka ${trainer.specializations[0] ?? "beauty"}${trainer.city ? `, ${trainer.city}` : ""}`;
-  const ogDescription = trainer.bio?.slice(0, 200) ?? title;
+  const ogDescription = trainer.bio ? clampText(trainer.bio, 200) : title;
   return {
-    title: `${title}`,
-    description: trainer.bio?.slice(0, 160) ?? title,
+    // pageTitle() ucina do 60 znaków i dokleja markę tylko wtedy, gdy się mieści.
+    // Bez tego title.template z root layoutu robił z tego 74–88 znaków (Google ucinał w połowie).
+    title: pageTitle(title),
+    description: trainer.bio ? metaDescription(trainer.bio) : metaDescription(title),
     alternates: { canonical: `/trenerka/${trainer.slug}` },
     openGraph: {
       title,

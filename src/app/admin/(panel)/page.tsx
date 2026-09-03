@@ -108,7 +108,7 @@ export default async function AdminDashboard() {
       <div className="card mt-6 overflow-hidden">
         <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
           <h2 className="font-serif text-lg font-semibold">Ostatnie leady</h2>
-          <Link href="/admin/leady" className="text-sm font-semibold text-sand-700 hover:text-sand-500">
+          <Link href="/admin/leady" className="text-sm font-semibold text-sand-700 hover:text-ink-soft">
             Zobacz wszystkie →
           </Link>
         </div>

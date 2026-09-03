@@ -6,11 +6,11 @@ import { CONTACT_EMAIL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: `Kontakt`,
-  description: "Skontaktuj się z Uniwersytet Beauty — pytania o szkolenia, dofinansowania BUR i współpracę trenerską.",
+  description: "Masz pytanie o szkolenie beauty, dofinansowanie z BUR albo współpracę trenerską? Napisz do Uniwersytetu Beauty — odpowiadamy w 24 godziny robocze.",
   alternates: { canonical: "/kontakt" },
   openGraph: {
     title: `Kontakt — ${SITE_NAME}`,
-    description: "Skontaktuj się z Uniwersytet Beauty — pytania o szkolenia, dofinansowania BUR i współpracę trenerską.",
+    description: "Masz pytanie o szkolenie beauty, dofinansowanie z BUR albo współpracę trenerską? Napisz do Uniwersytetu Beauty — odpowiadamy w 24 godziny robocze.",
     url: "/kontakt",
     type: "website",
     locale: "pl_PL",

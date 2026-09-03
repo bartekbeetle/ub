@@ -10,8 +10,15 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
     <>
       {/* Encja marki na każdej podstronie — fundament pod Knowledge Panel i rozpoznanie w czatach AI. */}
       <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
+      {/* Skip link — bez niego użytkownik klawiatury/czytnika przechodzi przez całe menu
+          na każdej podstronie, zanim dotrze do treści (WCAG 2.4.1). */}
+      <a href="#tresc" className="skip-link">
+        Przejdź do treści
+      </a>
       <Navbar />
-      <main id="tresc">{children}</main>
+      <main id="tresc" tabIndex={-1}>
+        {children}
+      </main>
       <Footer />
       {/* Sticky CTA na mobile */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-sand-200 bg-white/95 p-3 backdrop-blur md:hidden">

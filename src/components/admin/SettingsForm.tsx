@@ -62,7 +62,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
         <button type="submit" disabled={state === "saving"} className="btn-primary disabled:opacity-50">
           {state === "saving" ? "Zapisywanie…" : "Zapisz ustawienia"}
         </button>
-        {state === "saved" && <span className="text-sm font-semibold text-money-dark">Zapisano</span>}
+        {state === "saved" && <span role="status" className="text-sm font-semibold text-money-dark">Zapisano</span>}
         {state === "error" && <span className="text-sm font-semibold text-red-600">Błąd zapisu</span>}
       </div>
     </form>

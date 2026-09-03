@@ -164,7 +164,7 @@ export default function DofinansowaniaPage() {
                 key={step.title}
                 className={`flex items-start gap-4 md:w-[calc(50%+3.5rem)] ${i % 2 ? "md:ml-auto md:flex-row-reverse" : ""}`}
               >
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sand-400 font-serif text-lg font-bold text-white shadow-[0_5px_20px_rgba(200,168,130,0.3)]">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sand-400 font-serif text-lg font-bold text-ink-soft shadow-[0_5px_20px_rgba(200,168,130,0.3)]">
                   {i + 1}
                 </span>
                 <div className="card min-w-0 flex-1 p-5">
@@ -194,7 +194,7 @@ export default function DofinansowaniaPage() {
             <details key={item.question} className="card group p-0">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 font-semibold text-ink-soft [&::-webkit-details-marker]:hidden">
                 {item.question}
-                <IconChevronDown className="shrink-0 text-sand-500 transition-transform duration-300 group-open:rotate-180" />
+                <IconChevronDown className="shrink-0 text-sand-700 transition-transform duration-300 group-open:rotate-180" />
               </summary>
               <p className="px-5 pb-5 text-muted">{item.answer}</p>
             </details>

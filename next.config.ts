@@ -11,9 +11,12 @@ const securityHeaders = [
       // 'unsafe-eval' TYLKO w dev — Next.js React Refresh (HMR) go wymaga; na prod CSP zostaje ostry.
       `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://connect.facebook.net`,
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https://www.facebook.com https://www.google-analytics.com",
+      // GA4 wysyła pingi też przez piksel-obrazek i przez googletagmanager.com.
+      "img-src 'self' data: blob: https://www.facebook.com https://*.google-analytics.com https://www.googletagmanager.com",
       "font-src 'self' data:",
-      "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.facebook.com",
+      // GA4 zbiera na region1/region.../analytics.google.com zależnie od regionu konta —
+      // wąska lista dwóch hostów po cichu blokowała część wysyłek. Wildcard zamiast zgadywania.
+      "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.facebook.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
@@ -33,7 +36,7 @@ const nextConfig: NextConfig = {
   output: "standalone",
   // Bez tego Next.js zgaduje root workspace po zabłąkanym lockfile w katalogu domowym
   // i zagnieżdża standalone w podkatalogu (server.js ląduje w złym miejscu).
-  outputFileTracingRoot: process.cwd(),
+  // TEST
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },

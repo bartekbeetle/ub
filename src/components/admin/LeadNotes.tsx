@@ -36,7 +36,7 @@ export function LeadNotes({ leadId, initial }: { leadId: number; initial: string
         >
           Zapisz notatki
         </button>
-        {state === "saved" && <span className="text-xs font-semibold text-money-dark">Zapisano</span>}
+        {state === "saved" && <span role="status" className="text-xs font-semibold text-money-dark">Zapisano</span>}
       </div>
     </div>
   );

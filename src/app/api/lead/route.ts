@@ -23,7 +23,11 @@ export async function POST(req: Request) {
   const parsed = leadSchema.safeParse(body);
   if (!parsed.success) {
     const first = parsed.error.errors[0];
-    return NextResponse.json({ error: first?.message ?? "Nieprawidłowe dane formularza." }, { status: 400 });
+    // `field` pozwala formularzowi podświetlić konkretne pole zamiast wyrzucać ogólny błąd na górze.
+    return NextResponse.json(
+      { error: first?.message ?? "Nieprawidłowe dane formularza.", field: first?.path?.[0] ?? null },
+      { status: 400 }
+    );
   }
   const data = parsed.data;
 

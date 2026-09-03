@@ -12,21 +12,25 @@
   --color-sand-100: #f5ede4;
   --color-sand-200: #e8d5c4;
   --color-sand-300: #d4b896;
-  --color-sand-400: #c8a882; /* przyciski główne */
-  --color-sand-500: #b8956a;
-  --color-sand-600: #a5825b;
-  --color-sand-700: #8b6f5c; /* hover przycisków */
-  --color-gold: #c9a227;
+  --color-sand-400: #c8a882; /* tło przycisków głównych — TYLKO z ciemnym tekstem (biały daje 2,2:1) */
+  --color-sand-500: #b8956a; /* hover przycisków; jako tekst NIE nadaje się (2,8:1 na cremie) */
+  --color-sand-600: #a5825b; /* 3,3:1 — obramowania i duży tekst (≥24px), nie tekst zwykły */
+  --color-sand-700: #7f6654; /* tekst i linki: 5,3:1 na białym, 4,6:1 na sand-100 */
+  --color-gold: #ad8c22; /* gwiazdki ocen — element graficzny, próg 3:1 (3,2:1 na białym) */
 
   /* === Zieleń: WYŁĄCZNIE pieniądze/dofinansowanie === */
-  --color-money: #10b981;
-  --color-money-dark: #2e9e6b;
+  /* money/money-dark są używane jako TEKST na jasnym tle i jako tło z białym tekstem,
+     więc muszą trzymać 4,5:1 względem bieli. Jaskrawy #10b981 dawał 2,5:1. */
+  --color-money: #0b7f59;
+  --color-money-dark: #1d6545;
   --color-money-bg: #ecfdf5;
+  /* Jaskrawa zieleń wyłącznie na CIEMNYM tle (sekcja zaufania na ink-soft) — 6,0:1. */
+  --color-money-bright: #10b981;
 
   /* === Tekst === */
   --color-ink: #1f2937;
   --color-ink-soft: #2d2424;
-  --color-muted: #6b7280;
+  --color-muted: #656b79; /* 5,0:1 na cremie, 4,6:1 na sand-100 (poprzedni #6b7280 leciał 4,2:1) */
 
   /* === Panel admina === */
   --color-navy: #1a1a2e;
@@ -54,7 +58,8 @@
     text-wrap: balance;
   }
   :focus-visible {
-    outline: 2px solid var(--color-sand-500);
+    /* sand-700, nie sand-500 — obrys focusa też musi mieć 3:1 wobec tła (WCAG 2.4.11/1.4.11) */
+    outline: 2px solid var(--color-sand-700);
     outline-offset: 2px;
   }
   @media (prefers-reduced-motion: reduce) {
@@ -71,13 +76,18 @@
 }
 
 @layer components {
-  /* Przycisk główny — piaskowy pill (wzór: "Zobacz szczegóły" z referencji) */
+  /* Przycisk główny — piaskowy pill (wzór: "Zobacz szczegóły" z referencji).
+     Tekst CIEMNY, nie biały: biel na sand-400 dawała 2,2:1 (WCAG wymaga 4,5:1) na
+     najważniejszym CTA w całym serwisie. Ciemny brąz na tym samym beżu to 6,8:1 —
+     kolor marki zostaje, tekst staje się czytelny. Hover przyciemnia tło (5,4:1). */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-sand-400 px-7 py-3.5 font-sans text-base font-semibold text-white transition-all duration-300 hover:bg-sand-700 hover:-translate-y-0.5 min-h-[44px];
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-sand-400 px-7 py-3.5 font-sans text-base font-semibold text-ink-soft transition-all duration-300 hover:bg-sand-500 hover:-translate-y-0.5 min-h-[44px];
     box-shadow: var(--shadow-sand);
   }
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-sand-400 px-7 py-3 font-sans text-base font-semibold text-sand-700 transition-all duration-300 hover:bg-sand-50 min-h-[44px];
+    /* Obramowanie sand-600 (3,5:1) — granica przycisku to jedyny jego identyfikator wizualny,
+       więc podlega progowi 3:1 dla komponentów UI (WCAG 1.4.11). */
+    @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-sand-600 px-7 py-3 font-sans text-base font-semibold text-sand-700 transition-all duration-300 hover:bg-sand-50 min-h-[44px];
   }
   /* Zielony CTA — tylko konteksty pieniędzy/dofinansowania */
   .btn-money {
@@ -98,10 +108,29 @@
     @apply inline-flex items-center rounded-full bg-sand-100 px-3 py-1 text-xs font-semibold text-sand-700;
   }
   .input {
-    @apply w-full rounded-[10px] border border-sand-200 bg-white px-4 py-3 text-base text-ink placeholder:text-muted focus:border-sand-400 focus:outline-none focus:ring-2 focus:ring-sand-200 min-h-[44px];
+    /* border-sand-600 zamiast sand-200: obramowanie pola to granica komponentu UI,
+       sand-200 dawał 1,4:1 wobec bieli — pole było praktycznie niewidoczne. */
+    @apply w-full rounded-[10px] border border-sand-600 bg-white px-4 py-3 text-base text-ink placeholder:text-muted focus:border-sand-700 focus:outline-none focus:ring-2 focus:ring-sand-300 min-h-[44px];
+  }
+  .input[aria-invalid="true"] {
+    @apply border-red-600 focus:border-red-700 focus:ring-red-200;
   }
   .label {
     @apply mb-1.5 block text-sm font-semibold text-ink-soft;
+  }
+  /* Komunikat błędu pod polem formularza — czerwień 700 trzyma 4,5:1 na bieli. */
+  .field-error {
+    @apply mt-1.5 flex items-start gap-1.5 text-sm font-medium text-red-700;
+  }
+  /* Link w akapicie. UWAGA: ta klasa była używana w 3 miejscach, ale NIGDY nie została
+     zdefiniowana — linki renderowały się jak zwykły tekst (WCAG 1.4.1: informacja
+     przekazana samym kolorem/brakiem wyróżnienia). Podkreślenie jest obowiązkowe. */
+  .link-inline {
+    @apply font-semibold text-sand-700 underline decoration-sand-600 underline-offset-2 transition-colors hover:text-ink-soft;
+  }
+  /* Skip link — pierwszy element w tabulacji, widoczny dopiero po sfokusowaniu. */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-3 focus:font-semibold focus:text-ink-soft focus:shadow-lg;
   }
   /* Treść artykułów (markdown) */
   .prose-ub {
@@ -127,7 +156,7 @@
     @apply list-decimal;
   }
   .prose-ub a {
-    @apply font-semibold text-sand-700 underline decoration-sand-300 underline-offset-2 hover:text-sand-500;
+    @apply font-semibold text-sand-700 underline decoration-sand-600 underline-offset-2 hover:text-ink-soft;
   }
   .prose-ub blockquote {
     @apply my-6 border-l-4 border-sand-300 bg-sand-50 px-5 py-3 italic;

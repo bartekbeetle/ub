@@ -114,7 +114,7 @@ export default async function HomePage() {
             <IconGraduation width={16} height={16} /> Szkolenia z dofinansowaniem do 90%
           </span>
           <h1 className="text-4xl font-bold leading-tight md:text-6xl">
-            Zacznij Karierę w Beauty <span className="text-sand-500">BEZ Ryzyka Finansowego</span>
+            Zacznij Karierę w Beauty <span className="text-sand-600">BEZ Ryzyka Finansowego</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted md:text-xl">
             Profesjonalne szkolenia z linergistyki, PMU i medycyny estetycznej z dofinansowaniem do 90% z
@@ -143,7 +143,7 @@ export default async function HomePage() {
           ))}
         </div>
         <div className="mt-10 text-center">
-          <Link href="/kursy" className="inline-flex items-center gap-2 font-semibold text-sand-700 hover:text-sand-500 transition-colors">
+          <Link href="/kursy" className="inline-flex items-center gap-2 font-semibold text-sand-700 hover:text-ink-soft transition-colors">
             Zobacz wszystkie szkolenia <IconArrowRight width={18} height={18} />
           </Link>
         </div>
@@ -158,7 +158,7 @@ export default async function HomePage() {
           <ol className="mt-12 space-y-5">
             {STEPS.map((step, i) => (
               <li key={step.title} className="card flex items-start gap-5 p-6">
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[10px] bg-sand-400 font-serif text-xl font-bold text-white">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[10px] bg-sand-400 font-serif text-xl font-bold text-ink-soft">
                   {i + 1}
                 </span>
                 <div>
@@ -205,7 +205,7 @@ export default async function HomePage() {
                   <h3 className="font-serif text-lg font-semibold">{question}</h3>
                   <span
                     aria-hidden
-                    className="shrink-0 text-2xl leading-none text-sand-500 transition-transform group-open:rotate-45"
+                    className="shrink-0 text-2xl leading-none text-sand-700 transition-transform group-open:rotate-45"
                   >
                     +
                   </span>
@@ -237,14 +237,14 @@ export default async function HomePage() {
           </div>
           <div className="hidden h-14 w-px bg-white/20 sm:block" aria-hidden />
           <div>
-            <p className="font-serif text-4xl font-bold text-money">0 zł</p>
+            <p className="font-serif text-4xl font-bold text-money-bright">0 zł</p>
             <p className="mt-2 text-sand-100">za naszą pomoc — konsultacja i wsparcie w formalnościach są bezpłatne</p>
           </div>
         </div>
         <ul className="mx-auto mt-10 flex max-w-3xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-4 text-sm text-sand-200">
           {["Certyfikowane kursy", "Bezpieczne dofinansowanie", "Wsparcie na każdym etapie"].map((t) => (
             <li key={t} className="inline-flex items-center gap-2">
-              <IconCheck width={16} height={16} className="text-money" /> {t}
+              <IconCheck width={16} height={16} className="text-money-bright" /> {t}
             </li>
           ))}
         </ul>

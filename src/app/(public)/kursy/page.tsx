@@ -183,7 +183,12 @@ export default async function KursyPage({ searchParams }: { searchParams: Promis
         </aside>
 
         {/* WYNIKI */}
-        <section aria-label="Lista kursów">
+        {/* Nagłówek sekcji jest ukryty wizualnie, ale MUSI istnieć: karty kursów używają h3,
+            więc bez h2 czytnik ekranu dostaje przeskok h1 -> h3 (WCAG 1.3.1). */}
+        <section aria-labelledby="wyniki-h">
+          <h2 id="wyniki-h" className="sr-only">
+            Lista szkoleń spełniających kryteria
+          </h2>
           {rows.length === 0 ? (
             <div className="card p-10 text-center">
               <h2 className="font-serif text-xl font-semibold">Brak kursów dla wybranych filtrów</h2>

@@ -138,14 +138,14 @@ export default async function BlogPage({ searchParams }: { searchParams: Search 
           <nav className="card p-5" aria-label="Kategorie bloga">
             <p className="label">Kategorie</p>
             <div className="flex flex-wrap gap-2">
-              <Link href="/blog" className={`badge-tag transition-colors hover:bg-sand-200 ${!kat ? "!bg-sand-400 !text-white" : ""}`}>
+              <Link href="/blog" className={`badge-tag transition-colors hover:bg-sand-200 ${!kat ? "!bg-sand-400 !text-ink-soft" : ""}`}>
                 Wszystkie
               </Link>
               {BLOG_CATEGORIES.map((c) => (
                 <Link
                   key={c}
                   href={`/blog?kategoria=${encodeURIComponent(c)}`}
-                  className={`badge-tag transition-colors hover:bg-sand-200 ${kat === c ? "!bg-sand-400 !text-white" : ""}`}
+                  className={`badge-tag transition-colors hover:bg-sand-200 ${kat === c ? "!bg-sand-400 !text-ink-soft" : ""}`}
                 >
                   {c}
                 </Link>

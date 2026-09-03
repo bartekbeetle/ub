@@ -4,17 +4,29 @@ import { IS_PRODUCTION_HOST, ORG_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/
 import { Analytics } from "@/components/Analytics";
 import "./globals.css";
 
+/**
+ * Playfair — tylko nagłówki, ładowany jako font zmienny (bez listy `weight`).
+ * Wersja z `weight: ["400","600","700"]` ściągała trzy statyczne instancje na każdy subset,
+ * czyli sześć plików zamiast dwóch. Font zmienny obsługuje cały zakres 400–900 w jednym pliku.
+ * `preload: false` — Playfair nie maluje pierwszego ekranu w takim stopniu jak Inter, a jego
+ * preload konkurował o pasmo z fontem tekstowym, opóźniając LCP (render delay 2,85 s w pomiarze).
+ */
 const playfair = Playfair_Display({
   subsets: ["latin", "latin-ext"],
   variable: "--font-playfair",
   display: "swap",
-  weight: ["400", "600", "700"],
+  preload: false,
+  fallback: ["Georgia", "serif"],
+  adjustFontFallback: true,
 });
 
+/** Inter — font tekstowy, maluje element LCP na stronie głównej. Ten preloadujemy. */
 const inter = Inter({
   subsets: ["latin", "latin-ext"],
   variable: "--font-inter",
   display: "swap",
+  preload: true,
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "Arial", "sans-serif"],
 });
 
 export const metadata: Metadata = {
