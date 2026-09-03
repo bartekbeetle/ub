@@ -34,6 +34,14 @@ const nextConfig: NextConfig = {
   // Standalone: produkuje samowystarczalny `.next/standalone/server.js` (plain node),
   // dużo stabilniejszy w kontenerze niż `next start` (który tu cicho nie serwował).
   output: "standalone",
+  images: {
+    // AVIF przed WebP: te same zdjęcia ważą ok. 20–30% mniej, a wszystkie przeglądarki
+    // z rynku PL (Chrome/Safari/Firefox/Edge od 2023) go obsługują. Przy stronie, gdzie
+    // zdjęcia kursów i nagłówki bloga to największa pozycja transferu, to realny zysk na LCP.
+    formats: ["image/avif", "image/webp"],
+    // Rok cache'u na przetworzone warianty — pliki źródłowe są statyczne i wersjonowane w repo.
+    minimumCacheTTL: 31536000,
+  },
   // Bez tego Next.js zgaduje root workspace po zabłąkanym lockfile w katalogu domowym
   // i zagnieżdża standalone w podkatalogu (server.js ląduje w złym miejscu).
   outputFileTracingRoot: process.cwd(),
