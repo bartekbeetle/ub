@@ -11,6 +11,7 @@
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed.ts",
     "db:seed-blog": "tsx scripts/seed-blog.ts",
+    "db:seed-blog-nowe": "tsx scripts/seed-blog.ts --tylko-nowe",
     "db:setup": "npm run db:migrate && npm run db:seed",
     "db:seed-core": "tsx scripts/seed-core.ts",
     "db:seed-weronika": "tsx scripts/seed-weronika.ts",

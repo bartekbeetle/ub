@@ -11,10 +11,20 @@ import matter from "gray-matter";
  * i odpal: npm run db:seed-blog
  * Skrypt kasuje też poglądowe posty demo (DEPRECATED_SLUGS) ze scripts/seed.ts.
  *
+ * Dwa tryby:
+ *   • domyślny (ręczny)  — pełny upsert: plik nadpisuje wpis w bazie. Tak wchodzą POPRAWKI treści.
+ *   • --tylko-nowe       — wstawia wyłącznie slugi, których w bazie nie ma; istniejących NIE dotyka.
+ *
+ * Tryb --tylko-nowe leci w docker-entrypoint.sh, więc nowy plik .md publikuje się samym deployem
+ * (wcześniej wymagało to ręcznego seeda w terminalu Coolify i wpis potrafił wisieć niewidoczny).
+ * Insert-only jest tu warunkiem bezpieczeństwa: blog da się edytować w panelu admina
+ * (/admin/blog/[id]), a pełny upsert przy każdym starcie kontenera kasowałby te zmiany.
+ *
  * Lokalnie (DATABASE_URL puste) leci na PGlite (./.pglite), na prod na Postgres.
  */
 
 const BLOG_DIR = join(process.cwd(), "content", "blog");
+const TYLKO_NOWE = process.argv.includes("--tylko-nowe");
 
 // Poglądowe posty demo (scripts/seed.ts) zastąpione realnymi artykułami SEO.
 // Kasujemy je po slugu przy każdym odpaleniu — idempotentnie, lokalnie i na prod.
@@ -137,7 +147,20 @@ async function main() {
   }
 
   const POSTS = loadPosts();
+  let dodane = 0;
   for (const p of POSTS) {
+    if (TYLKO_NOWE) {
+      const wynik = await db
+        .insert(blogPosts)
+        .values(p)
+        .onConflictDoNothing({ target: blogPosts.slug })
+        .returning({ slug: blogPosts.slug });
+      if (wynik.length > 0) {
+        dodane++;
+        console.log(`✓ nowy wpis: ${p.slug}`);
+      }
+      continue;
+    }
     await db
       .insert(blogPosts)
       .values(p)
@@ -161,7 +184,8 @@ async function main() {
   }
 
   const [{ c }] = await db.select({ c: sql<number>`count(*)::int` }).from(blogPosts);
-  console.log(`\nBaza bloga: ${c} postów łącznie (wgrano ${POSTS.length} z plików).`);
+  const co = TYLKO_NOWE ? `dodano ${dodane} nowych z ${POSTS.length} plików` : `wgrano ${POSTS.length} z plików`;
+  console.log(`\nBaza bloga: ${c} postów łącznie (${co}).`);
   await close();
 }
 
