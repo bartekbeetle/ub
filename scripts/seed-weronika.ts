@@ -8,6 +8,19 @@
 // przez Bartka 2026-07-18. Ceny szkoleń: 5000 zł (od Bartka, 2026-07-18).
 import "dotenv/config";
 import { eq } from "drizzle-orm";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+// Opisy szkoleń — źródło w content/kursy/wk-opisy.json (jeden plik, edytowalny bez ruszania kodu).
+// Świeża baza dostaje je od razu tutaj; istniejącą aktualizuje `npm run db:opisy-wk`,
+// bo ten seed jest insert-only i przy istniejącym profilu kończy się bez zapisu.
+type OpisKursu = { slug: string; shortDescription: string; description: string; forWhom: string };
+const opisy: Record<string, OpisKursu> = Object.fromEntries(
+  (JSON.parse(readFileSync(join(process.cwd(), "content/kursy/wk-opisy.json"), "utf8")) as OpisKursu[]).map((o) => [
+    o.slug,
+    o,
+  ])
+);
 
 async function getDb() {
   const url = process.env.DATABASE_URL;
@@ -190,7 +203,11 @@ async function main() {
       category: "PMU / Makijaż permanentny", // wartość ze słownika CATEGORIES — filtry i matching porównują dokładnie
       level: k.level,
       mode: "Stacjonarny",
-      shortDescription: `Szkolenie stacjonarne w studiu Weroniki Kachel w Tychach. Certyfikat ukończenia, praca na modelkach.`,
+      shortDescription:
+        opisy[k.slug]?.shortDescription ??
+        `Szkolenie stacjonarne w studiu Weroniki Kachel w Tychach. Certyfikat ukończenia, praca na modelkach.`,
+      description: opisy[k.slug]?.description ?? null,
+      forWhom: opisy[k.slug]?.forWhom ?? null,
       program: k.program ?? [],
       includes: ["Certyfikat ukończenia", "Praca na modelce", "Wsparcie po szkoleniu"],
       price: 5000,
