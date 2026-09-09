@@ -40,13 +40,17 @@ export function TrackEvent({ event, params }: { event: string; params?: Record<s
     let done = false;
     const started = Date.now();
 
-    const fire = () => {
+    const fire = (force = false) => {
       if (done) return true;
       const cfg = window.__ubAnalytics;
       const hasFbq = typeof window.fbq === "function";
       const hasGtag = typeof window.gtag === "function";
       // Nic jeszcze nie wstało — czekamy dalej.
       if (!hasFbq && !hasGtag) return false;
+      // Skrypty już są, ale identyfikatory dociągają się osobnym fetchem. Gdybyśmy strzelili
+      // teraz, zdarzenie poszłoby BEZ konwersji Google Ads (`send_to` wymaga etykiety z cfg)
+      // i oznaczyli byśmy je jako wysłane. Czekamy na komplet — timeout niżej i tak zwolni.
+      if (!cfg && !force) return false;
 
       if (hasFbq) window.fbq!("track", event, params ?? {});
 
@@ -65,7 +69,13 @@ export function TrackEvent({ event, params }: { event: string; params?: Record<s
 
     if (fire()) return;
     const timer = window.setInterval(() => {
-      if (fire() || Date.now() - started > 10_000) window.clearInterval(timer);
+      if (fire()) return window.clearInterval(timer);
+      // Po limicie strzelamy tym, co jest — lepiej zdarzenie bez konwersji Google Ads
+      // niż całkiem zgubiony lead (np. gdy `/api/analytics-config` nie odpowiedziało).
+      if (Date.now() - started > 10_000) {
+        fire(true);
+        window.clearInterval(timer);
+      }
     }, 250);
     return () => window.clearInterval(timer);
   }, [event, params]);
