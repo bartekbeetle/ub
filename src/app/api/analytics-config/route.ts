@@ -26,6 +26,11 @@ export async function GET() {
     {
       ga4Id: process.env.GA4_ID || process.env.NEXT_PUBLIC_GA4_ID || null,
       pixelId: process.env.META_PIXEL_ID || process.env.NEXT_PUBLIC_META_PIXEL_ID || null,
+      // Google Ads: identyfikator konta (AW-XXXXXXXXX) + etykieta akcji konwersji „lead".
+      // Etykieta jest osobna, bo w Google Ads jedno konto ma wiele akcji konwersji i każda
+      // ma własny `send_to` w formacie `AW-XXXXXXXXX/AbC-D_efGh12`.
+      adsId: process.env.GOOGLE_ADS_ID || process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || null,
+      adsLeadLabel: process.env.GOOGLE_ADS_LEAD_LABEL || process.env.NEXT_PUBLIC_GOOGLE_ADS_LEAD_LABEL || null,
     },
     { headers: { "Cache-Control": "no-store" } }
   );
