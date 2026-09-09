@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { TrackEvent } from "@/components/TrackEvent";
+import { LeadConversion } from "@/components/LeadConversion";
 import { IconCheck } from "@/components/icons";
 import { SITE_NAME } from "@/lib/constants";
 
@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 export default function DziekujemyPage() {
   return (
     <div className="mx-auto max-w-xl px-4 py-20 text-center md:py-28">
-      {/* Meta Pixel: event konwersji Lead */}
-      <TrackEvent event="Lead" />
+      {/* Konwersja Lead (Meta + GA4 + Google Ads) z województwem i kategorią szkolenia */}
+      <LeadConversion />
       <span className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-money-bg text-money">
         <IconCheck width={40} height={40} />
       </span>

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CATEGORIES, EMPLOYMENT_STATUSES, VOIVODESHIPS } from "@/lib/constants";
+import { LEAD_SEGMENT_KEY } from "@/components/LeadConversion";
 
 type Props = {
   courseId?: number;
@@ -121,6 +122,18 @@ export function LeadForm({ courseId, defaultCategory, defaultVoivodeship, source
         setError(data.error ?? "Coś poszło nie tak. Spróbuj ponownie lub napisz do nas.");
         setSubmitting(false);
         return;
+      }
+      // Segmentacja konwersji: przekazujemy do analityki WYŁĄCZNIE województwo i kategorię
+      // (dane deklarowane, nieosobowe). Świadomie NIE idą tu imię, telefon, e-mail ani status
+      // zawodowy — ten ostatni Meta traktuje jako kategorię wrażliwą. sessionStorage zamiast
+      // query stringa, żeby nic nie lądowało w adresie URL ani w logach serwera.
+      try {
+        sessionStorage.setItem(
+          LEAD_SEGMENT_KEY,
+          JSON.stringify({ voivodeship: payload.voivodeship, category: payload.category })
+        );
+      } catch {
+        /* brak storage = konwersja bez segmentacji, ale nadal się liczy */
       }
       router.push("/dziekujemy");
     } catch {
