@@ -141,7 +141,7 @@ export default async function AdminDashboard() {
       <div className="card mt-6 overflow-hidden">
         <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
           <h2 className="font-serif text-lg font-semibold">Ostatnie leady</h2>
-          <Link href="/admin/leady" className="text-sm font-semibold text-sand-700 hover:text-ink-soft">
+          <Link href="/admin/kursantki" className="text-sm font-semibold text-sand-700 hover:text-ink-soft">
             Zobacz wszystkie →
           </Link>
         </div>
@@ -160,7 +160,7 @@ export default async function AdminDashboard() {
               <tr key={l.id} className="hover:bg-gray-50">
                 <td className="px-6 py-3 text-muted">{formatDateTime(l.createdAt)}</td>
                 <td className="px-6 py-3 font-medium">
-                  <Link href={`/admin/leady/${l.id}`} className="text-sand-700 hover:underline">{l.name}</Link>
+                  <Link href={`/admin/kursantki/${l.id}`} className="text-sand-700 hover:underline">{l.name}</Link>
                 </td>
                 <td className="px-6 py-3">{l.category}</td>
                 <td className="px-6 py-3">{voivodeshipName(l.voivodeship)}</td>

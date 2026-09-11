@@ -142,10 +142,43 @@ export const BILLING_STATUS_LABELS: Record<string, string> = {
   oplacone: "Opłacone",
 };
 
+export const LEAD_SOURCES = ["kurs", "landing", "konsultacja", "quiz", "recepcjonistka"] as const;
+
 export const SOURCE_LABELS: Record<string, string> = {
   kurs: "Karta kursu",
   landing: "Landing",
   konsultacja: "Konsultacja",
+  quiz: "Quiz",
+  recepcjonistka: "Recepcjonistka",
+};
+
+/**
+ * Statusy, w których lead jest ZAMKNIĘTY — nic już z nim nie robimy.
+ * Reszta („nowy", „przydzielony", „skontaktowany") leci do kubełka „do zrobienia"
+ * w jednym oknie Kursantek, razem z nieobsłużonymi zgłoszeniami.
+ */
+export const LEAD_STATUSES_CLOSED = ["zapisana", "rozliczony", "odrzucony"] as const;
+
+export const LEAD_STATUSES_OPEN = ["nowy", "przydzielony", "skontaktowany"] as const;
+
+// ===== ZGŁOSZENIA (formularz kontaktowy) =====
+
+export const SUBMISSION_TYPES = ["kontakt", "konsultacja"] as const;
+
+export const SUBMISSION_TYPE_LABELS: Record<string, string> = {
+  kontakt: "Kontakt",
+  konsultacja: "Konsultacja",
+};
+
+/**
+ * Mapowanie typu zgłoszenia na źródło leada przy konwersji.
+ * „kontakt" nie ma swojego odpowiednika w `lead_source` — wpada w „landing",
+ * bo formularz kontaktowy stoi na stronie. Pełny ślad pochodzenia i tak zostaje
+ * w `submissions.converted_to_lead_id` oraz w audit logu.
+ */
+export const SUBMISSION_TYPE_TO_LEAD_SOURCE: Record<string, (typeof LEAD_SOURCES)[number]> = {
+  kontakt: "landing",
+  konsultacja: "konsultacja",
 };
 
 // ===== CRM TRENEREK (pipeline B2B) =====

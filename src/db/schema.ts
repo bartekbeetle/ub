@@ -42,7 +42,19 @@ export const billingModelEnum = pgEnum("billing_model", ["per_lead", "per_zapis"
 
 export const contentStatusEnum = pgEnum("content_status", ["szkic", "opublikowane"]);
 
-export const leadSourceEnum = pgEnum("lead_source", ["kurs", "landing", "konsultacja"]);
+/**
+ * Skąd przyszła kursantka. `quiz` i `recepcjonistka` są dołożone pod przyszłe wejścia
+ * (formularz quizowy i agent głosowy) — bez nich każde nowe źródło wymagałoby migracji
+ * w środku wdrożenia. Wartości enuma w Postgresie da się tylko DOKŁADAĆ, nigdy usuwać,
+ * więc dokładamy je zawczasu i jednym ruchem.
+ */
+export const leadSourceEnum = pgEnum("lead_source", [
+  "kurs",
+  "landing",
+  "konsultacja",
+  "quiz",
+  "recepcjonistka",
+]);
 
 export const submissionTypeEnum = pgEnum("submission_type", ["kontakt", "konsultacja"]);
 
@@ -379,6 +391,21 @@ export const auditLog = pgTable(
 
 // ===== ZGŁOSZENIA (kontakt / konsultacja) =====
 
+/**
+ * Wiadomość z formularza kontaktowego. CELOWO osobna tabela od `leads`, mimo że
+ * w panelu obie pokazujemy w jednym oknie („Kursantki").
+ *
+ * Powód jest prawny, nie estetyczny: zgłoszenie zbiera zgodę na kontakt Z NAMI,
+ * a `leads.rodoConsentAt` to zgoda na przekazanie danych PODMIOTOWI ZEWNĘTRZNEMU
+ * (trenerce). To dwie różne podstawy przetwarzania. Wspólna tabela zacierałaby tę
+ * granicę i otwierała drogę do przydzielenia trenerce kontaktu, który nigdy na to
+ * nie wyraził zgody.
+ *
+ * Most między światami: „Uzupełnij do leada" w panelu — admin dopytuje o województwo,
+ * kategorię i status zawodowy, odbiera OSOBNĄ zgodę na przekazanie danych i dopiero
+ * wtedy powstaje wiersz w `leads`. Zgłoszenie zostaje (ślad), wskazując na leada
+ * przez `convertedToLeadId`.
+ */
 export const submissions = pgTable("submissions", {
   id: serial("id").primaryKey(),
   type: submissionTypeEnum("type").notNull(),
@@ -387,6 +414,11 @@ export const submissions = pgTable("submissions", {
   phone: varchar("phone", { length: 40 }),
   message: text("message"),
   isHandled: boolean("is_handled").notNull().default(false),
+  /** Lead powstały z tego zgłoszenia. NULL = zgłoszenie nigdy nie dostało kwalifikacji. */
+  convertedToLeadId: integer("converted_to_lead_id").references(() => leads.id, {
+    onDelete: "set null",
+  }),
+  convertedAt: timestamp("converted_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

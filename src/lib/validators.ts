@@ -63,6 +63,41 @@ export const submissionSchema = z.object({
   website: z.string().max(300).optional().or(z.literal("")),
 });
 
+/**
+ * Konwersja zgłoszenia na leada („Uzupełnij do leada" w panelu).
+ *
+ * Celowo powiela twarde reguły `leadSchema` zamiast być jego `.partial()`:
+ * lead powstały z rozmowy telefonicznej musi spełniać DOKŁADNIE te same warunki,
+ * co lead z formularza kwalifikacyjnego, bo idzie tą samą drogą do trenerki.
+ *
+ * `rodoConsent: z.literal(true)` jest tu sednem sprawy — zgłoszenie miało zgodę
+ * tylko na kontakt z nami. Bez odrębnej zgody na przekazanie danych trenerce
+ * konwersja NIE MOŻE przejść, i pilnuje tego serwer, nie checkbox w przeglądarce.
+ */
+export const submissionConversionSchema = z.object({
+  // Imię i telefon są edytowalne: zgłoszenie bywa niepełne (telefon jest nullowalny,
+  // imię bywa jednoczłonowe), a lead wymaga kompletu. Admin uzupełnia je z rozmowy.
+  name: z.string().trim().min(3, "Podaj imię i nazwisko").max(160),
+  phone: z
+    .string()
+    .trim()
+    .min(9, "Podaj poprawny numer telefonu")
+    .max(20)
+    .regex(/^[+\d\s-]+$/, "Podaj poprawny numer telefonu"),
+  voivodeship: z.enum(voivodeshipSlugs, { errorMap: () => ({ message: "Wybierz województwo" }) }),
+  category: z.enum(CATEGORIES as unknown as [string, ...string[]], {
+    errorMap: () => ({ message: "Wybierz kategorię szkolenia" }),
+  }),
+  employmentStatus: z.enum(EMPLOYMENT_STATUSES as unknown as [string, ...string[]], {
+    errorMap: () => ({ message: "Wybierz status zawodowy" }),
+  }),
+  preferredDate: z.string().trim().max(120).optional().or(z.literal("")),
+  notes: z.string().trim().max(4000).optional().or(z.literal("")),
+  rodoConsent: z.literal(true, {
+    errorMap: () => ({ message: "Bez zgody na przekazanie danych trenerce nie wolno utworzyć leada" }),
+  }),
+});
+
 export const loginSchema = z.object({
   email: z.string().trim().email().max(255),
   password: z.string().min(1).max(200),
