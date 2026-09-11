@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { and, desc, eq, gte, ne, sql } from "drizzle-orm";
+import { and, desc, eq, gte, ne, notInArray, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { formatDateTime, formatPln } from "@/lib/utils";
 import { LEAD_STATUS_LABELS, LEAD_STATUS_COLORS, voivodeshipName } from "@/lib/constants";
@@ -24,6 +24,8 @@ export default async function AdminDashboard() {
     [{ c: activeTrainers }],
     [{ s: revenueMonth }],
     [{ c: pendingBilling }],
+    [{ c: pendingResearch }],
+    [{ c: prospectsActive }],
     recentLeads,
     dailyRaw,
   ] = await Promise.all([
@@ -40,6 +42,14 @@ export default async function AdminDashboard() {
       .select({ c: sql<number>`count(*)::int` })
       .from(schema.leadAssignments)
       .where(and(eq(schema.leadAssignments.billingStatus, "do_zafakturowania"), ne(schema.leadAssignments.amount, 0))),
+    db
+      .select({ c: sql<number>`count(*)::int` })
+      .from(schema.researchJobs)
+      .where(eq(schema.researchJobs.status, "pending")),
+    db
+      .select({ c: sql<number>`count(*)::int` })
+      .from(schema.prospects)
+      .where(notInArray(schema.prospects.status, ["odrzucony", "parking"])),
     db.select().from(schema.leads).orderBy(desc(schema.leads.createdAt)).limit(10),
     db
       .select({ day: sql<string>`to_char(${schema.leads.createdAt}, 'YYYY-MM-DD')`, c: sql<number>`count(*)::int` })
@@ -73,7 +83,8 @@ export default async function AdminDashboard() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="font-serif text-2xl font-bold">Dashboard</h1>
         <div className="flex flex-wrap gap-2">
-          <Link href="/admin/trenerki/nowa" className="btn-primary !px-4 !py-2 !text-sm">+ Dodaj trenerkę</Link>
+          <Link href="/admin/crm-trenerki/nowy" className="btn-primary !px-4 !py-2 !text-sm">+ Dodaj prospekta</Link>
+          <Link href="/admin/trenerki/nowa" className="btn-outline !px-4 !py-2 !text-sm">+ Dodaj trenerkę</Link>
           <Link href="/admin/blog/nowy" className="btn-outline !px-4 !py-2 !text-sm">+ Nowy post</Link>
           <Link href="/admin/szkolenia/nowe" className="btn-outline !px-4 !py-2 !text-sm">+ Dodaj szkolenie</Link>
         </div>
@@ -86,6 +97,28 @@ export default async function AdminDashboard() {
             <p className="mt-3 font-serif text-3xl font-bold text-ink-soft">{s.value}</p>
           </div>
         ))}
+      </div>
+
+      {/* CRM TRENEREK — zaległości po stronie B2B, czyli tam, skąd bierze się przychód */}
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <Link href="/admin/crm-trenerki/kolejka" className="card p-5">
+          <span className={`inline-flex rounded-lg px-2.5 py-1 text-xs font-bold ${pendingResearch > 0 ? "bg-amber-100 text-amber-800" : "bg-gray-200 text-gray-600"}`}>
+            Leady czekające na research
+          </span>
+          <p className="mt-3 font-serif text-3xl font-bold text-ink-soft">{pendingResearch}</p>
+          <p className="mt-1 text-xs text-muted">
+            {pendingResearch > 0
+              ? "Do przerobienia: znajdź akademię w tym województwie i kategorii →"
+              : "Kolejka pusta — nic nie zalega."}
+          </p>
+        </Link>
+        <Link href="/admin/crm-trenerki" className="card p-5">
+          <span className="inline-flex rounded-lg bg-sand-100 px-2.5 py-1 text-xs font-bold text-sand-700">
+            Prospekty w pipeline
+          </span>
+          <p className="mt-3 font-serif text-3xl font-bold text-ink-soft">{prospectsActive}</p>
+          <p className="mt-1 text-xs text-muted">Akademie i trenerki w lejku B2B (bez odrzuconych i parkingu) →</p>
+        </Link>
       </div>
 
       <div className="card mt-6 p-6">

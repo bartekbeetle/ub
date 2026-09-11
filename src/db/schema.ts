@@ -48,6 +48,49 @@ export const submissionTypeEnum = pgEnum("submission_type", ["kontakt", "konsult
 
 export const emailStatusEnum = pgEnum("email_status", ["w_kolejce", "wyslany", "blad"]);
 
+// --- CRM TRENEREK (pipeline B2B) ---
+
+/**
+ * Lejek pozyskania akademii/trenerki. Rozłączny z `trainers`:
+ * `trainers` = katalog PUBLICZNY (każdy wiersz = profil pod /trenerka/<slug>),
+ * `prospects` = robocza baza kontaktów, której nikt z zewnątrz nie widzi.
+ * Awans prospekta do katalogu następuje dopiero przy statusie `umowa`.
+ */
+export const prospectStatusEnum = pgEnum("prospect_status", [
+  "potencjalny",
+  "research",
+  "do_kontaktu",
+  "kontakt",
+  "rozmowa",
+  "umowa",
+  "aktywna",
+  "odrzucony",
+  "parking",
+]);
+
+export const prospectPriorityEnum = pgEnum("prospect_priority", ["wysoki", "sredni", "niski"]);
+
+/**
+ * Segment BUR decyduje, czy podmiot w ogóle może przyjąć leada z dofinansowaniem:
+ * A = ma wpis do Bazy Usług Rozwojowych, B = nie ma (kandydat na model „prowizja za papier").
+ */
+export const burSegmentEnum = pgEnum("bur_segment", ["A", "B", "nieznany"]);
+
+export const prospectActivityTypeEnum = pgEnum("prospect_activity_type", [
+  "notatka",
+  "telefon",
+  "email",
+  "spotkanie",
+  "zmiana_statusu",
+]);
+
+export const researchJobStatusEnum = pgEnum("research_job_status", [
+  "pending",
+  "w_toku",
+  "gotowe",
+  "pominiete",
+]);
+
 // ===== UŻYTKOWNICY I SESJE =====
 
 export const users = pgTable("users", {
@@ -218,6 +261,106 @@ export const leadAssignments = pgTable(
   (t) => [index("assign_lead_idx").on(t.leadId), index("assign_trainer_idx").on(t.trainerId)]
 );
 
+// ===== CRM TRENEREK — PIPELINE B2B =====
+
+/**
+ * Pozyskiwanie akademii i trenerek jako klientów B2B (płacą 500 zł za zapisaną kursantkę).
+ *
+ * CELOWO osobna tabela od `trainers`, a nie kilka dodatkowych kolumn tam:
+ * każdy wiersz w `trainers` ma `slug` i renderuje publiczny profil w katalogu.
+ * Wrzucenie tam kilkudziesięciu niezweryfikowanych podmiotów zaśmieciłoby serwis
+ * pustymi profilami i rozjechało SEO (cienkie strony w indeksie).
+ * Profil publiczny powstaje dopiero PO podpisaniu umowy — przyciskiem „Utwórz profil trenerki".
+ */
+export const prospects = pgTable(
+  "prospects",
+  {
+    id: serial("id").primaryKey(),
+
+    // --- podmiot ---
+    name: varchar("name", { length: 200 }).notNull(), // nazwa handlowa / marka
+    legalName: varchar("legal_name", { length: 250 }), // nazwa z rejestru
+    nip: varchar("nip", { length: 20 }),
+    krs: varchar("krs", { length: 20 }),
+    city: varchar("city", { length: 100 }),
+    voivodeship: varchar("voivodeship", { length: 40 }),
+    categories: jsonb("categories").$type<string[]>().notNull().default([]),
+    phone: varchar("phone", { length: 40 }),
+    email: varchar("email", { length: 255 }),
+    website: text("website"),
+    instagram: text("instagram"),
+    facebook: text("facebook"),
+
+    // --- pipeline ---
+    status: prospectStatusEnum("status").notNull().default("potencjalny"),
+    priority: prospectPriorityEnum("priority").notNull().default("sredni"),
+    source: varchar("source", { length: 60 }).notNull().default("reczny"), // research-lead | reczny | polecenie
+
+    // --- BUR (najważniejsza kwalifikacja biznesowa) ---
+    burSegment: burSegmentEnum("bur_segment").notNull().default("nieznany"),
+    burProviderId: varchar("bur_provider_id", { length: 20 }), // ID karty dostawcy w PARP
+    burUrl: text("bur_url"),
+    burServicesCompleted: integer("bur_services_completed"),
+    burServicesActive: integer("bur_services_active"),
+    burRatingX10: integer("bur_rating_x10"), // ocena × 10 (50 = 5,0) — jak trainers.rating
+    burReviewCount: integer("bur_review_count"),
+    burCheckedAt: timestamp("bur_checked_at", { withTimezone: true }),
+
+    // --- research ---
+    dossierPath: text("dossier_path"), // ścieżka do pliku .md w vaulcie
+    researchNotes: text("research_notes"),
+    researchedAt: timestamp("researched_at", { withTimezone: true }),
+
+    // --- powiązania ---
+    trainerId: integer("trainer_id").references(() => trainers.id, { onDelete: "set null" }),
+    triggeredByLeadId: integer("triggered_by_lead_id").references(() => leads.id, { onDelete: "set null" }),
+
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("prospects_status_idx").on(t.status),
+    index("prospects_voiv_idx").on(t.voivodeship),
+    index("prospects_bur_idx").on(t.burSegment),
+  ]
+);
+
+/** Oś czasu kontaktu z prospektem — notatki, telefony, maile i automatyczne wpisy o zmianie statusu. */
+export const prospectActivities = pgTable(
+  "prospect_activities",
+  {
+    id: serial("id").primaryKey(),
+    prospectId: integer("prospect_id")
+      .notNull()
+      .references(() => prospects.id, { onDelete: "cascade" }),
+    type: prospectActivityTypeEnum("type").notNull().default("notatka"),
+    content: text("content").notNull(),
+    createdBy: varchar("created_by", { length: 60 }).notNull().default("admin"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("prospect_activities_prospect_idx").on(t.prospectId)]
+);
+
+/**
+ * Kolejka researchu: nowy lead = sygnał „poszukaj akademii w tym województwie i kategorii".
+ * To jest TYLKO rejestr zadania do zrobienia — nic tego nie miele samo z siebie.
+ * Kolejkę przerabia człowiek albo agent w sesji (skill `research-trenerek`).
+ */
+export const researchJobs = pgTable(
+  "research_jobs",
+  {
+    id: serial("id").primaryKey(),
+    leadId: integer("lead_id").references(() => leads.id, { onDelete: "cascade" }),
+    voivodeship: varchar("voivodeship", { length: 40 }).notNull(),
+    category: varchar("category", { length: 60 }).notNull(),
+    status: researchJobStatusEnum("status").notNull().default("pending"),
+    resultNotes: text("result_notes"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+  },
+  (t) => [index("research_jobs_status_idx").on(t.status)]
+);
+
 // ===== AUDIT LOG =====
 
 export const auditLog = pgTable(
@@ -307,6 +450,20 @@ export const usersRelations = relations(users, ({ one }) => ({
   trainer: one(trainers, { fields: [users.trainerId], references: [trainers.id] }),
 }));
 
+export const prospectsRelations = relations(prospects, ({ one, many }) => ({
+  trainer: one(trainers, { fields: [prospects.trainerId], references: [trainers.id] }),
+  triggeredByLead: one(leads, { fields: [prospects.triggeredByLeadId], references: [leads.id] }),
+  activities: many(prospectActivities),
+}));
+
+export const prospectActivitiesRelations = relations(prospectActivities, ({ one }) => ({
+  prospect: one(prospects, { fields: [prospectActivities.prospectId], references: [prospects.id] }),
+}));
+
+export const researchJobsRelations = relations(researchJobs, ({ one }) => ({
+  lead: one(leads, { fields: [researchJobs.leadId], references: [leads.id] }),
+}));
+
 // ===== TYPY =====
 
 export type User = typeof users.$inferSelect;
@@ -318,3 +475,6 @@ export type LeadAssignment = typeof leadAssignments.$inferSelect;
 export type Review = typeof reviews.$inferSelect;
 export type Submission = typeof submissions.$inferSelect;
 export type Settings = typeof settings.$inferSelect;
+export type Prospect = typeof prospects.$inferSelect;
+export type ProspectActivity = typeof prospectActivities.$inferSelect;
+export type ResearchJob = typeof researchJobs.$inferSelect;

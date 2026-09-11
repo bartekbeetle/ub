@@ -147,3 +147,127 @@ export const SOURCE_LABELS: Record<string, string> = {
   landing: "Landing",
   konsultacja: "Konsultacja",
 };
+
+// ===== CRM TRENEREK (pipeline B2B) =====
+
+export const PROSPECT_STATUSES = [
+  "potencjalny",
+  "research",
+  "do_kontaktu",
+  "kontakt",
+  "rozmowa",
+  "umowa",
+  "aktywna",
+  "odrzucony",
+  "parking",
+] as const;
+
+export const PROSPECT_STATUS_LABELS: Record<string, string> = {
+  potencjalny: "Potencjalny",
+  research: "Research w toku",
+  do_kontaktu: "Do kontaktu",
+  kontakt: "Kontakt nawiązany",
+  rozmowa: "Rozmowa",
+  umowa: "Umowa",
+  aktywna: "Aktywna",
+  odrzucony: "Odrzucony",
+  parking: "Parking",
+};
+
+export const PROSPECT_STATUS_COLORS: Record<string, string> = {
+  potencjalny: "bg-gray-200 text-gray-700",
+  research: "bg-blue-100 text-blue-800",
+  do_kontaktu: "bg-amber-100 text-amber-800",
+  kontakt: "bg-purple-100 text-purple-800",
+  rozmowa: "bg-sand-100 text-sand-700",
+  umowa: "bg-emerald-100 text-emerald-800",
+  aktywna: "bg-money-bg text-money-dark",
+  odrzucony: "bg-red-100 text-red-700",
+  parking: "bg-gray-100 text-gray-600",
+};
+
+/** Kolejność lejka do liczników — statusy „martwe" (odrzucony/parking) pokazujemy osobno. */
+export const PROSPECT_PIPELINE_ORDER = [
+  "potencjalny",
+  "research",
+  "do_kontaktu",
+  "kontakt",
+  "rozmowa",
+  "umowa",
+  "aktywna",
+] as const;
+
+export const PROSPECT_PRIORITIES = ["wysoki", "sredni", "niski"] as const;
+
+export const PROSPECT_PRIORITY_LABELS: Record<string, string> = {
+  wysoki: "Wysoki",
+  sredni: "Średni",
+  niski: "Niski",
+};
+
+export const PROSPECT_PRIORITY_COLORS: Record<string, string> = {
+  wysoki: "bg-red-100 text-red-700",
+  sredni: "bg-amber-100 text-amber-800",
+  niski: "bg-gray-200 text-gray-600",
+};
+
+export const BUR_SEGMENTS = ["A", "B", "nieznany"] as const;
+
+export const BUR_SEGMENT_LABELS: Record<string, string> = {
+  A: "A — ma wpis do BUR",
+  B: "B — brak wpisu do BUR",
+  nieznany: "Nieznany",
+};
+
+export const BUR_SEGMENT_SHORT: Record<string, string> = {
+  A: "BUR A",
+  B: "BUR B",
+  nieznany: "BUR ?",
+};
+
+export const BUR_SEGMENT_COLORS: Record<string, string> = {
+  // Segment A = jedyni, którzy mogą dziś przyjąć leada z dofinansowaniem. Wyróżniony celowo.
+  A: "bg-money-bg text-money-dark ring-1 ring-money",
+  B: "bg-amber-100 text-amber-800",
+  nieznany: "bg-gray-200 text-gray-600",
+};
+
+export const PROSPECT_SOURCES = ["research-lead", "reczny", "polecenie"] as const;
+
+export const PROSPECT_SOURCE_LABELS: Record<string, string> = {
+  "research-lead": "Research po leadzie",
+  reczny: "Dodany ręcznie",
+  polecenie: "Polecenie",
+};
+
+export const PROSPECT_ACTIVITY_TYPES = ["notatka", "telefon", "email", "spotkanie", "zmiana_statusu"] as const;
+
+export const PROSPECT_ACTIVITY_LABELS: Record<string, string> = {
+  notatka: "Notatka",
+  telefon: "Telefon",
+  email: "E-mail",
+  spotkanie: "Spotkanie",
+  zmiana_statusu: "Zmiana statusu",
+};
+
+export const RESEARCH_JOB_STATUSES = ["pending", "w_toku", "gotowe", "pominiete"] as const;
+
+export const RESEARCH_JOB_STATUS_LABELS: Record<string, string> = {
+  pending: "Czeka",
+  w_toku: "W toku",
+  gotowe: "Gotowe",
+  pominiete: "Pominięte",
+};
+
+export const RESEARCH_JOB_STATUS_COLORS: Record<string, string> = {
+  pending: "bg-amber-100 text-amber-800",
+  w_toku: "bg-blue-100 text-blue-800",
+  gotowe: "bg-emerald-100 text-emerald-800",
+  pominiete: "bg-gray-200 text-gray-600",
+};
+
+/** Link do karty dostawcy w Bazie Usług Rozwojowych (PARP). */
+export function burProviderUrl(providerId: string | null | undefined): string | null {
+  if (!providerId) return null;
+  return `https://uslugirozwojowe.parp.gov.pl/wyszukiwarka/dostawca-uslug/podglad?id=${providerId}`;
+}
