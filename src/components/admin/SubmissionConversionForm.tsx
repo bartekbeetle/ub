@@ -17,6 +17,7 @@ export function SubmissionConversionForm({ submission }: { submission: Submissio
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [consent, setConsent] = useState(false);
+  const [contactConsent, setContactConsent] = useState(false);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -35,6 +36,7 @@ export function SubmissionConversionForm({ submission }: { submission: Submissio
         preferredDate: String(fd.get("preferredDate") ?? ""),
         notes: String(fd.get("notes") ?? ""),
         rodoConsent: consent,
+        contactConsent,
       }),
     });
     setBusy(false);
@@ -162,6 +164,25 @@ export function SubmissionConversionForm({ submission }: { submission: Submissio
           <span>
             Potwierdzam, że <strong>{submission.name}</strong> wyraziła zgodę na przekazanie swoich danych
             kontaktowych partnerskiej trenerce w celu przedstawienia oferty szkolenia z dofinansowaniem.
+          </span>
+        </label>
+
+        {/* Osobna, NIEobowiązkowa zgoda: bez niej lead ma w panelu „brak — nie dzwonić",
+            a agent głosowy go pomija. Skoro i tak rozmawiasz z kursantką przy uzupełnianiu,
+            to jest jedyny moment, żeby ją odebrać — inaczej konwersja produkuje leady,
+            do których nikomu nie wolno zadzwonić. */}
+        <label className="mt-4 flex cursor-pointer items-start gap-3 text-sm">
+          <input
+            type="checkbox"
+            checked={contactConsent}
+            onChange={(e) => setContactConsent(e.target.checked)}
+            className="mt-0.5 h-5 w-5 shrink-0 accent-sand-500"
+          />
+          <span>
+            Zgodziła się również na <strong>kontakt telefoniczny i SMS</strong> w sprawie szkolenia.
+            <span className="block text-xs text-ink-soft">
+              Nieobowiązkowe. Bez tego nikt — ani trenerka, ani recepcjonistka — nie zadzwoni do niej zgodnie z prawem.
+            </span>
           </span>
         </label>
       </fieldset>

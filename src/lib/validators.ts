@@ -103,6 +103,9 @@ export const submissionConversionSchema = z.object({
   rodoConsent: z.literal(true, {
     errorMap: () => ({ message: "Bez zgody na przekazanie danych trenerce nie wolno utworzyć leada" }),
   }),
+  // Odrębna podstawa (art. 398 PKE) — NIEobowiązkowa, więc zwykły boolean, nie literal(true).
+  // Brak zgody = lead bez prawa do telefonu, nie błąd walidacji.
+  contactConsent: z.boolean().optional().default(false),
 });
 
 export const loginSchema = z.object({

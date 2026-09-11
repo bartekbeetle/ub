@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { submissionConversionSchema, zodErrorMessage } from "@/lib/validators";
-import { SUBMISSION_TYPE_TO_LEAD_SOURCE } from "@/lib/constants";
+import { CONSENT_VERSION, SUBMISSION_TYPE_TO_LEAD_SOURCE } from "@/lib/constants";
 import { actorLabel, logAudit } from "@/lib/audit";
 import { distributeLead } from "@/lib/matching";
 
@@ -76,6 +76,10 @@ export async function POST(req: Request, { params }: { params: Params }) {
       source,
       status: "nowy",
       rodoConsentAt: consentAt,
+      // Zgoda na telefon/SMS jest ODRĘBNA i nieobowiązkowa (art. 398 PKE). Gdy jej nie ma,
+      // pole zostaje puste, a karta leada pokazuje „brak — nie dzwonić" — i tak ma być.
+      contactConsentAt: data.contactConsent ? consentAt : null,
+      consentVersion: CONSENT_VERSION,
     })
     .returning();
 
@@ -98,6 +102,8 @@ export async function POST(req: Request, { params }: { params: Params }) {
       category: data.category,
       voivodeship: data.voivodeship,
       rodoConsentAt: consentAt.toISOString(),
+      contactConsentAt: data.contactConsent ? consentAt.toISOString() : null,
+      consentVersion: CONSENT_VERSION,
     },
   });
   await logAudit({
