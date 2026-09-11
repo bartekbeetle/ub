@@ -19,8 +19,9 @@ const GROUPS: { label: string | null; items: Item[] }[] = [
   {
     label: "CRM Kursantki",
     items: [
-      { href: "/admin/leady", label: "Leady" },
-      { href: "/admin/zgloszenia", label: "Zgłoszenia" },
+      // Jedna pozycja zamiast „Leady" + „Zgłoszenia": obie tabele to ta sama kolejka
+      // i ta sama droga do przydziału, tylko na różnym etapie kwalifikacji.
+      { href: "/admin/kursantki", label: "Kursantki" },
       { href: "/admin/rozliczenia", label: "Rozliczenia" },
     ],
   },
