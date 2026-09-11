@@ -1,5 +1,18 @@
 import { z } from "zod";
-import { CATEGORIES, EMPLOYMENT_STATUSES, VOIVODESHIPS, LEVELS, MODES, BLOG_CATEGORIES } from "./constants";
+import {
+  CATEGORIES,
+  EMPLOYMENT_STATUSES,
+  VOIVODESHIPS,
+  LEVELS,
+  MODES,
+  BLOG_CATEGORIES,
+  PROSPECT_STATUSES,
+  PROSPECT_PRIORITIES,
+  PROSPECT_SOURCES,
+  PROSPECT_ACTIVITY_TYPES,
+  BUR_SEGMENTS,
+  RESEARCH_JOB_STATUSES,
+} from "./constants";
 
 const voivodeshipSlugs = VOIVODESHIPS.map((v) => v.slug) as [string, ...string[]];
 
@@ -128,6 +141,59 @@ export const settingsSchema = z.object({
   notifyEmail: z.string().trim().email().max(255),
   leadEmailSubject: z.string().trim().min(3).max(300),
   leadEmailTemplate: z.string().trim().min(10).max(10000),
+});
+
+// ===== CRM TRENEREK =====
+
+const optionalText = (max: number) => z.string().trim().max(max).optional().or(z.literal(""));
+
+/** Liczba całkowita albo puste pole z formularza (`""` / null) → null w bazie. */
+const optionalInt = z
+  .union([z.coerce.number().int().min(0), z.literal(""), z.null()])
+  .optional()
+  .transform((v) => (v === "" || v === undefined || v === null ? null : v));
+
+export const prospectSchema = z.object({
+  name: z.string().trim().min(2, "Podaj nazwę podmiotu").max(200),
+  legalName: optionalText(250),
+  nip: optionalText(20),
+  krs: optionalText(20),
+  city: optionalText(100),
+  voivodeship: z.enum(voivodeshipSlugs).optional().or(z.literal("")),
+  categories: z.array(z.enum(CATEGORIES as unknown as [string, ...string[]])).default([]),
+  phone: optionalText(40),
+  email: z.string().trim().email("Podaj poprawny adres email").max(255).optional().or(z.literal("")),
+  website: optionalText(300),
+  instagram: optionalText(300),
+  facebook: optionalText(300),
+
+  status: z.enum(PROSPECT_STATUSES as unknown as [string, ...string[]]).default("potencjalny"),
+  priority: z.enum(PROSPECT_PRIORITIES as unknown as [string, ...string[]]).default("sredni"),
+  source: z.enum(PROSPECT_SOURCES as unknown as [string, ...string[]]).default("reczny"),
+
+  burSegment: z.enum(BUR_SEGMENTS as unknown as [string, ...string[]]).default("nieznany"),
+  burProviderId: optionalText(20),
+  burUrl: optionalText(500),
+  burServicesCompleted: optionalInt,
+  burServicesActive: optionalInt,
+  burRatingX10: optionalInt,
+  burReviewCount: optionalInt,
+
+  dossierPath: optionalText(500),
+  researchNotes: z.string().max(20000).optional().or(z.literal("")),
+});
+
+/** Edycja: te same reguły, ale każde pole opcjonalne (PATCH częściowy). */
+export const prospectPatchSchema = prospectSchema.partial();
+
+export const prospectActivitySchema = z.object({
+  type: z.enum(PROSPECT_ACTIVITY_TYPES as unknown as [string, ...string[]]).default("notatka"),
+  content: z.string().trim().min(1, "Treść nie może być pusta").max(4000),
+});
+
+export const researchJobPatchSchema = z.object({
+  status: z.enum(RESEARCH_JOB_STATUSES as unknown as [string, ...string[]]),
+  resultNotes: z.string().max(4000).optional().or(z.literal("")),
 });
 
 export const leadStatusUpdateSchema = z.object({

@@ -65,6 +65,21 @@ export async function POST(req: Request) {
     details: { source: data.source, category: data.category, voivodeship: data.voivodeship },
   });
 
+  // Kolejka researchu trenerek: każdy lead to sygnał „poszukaj akademii w tym województwie
+  // i kategorii". Sam wiersz nic nie miele — przerabia go człowiek/agent w sesji
+  // (skill `research-trenerek`), panel pokazuje tylko licznik zaległości.
+  // Owinięte w try/catch świadomie: lead ma się zapisać nawet gdy kolejka padnie.
+  try {
+    await db.insert(schema.researchJobs).values({
+      leadId: lead.id,
+      voivodeship: lead.voivodeship,
+      category: lead.category,
+      status: "pending",
+    });
+  } catch (err) {
+    console.error("[lead] Nie udało się utworzyć zadania researchu:", err);
+  }
+
   // automatyczna dystrybucja (nie blokuje odpowiedzi przy błędzie)
   try {
     await distributeLead(lead);
