@@ -73,6 +73,16 @@ export default async function PanelLeadyPage() {
                     <div className="space-y-1">
                       <div><a href={`tel:${lead.phone}`} className="font-medium text-sand-700 hover:underline">{lead.phone}</a></div>
                       <div><a href={`mailto:${lead.email}`} className="text-sand-700 hover:underline">{lead.email}</a></div>
+                      {/*
+                        Zgłoszenia sprzed rozdzielenia zgód nie mają odrębnej zgody na telefon
+                        (art. 398 Prawa komunikacji elektronicznej). Trenerka musi to widzieć,
+                        zanim zadzwoni — to jej odpowiedzialność, nie tylko nasza.
+                      */}
+                      {!lead.contactConsentAt && (
+                        <div className="rounded bg-red-50 px-2 py-1 text-xs font-semibold text-red-700">
+                          Brak zgody na telefon — kontakt tylko e-mailem
+                        </div>
+                      )}
                     </div>
                   )}
                 </td>

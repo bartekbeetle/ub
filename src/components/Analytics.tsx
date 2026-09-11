@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Script from "next/script";
 import { CONSENT_EVENT, readConsent, type ConsentState } from "@/lib/consent";
 
@@ -25,9 +25,18 @@ const BUILD_IDS: Ids = {
 };
 
 /**
- * Meta Pixel + GA4 + Google Ads — ładują się WYŁĄCZNIE po zgodzie z banera cookies.
- * Wcześniej na stronie nie ma ani jednego skryptu śledzącego: samo wczytanie pikselu
- * (nawet bez zdarzeń) zapisuje cookie i jest przetwarzaniem wymagającym zgody.
+ * Meta Pixel + GA4 + Google Ads — ładują się WYŁĄCZNIE po zgodzie z banera cookies,
+ * KAŻDY ZE SWOJEJ zgody. Wcześniej na stronie nie ma ani jednego skryptu śledzącego:
+ * samo wczytanie pikselu (nawet bez zdarzeń) zapisuje cookie i jest przetwarzaniem
+ * wymagającym zgody. Zgoda na analitykę nie uruchamia narzędzi marketingowych i odwrotnie.
+ *
+ * Przypisanie celów (nie jest dowolne — decyduje cel przetwarzania, nie dostawca):
+ * - GA4 → `analytics` (statystyka ruchu),
+ * - Meta Pixel → `marketing` (profilowanie reklamowe po stronie Meta),
+ * - Google Ads → `marketing`, mimo że dzieli `gtag.js` z GA4. Pomiar konwersji reklamowych
+ *   jest celem marketingowym; wpięcie go pod zgodę analityczną (jak było w pierwotnej
+ *   wersji pakietu P1) oznaczałoby śledzenie reklamowe u osoby, która zgodziła się
+ *   wyłącznie na statystykę.
  *
  * Identyfikatory: najpierw z buildu (`NEXT_PUBLIC_*`), a jeśli ich nie ma — dociągane
  * z `/api/analytics-config` w runtime. Powód w komentarzu tamtego pliku: w obrazie
@@ -37,7 +46,7 @@ const BUILD_IDS: Ids = {
  * GA4 i Google Ads dzielą jeden skrypt `gtag.js` — ładujemy go raz i robimy osobny
  * `gtag('config', ...)` dla każdego identyfikatora (tak zaleca Google przy wielu tagach).
  * Identyfikatory lądują też w `window.__ubAnalytics`, żeby `TrackEvent` mógł odpalić
- * konwersję Google Ads znając etykietę akcji.
+ * konwersję Google Ads znając etykietę akcji — ale WYŁĄCZNIE te, na które jest zgoda.
  */
 export function Analytics() {
   const [consent, setConsent] = useState<ConsentState>(null);
@@ -51,9 +60,12 @@ export function Analytics() {
     return () => window.removeEventListener(CONSENT_EVENT, onChange);
   }, []);
 
+  const anyConsent = Boolean(consent && (consent.analytics || consent.marketing));
+
   useEffect(() => {
-    // Pytamy o konfigurację dopiero po zgodzie — bez zgody nie robimy żadnego ruchu sieciowego.
-    if (consent !== "granted" || fetched.current) return;
+    // Pytamy o konfigurację dopiero po jakiejkolwiek zgodzie — przy pełnej odmowie
+    // nie robimy żadnego ruchu sieciowego.
+    if (!anyConsent || fetched.current) return;
     if (ids.ga4 || ids.pixel || ids.adsId) return; // wartości z buildu wystarczą
     fetched.current = true;
     fetch("/api/analytics-config")
@@ -79,29 +91,40 @@ export function Analytics() {
       .catch(() => {
         /* brak konfiguracji analityki nie może wywalić strony */
       });
-  }, [consent, ids.ga4, ids.pixel, ids.adsId]);
+  }, [anyConsent, ids.ga4, ids.pixel, ids.adsId]);
 
-  // Udostępniamy identyfikatory zdarzeniom konwersji (TrackEvent) — dopiero po zgodzie.
+  /** Identyfikatory przycięte do tego, na co jest zgoda — reszta nie istnieje dla TrackEvent. */
+  const allowedIds = useMemo<Ids>(
+    () => ({
+      ga4: consent?.analytics ? ids.ga4 : null,
+      pixel: consent?.marketing ? ids.pixel : null,
+      adsId: consent?.marketing ? ids.adsId : null,
+      adsLeadLabel: consent?.marketing ? ids.adsLeadLabel : null,
+    }),
+    [consent, ids]
+  );
+
+  // Udostępniamy identyfikatory zdarzeniom konwersji (TrackEvent) — tylko te dozwolone.
   useEffect(() => {
-    if (consent !== "granted") return;
-    window.__ubAnalytics = ids;
-  }, [consent, ids]);
+    if (!anyConsent) return;
+    window.__ubAnalytics = allowedIds;
+  }, [anyConsent, allowedIds]);
 
-  if (consent !== "granted") return null;
+  if (!anyConsent) return null;
 
-  // Jeden `gtag.js` obsługuje i GA4, i Google Ads — ładujemy go pod pierwszy dostępny ID.
-  const gtagBootId = ids.ga4 || ids.adsId;
+  // Jeden `gtag.js` obsługuje i GA4, i Google Ads — ładujemy go pod pierwszy DOZWOLONY ID.
+  const gtagBootId = allowedIds.ga4 || allowedIds.adsId;
 
   return (
     <>
-      {ids.pixel ? (
+      {allowedIds.pixel ? (
         <Script id="meta-pixel" strategy="afterInteractive">
           {`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '${ids.pixel}');
+fbq('init', '${allowedIds.pixel}');
 fbq('track', 'PageView');`}
         </Script>
       ) : null}
@@ -113,8 +136,8 @@ fbq('track', 'PageView');`}
 function gtag(){dataLayer.push(arguments);}
 window.gtag = window.gtag || gtag;
 gtag('js', new Date());
-${ids.ga4 ? `gtag('config', '${ids.ga4}', { anonymize_ip: true });` : ""}
-${ids.adsId ? `gtag('config', '${ids.adsId}');` : ""}`}
+${allowedIds.ga4 ? `gtag('config', '${allowedIds.ga4}', { anonymize_ip: true });` : ""}
+${allowedIds.adsId ? `gtag('config', '${allowedIds.adsId}');` : ""}`}
           </Script>
         </>
       ) : null}

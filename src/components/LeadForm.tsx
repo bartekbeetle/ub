@@ -12,7 +12,7 @@ type Props = {
   source?: "kurs" | "landing" | "konsultacja";
 };
 
-type Errors = Partial<Record<"name" | "phone" | "email" | "voivodeship" | "category" | "employmentStatus" | "rodoConsent", string>>;
+type Errors = Partial<Record<"name" | "phone" | "email" | "voivodeship" | "category" | "employmentStatus" | "rodoConsent" | "contactConsent", string>>;
 
 function getUtm(): { utmSource: string; utmMedium: string; utmCampaign: string } {
   if (typeof window === "undefined") return { utmSource: "", utmMedium: "", utmCampaign: "" };
@@ -105,6 +105,8 @@ export function LeadForm({ courseId, defaultCategory, defaultVoivodeship, source
       employmentStatus: String(fd.get("employmentStatus") ?? ""),
       preferredDate: String(fd.get("preferredDate") ?? ""),
       rodoConsent: fd.get("rodoConsent") === "on",
+      contactConsent: fd.get("contactConsent") === "on",
+      marketingConsent: fd.get("marketingConsent") === "on",
       website: String(fd.get("website") ?? ""), // honeypot
       courseId: courseId ?? null,
       source,
@@ -210,18 +212,29 @@ export function LeadForm({ courseId, defaultCategory, defaultVoivodeship, source
         <input id="lead-date" name="preferredDate" type="text" className="input" placeholder="np. weekendy, od marca" />
       </div>
 
-      <div>
+      {/*
+        Trzy ODRĘBNE zgody, nie jedna zbiorcza. Zgoda musi być „konkretna" (art. 4 pkt 11 RODO),
+        a telefon i SMS w celu marketingowym wymagają własnej, UPRZEDNIEJ zgody (art. 398 Prawa
+        komunikacji elektronicznej — kara do 3% przychodu albo 1 mln zł). Zgoda e-mailowa jest
+        dobrowolna i NIE warunkuje wysłania zgłoszenia.
+
+        Zgoda na telefon jest osobnym polem także dlatego, że to ona przesądza, czy wolno
+        uruchomić kontakt głosowy (recepcjonistka). Leady sprzed tej zmiany jej nie mają
+        i wymagają ponownego pytania — panel trenerki oznacza je ostrzeżeniem.
+      */}
+      <div className="space-y-3">
         <label className="flex cursor-pointer items-start gap-3 text-sm text-muted">
           <input
             type="checkbox"
             name="rodoConsent"
             required
             className="mt-1 h-5 w-5 shrink-0 accent-sand-700"
-            {...(errors.rodoConsent ? { "aria-invalid": true as const, "aria-describedby": "lead-err-rodoConsent" } : {})}
+            {...err("rodoConsent")}
           />
           <span>
-            Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przedstawienia oferty szkoleniowej i
-            kontaktu ze strony trenerek współpracujących z Uniwersytet Beauty, zgodnie z{" "}
+            Wyrażam zgodę na przetwarzanie moich danych osobowych i przekazanie ich maksymalnie trzem
+            trenerkom współpracującym z Uniwersytetem Beauty, dopasowanym do wybranej kategorii szkolenia i
+            województwa, w celu przedstawienia mi oferty, zgodnie z{" "}
             <a href="/polityka-prywatnosci" target="_blank" rel="noopener" className="font-semibold text-sand-700 underline">
               polityką prywatności
             </a>
@@ -229,6 +242,34 @@ export function LeadForm({ courseId, defaultCategory, defaultVoivodeship, source
           </span>
         </label>
         {errors.rodoConsent && <p id="lead-err-rodoConsent" role="alert" className="field-error">{errors.rodoConsent}</p>}
+
+        <label className="flex cursor-pointer items-start gap-3 text-sm text-muted">
+          <input
+            type="checkbox"
+            name="contactConsent"
+            required
+            className="mt-1 h-5 w-5 shrink-0 accent-sand-700"
+            {...err("contactConsent")}
+          />
+          <span>
+            Wyrażam zgodę na kontakt telefoniczny i SMS — ze strony Uniwersytetu Beauty oraz dopasowanych
+            trenerek — w celu omówienia szkolenia i dofinansowania. *
+          </span>
+        </label>
+        {errors.contactConsent && <p id="lead-err-contactConsent" role="alert" className="field-error">{errors.contactConsent}</p>}
+
+        <label className="flex cursor-pointer items-start gap-3 text-sm text-muted">
+          <input type="checkbox" name="marketingConsent" className="mt-1 h-5 w-5 shrink-0 accent-sand-700" />
+          <span>
+            Chcę otrzymywać e-mailem informacje o naborach, terminach szkoleń i zmianach w dofinansowaniach
+            (dobrowolne — możesz wypisać się w każdej chwili).
+          </span>
+        </label>
+
+        <p className="text-xs text-muted">
+          Zgody oznaczone * są niezbędne, żebyśmy mogli przekazać zgłoszenie trenerce. Każdą zgodę możesz
+          wycofać w dowolnym momencie, pisząc na biuro@uniwersytetbeauty.pl.
+        </p>
       </div>
 
       {error && (
