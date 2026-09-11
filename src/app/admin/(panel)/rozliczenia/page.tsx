@@ -105,7 +105,7 @@ export default async function RozliczeniaPage({ searchParams }: { searchParams: 
                   <tr key={assignment.id}>
                     <td className="px-6 py-2.5 text-muted">{formatDateTime(assignment.createdAt)}</td>
                     <td className="px-6 py-2.5">
-                      <a href={`/admin/leady/${lead.id}`} className="font-medium text-sand-700 hover:underline">#{lead.id} {lead.name}</a>
+                      <a href={`/admin/kursantki/${lead.id}`} className="font-medium text-sand-700 hover:underline">#{lead.id} {lead.name}</a>
                     </td>
                     <td className="px-6 py-2.5">{assignment.status}</td>
                     <td className="px-6 py-2.5 font-semibold text-money-dark">{formatPln(assignment.amount)}</td>

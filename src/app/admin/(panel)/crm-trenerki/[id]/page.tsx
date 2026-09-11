@@ -172,7 +172,7 @@ export default async function ProspektPage({ params }: { params: Promise<{ id: s
             <dt className="text-muted">Powód researchu</dt>
             <dd>
               {lead ? (
-                <Link href={`/admin/leady/${lead.id}`} className="text-sand-700 hover:underline">
+                <Link href={`/admin/kursantki/${lead.id}`} className="text-sand-700 hover:underline">
                   Lead #{lead.id} — {lead.category}, {voivodeshipName(lead.voivodeship)}
                 </Link>
               ) : (

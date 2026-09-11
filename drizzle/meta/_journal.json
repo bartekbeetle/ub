@@ -43,6 +43,13 @@
       "when": 1789156358577,
       "tag": "0005_motionless_mauler",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1789157158078,
+      "tag": "0006_warm_wrecking_crew",
+      "breakpoints": true
     }
   ]
 }

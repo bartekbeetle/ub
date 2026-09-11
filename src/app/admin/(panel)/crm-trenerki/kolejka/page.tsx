@@ -93,7 +93,7 @@ export default async function KolejkaResearchuPage({ searchParams }: { searchPar
                 <td className="whitespace-nowrap px-4 py-3 text-muted">{formatDateTime(job.createdAt)}</td>
                 <td className="px-4 py-3">
                   {lead ? (
-                    <Link href={`/admin/leady/${lead.id}`} className="font-medium text-sand-700 hover:underline">
+                    <Link href={`/admin/kursantki/${lead.id}`} className="font-medium text-sand-700 hover:underline">
                       #{lead.id} {lead.anonymizedAt ? "(zanonimizowany)" : lead.name}
                     </Link>
                   ) : (
