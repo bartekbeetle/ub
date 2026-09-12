@@ -9,6 +9,7 @@ import {
   pgEnum,
   varchar,
   index,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -101,6 +102,58 @@ export const researchJobStatusEnum = pgEnum("research_job_status", [
   "w_toku",
   "gotowe",
   "pominiete",
+]);
+
+/**
+ * Ścieżka finansowania z BUR. To NIE jest kosmetyka — od tego zależy, czy kursantka
+ * w ogóle może dostać pieniądze, i czy trenerka może ją obsłużyć.
+ *
+ * Regulamin naboru (subregion północny woj. śląskiego, §1 ust. 3) wyklucza z projektu
+ * dla OSÓB DOROSŁYCH każdego, kto jest „przedsiębiorcą w rozumieniu art. 4 ust. 1-2
+ * Prawa przedsiębiorców" — łącznie z JDG i wspólnikami spółki cywilnej, także
+ * z działalnością ZAWIESZONĄ. Właścicielka salonu idzie więc zupełnie inną ścieżką
+ * (PSF dla MŚP), do innego operatora i innego naboru.
+ *
+ * Konsekwencja: jedno pytanie („masz działalność gospodarczą?") rozgałęzia całą rozmowę
+ * i cały matching. `employmentStatus` tego NIE rozstrzyga — „pracująca" nie mówi nic
+ * o wpisie do CEIDG.
+ */
+export const projectTrackEnum = pgEnum("project_track", [
+  "osoby_dorosle",
+  "przedsiebiorcy",
+  "nieznana",
+]);
+
+/**
+ * Kanał, którym prowadzona jest rozmowa. Jeden mózg recepcjonistki obsługuje wszystkie —
+ * kanał zmienia tylko sposób dostarczenia i limity (np. okno 24 h na Instagramie).
+ */
+export const conversationChannelEnum = pgEnum("conversation_channel", [
+  "czat",
+  "telefon",
+  "sms",
+  "email",
+  "instagram",
+  "facebook",
+]);
+
+export const conversationStatusEnum = pgEnum("conversation_status", [
+  "aktywna",
+  "zakonczona",
+  "przekazana_czlowiekowi",
+  "porzucona",
+]);
+
+/**
+ * Kto powiedział daną wiadomość. `operator` = żywy człowiek, który przejął rozmowę —
+ * trzymamy to osobno od `recepcjonistka`, bo przy sporze trzeba umieć wykazać,
+ * co powiedziała maszyna, a co człowiek.
+ */
+export const messageRoleEnum = pgEnum("message_role", [
+  "kursantka",
+  "recepcjonistka",
+  "operator",
+  "system",
 ]);
 
 // ===== UŻYTKOWNICY I SESJE =====
@@ -258,10 +311,76 @@ export const leads = pgTable(
     marketingConsentAt: timestamp("marketing_consent_at", { withTimezone: true }),
     /** Wersja klauzul zgód pokazanych przy tym zgłoszeniu — dowód, NA CO konkretnie się zgodziła. */
     consentVersion: varchar("consent_version", { length: 20 }),
+
+    // === KWALIFIKACJA Z ROZMOWY (recepcjonistka) ===
+    // Pola wolnotekstowe nie wystarczą: to jest zestaw, po którym dobieramy leady pod
+    // świeżo podpisaną trenerkę. Notatka tekstowa nie da się posortować ani odfiltrować.
+    /**
+     * Czy ma działalność gospodarczą (CEIDG / wspólnik s.c., także zawieszoną).
+     * NULL = jeszcze nie zapytaliśmy. To pytanie rozstrzyga ścieżkę finansowania,
+     * więc pada w pierwszej minucie rozmowy.
+     */
+    hasBusinessActivity: boolean("has_business_activity"),
+    /** Ścieżka wynikająca z powyższego + z tego, jakie nabory są w jej regionie. */
+    projectTrack: projectTrackEnum("project_track").notNull().default("nieznana"),
+    /**
+     * Miasto — województwo NIE wystarcza. Operatorzy działają na subregionach, a warunek
+     * uczestnictwa to stałe zamieszkanie lub praca na obszarze projektu (min. 3 miesiące).
+     */
+    city: varchar("city", { length: 120 }),
+    /** Czy usłyszała o wkładzie własnym i wprost powiedziała, że da radę. */
+    ownContributionOk: boolean("own_contribution_ok"),
+    /** Kiedy realnie chce zacząć — do zestawienia z oknem naboru. */
+    startWindow: varchar("start_window", { length: 120 }),
+    /** Ile km gotowa dojechać na szkolenie. Próg miękki przy matchingu, nie twardy filtr. */
+    travelKm: integer("travel_km"),
+
+    // === ŚCIEŻKA WNIOSKU O DOFINANSOWANIE ===
+    // Sześć checkpointów, bo TO jest łańcuch, który realnie mierzy przychód: UB dostaje
+    // 500 zł za ZAPISANĄ kursantkę, a zapis wisi na przejściu tej procedury (3-8 tygodni).
+    // Osobne znaczniki czasu zamiast jednego pola „etap", żeby dało się liczyć, ile czasu
+    // lead spędza na każdym progu i gdzie naprawdę umiera.
+    burOperatorName: varchar("bur_operator_name", { length: 200 }),
+    /** Numer projektu z listy PARP, np. FESL.06.06-... — żeby dało się wrócić do regulaminu. */
+    burProjectNumber: varchar("bur_project_number", { length: 60 }),
+    /** Koniec naboru u TEGO operatora. Uczciwy termin = jedyna presja, jakiej używamy. */
+    burDeadlineAt: timestamp("bur_deadline_at", { withTimezone: true }),
+    burAccountAt: timestamp("bur_account_at", { withTimezone: true }),
+    burOperatorIdentifiedAt: timestamp("bur_operator_identified_at", { withTimezone: true }),
+    burApplicationSentAt: timestamp("bur_application_sent_at", { withTimezone: true }),
+    burDecisionAt: timestamp("bur_decision_at", { withTimezone: true }),
+    burContractAt: timestamp("bur_contract_at", { withTimezone: true }),
+    burEnrolledAt: timestamp("bur_enrolled_at", { withTimezone: true }),
+    /**
+     * Potwierdzenie zapisu OD KURSANTKI, nie od trenerki. Dziś jedynym źródłem prawdy
+     * do faktury 500 zł jest deklaracja trenerki — to jest nasz niezależny audyt przychodu
+     * i zabezpieczenie przed obchodzeniem platformy.
+     */
+    enrollmentConfirmedByLead: boolean("enrollment_confirmed_by_lead").notNull().default(false),
+
+    // === TEMPERATURA ===
+    /** Kiedy MY odezwaliśmy się ostatnio. */
+    lastContactAt: timestamp("last_contact_at", { withTimezone: true }),
+    /**
+     * Kiedy ONA odpowiedziała ostatnio. Temperaturę leada liczymy od TEGO pola, nie od
+     * wypełnienia formularza ani nie od naszej wysyłki — inaczej „ciepły" byłby lead,
+     * do którego tylko my piszemy w próżnię.
+     */
+    lastReplyAt: timestamp("last_reply_at", { withTimezone: true }),
+    /** Umówiony następny kontakt. Rozmowa bez ustalonej daty kolejnej to rozmowa stracona. */
+    nextActionAt: timestamp("next_action_at", { withTimezone: true }),
+
     anonymizedAt: timestamp("anonymized_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index("leads_status_idx").on(t.status), index("leads_created_idx").on(t.createdAt)]
+  (t) => [
+    index("leads_status_idx").on(t.status),
+    index("leads_created_idx").on(t.createdAt),
+    // Matching pod świeżo podpisaną trenerkę filtruje po ścieżce + województwie + kategorii
+    // i sortuje po temperaturze. Bez tych indeksów to jest skan całej tabeli przy każdym doborze.
+    index("leads_track_idx").on(t.projectTrack),
+    index("leads_reply_idx").on(t.lastReplyAt),
+  ]
 );
 
 export const leadAssignments = pgTable(
@@ -328,6 +447,18 @@ export const prospects = pgTable(
     burRatingX10: integer("bur_rating_x10"), // ocena × 10 (50 = 5,0) — jak trainers.rating
     burReviewCount: integer("bur_review_count"),
     burCheckedAt: timestamp("bur_checked_at", { withTimezone: true }),
+    /**
+     * Pod jakie ścieżki finansowania nadają się jej szkolenia. Sam wpis do BUR (segment A)
+     * NIE wystarcza do matchingu: nabory dla osób dorosłych i nabory dla przedsiębiorców
+     * to osobne projekty, osobni operatorzy i osobne kryteria uczestnika. Trenerka obsługująca
+     * kursantkę bez firmy w Śląskiem nie obsłuży właścicielki salonu w Małopolsce.
+     *
+     * Lista, nie pojedyncza wartość — jedna akademia może mieć usługi w obu ścieżkach.
+     * Pusta = nie ustalono; wtedy nie wysyłamy jej leadów automatem.
+     */
+    projectTracks: jsonb("project_tracks").$type<string[]>().notNull().default([]),
+    /** Zasięg terytorialny: usługa musi odbyć się na obszarze operatora kursantki. */
+    servesVoivodeships: jsonb("serves_voivodeships").$type<string[]>().notNull().default([]),
 
     // --- research ---
     dossierPath: text("dossier_path"), // ścieżka do pliku .md w vaulcie
@@ -382,6 +513,81 @@ export const researchJobs = pgTable(
     completedAt: timestamp("completed_at", { withTimezone: true }),
   },
   (t) => [index("research_jobs_status_idx").on(t.status)]
+);
+
+// ===== RECEPCJONISTKA — ROZMOWY =====
+
+/**
+ * Rozmowa prowadzona przez recepcjonistkę AI. Jeden mózg, wiele kanałów — dlatego
+ * rozmowa jest bytem osobnym od kanału i od leada.
+ *
+ * `leadId` jest NULLOWALNE i to jest celowe: czat na stronie zaczyna się anonimowo,
+ * a lead powstaje dopiero w trakcie, gdy kursantka poda dane i zgody. Gdyby rozmowa
+ * wymagała leada z góry, musielibyśmy zakładać pusty rekord osobowy przy każdym
+ * otwarciu okienka czatu — czyli zbierać dane bez podstawy.
+ */
+export const conversations = pgTable(
+  "conversations",
+  {
+    id: serial("id").primaryKey(),
+    leadId: integer("lead_id").references(() => leads.id, { onDelete: "set null" }),
+    channel: conversationChannelEnum("channel").notNull(),
+    status: conversationStatusEnum("status").notNull().default("aktywna"),
+    /**
+     * Token do prywatnej ścieżki kursantki (`/moja-sciezka/[token]`). Link wysyłamy
+     * mailem/SMS-em zaraz po zgłoszeniu, więc musi być nieodgadywalny — nie ID rekordu.
+     */
+    publicToken: varchar("public_token", { length: 64 }),
+    /** Identyfikator po stronie kanału: CallSid z Twilio, wątek IG, Message-ID maila. */
+    externalRef: varchar("external_ref", { length: 200 }),
+    /**
+     * Kiedy recepcjonistka poinformowała, że jest AI. Art. 50 EU AI Act obowiązuje
+     * od 02.08.2026: osoba ma być o tym poinformowana jasno i NAJPÓŹNIEJ przy pierwszej
+     * interakcji. Zapisujemy znacznik, bo obowiązek trzeba umieć wykazać, a nie deklarować.
+     */
+    aiDisclosedAt: timestamp("ai_disclosed_at", { withTimezone: true }),
+    /**
+     * Zgoda, na podstawie której wykonano kontakt — kopiowana z leada W MOMENCIE rozmowy.
+     * Snapshot, nie join: gdyby kursantka później wycofała zgodę, musimy nadal umieć wykazać,
+     * że w chwili telefonu zgoda była. Dla czatu (kontakt inicjowany przez nią) puste.
+     */
+    contactConsentAt: timestamp("contact_consent_at", { withTimezone: true }),
+    /** Podsumowanie rozmowy — to leci mailem do kursantki i ląduje na karcie w panelu. */
+    summary: text("summary"),
+    /** Powód przekazania człowiekowi, jeśli do niego doszło. */
+    handoverReason: text("handover_reason"),
+    startedAt: timestamp("started_at", { withTimezone: true }).notNull().defaultNow(),
+    endedAt: timestamp("ended_at", { withTimezone: true }),
+  },
+  (t) => [
+    index("conv_lead_idx").on(t.leadId),
+    index("conv_status_idx").on(t.status),
+    uniqueIndex("conv_token_idx").on(t.publicToken),
+  ]
+);
+
+/**
+ * Pojedyncza wypowiedź. Trzymamy pełny zapis, bo (a) trenerka dostaje transkrypt zamiast
+ * zgadywać, (b) przy sporze trzeba wykazać, co dokładnie maszyna obiecała kursantce.
+ */
+export const messages = pgTable(
+  "messages",
+  {
+    id: serial("id").primaryKey(),
+    conversationId: integer("conversation_id")
+      .notNull()
+      .references(() => conversations.id, { onDelete: "cascade" }),
+    role: messageRoleEnum("role").notNull(),
+    content: text("content").notNull(),
+    /**
+     * Surowe dane kanału: nagranie i czas trwania dla telefonu, załączniki dla maila,
+     * a dla odpowiedzi modelu — użyte źródła z bazy BUR (numer projektu, operator).
+     * Bez tego nie da się później sprawdzić, SKĄD recepcjonistka wzięła podaną liczbę.
+     */
+    meta: jsonb("meta").$type<Record<string, unknown>>(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("msg_conv_idx").on(t.conversationId, t.createdAt)]
 );
 
 // ===== AUDIT LOG =====
@@ -482,6 +688,7 @@ export const reviewsRelations = relations(reviews, ({ one }) => ({
 export const leadsRelations = relations(leads, ({ one, many }) => ({
   course: one(courses, { fields: [leads.courseId], references: [courses.id] }),
   assignments: many(leadAssignments),
+  conversations: many(conversations),
 }));
 
 export const leadAssignmentsRelations = relations(leadAssignments, ({ one }) => ({
@@ -507,6 +714,18 @@ export const researchJobsRelations = relations(researchJobs, ({ one }) => ({
   lead: one(leads, { fields: [researchJobs.leadId], references: [leads.id] }),
 }));
 
+export const conversationsRelations = relations(conversations, ({ one, many }) => ({
+  lead: one(leads, { fields: [conversations.leadId], references: [leads.id] }),
+  messages: many(messages),
+}));
+
+export const messagesRelations = relations(messages, ({ one }) => ({
+  conversation: one(conversations, {
+    fields: [messages.conversationId],
+    references: [conversations.id],
+  }),
+}));
+
 // ===== TYPY =====
 
 export type User = typeof users.$inferSelect;
@@ -521,3 +740,5 @@ export type Settings = typeof settings.$inferSelect;
 export type Prospect = typeof prospects.$inferSelect;
 export type ProspectActivity = typeof prospectActivities.$inferSelect;
 export type ResearchJob = typeof researchJobs.$inferSelect;
+export type Conversation = typeof conversations.$inferSelect;
+export type Message = typeof messages.$inferSelect;
