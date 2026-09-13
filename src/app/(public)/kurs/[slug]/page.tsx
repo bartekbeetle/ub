@@ -216,17 +216,22 @@ export default async function KursPage({ params }: { params: Params }) {
               </p>
             )}
 
-            <div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted">Dostępne miejsca</span>
-                <span className="font-bold text-ink-soft">
-                  {freeSpots}/{course.totalSpots}
-                </span>
+            {/* Licznik miejsc pokazujemy TYLKO gdy ktoś realnie zajął miejsce. „10/10 wolnych"
+                to negatywny social proof — komunikuje „nikt się jeszcze nie zapisał"
+                (spotkanie zespołu 13.09, głos Growth). Wraca sam, gdy pojawią się zapisy. */}
+            {course.takenSpots > 0 && (
+              <div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted">Dostępne miejsca</span>
+                  <span className="font-bold text-ink-soft">
+                    {freeSpots}/{course.totalSpots}
+                  </span>
+                </div>
+                <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-sand-100" role="progressbar" aria-valuenow={freeSpots} aria-valuemin={0} aria-valuemax={course.totalSpots} aria-label="Dostępne miejsca">
+                  <div className="h-full rounded-full bg-sand-400 transition-all duration-300" style={{ width: `${spotsPct}%` }} />
+                </div>
               </div>
-              <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-sand-100" role="progressbar" aria-valuenow={freeSpots} aria-valuemin={0} aria-valuemax={course.totalSpots} aria-label="Dostępne miejsca">
-                <div className="h-full rounded-full bg-sand-400 transition-all duration-300" style={{ width: `${spotsPct}%` }} />
-              </div>
-            </div>
+            )}
 
             <Link href={`/quiz?kurs=${course.slug}`} className="btn-primary w-full">Aplikuj do finansowania</Link>
 

@@ -28,7 +28,9 @@ export const metadata: Metadata = {
 const BENEFITS = [
   "Zajmuje mniej niż 2 minuty",
   "Sprawdzimy Twoje dofinansowanie bezpłatnie i bez zobowiązań",
-  "Połączymy Cię z certyfikowaną trenerką w Twojej okolicy",
+  // „w Twojej okolicy" zdjęte 13.09 (spotkanie zespołu): przy partnerach w 2 województwach
+  // to była obietnica niedowożalna dla większości Polski — konsensus 3 głosów.
+  "Sprawdzimy, czy w Twoim regionie działa certyfikowana trenerka",
 ];
 
 type Search = { [key: string]: string | string[] | undefined };

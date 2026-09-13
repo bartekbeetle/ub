@@ -141,13 +141,12 @@ function validateStep(step: number, f: FormState): Errors {
   }
   if (step === 7) {
     if (!f.rodoConsent) e.rodoConsent = "Bez tej zgody nie możemy przekazać Twojego zgłoszenia trenerce.";
-    // 🔴 `contactConsent` jest CELOWO NIEwymagana — tak samo jak w formularzu na produkcji.
-    // Uzależnienie wysłania zgłoszenia od zgody na konkretny kanał kontaktu to potencjalne
-    // „związanie" zgody z art. 7 ust. 4 RODO, a tego pytania prawnik jeszcze nie rozstrzygnął
-    // (`docs/prawne/PYTANIA-DO-PRAWNIKA.md` → pytanie 1, warianty A/B).
-    // Konsekwencja operacyjna: część leadów przyjdzie bez zgody na telefon i wolno nam wtedy
-    // pisać wyłącznie mailem — panel pokazuje to wprost jako „brak, nie dzwonić".
-    // Gdy padnie odpowiedź na wariant A, przywrócenie wymogu to JEDNA linia tutaj.
+    // `contactConsent` lustruje `leadSchema.contactConsent` (`src/lib/validators.ts`) — tam jest
+    // `z.literal(true)`, więc backend i tak odrzuca zgłoszenie bez tej zgody (400 z /api/lead).
+    // Bez walidacji tutaj kandydatka traciła leada dopiero na ostatnim kliknięciu, po siedmiu
+    // krokach. Te dwa miejsca muszą zmieniać się RAZEM — zmiana wymogu w jednym bez drugiego
+    // psuje formularz (albo blokuje wysyłkę czymś, czego UI nie sygnalizuje, albo odwrotnie).
+    if (!f.contactConsent) e.contactConsent = "Bez tej zgody nie możemy do Ciebie zadzwonić.";
   }
   return e;
 }
@@ -232,10 +231,29 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       ? { "aria-invalid": true as const, "aria-describedby": `quiz-err-${field}` }
       : {};
 
+  /**
+   * Kroki 3 i 5 mają dużo opcji — na telefonie jedyne wymagane pole bywa u góry ekranu,
+   * a „Dalej" na dole. Bez tego kliknięcie „Dalej" z pustym polem wyglądało jak martwy
+   * przycisk: błąd renderował się poza widocznym obszarem, nic nie było widać na ekranie.
+   * Szukamy pierwszego oznaczonego `aria-invalid` (radiogrupy oznaczają WSZYSTKIE swoje
+   * inputy, więc trafiamy na pierwszy w DOM — czyli pierwszą opcję danego pytania).
+   */
+  function scrollToFirstError() {
+    requestAnimationFrame(() => {
+      const el = document.querySelector<HTMLElement>('[aria-invalid="true"]');
+      if (!el) return;
+      el.scrollIntoView({ block: "center", behavior: "smooth" });
+      el.focus({ preventScroll: true });
+    });
+  }
+
   function goNext() {
     const found = validateStep(step, form);
     setErrors(found);
-    if (Object.keys(found).length > 0) return;
+    if (Object.keys(found).length > 0) {
+      scrollToFirstError();
+      return;
+    }
     zapiszPostep(step, form);           // stan PO ukończeniu tego kroku
     setStep((s) => Math.min(s + 1, TOTAL_STEPS));
   }
@@ -250,7 +268,10 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
     if (submitting) return;
     const found = validateStep(TOTAL_STEPS, form);
     setErrors(found);
-    if (Object.keys(found).length > 0) return;
+    if (Object.keys(found).length > 0) {
+      scrollToFirstError();
+      return;
+    }
 
     setSubmitting(true);
     setSubmitError(null);
@@ -367,7 +388,7 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
           bo bez niej do osoby, która nie dokończyła, NIE WOLNO napisać maila (art. 398 PKE). */}
       {step === 1 && (
         <div className="space-y-4">
-          <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
+          <h2 ref={headingRef} tabIndex={-1} className="scroll-mt-36 font-serif text-xl font-bold outline-none">
             Zacznijmy od podstaw
           </h2>
           <p className="text-sm text-muted">
@@ -403,7 +424,7 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
 
       {step === 2 && (
         <div className="space-y-4">
-          <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
+          <h2 ref={headingRef} tabIndex={-1} className="scroll-mt-36 font-serif text-xl font-bold outline-none">
             Jakiego szkolenia szukasz?
           </h2>
           <div>
@@ -459,7 +480,7 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       {/* KROK 3 — sytuacja zawodowa i uprawnienia do dofinansowania */}
       {step === 3 && (
         <div className="space-y-4">
-          <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
+          <h2 ref={headingRef} tabIndex={-1} className="scroll-mt-36 font-serif text-xl font-bold outline-none">
             Twoja sytuacja
           </h2>
           <p className="text-sm text-muted">Od tego zależy, ile dofinansowania możesz dostać.</p>
@@ -539,7 +560,7 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       {/* KROK 4 — cel i doświadczenie */}
       {step === 4 && (
         <div className="space-y-4">
-          <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
+          <h2 ref={headingRef} tabIndex={-1} className="scroll-mt-36 font-serif text-xl font-bold outline-none">
             Co chcesz osiągnąć?
           </h2>
           <fieldset>
@@ -585,7 +606,7 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       {/* KROK 5 — o Tobie */}
       {step === 5 && (
         <div className="space-y-4">
-          <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
+          <h2 ref={headingRef} tabIndex={-1} className="scroll-mt-36 font-serif text-xl font-bold outline-none">
             Kilka słów o Tobie
           </h2>
           <div>
@@ -618,7 +639,7 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       {/* KROK 6 — dane kontaktowe */}
       {step === 6 && (
         <div className="space-y-4">
-          <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
+          <h2 ref={headingRef} tabIndex={-1} className="scroll-mt-36 font-serif text-xl font-bold outline-none">
             Gdzie się z Tobą skontaktować?
           </h2>
           <div>
@@ -641,7 +662,7 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       {/* KROK 7 — zgody + wysyłka */}
       {step === 7 && (
         <div className="space-y-4">
-          <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
+          <h2 ref={headingRef} tabIndex={-1} className="scroll-mt-36 font-serif text-xl font-bold outline-none">
             Ostatni krok
           </h2>
           <div className="space-y-3">

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { IconX } from "@/components/icons";
 import {
   CONSENT_ALL,
   CONSENT_NONE,
@@ -56,17 +57,31 @@ export function CookieConsent() {
     <div
       role="dialog"
       aria-label="Zgoda na pliki cookies"
-      // bottom-20 na mobile, żeby nie zasłonić sticky CTA konsultacji
+      // bottom-20 na mobile, żeby nie zasłonić sticky CTA konsultacji (gdzie ten pasek istnieje —
+      // na /quiz jest ukryty, patrz src/app/(public)/layout.tsx, więc tam ten odstęp jest niegroźnym
+      // marginesem, nie zależnością).
       className="fixed inset-x-0 bottom-20 z-50 px-3 md:bottom-4"
     >
-      <div className="mx-auto max-w-3xl rounded-xl border border-sand-200 bg-white p-5 shadow-lg md:p-6">
-        <p className="font-serif text-lg font-semibold">Pliki cookies</p>
-        <p className="mt-2 text-sm leading-relaxed text-muted">
-          Używamy cookies niezbędnych do działania serwisu — te działają zawsze. Dodatkowo, wyłącznie za
-          Twoją zgodą, korzystamy z cookies analitycznych (Google Analytics) i marketingowych (Meta Pixel).
-          Każdą z tych zgód możesz wyrazić osobno i wycofać w każdej chwili.{" "}
+      <div className="mx-auto max-h-[70vh] max-w-3xl overflow-y-auto rounded-xl border border-sand-200 bg-white p-4 shadow-lg md:p-6">
+        <div className="flex items-start justify-between gap-3">
+          <p className="font-serif text-base font-semibold md:text-lg">Pliki cookies</p>
+          {/* Zamknięcie = „Tylko niezbędne", NIGDY „Akceptuję wszystkie" — zamknięcie bez wyboru
+              nie może być interpretowane jako zgoda (EDPB, decyzje UODO). Cel: dać się zamknąć
+              jednym kciukiem, nie blokować pierwszego pola formularza pod spodem. */}
+          <button
+            type="button"
+            onClick={() => decide(CONSENT_NONE)}
+            aria-label="Zamknij i zaakceptuj tylko cookies niezbędne"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:bg-sand-50 hover:text-ink-soft"
+          >
+            <IconX width={20} height={20} />
+          </button>
+        </div>
+        <p className="mt-1 text-sm leading-relaxed text-muted">
+          Niezbędne cookies działają zawsze. Za Twoją zgodą używamy też analitycznych (Google Analytics)
+          i marketingowych (Meta Pixel) —{" "}
           <Link href="/polityka-cookies" className="link-inline">
-            Polityka cookies
+            polityka cookies
           </Link>
           .
         </p>
@@ -113,24 +128,24 @@ export function CookieConsent() {
           </div>
         )}
 
-        <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row">
           <button type="button" onClick={() => decide(CONSENT_ALL)} className="btn-primary flex-1 !py-2.5">
             Akceptuję wszystkie
           </button>
           <button type="button" onClick={() => decide(CONSENT_NONE)} className="btn-outline flex-1 !py-2.5">
             Tylko niezbędne
           </button>
-          {!detailsOpen && (
-            <button
-              type="button"
-              onClick={() => setDetailsOpen(true)}
-              className="btn-outline flex-1 !py-2.5"
-              aria-expanded={detailsOpen}
-            >
-              Ustawienia
-            </button>
-          )}
         </div>
+        {!detailsOpen && (
+          <button
+            type="button"
+            onClick={() => setDetailsOpen(true)}
+            className="mt-2 text-xs font-semibold text-sand-700 underline underline-offset-2"
+            aria-expanded={detailsOpen}
+          >
+            Ustawienia szczegółowe
+          </button>
+        )}
       </div>
     </div>
   );
