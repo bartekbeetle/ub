@@ -6,7 +6,9 @@ import { TrackEvent } from "@/components/TrackEvent";
 /** Klucz w sessionStorage, pod którym `LeadForm` zostawia dane do segmentacji konwersji. */
 export const LEAD_SEGMENT_KEY = "ub_lead_segment";
 
-type Segment = { voivodeship?: string; category?: string };
+type Segment = {
+  /** Skąd przyszedł lead — pozwala odróżnić w Mecie zgłoszenia z quizu od pozostałych. */
+  source?: string; voivodeship?: string; category?: string };
 
 /**
  * Konwersja `Lead` na /dziekujemy wzbogacona o województwo i kategorię szkolenia.
@@ -46,6 +48,9 @@ export function LeadConversion() {
       params={{
         ...(segment?.voivodeship ? { wojewodztwo: segment.voivodeship } : {}),
         ...(segment?.category ? { kategoria: segment.category } : {}),
+        // `content_name` jest standardowym parametrem Meta — dzięki niemu w Menedżerze Reklam
+        // widać wprost, że to konwersja z quizu, a nie z innego wejścia.
+        content_name: segment?.source === "quiz" ? "quiz-kwalifikacyjny" : "formularz",
       }}
     />
   );

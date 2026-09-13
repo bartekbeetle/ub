@@ -57,6 +57,13 @@
       "when": 1789203367553,
       "tag": "0007_fixed_argent",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789309154503,
+      "tag": "0008_boring_albert_cleary",
+      "breakpoints": true
     }
   ]
 }

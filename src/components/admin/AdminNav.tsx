@@ -22,6 +22,8 @@ const GROUPS: { label: string | null; items: Item[] }[] = [
       // Jedna pozycja zamiast „Leady" + „Zgłoszenia": obie tabele to ta sama kolejka
       // i ta sama droga do przydziału, tylko na różnym etapie kwalifikacji.
       { href: "/admin/kursantki", label: "Kursantki" },
+      // Sesje quizu, które NIE skończyły się leadem — widać, na którym kroku ludzie odpadają.
+      { href: "/admin/porzucone", label: "Porzucone quizy" },
       { href: "/admin/rozliczenia", label: "Rozliczenia" },
     ],
   },
