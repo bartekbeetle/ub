@@ -66,9 +66,20 @@ async function main() {
   let pominiete = 0;
 
   for (const k of KURSY) {
-    const [istnieje] = await db.select({ id: courses.id }).from(courses).where(eq(courses.slug, k.slug)).limit(1);
+    const [istnieje] = await db
+      .select({ id: courses.id, imageUrl: courses.imageUrl })
+      .from(courses)
+      .where(eq(courses.slug, k.slug))
+      .limit(1);
     if (istnieje) {
-      console.log(`· ${k.title.slice(0, 60)} — już jest (#${istnieje.id}), pomijam`);
+      // Dosypka zdjęcia dla wierszy sprzed 13.09 wieczorem (seedowane bez imageUrl).
+      // TYLKO gdy NULL — obrazek ustawiony ręcznie w panelu jest ważniejszy od seeda.
+      if (!istnieje.imageUrl) {
+        await db.update(courses).set({ imageUrl: `/kursy/${k.slug}.jpg` }).where(eq(courses.id, istnieje.id));
+        console.log(`· ${k.title.slice(0, 60)} — już jest (#${istnieje.id}), dosypuję zdjęcie`);
+      } else {
+        console.log(`· ${k.title.slice(0, 60)} — już jest (#${istnieje.id}), pomijam`);
+      }
       pominiete++;
       continue;
     }
@@ -91,6 +102,7 @@ async function main() {
         totalSpots: k.totalSpots,
         takenSpots: 0,
         durationHours: k.durationHours,
+        imageUrl: `/kursy/${k.slug}.jpg`,
         city: null,
         voivodeship: null,
         trainerId: null, // kurs ogólny — bez trenerki, taka jest cała idea

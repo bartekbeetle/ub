@@ -114,10 +114,13 @@ export default async function HomePage() {
             <IconGraduation width={16} height={16} /> Szkolenia z dofinansowaniem {SUBSIDY_RANGE}
           </span>
           <h1 className="text-4xl font-bold leading-tight md:text-6xl">
-            Zacznij Karierę w Beauty <span className="text-sand-600">BEZ Ryzyka Finansowego</span>
+            {/* Przepisane 13.09 po spotkaniu zespołu (protokół: Notatki/spotkania/2026-09-13):
+                „BEZ Ryzyka Finansowego" było sprzeczne z mechaniką BUR (refundacja PO kursie),
+                a „linergistyka/PMU" to relikt ery katalogu jednej trenerki — reklamy idą na paznokcie. */}
+            Zdobądź zawód w beauty <span className="text-sand-600">z dofinansowaniem {SUBSIDY_RANGE}</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted md:text-xl">
-            Profesjonalne szkolenia z linergistyki, PMU i medycyny estetycznej z dofinansowaniem {SUBSIDY_RANGE} z
+            Profesjonalne szkolenia ze stylizacji paznokci, rzęs i brwi, makijażu permanentnego, kosmetologii i fryzjerstwa z dofinansowaniem {SUBSIDY_RANGE} z
             programu BUR ({SUBSIDY_CONDITION}) — płacisz ułamek ceny kursu.{" "}
             <strong className="text-ink-soft">Nie potrzebujesz doświadczenia.</strong>
           </p>
