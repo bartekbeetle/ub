@@ -258,6 +258,65 @@ export const courses = pgTable(
   (t) => [index("courses_cat_idx").on(t.category), index("courses_voiv_idx").on(t.voivodeship)]
 );
 
+/**
+ * SESJE QUIZU — kto zaczął wypełniać i gdzie się zatrzymał.
+ *
+ * Po co osobna tabela, a nie kolumny w `leads`: lead powstaje DOPIERO po zgodzie RODO
+ * na ostatnim kroku. Tu zapisujemy ludzi, którzy tej zgody jeszcze NIE dali — więc nie wolno
+ * ich trzymać razem z leadami, bo zatarłoby to granicę „mamy podstawę / nie mamy podstawy".
+ *
+ * 🔴 GRANICA PRAWNA, której nie wolno przekroczyć:
+ * sam zapis porzuconych odpowiedzi jest dopuszczalny (prawnie uzasadniony interes — wiemy,
+ * gdzie formularz się sypie). ALE **wysyłka marketingowa do osoby, która porzuciła quiz,
+ * wymaga zaznaczonej zgody `marketingConsent`** (art. 398 Prawa komunikacji elektronicznej).
+ * Dlatego checkbox zgody stoi już na kroku 1, obok maila — bez niego rekord nadaje się
+ * wyłącznie do statystyki i do remarketingu przez piksel, NIE do maila.
+ * Kolumna `marketingConsentAt` jest jedynym dopuszczalnym filtrem wysyłki.
+ */
+export const quizSessions = pgTable(
+  "quiz_sessions",
+  {
+    id: serial("id").primaryKey(),
+    /** Klucz z przeglądarki (sessionStorage) — pozwala aktualizować ten sam wiersz przy kolejnych krokach. */
+    sessionKey: varchar("session_key", { length: 64 }).notNull().unique(),
+
+    name: varchar("name", { length: 160 }),
+    email: varchar("email", { length: 200 }),
+    phone: varchar("phone", { length: 40 }),
+
+    category: varchar("category", { length: 60 }),
+    voivodeship: varchar("voivodeship", { length: 40 }),
+    city: varchar("city", { length: 120 }),
+
+    /** Komplet odpowiedzi tak, jak wyglądały przy ostatnim zapisie. */
+    answers: jsonb("answers").$type<Record<string, unknown>>().notNull().default({}),
+
+    /** Na którym kroku osoba jest teraz i jak daleko doszła najdalej. */
+    stepReached: integer("step_reached").notNull().default(1),
+    maxStepReached: integer("max_step_reached").notNull().default(1),
+
+    /** Zgoda marketingowa z kroku 1 — JEDYNA podstawa do maila, gdy quiz nie został dokończony. */
+    marketingConsentAt: timestamp("marketing_consent_at", { withTimezone: true }),
+    consentVersion: varchar("consent_version", { length: 20 }),
+
+    completed: boolean("completed").notNull().default(false),
+    /** Ustawiane, gdy quiz dojdzie do końca i powstanie lead. */
+    leadId: integer("lead_id").references(() => leads.id),
+
+    utmSource: varchar("utm_source", { length: 120 }),
+    utmMedium: varchar("utm_medium", { length: 120 }),
+    utmCampaign: varchar("utm_campaign", { length: 160 }),
+
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("quiz_sessions_completed_idx").on(t.completed),
+    index("quiz_sessions_email_idx").on(t.email),
+    index("quiz_sessions_maxstep_idx").on(t.maxStepReached),
+  ]
+);
+
 // ===== BLOG =====
 
 export const blogPosts = pgTable("blog_posts", {

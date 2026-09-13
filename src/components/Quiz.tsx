@@ -112,32 +112,34 @@ const INITIAL: FormState = {
 
 type Errors = Partial<Record<keyof FormState, string>>;
 
-const TOTAL_STEPS = 6;
+const TOTAL_STEPS = 7;
 
 /** Walidacja pojedynczego kroku — blokuje „Dalej", dopóki krok nie jest kompletny. */
 function validateStep(step: number, f: FormState): Errors {
   const e: Errors = {};
   if (step === 1) {
-    if (!f.category) e.category = "Wybierz kategorię szkolenia.";
-    if (!f.voivodeship) e.voivodeship = "Wybierz województwo — od niego zależy operator dofinansowania.";
-    if (f.city.trim().length < 2) e.city = "Podaj miasto — pomoże dobrać akademię w dojeździe.";
-  }
-  if (step === 2) {
-    if (!f.employmentForm) e.employmentForm = "Wybierz formę zatrudnienia.";
-  }
-  if (step === 3) {
-    if (!f.goal) e.goal = "Wybierz, co jest dla Ciebie najważniejsze.";
-  }
-  if (step === 5) {
     if (f.name.trim().length < 3) e.name = "Podaj imię i nazwisko (min. 3 znaki).";
-    const phone = f.phone.trim();
-    if (phone.length < 9) e.phone = "Podaj numer telefonu — min. 9 cyfr.";
-    else if (!/^[+\d\s-]+$/.test(phone)) e.phone = "Numer może zawierać tylko cyfry, spacje, myślnik i +.";
     const email = f.email.trim();
     if (!email) e.email = "Podaj adres e-mail.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) e.email = "Ten adres e-mail wygląda na niepełny.";
   }
+  if (step === 2) {
+    if (!f.category) e.category = "Wybierz kategorię szkolenia.";
+    if (!f.voivodeship) e.voivodeship = "Wybierz województwo — od niego zależy operator dofinansowania.";
+    if (f.city.trim().length < 2) e.city = "Podaj miasto — pomoże dobrać akademię w dojeździe.";
+  }
+  if (step === 3) {
+    if (!f.employmentForm) e.employmentForm = "Wybierz formę zatrudnienia.";
+  }
+  if (step === 4) {
+    if (!f.goal) e.goal = "Wybierz, co jest dla Ciebie najważniejsze.";
+  }
   if (step === 6) {
+    const phone = f.phone.trim();
+    if (phone.length < 9) e.phone = "Podaj numer telefonu — min. 9 cyfr.";
+    else if (!/^[+\d\s-]+$/.test(phone)) e.phone = "Numer może zawierać tylko cyfry, spacje, myślnik i +.";
+  }
+  if (step === 7) {
     if (!f.rodoConsent) e.rodoConsent = "Bez tej zgody nie możemy przekazać Twojego zgłoszenia trenerce.";
     // 🔴 `contactConsent` jest CELOWO NIEwymagana — tak samo jak w formularzu na produkcji.
     // Uzależnienie wysłania zgłoszenia od zgody na konkretny kanał kontaktu to potencjalne
@@ -165,10 +167,60 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
 
   // Fokus na nagłówek kroku przy każdej zmianie — czytnik ekranu ogłasza nowy krok,
   // a użytkowniczka na mobile nie zostaje wzrokiem na dole poprzedniego ekranu.
+  //
+  // 🔴 ALE NIE przy pierwszym renderze. Wcześniej `scrollIntoView` odpalał się też na wejściu,
+  // więc strona sama zjeżdżała do nagłówka quizu i otwierała się „w dolnej części" —
+  // użytkowniczka nie widziała nagłówka strony ani tego, po co tu w ogóle jest.
+  // Zgłoszone przez Bartka 13.09 przy pierwszym teście.
+  const pierwszyRender = useRef(true);
   useEffect(() => {
+    if (pierwszyRender.current) {
+      pierwszyRender.current = false;
+      return;
+    }
     headingRef.current?.focus();
     headingRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
   }, [step]);
+
+  /**
+   * Klucz sesji quizu — ten sam wiersz w `quiz_sessions` jest aktualizowany przy każdym kroku.
+   * Trzymany w `sessionStorage`, więc odświeżenie strony nie tworzy duplikatu, a zamknięcie
+   * karty kończy sesję.
+   */
+  const sessionKey = useRef<string>("");
+  if (typeof window !== "undefined" && !sessionKey.current) {
+    const istniejacy = window.sessionStorage.getItem("ub_quiz_session");
+    sessionKey.current = istniejacy ?? crypto.randomUUID();
+    window.sessionStorage.setItem("ub_quiz_session", sessionKey.current);
+  }
+
+  /**
+   * Zapis postępu — „kto i gdzie przerwał". Celowo `void` i bez `await`: to jest telemetria,
+   * która NIGDY nie może opóźnić ani zablokować przejścia do kolejnego kroku.
+   */
+  function zapiszPostep(krok: number, f: FormState, extra?: { completed?: boolean; leadId?: number }) {
+    if (!sessionKey.current) return;
+    const utm = getUtm();
+    void fetch("/api/quiz-progress", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      keepalive: true, // dolatuje nawet gdy użytkowniczka zamyka kartę
+      body: JSON.stringify({
+        sessionKey: sessionKey.current,
+        step: krok,
+        name: f.name,
+        email: f.email,
+        phone: f.phone,
+        category: f.category,
+        voivodeship: f.voivodeship,
+        city: f.city,
+        marketingConsent: f.marketingConsent,
+        answers: f as unknown as Record<string, unknown>,
+        ...utm,
+        ...extra,
+      }),
+    }).catch(() => {});
+  }
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -184,6 +236,7 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
     const found = validateStep(step, form);
     setErrors(found);
     if (Object.keys(found).length > 0) return;
+    zapiszPostep(step, form);           // stan PO ukończeniu tego kroku
     setStep((s) => Math.min(s + 1, TOTAL_STEPS));
   }
 
@@ -255,11 +308,14 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       try {
         sessionStorage.setItem(
           LEAD_SEGMENT_KEY,
-          JSON.stringify({ voivodeship: payload.voivodeship, category: payload.category })
+          JSON.stringify({ voivodeship: payload.voivodeship, category: payload.category, source: "quiz" })
         );
       } catch {
         /* brak storage = konwersja bez segmentacji, ale nadal się liczy */
       }
+      // Domknięcie sesji quizu — dzięki temu w panelu widać różnicę między „przerwała"
+      // a „dokończyła", a lead ma powiązanie z sesją, w której powstał.
+      zapiszPostep(TOTAL_STEPS, form, { completed: true, leadId: typeof data?.id === "number" ? data.id : undefined });
       router.push("/dziekujemy");
     } catch {
       setSubmitError("Błąd połączenia. Spróbuj ponownie.");
@@ -305,8 +361,47 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
         </div>
       </div>
 
-      {/* KROK 1 — kategoria + województwo + miasto */}
+      {/* KROK 2 — kategoria + województwo + miasto */}
+      {/* KROK 1 — imię i e-mail NAJPIERW. Dzięki temu mamy kontakt nawet gdy quiz zostanie
+          porzucony w połowie (zapis przez /api/quiz-progress). Zgoda marketingowa stoi TU,
+          bo bez niej do osoby, która nie dokończyła, NIE WOLNO napisać maila (art. 398 PKE). */}
       {step === 1 && (
+        <div className="space-y-4">
+          <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
+            Zacznijmy od podstaw
+          </h2>
+          <p className="text-sm text-muted">
+            Sprawdzimy, jakie dofinansowanie Ci przysługuje. Zajmie to około dwóch minut.
+          </p>
+          <div>
+            <label className="label" htmlFor="q-name">Imię i nazwisko *</label>
+            <input id="q-name" type="text" autoComplete="name" className="input" placeholder="np. Anna Kowalska" value={form.name} onChange={(e) => set("name", e.target.value)} {...err("name")} />
+            {errors.name && <p id="quiz-err-name" role="alert" className="field-error">{errors.name}</p>}
+          </div>
+          <div>
+            <label className="label" htmlFor="q-email">Adres e-mail *</label>
+            <input id="q-email" type="email" autoComplete="email" className="input" placeholder="np. anna@email.pl" value={form.email} onChange={(e) => set("email", e.target.value)} {...err("email")} />
+            {errors.email && <p id="quiz-err-email" role="alert" className="field-error">{errors.email}</p>}
+            <p className="mt-1.5 text-xs text-muted">
+              Na ten adres wyślemy podsumowanie tego, co Ci przysługuje.
+            </p>
+          </div>
+          <label className="flex cursor-pointer items-start gap-3 rounded-[10px] bg-sand-50 p-3 text-sm text-muted">
+            <input
+              type="checkbox"
+              className="mt-0.5 h-5 w-5 shrink-0 accent-sand-700"
+              checked={form.marketingConsent}
+              onChange={(e) => set("marketingConsent", e.target.checked)}
+            />
+            <span>
+              Chcę dostawać e-mailem informacje o naborach i terminach szkoleń z dofinansowaniem.
+              Zgoda jest dobrowolna i mogę ją wycofać w każdej chwili.
+            </span>
+          </label>
+        </div>
+      )}
+
+      {step === 2 && (
         <div className="space-y-4">
           <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
             Jakiego szkolenia szukasz?
@@ -361,8 +456,8 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
         </div>
       )}
 
-      {/* KROK 2 — sytuacja zawodowa i uprawnienia do dofinansowania */}
-      {step === 2 && (
+      {/* KROK 3 — sytuacja zawodowa i uprawnienia do dofinansowania */}
+      {step === 3 && (
         <div className="space-y-4">
           <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
             Twoja sytuacja
@@ -441,8 +536,8 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
         </div>
       )}
 
-      {/* KROK 3 — cel i doświadczenie */}
-      {step === 3 && (
+      {/* KROK 4 — cel i doświadczenie */}
+      {step === 4 && (
         <div className="space-y-4">
           <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
             Co chcesz osiągnąć?
@@ -487,8 +582,8 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
         </div>
       )}
 
-      {/* KROK 4 — o Tobie */}
-      {step === 4 && (
+      {/* KROK 5 — o Tobie */}
+      {step === 5 && (
         <div className="space-y-4">
           <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
             Kilka słów o Tobie
@@ -520,28 +615,16 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
         </div>
       )}
 
-      {/* KROK 5 — dane kontaktowe */}
-      {step === 5 && (
+      {/* KROK 6 — dane kontaktowe */}
+      {step === 6 && (
         <div className="space-y-4">
           <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
             Gdzie się z Tobą skontaktować?
           </h2>
           <div>
-            <label className="label" htmlFor="q-name">Imię i nazwisko *</label>
-            <input id="q-name" type="text" autoComplete="name" className="input" placeholder="np. Anna Kowalska" value={form.name} onChange={(e) => set("name", e.target.value)} {...err("name")} />
-            {errors.name && <p id="quiz-err-name" role="alert" className="field-error">{errors.name}</p>}
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label className="label" htmlFor="q-phone">Telefon *</label>
-              <input id="q-phone" type="tel" autoComplete="tel" className="input" placeholder="np. 512 345 678" value={form.phone} onChange={(e) => set("phone", e.target.value)} {...err("phone")} />
-              {errors.phone && <p id="quiz-err-phone" role="alert" className="field-error">{errors.phone}</p>}
-            </div>
-            <div>
-              <label className="label" htmlFor="q-email">Email *</label>
-              <input id="q-email" type="email" autoComplete="email" className="input" placeholder="np. anna@email.pl" value={form.email} onChange={(e) => set("email", e.target.value)} {...err("email")} />
-              {errors.email && <p id="quiz-err-email" role="alert" className="field-error">{errors.email}</p>}
-            </div>
+            <label className="label" htmlFor="q-phone">Telefon *</label>
+            <input id="q-phone" type="tel" autoComplete="tel" className="input" placeholder="np. 512 345 678" value={form.phone} onChange={(e) => set("phone", e.target.value)} {...err("phone")} />
+            {errors.phone && <p id="quiz-err-phone" role="alert" className="field-error">{errors.phone}</p>}
           </div>
           <div>
             <label className="label" htmlFor="q-heard">Skąd o nas wiesz?</label>
@@ -555,8 +638,8 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
         </div>
       )}
 
-      {/* KROK 6 — zgody + wysyłka */}
-      {step === 6 && (
+      {/* KROK 7 — zgody + wysyłka */}
+      {step === 7 && (
         <div className="space-y-4">
           <h2 ref={headingRef} tabIndex={-1} className="font-serif text-xl font-bold outline-none">
             Ostatni krok
@@ -597,18 +680,15 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
             </label>
             {errors.contactConsent && <p id="quiz-err-contactConsent" role="alert" className="field-error">{errors.contactConsent}</p>}
 
-            <label className="flex cursor-pointer items-start gap-3 text-sm text-muted">
-              <input
-                type="checkbox"
-                className="mt-1 h-5 w-5 shrink-0 accent-sand-700"
-                checked={form.marketingConsent}
-                onChange={(e) => set("marketingConsent", e.target.checked)}
-              />
-              <span>
-                Chcę otrzymywać e-mailem informacje o naborach, terminach szkoleń i zmianach w dofinansowaniach
-                (dobrowolne — możesz wypisać się w każdej chwili).
-              </span>
-            </label>
+            {/* Zgoda marketingowa przeniesiona na KROK 1 (obok e-maila) — musi być zebrana
+                zanim ktokolwiek porzuci quiz, bo inaczej do osoby, która go nie dokończyła,
+                nie wolno napisać maila. Tutaj tylko przypominamy stan, bez drugiego checkboxa:
+                dwa pola sterujące tą samą wartością to prosta droga do przypadkowego odznaczenia. */}
+            {form.marketingConsent && (
+              <p className="text-sm text-muted">
+                ✓ Zgodziłaś się na e-maile o naborach i terminach szkoleń. Możesz to wycofać w każdej chwili.
+              </p>
+            )}
 
             <p className="text-xs text-muted">
               Zgody oznaczone * są niezbędne, żebyśmy mogli przekazać zgłoszenie trenerce. Każdą zgodę możesz
