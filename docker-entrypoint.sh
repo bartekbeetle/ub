@@ -10,7 +10,7 @@ npm run db:migrate
 # Celowo NIEfatalny: bez ADMIN_EMAIL/ADMIN_INITIAL_PASSWORD skrypt rzuca błąd, a to nie może
 # wywalić kontenera z działającą stroną publiczną.
 # Seedy z danymi (db:seed, db:seed-weronika) NIE lecą tutaj — ręcznie, raz.
-# Wyjątek: blog w trybie insert-only, niżej.
+# Wyjątki: blog w trybie insert-only i prospekty CRM — oba niżej.
 echo "→ [entrypoint] Seed konta admina (idempotentny)..."
 npm run db:seed-core || echo "⚠ [entrypoint] seed-core nie przeszedł (sprawdź ADMIN_EMAIL / ADMIN_INITIAL_PASSWORD w env). Startuję serwer mimo to."
 
@@ -29,6 +29,16 @@ npm run db:seed-trainer-users || echo "⚠ [entrypoint] seed kont trenerek nie p
 # NIEfatalny — problem z blogiem nie może wywalić działającej strony.
 echo "→ [entrypoint] Publikacja nowych wpisów bloga (insert-only)..."
 npm run db:seed-blog-nowe || echo "⚠ [entrypoint] seed nowych wpisów bloga nie przeszedł. Startuję serwer mimo to."
+
+# Prospekty CRM trenerek z researchu — insert-only, idempotentny (pomija istniejące po NIP-ie
+# albo nazwie). Bez tego każdy nowy podmiot z researchu trzeba było dosiewać ręcznie w terminalu
+# Coolify po KAŻDYM deployu — i 13.09 wyszło, jak to działa w praktyce: ZDZ, SNH i Julia Nessa
+# leżały opisane w vaulcie, a w panelu admina ich nie było, bo nikt seeda nie odpalił.
+# Statusy zmienione ręcznie w panelu (np. „rozmowa", „umowa") NIE są nadpisywane — skrypt
+# istniejące wiersze pomija, nie aktualizuje.
+# NIEfatalny — problem z CRM nie może wywalić działającej strony publicznej.
+echo "→ [entrypoint] Prospekty CRM trenerek (insert-only)..."
+npm run db:seed-prospects || echo "⚠ [entrypoint] seed prospektów nie przeszedł. Startuję serwer mimo to."
 
 echo "→ [entrypoint] Start serwera Next standalone..."
 exec "$@"
