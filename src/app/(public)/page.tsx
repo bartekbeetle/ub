@@ -6,19 +6,19 @@ import { CourseCard } from "@/components/CourseCard";
 import { IconGraduation, IconShield, IconUsers, IconAward, IconArrowRight, IconCheck } from "@/components/icons";
 import { JsonLd } from "@/components/JsonLd";
 import { faqJsonLd, itemListJsonLd } from "@/lib/seo";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_NAME, SUBSIDY_RANGE, SUBSIDY_CONDITION } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   // Strona główna: marka z przodu (jedyna strona, gdzie brand ma pierwszeństwo nad frazą),
   // całość 54 znaki — mieści się bez ucięcia w SERP-ie.
-  title: { absolute: `${SITE_NAME} — szkolenia z dofinansowaniem do 90%` },
+  title: { absolute: `${SITE_NAME} — szkolenia z dofinansowaniem ${SUBSIDY_RANGE}` },
   description:
-    "Zacznij karierę w beauty bez ryzyka finansowego. Szkolenia PMU, rzęs, paznokci i medycyny estetycznej z dofinansowaniem do 90% z BUR.",
+    `Zacznij karierę w beauty bez ryzyka finansowego. Szkolenia PMU, rzęs, paznokci i medycyny estetycznej z dofinansowaniem ${SUBSIDY_RANGE} z BUR.`,
   alternates: { canonical: "/" },
   openGraph: {
-    title: `Szkolenia beauty z dofinansowaniem do 90%`,
+    title: `Szkolenia beauty z dofinansowaniem ${SUBSIDY_RANGE}`,
     description: "Profesjonalne szkolenia beauty z dofinansowaniem BUR. Nie potrzebujesz doświadczenia.",
     url: "/",
     type: "website",
@@ -38,7 +38,7 @@ const STEPS = [
 /**
  * FAQ pisane pod cytowanie: pierwsze zdanie odpowiedzi jest samodzielną,
  * kompletną odpowiedzią (tak wybierają fragmenty AI Overviews, ChatGPT i Perplexity).
- * Ceny zgodne z guardrailem — „do 90%", „kilkaset zł", nigdy „0 zł" jako obietnica.
+ * Ceny zgodne z guardrailem — SUBSIDY_RANGE, „kilkaset zł", nigdy „0 zł" jako obietnica.
  */
 const FAQ = [
   {
@@ -49,7 +49,7 @@ const FAQ = [
   {
     question: "Ile realnie zapłacę za kurs z dofinansowaniem?",
     answer:
-      "Najczęściej dopłacasz kilkaset złotych zamiast kilku tysięcy. Dofinansowanie z BUR pokrywa zwykle 80–90% ceny szkolenia, a resztę wnosisz jako wkład własny. Dokładny poziom dopłaty zależy od operatora w Twoim województwie, Twojej sytuacji zawodowej i ceny wybranego kursu — sprawdzamy to bezpłatnie przed zapisem.",
+      `Najczęściej dopłacasz kilkaset złotych zamiast kilku tysięcy. Dofinansowanie z BUR pokrywa ${SUBSIDY_RANGE} ceny szkolenia, a resztę wnosisz jako wkład własny. Dokładny poziom dopłaty zależy ${SUBSIDY_CONDITION} — sprawdzamy to bezpłatnie przed zapisem.`,
   },
   {
     question: "Czym jest BUR i kto wypłaca pieniądze?",
@@ -111,20 +111,21 @@ export default async function HomePage() {
       <section className="bg-gradient-to-b from-sand-100 via-cream-warm to-cream">
         <div className="mx-auto max-w-4xl px-4 py-16 text-center md:py-24">
           <span className="badge-money mb-6 inline-flex !px-4 !py-1.5 !text-sm">
-            <IconGraduation width={16} height={16} /> Szkolenia z dofinansowaniem do 90%
+            <IconGraduation width={16} height={16} /> Szkolenia z dofinansowaniem {SUBSIDY_RANGE}
           </span>
           <h1 className="text-4xl font-bold leading-tight md:text-6xl">
             Zacznij Karierę w Beauty <span className="text-sand-600">BEZ Ryzyka Finansowego</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted md:text-xl">
-            Profesjonalne szkolenia z linergistyki, PMU i medycyny estetycznej z dofinansowaniem do 90% z
-            programu BUR — płacisz ułamek ceny kursu. <strong className="text-ink-soft">Nie potrzebujesz doświadczenia.</strong>
+            Profesjonalne szkolenia z linergistyki, PMU i medycyny estetycznej z dofinansowaniem {SUBSIDY_RANGE} z
+            programu BUR ({SUBSIDY_CONDITION}) — płacisz ułamek ceny kursu.{" "}
+            <strong className="text-ink-soft">Nie potrzebujesz doświadczenia.</strong>
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link href="/kursy" className="btn-primary !px-10 !py-4 !text-lg">
               Zobacz Jak Zacząć
             </Link>
-            <Link href="/dofinansowania" className="btn-outline !px-8 !py-3.5">
+            <Link href="/quiz" className="btn-outline !px-8 !py-3.5">
               Sprawdź dofinansowanie
             </Link>
           </div>
@@ -169,7 +170,7 @@ export default async function HomePage() {
             ))}
           </ol>
           <div className="mt-10 text-center">
-            <Link href="/konsultacja" className="btn-primary">Umów bezpłatną konsultację</Link>
+            <Link href="/quiz" className="btn-primary">Umów bezpłatną konsultację</Link>
           </div>
         </div>
       </section>
@@ -216,7 +217,7 @@ export default async function HomePage() {
           </div>
           <p className="mt-8 text-center text-muted">
             Nie znalazłaś odpowiedzi?{" "}
-            <Link href="/konsultacja" className="link-inline">
+            <Link href="/quiz" className="link-inline">
               Zapytaj na bezpłatnej konsultacji
             </Link>{" "}
             albo sprawdź{" "}
@@ -232,7 +233,7 @@ export default async function HomePage() {
       <section className="bg-ink-soft py-14 text-center" aria-label="Nasze wyniki">
         <div className="mx-auto flex max-w-4xl flex-col items-center justify-center gap-10 px-4 sm:flex-row">
           <div>
-            <p className="font-serif text-4xl font-bold text-sand-300">do 90%</p>
+            <p className="font-serif text-4xl font-bold text-sand-300">{SUBSIDY_RANGE}</p>
             <p className="mt-2 text-sand-100">dofinansowania z programów BUR i KFS</p>
           </div>
           <div className="hidden h-14 w-px bg-white/20 sm:block" aria-hidden />

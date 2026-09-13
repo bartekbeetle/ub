@@ -9,19 +9,21 @@ export const dynamic = "force-dynamic";
 // `robots: noindex, follow` (audyt on-page) — boilerplate prawny bez wartości rankingowej.
 // Sitemapa nie powinna promować URL-i oznaczonych noindex (mieszany sygnał dla Google),
 // dlatego nie ma tu już osobnej listy LEGAL_PAGES.
-const MAIN_PAGES = ["", "/kursy", "/trenerki", "/dofinansowania", "/blog", "/kontakt", "/konsultacja", "/o-nas"];
+//
+// `/trenerki` i profile `/trenerka/[slug]` NIE są tu od 13.09.2026 — decyzja właściciela
+// o chowaniu trenerek przed startem kampanii, obie trasy przekierowują 308 na /kursy,
+// a promowanie ich w sitemapie wysyłałoby Google mieszany sygnał (redirect + sitemap razem).
+// `/quiz` jest w sitemapie mimo `robots: noindex` na stronie — Google i tak jej nie zaindeksuje
+// (noindex wygrywa), a obecność w sitemapie nie szkodzi; zostaje więc dla porządku listy tras.
+const MAIN_PAGES = ["", "/kursy", "/dofinansowania", "/blog", "/kontakt", "/konsultacja", "/quiz", "/o-nas"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const db = await getDb();
-  const [courses, trainers, posts, combos] = await Promise.all([
+  const [courses, posts, combos] = await Promise.all([
     db
       .select({ slug: schema.courses.slug, createdAt: schema.courses.createdAt })
       .from(schema.courses)
       .where(eq(schema.courses.status, "opublikowane")),
-    db
-      .select({ slug: schema.trainers.slug, createdAt: schema.trainers.createdAt })
-      .from(schema.trainers)
-      .where(eq(schema.trainers.isActive, true)),
     db
       .select({ slug: schema.blogPosts.slug, publishedAt: schema.blogPosts.publishedAt, createdAt: schema.blogPosts.createdAt })
       .from(schema.blogPosts)
@@ -60,12 +62,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: c.createdAt ?? now,
       changeFrequency: "weekly" as const,
       priority: 0.9,
-    })),
-    ...trainers.map((t) => ({
-      url: `${SITE_URL}/trenerka/${t.slug}`,
-      lastModified: t.createdAt ?? now,
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
     })),
     ...posts.map((p) => ({
       url: `${SITE_URL}/blog/${p.slug}`,

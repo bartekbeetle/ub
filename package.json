@@ -22,7 +22,8 @@
     "db:fix-taxonomy": "tsx scripts/fix-taxonomy.ts",
     "blog:generuj": "tsx scripts/blog-factory/generuj.ts",
     "blog:qa": "tsx scripts/blog-factory/qa.ts",
-    "blog:build": "npm run blog:generuj && npm run blog:qa && npm run db:seed-blog"
+    "blog:build": "npm run blog:generuj && npm run blog:qa && npm run db:seed-blog",
+    "db:seed-kursy-ogolne": "tsx scripts/seed-kursy-ogolne.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.3.0",

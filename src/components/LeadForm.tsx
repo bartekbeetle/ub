@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CATEGORIES, EMPLOYMENT_STATUSES, VOIVODESHIPS } from "@/lib/constants";
 import { LEAD_SEGMENT_KEY } from "@/components/LeadConversion";
+import { getUtm } from "@/lib/utm";
 
 type Props = {
   courseId?: number;
@@ -13,29 +14,6 @@ type Props = {
 };
 
 type Errors = Partial<Record<"name" | "phone" | "email" | "voivodeship" | "category" | "employmentStatus" | "rodoConsent" | "contactConsent", string>>;
-
-function getUtm(): { utmSource: string; utmMedium: string; utmCampaign: string } {
-  if (typeof window === "undefined") return { utmSource: "", utmMedium: "", utmCampaign: "" };
-  const params = new URLSearchParams(window.location.search);
-  const stored = sessionStorage.getItem("ub_utm");
-  const fromUrl = {
-    utmSource: params.get("utm_source") ?? "",
-    utmMedium: params.get("utm_medium") ?? "",
-    utmCampaign: params.get("utm_campaign") ?? "",
-  };
-  if (fromUrl.utmSource || fromUrl.utmMedium || fromUrl.utmCampaign) {
-    sessionStorage.setItem("ub_utm", JSON.stringify(fromUrl));
-    return fromUrl;
-  }
-  if (stored) {
-    try {
-      return JSON.parse(stored);
-    } catch {
-      /* ignore */
-    }
-  }
-  return fromUrl;
-}
 
 /**
  * Walidacja lustrzana wobec `leadSchema` (zod) na serwerze. Formularz ma `noValidate`,

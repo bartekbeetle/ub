@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ContactForm } from "@/components/ContactForm";
-import { IconMail, IconClock } from "@/components/icons";
+import { IconMail, IconClock, IconArrowRight } from "@/components/icons";
 import { CONTACT_EMAIL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -27,8 +28,24 @@ export default function KontaktPage() {
         Masz pytanie o szkolenie, dofinansowanie albo współpracę trenerską? Napisz — odpowiadamy w 24h.
       </p>
 
+      {/* Pytasz o dofinansowanie? Szybsza ścieżka niż formularz kontaktowy — prosto w quiz,
+          bez czekania na odpowiedź mailem. Formularz kontaktowy zostaje niżej dla reszty pytań. */}
+      <div className="card mt-8 flex flex-col items-start gap-4 bg-cream-warm p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
+        <div>
+          <h2 className="font-serif text-xl font-bold">Pytasz o dofinansowanie na szkolenie?</h2>
+          <p className="mt-1 text-sm text-muted">
+            Szybciej niż mailem — odpowiedz na kilka pytań, a sprawdzimy Twoje dofinansowanie od razu.
+          </p>
+        </div>
+        <Link href="/quiz" className="btn-primary shrink-0 whitespace-nowrap">
+          Sprawdź dofinansowanie <IconArrowRight width={18} height={18} />
+        </Link>
+      </div>
+
       <div className="mt-10 grid gap-10 md:grid-cols-[1fr_320px]">
         <div className="card p-6 md:p-8">
+          <h2 className="font-serif text-lg font-semibold">Inne pytanie?</h2>
+          <p className="mb-6 mt-1 text-sm text-muted">Napisz do nas — odpowiadamy w 24 godziny robocze.</p>
           <ContactForm type="kontakt" />
         </div>
         <aside className="space-y-5">

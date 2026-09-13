@@ -44,6 +44,20 @@ export const leadSchema = z.object({
     errorMap: () => ({ message: "Wybierz status zawodowy" }),
   }),
   preferredDate: z.string().trim().max(120).optional().or(z.literal("")),
+  // === Pola miękkie z quizu kwalifikacyjnego (/quiz) — wszystkie opcjonalne, wszystkie
+  // mapują na kolumny, które już istnieją w `leads` (patrz src/db/schema.ts) i były
+  // dotąd zasilane tylko z panelu recepcjonistki. Żadna migracja nie jest potrzebna.
+  city: z.string().trim().max(120).optional().or(z.literal("")),
+  hasBusinessActivity: z.boolean().optional(),
+  /** Km, na jakie kandydatka jest gotowa dojechać na szkolenie. */
+  travelKm: z.coerce.number().int().min(0).max(999).optional(),
+  /**
+   * Wolny tekst na pola, które NIE mają własnej kolumny (cel zgłoszenia, przedział wiekowy,
+   * czy pracuje już w beauty, skąd się dowiedziała) — składany w quizie w jeden czytelny blok,
+   * zapisywany w `leads.message`. Świadomie NIE rozbijamy tego na kolejne kolumny: to są dane
+   * miękkie do lektury przez trenerkę/admina, nie pola do filtrowania czy matchingu.
+   */
+  message: z.string().trim().max(2000).optional().or(z.literal("")),
   // Zgody rozdzielone — patrz komentarz przy tabeli `leads` w src/db/schema.ts.
   rodoConsent: z.literal(true, {
     errorMap: () => ({ message: "Zgoda na przekazanie danych trenerkom jest wymagana" }),
@@ -53,7 +67,7 @@ export const leadSchema = z.object({
   }),
   marketingConsent: z.boolean().optional().default(false),
   courseId: z.number().int().positive().optional().nullable(),
-  source: z.enum(["kurs", "landing", "konsultacja"]).default("landing"),
+  source: z.enum(["kurs", "landing", "konsultacja", "quiz"]).default("landing"),
   utmSource: z.string().max(120).optional().or(z.literal("")),
   utmMedium: z.string().max(120).optional().or(z.literal("")),
   utmCampaign: z.string().max(160).optional().or(z.literal("")),

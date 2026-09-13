@@ -6,12 +6,9 @@ import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
-import { StarRating } from "@/components/StarRating";
-import { TrainerAvatar } from "@/components/TrainerAvatar";
-import { LeadFormModal } from "@/components/LeadFormModal";
 import { TrackEvent } from "@/components/TrackEvent";
 import { courseJsonLd, courseMetaDescription, pageTitle } from "@/lib/seo";
-import { formatPln, formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { voivodeshipName, SITE_NAME } from "@/lib/constants";
 import { IconPin, IconClock, IconCheck, IconCalendar } from "@/components/icons";
 
@@ -63,14 +60,46 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   };
 }
 
+/**
+ * Opisy kursów ogólnych (seed `db:seed-kursy-ogolne`) używają lekkiego markdownu: akapit
+ * złożony wyłącznie z `**...**` jest śródtytułem, a `**...**` w środku zdania — pogrubieniem.
+ * Wcześniej akapity leciały surowo przez `<p>{p}</p>`, więc na stronie kursu wyświetlały się
+ * dosłownie gwiazdki („**Jak wygląda kurs**"). Złapane w QA 13.09 przed startem kampanii.
+ *
+ * Świadomie NIE wciągam tu biblioteki markdown: opisy są nasze i mają dokładnie te dwa wzorce,
+ * a mniej zależności na ścieżce strony docelowej reklam to mniej rzeczy, które mogą paść.
+ * Tekst trafia do Reacta jako zwykłe dzieci elementów, więc nie ma `dangerouslySetInnerHTML`.
+ */
+function renderOpis(opis: string) {
+  const pogrub = (linia: string, klucz: number) => {
+    const czesci = linia.split(/\*\*(.+?)\*\*/g);
+    return (
+      <p key={klucz}>
+        {czesci.map((c, i) => (i % 2 === 1 ? <strong key={i}>{c}</strong> : c))}
+      </p>
+    );
+  };
+
+  return opis.split("\n\n").map((akapit, i) => {
+    const t = akapit.trim();
+    const srodtytul = t.match(/^\*\*(.+)\*\*$/);
+    if (srodtytul) {
+      return (
+        <h3 key={i} className="mt-6 text-lg font-semibold">
+          {srodtytul[1]}
+        </h3>
+      );
+    }
+    return pogrub(t, i);
+  });
+}
+
 export default async function KursPage({ params }: { params: Params }) {
   const { slug } = await params;
   const row = await getCourse(slug);
   if (!row) notFound();
   const { course, trainer } = row;
 
-  const priceAfter = Math.round(course.price * (1 - course.subsidyPercent / 100));
-  const savings = course.price - priceAfter;
   const freeSpots = Math.max(0, course.totalSpots - course.takenSpots);
   const spotsPct = Math.round((freeSpots / course.totalSpots) * 100);
 
@@ -96,7 +125,6 @@ export default async function KursPage({ params }: { params: Params }) {
       <h1 className="mt-4 max-w-3xl text-3xl font-bold leading-tight md:text-4xl">{course.title}</h1>
 
       <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted">
-        {trainer && <StarRating rating={trainer.rating} reviewCount={trainer.reviewCount} />}
         {course.city && (
           <span className="inline-flex items-center gap-1.5">
             <IconPin width={16} height={16} /> {course.city}, {voivodeshipName(course.voivodeship)}
@@ -127,9 +155,7 @@ export default async function KursPage({ params }: { params: Params }) {
             <section className="mt-8" aria-labelledby="opis-h">
               <h2 id="opis-h" className="text-2xl font-bold">O szkoleniu</h2>
               <div className="prose-ub mt-4">
-                {course.description.split("\n\n").map((p, i) => (
-                  <p key={i}>{p}</p>
-                ))}
+                {renderOpis(course.description)}
               </div>
             </section>
           )}
@@ -172,19 +198,15 @@ export default async function KursPage({ params }: { params: Params }) {
           )}
         </div>
 
-        {/* STICKY BOX REZERWACJI */}
+        {/* STICKY BOX REZERWACJI — bez cen: decyzja właściciela 13.09.2026, cały ruch
+            ma iść przez quiz kwalifikacyjny, nie przez samoobsługową transakcję. */}
         <aside>
           <div className="card space-y-5 p-6 lg:sticky lg:top-24">
             <div>
-              <p className="text-base text-muted line-through">{formatPln(course.price)}</p>
-              <p className="text-4xl font-bold text-money">
-                {priceAfter === 0 ? "Pełne dofinansowanie" : `Od ${formatPln(priceAfter)}`}
+              <p className="badge-money !text-sm">Dofinansowanie do {course.subsidyPercent}%</p>
+              <p className="mt-2 text-lg font-semibold text-ink-soft">
+                Sprawdź, ile zapłacisz po dofinansowaniu
               </p>
-              {savings > 0 && (
-                <p className="mt-1 text-sm font-semibold text-money-dark">
-                  Oszczędzasz do {formatPln(savings)} z dofinansowaniem
-                </p>
-              )}
             </div>
 
             {course.nextDate && (
@@ -206,8 +228,7 @@ export default async function KursPage({ params }: { params: Params }) {
               </div>
             </div>
 
-            <LeadFormModal courseId={course.id} category={course.category} voivodeship={course.voivodeship} />
-            <Link href="/kontakt" className="btn-outline w-full">Zapytaj o szczegóły</Link>
+            <Link href={`/quiz?kurs=${course.slug}`} className="btn-primary w-full">Aplikuj do finansowania</Link>
 
             <ul className="space-y-2.5 border-t border-sand-100 pt-4 text-sm">
               {["Certyfikowany kurs", "Bezpieczne dofinansowanie", "Gwarancja jakości"].map((t) => (
@@ -217,21 +238,6 @@ export default async function KursPage({ params }: { params: Params }) {
               ))}
             </ul>
           </div>
-
-          {/* MINI-KARTA TRENERKI — cała karta klikalna */}
-          {trainer && (
-            <Link
-              href={`/trenerka/${trainer.slug}`}
-              aria-label={`Profil trenerki ${trainer.name}`}
-              className="card mt-5 flex items-center gap-4 p-5 transition-shadow hover:shadow-md"
-            >
-              <TrainerAvatar name={trainer.name} avatarUrl={trainer.avatarUrl} size={56} />
-              <div className="min-w-0">
-                <p className="truncate font-serif text-base font-semibold">{trainer.name}</p>
-                <StarRating rating={trainer.rating} reviewCount={trainer.reviewCount} />
-              </div>
-            </Link>
-          )}
         </aside>
       </div>
     </div>

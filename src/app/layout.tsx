@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
-import { IS_PRODUCTION_HOST, ORG_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/constants";
+import { IS_PRODUCTION_HOST, ORG_DESCRIPTION, SITE_NAME, SITE_URL, SUBSIDY_RANGE } from "@/lib/constants";
 import { Analytics } from "@/components/Analytics";
 import "./globals.css";
 
@@ -32,11 +32,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — Szkolenia beauty z dofinansowaniem do 90%`,
+    default: `${SITE_NAME} — Szkolenia beauty z dofinansowaniem ${SUBSIDY_RANGE}`,
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "Profesjonalne szkolenia beauty z dofinansowaniem do 90% z programu BUR. PMU, stylizacja rzęs i paznokci, medycyna estetyczna. Certyfikowane trenerki, wsparcie w całym procesie.",
+    `Profesjonalne szkolenia beauty z dofinansowaniem ${SUBSIDY_RANGE} z programu BUR. PMU, stylizacja rzęs i paznokci, medycyna estetyczna. Certyfikowane trenerki, wsparcie w całym procesie.`,
   applicationName: SITE_NAME,
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   publisher: SITE_NAME,

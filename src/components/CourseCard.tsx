@@ -1,13 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Course, Trainer } from "@/db/schema";
-import { TrainerAvatar } from "./TrainerAvatar";
-import { StarRating } from "./StarRating";
 import { IconPin, IconClock } from "./icons";
-import { formatPln } from "@/lib/utils";
 
-export function CourseCard({ course, trainer }: { course: Course; trainer?: Trainer | null }) {
-  const priceAfter = Math.round(course.price * (1 - course.subsidyPercent / 100));
+/**
+ * `trainer` zostaje w sygnaturze (wywołania w listingach go przekazują), ale NIE renderujemy
+ * już jego tożsamości na karcie — decyzja właściciela 13.09.2026: publicznie chowamy trenerki
+ * przed startem płatnej kampanii. Cena i cena po dofinansowaniu też znikają z tego samego
+ * powodu: jedyne CTA karty prowadzi do quizu kwalifikacyjnego, nie do transakcji.
+ */
+export function CourseCard({ course }: { course: Course; trainer?: Trainer | null }) {
   return (
     <article className="card flex flex-col overflow-hidden">
       <Link href={`/kurs/${course.slug}`} className="relative block aspect-[16/10] bg-sand-100">
@@ -33,14 +35,6 @@ export function CourseCard({ course, trainer }: { course: Course; trainer?: Trai
           </Link>
         </h3>
 
-        {trainer && (
-          <div className="flex items-center gap-2">
-            <TrainerAvatar name={trainer.name} avatarUrl={trainer.avatarUrl} size={28} />
-            <span className="text-sm font-medium text-ink">{trainer.name}</span>
-            <StarRating rating={trainer.rating} reviewCount={trainer.reviewCount} />
-          </div>
-        )}
-
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
           {course.city && (
             <span className="inline-flex items-center gap-1">
@@ -52,17 +46,9 @@ export function CourseCard({ course, trainer }: { course: Course; trainer?: Trai
           </span>
         </div>
 
-        <div className="mt-auto flex items-end justify-between border-t border-sand-100 pt-4">
-          <div>
-            <p className="text-sm text-muted line-through">{formatPln(course.price)}</p>
-            <p className="text-xl font-bold text-money-dark">
-              {priceAfter === 0 ? "Pełne dofinansowanie" : `Od ${formatPln(priceAfter)}`}
-            </p>
-          </div>
-          <Link href={`/kurs/${course.slug}`} className="btn-primary !px-5 !py-2.5 !text-sm">
-            Zobacz szczegóły
-          </Link>
-        </div>
+        <Link href={`/quiz?kurs=${course.slug}`} className="btn-primary mt-auto w-full !py-2.5 !text-sm">
+          Aplikuj do finansowania
+        </Link>
       </div>
     </article>
   );

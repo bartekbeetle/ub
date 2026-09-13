@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CONTACT_EMAIL, OPERATOR_LINE, SITE_NAME } from "@/lib/constants";
+import { CONTACT_EMAIL, OPERATOR_LINE, SITE_NAME, SUBSIDY_RANGE } from "@/lib/constants";
 import { CookieSettingsLink } from "@/components/CookieConsent";
 import { IconMail } from "@/components/icons";
 
@@ -17,7 +17,7 @@ export function Footer() {
           </p>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-sand-200">
             Łączymy kobiety, które chcą zacząć karierę w beauty, z certyfikowanymi trenerkami — i pomagamy
-            zdobyć dofinansowanie do 90% z programu BUR.
+            zdobyć dofinansowanie {SUBSIDY_RANGE} z programu BUR.
           </p>
           <a
             href={`mailto:${CONTACT_EMAIL}`}
@@ -32,10 +32,9 @@ export function Footer() {
           <ul className="space-y-0.5 text-sm">
             <li><Link href="/kursy" className={FOOTER_LINK}>Kursy i szkolenia</Link></li>
             <li><Link href="/dofinansowania" className={FOOTER_LINK}>Dofinansowania</Link></li>
-            <li><Link href="/trenerki" className={FOOTER_LINK}>Trenerki</Link></li>
             <li><Link href="/blog" className={FOOTER_LINK}>Baza wiedzy</Link></li>
             <li><Link href="/o-nas" className={FOOTER_LINK}>O nas</Link></li>
-            <li><Link href="/konsultacja" className={FOOTER_LINK}>Bezpłatna konsultacja</Link></li>
+            <li><Link href="/quiz" className={FOOTER_LINK}>Bezpłatna konsultacja</Link></li>
           </ul>
         </nav>
 
