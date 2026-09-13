@@ -5,19 +5,19 @@ import { JsonLd } from "@/components/JsonLd";
 import { SubsidyCalculator } from "@/components/SubsidyCalculator";
 import { faqJsonLd } from "@/lib/seo";
 import { IconCheck, IconChevronDown } from "@/components/icons";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_NAME, SUBSIDY_RANGE, SUBSIDY_CONDITION, SUBSIDY_MAX_PERCENT } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: { absolute: `Dofinansowania na szkolenia beauty — BUR, UP, KFS` },
   description:
-    "Do 90% dofinansowania na szkolenia beauty — płacisz kilkaset złotych zamiast kilku tysięcy. Programy BUR, Urząd Pracy i KFS oraz wsparcie we wniosku.",
+    `Dofinansowanie ${SUBSIDY_RANGE} na szkolenia beauty — płacisz kilkaset złotych zamiast kilku tysięcy. Programy BUR, Urząd Pracy i KFS oraz wsparcie we wniosku.`,
   alternates: { canonical: "/dofinansowania" },
   openGraph: {
     title: `Dofinansowania na szkolenia beauty — BUR, UP, KFS`,
     description:
-      "Do 90% dofinansowania na szkolenia beauty — płacisz kilkaset złotych zamiast kilku tysięcy. Sprawdź programy BUR, Urząd Pracy i KFS.",
+      `Dofinansowanie ${SUBSIDY_RANGE} na szkolenia beauty — płacisz kilkaset złotych zamiast kilku tysięcy. Sprawdź programy BUR, Urząd Pracy i KFS.`,
     url: "/dofinansowania",
     type: "website",
     locale: "pl_PL",
@@ -28,12 +28,14 @@ export const metadata: Metadata = {
 const PROGRAMS = [
   {
     name: "Baza Usług Rozwojowych (BUR)",
-    percent: "do 90%",
+    // Pigułka wizualna zostaje krótka (miejsce na kartę); pełny zakres i warunek
+    // pojawiają się zaraz niżej w liście wymagań — jedno źródło prawdy, dwa formaty.
+    percent: `do ${SUBSIDY_MAX_PERCENT}%`,
     description:
       "Największy program dofinansowań szkoleń w Polsce, finansowany z Funduszy Europejskich. Nie musisz być bezrobotna!",
     requirements: [
       "Dla pracujących, studentek, przedsiębiorczyń i mam",
-      "Dofinansowanie zwykle 80–90% zależnie od województwa",
+      `Dofinansowanie ${SUBSIDY_RANGE} — ${SUBSIDY_CONDITION}`,
       "Szkolenie musi być w Bazie Usług Rozwojowych",
       "Wniosek składasz do operatora regionalnego",
     ],
@@ -82,7 +84,7 @@ const FAQ = [
   {
     question: "Ile wynosi dofinansowanie na szkolenie beauty?",
     answer:
-      "W zależności od województwa i programu: najczęściej 80–90% ceny szkolenia. W praktyce oznacza to dopłatę kilkuset złotych zamiast kilku tysięcy. Pełne 100% zdarza się w wybranych programach (np. KFS dla mikrofirm), ale to wyjątek, nie reguła.",
+      `W programie BUR ${SUBSIDY_RANGE} ceny szkolenia — ${SUBSIDY_CONDITION}. W praktyce oznacza to dopłatę kilkuset złotych zamiast kilku tysięcy. Pełne 100% zdarza się w wybranych programach (np. KFS dla mikrofirm), ale to wyjątek, nie reguła.`,
   },
   {
     question: "Jak długo trwa proces uzyskania dofinansowania?",
@@ -118,11 +120,11 @@ export default function DofinansowaniaPage() {
             <Breadcrumbs items={[{ name: "Strona główna", url: "/" }, { name: "Dofinansowania", url: "/dofinansowania" }]} />
           </div>
           <h1 className="mt-6 text-4xl font-bold md:text-5xl">
-            Dofinansowanie pokrywa <span className="text-money">do 90%</span> ceny szkolenia
+            Dofinansowanie pokrywa <span className="text-money">{SUBSIDY_RANGE}</span> ceny szkolenia
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted">
-            Zamiast kilku tysięcy złotych płacisz zwykle kilkaset. Sprawdź, który program
-            pasuje do Twojej sytuacji — i ile możesz zaoszczędzić.
+            Zamiast kilku tysięcy złotych płacisz zwykle kilkaset — {SUBSIDY_CONDITION}. Sprawdź, który program
+            pasuje do Twojej sytuacji.
           </p>
           <Link href="/kursy" className="btn-money mt-8">
             Znajdź kurs z dofinansowaniem →
@@ -201,7 +203,7 @@ export default function DofinansowaniaPage() {
           ))}
         </div>
         <div className="mt-10 text-center">
-          <Link href="/konsultacja" className="btn-primary">Umów bezpłatną konsultację</Link>
+          <Link href="/quiz" className="btn-primary">Umów bezpłatną konsultację</Link>
         </div>
       </section>
     </div>

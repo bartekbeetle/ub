@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { LeadForm } from "@/components/LeadForm";
+import { Quiz } from "@/components/Quiz";
 import { IconCheck } from "@/components/icons";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_NAME, SUBSIDY_CONDITION } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: { absolute: `Bezpłatna konsultacja — sprawdź swoje dofinansowanie` },
@@ -39,8 +39,8 @@ export default function KonsultacjaPage() {
               Bezpłatna Konsultacja — <span className="text-money">sprawdź swoje dofinansowanie</span>
             </h1>
             <p className="mt-5 text-lg text-muted">
-              Zostaw kontakt, a w ciągu 24 godzin sprawdzimy, jaki poziom dofinansowania (zwykle 80–90%)
-              przysługuje Ci w Twoim województwie — i pokażemy Ci konkretne szkolenia, na które możesz je
+              Zostaw kontakt, a w ciągu 24 godzin sprawdzimy, jaki poziom dofinansowania przysługuje Ci
+              w Twoim województwie ({SUBSIDY_CONDITION}) — i pokażemy Ci konkretne szkolenia, na które możesz je
               wykorzystać.
             </p>
             <ul className="mt-8 space-y-4">
@@ -59,8 +59,8 @@ export default function KonsultacjaPage() {
 
           <div className="card p-6 md:p-8">
             <h2 className="font-serif text-xl font-bold">Umów bezpłatną konsultację</h2>
-            <p className="mb-6 mt-1 text-sm text-muted">Wypełnienie zajmuje mniej niż minutę.</p>
-            <LeadForm source="konsultacja" />
+            <p className="mb-6 mt-1 text-sm text-muted">Kilka pytań, dwie minuty — reszta jest po naszej stronie.</p>
+            <Quiz />
           </div>
         </div>
       </div>

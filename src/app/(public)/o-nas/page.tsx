@@ -2,17 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_NAME, SUBSIDY_RANGE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: `O nas`,
   description:
-    "Uniwersytet Beauty łączy kobiety planujące karierę w branży beauty z certyfikowanymi trenerkami i pomaga zdobyć dofinansowanie do 90% z programu BUR.",
+    `Uniwersytet Beauty łączy kobiety planujące karierę w branży beauty z certyfikowanymi trenerkami i pomaga zdobyć dofinansowanie ${SUBSIDY_RANGE} z programu BUR.`,
   alternates: { canonical: "/o-nas" },
   openGraph: {
     title: `O nas — ${SITE_NAME}`,
     description:
-      "Uniwersytet Beauty łączy kobiety planujące karierę w branży beauty z certyfikowanymi trenerkami i pomaga zdobyć dofinansowanie do 90% z programu BUR.",
+      `Uniwersytet Beauty łączy kobiety planujące karierę w branży beauty z certyfikowanymi trenerkami i pomaga zdobyć dofinansowanie ${SUBSIDY_RANGE} z programu BUR.`,
     url: "/o-nas",
     type: "website",
     locale: "pl_PL",
@@ -35,7 +35,7 @@ export default function ONasPage() {
         <p>
           <strong>Uniwersytet Beauty</strong> powstał z jednej obserwacji: tysiące kobiet w Polsce marzy o karierze
           w branży beauty, ale odkłada ją na później, bo dobre szkolenie kosztuje kilka tysięcy złotych.
-          Tymczasem istnieją programy, które pokrywają <strong>nawet 90% ceny kursu</strong> — tylko mało kto o nich
+          Tymczasem istnieją programy, które pokrywają <strong>{SUBSIDY_RANGE} ceny kursu</strong> — tylko mało kto o nich
           wie, a jeszcze mniej osób umie przejść przez proces wniosku.
         </p>
         <p>
@@ -60,7 +60,7 @@ export default function ONasPage() {
       <div className="card mt-10 bg-cream-warm p-8 text-center">
         <h2 className="font-serif text-2xl font-bold">Chcesz zacząć karierę w beauty?</h2>
         <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link href="/konsultacja" className="btn-primary">Umów bezpłatną konsultację</Link>
+          <Link href="/quiz" className="btn-primary">Umów bezpłatną konsultację</Link>
           <Link href="/kursy" className="btn-outline">Zobacz szkolenia</Link>
         </div>
       </div>

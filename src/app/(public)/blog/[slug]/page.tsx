@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
+import { BlogCta } from "@/components/BlogCta";
 import { articleJsonLd, metaDescription, pageTitle } from "@/lib/seo";
-import { renderMarkdown } from "@/lib/markdown";
+import { renderMarkdown, splitHtmlAtMidpoint } from "@/lib/markdown";
 import { formatDate } from "@/lib/utils";
 import { SITE_NAME } from "@/lib/constants";
 import { IconClock } from "@/components/icons";
@@ -53,6 +53,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   if (!post) notFound();
 
   const html = renderMarkdown(post.content);
+  const [firstHalf, secondHalf] = splitHtmlAtMidpoint(html);
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10 md:px-6">
@@ -83,19 +84,15 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         </div>
       )}
 
-      <div className="prose-ub mt-8" dangerouslySetInnerHTML={{ __html: html }} />
+      <div className="prose-ub mt-8" dangerouslySetInnerHTML={{ __html: firstHalf }} />
+
+      {/* CTA w środku artykułu — tylko gdy wpis jest wystarczająco długi, żeby mieć środek. */}
+      {secondHalf && <BlogCta variant="inline" />}
+
+      {secondHalf && <div className="prose-ub" dangerouslySetInnerHTML={{ __html: secondHalf }} />}
 
       {/* CTA końcowe */}
-      <aside className="card mt-12 bg-cream-warm p-8 text-center">
-        <h2 className="font-serif text-2xl font-bold">Gotowa na start w beauty?</h2>
-        <p className="mx-auto mt-2 max-w-md text-muted">
-          Sprawdź certyfikowane szkolenia z dofinansowaniem do 90% — pomożemy Ci przejść przez cały proces.
-        </p>
-        <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link href="/kursy" className="btn-primary">Przeglądaj kursy</Link>
-          <Link href="/konsultacja" className="btn-outline">Bezpłatna konsultacja</Link>
-        </div>
-      </aside>
+      <BlogCta variant="end" />
     </article>
   );
 }

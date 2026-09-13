@@ -5,7 +5,7 @@ import { CourseCard } from "@/components/CourseCard";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
 import { clampText, itemListJsonLd, metaDescription, pageTitle } from "@/lib/seo";
-import { CATEGORIES, LEVELS, MODES, VOIVODESHIPS, voivodeshipName, SITE_NAME } from "@/lib/constants";
+import { CATEGORIES, LEVELS, MODES, VOIVODESHIPS, voivodeshipName, SITE_NAME, SUBSIDY_RANGE } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -23,10 +23,10 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
   // programmatic SEO: unikalny title dla kombinacji filtrów
   // Nazwy kategorii w słowniku są długie („Usuwanie PMU (laserowe i bezlaserowe)"),
   // więc tytuł składamy kaskadowo i przycinamy do 60 znaków — inaczej Google ucina frazę.
-  let title = "Kursy beauty z dofinansowaniem do 90%";
-  if (kat && woj) title = clampText(`Kurs ${kat} ${woj} — dofinansowanie do 90%`, 60);
-  else if (kat) title = clampText(`Kurs ${kat} z dofinansowaniem do 90%`, 60);
-  else if (woj) title = `Kursy beauty ${woj} z dofinansowaniem do 90%`;
+  let title = `Kursy beauty z dofinansowaniem ${SUBSIDY_RANGE}`;
+  if (kat && woj) title = clampText(`Kurs ${kat} ${woj} — dofinansowanie ${SUBSIDY_RANGE}`, 60);
+  else if (kat) title = clampText(`Kurs ${kat} z dofinansowaniem ${SUBSIDY_RANGE}`, 60);
+  else if (woj) title = `Kursy beauty ${woj} z dofinansowaniem ${SUBSIDY_RANGE}`;
   const qs = new URLSearchParams();
   if (typeof sp.wojewodztwo === "string" && sp.wojewodztwo) qs.set("wojewodztwo", sp.wojewodztwo);
   if (kat) qs.set("kategoria", kat);
@@ -193,7 +193,7 @@ export default async function KursyPage({ searchParams }: { searchParams: Promis
             <div className="card p-10 text-center">
               <h2 className="font-serif text-xl font-semibold">Brak kursów dla wybranych filtrów</h2>
               <p className="mt-2 text-muted">
-                Zmień kryteria wyszukiwania albo <a href="/konsultacja" className="font-semibold text-sand-700 underline">napisz do nas</a> — pomożemy znaleźć szkolenie w Twojej okolicy.
+                Zmień kryteria wyszukiwania albo <a href="/quiz" className="font-semibold text-sand-700 underline">napisz do nas</a> — pomożemy znaleźć szkolenie w Twojej okolicy.
               </p>
             </div>
           ) : (

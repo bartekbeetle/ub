@@ -37,6 +37,12 @@ npm run db:seed-blog-nowe || echo "⚠ [entrypoint] seed nowych wpisów bloga ni
 # Statusy zmienione ręcznie w panelu (np. „rozmowa", „umowa") NIE są nadpisywane — skrypt
 # istniejące wiersze pomija, nie aktualizuje.
 # NIEfatalny — problem z CRM nie może wywalić działającej strony publicznej.
+# Kursy ogólne (8 kategorii bez trenerki) — insert-only, dopasowanie po slugu.
+# Bez tego strona po deployu pokazywałaby wyłącznie kursy jednej trenerki, a od 13.09
+# cały płatny ruch leci na kursy ogólne. NIEfatalny.
+echo "→ [entrypoint] Kursy ogólne (insert-only)..."
+npm run db:seed-kursy-ogolne || echo "⚠ [entrypoint] seed kursów ogólnych nie przeszedł. Startuję serwer mimo to."
+
 echo "→ [entrypoint] Prospekty CRM trenerek (insert-only)..."
 npm run db:seed-prospects || echo "⚠ [entrypoint] seed prospektów nie przeszedł. Startuję serwer mimo to."
 

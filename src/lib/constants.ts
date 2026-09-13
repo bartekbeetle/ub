@@ -59,9 +59,39 @@ export const SOCIAL_URLS = (process.env.NEXT_PUBLIC_SOCIAL_URLS || "")
   .map((s) => s.trim())
   .filter(Boolean);
 
-/** Jednozdaniowa definicja encji — używana w schema.org, llms.txt i OG. Trzymamy JEDNĄ wersję. */
-export const ORG_DESCRIPTION =
-  "Uniwersytet Beauty to polska platforma, która łączy kobiety chcące zdobyć zawód w branży beauty z certyfikowanymi trenerkami i prowadzi je przez proces dofinansowania szkolenia z Bazy Usług Rozwojowych (BUR) — do 90% ceny kursu.";
+/**
+ * Poziom dofinansowania z BUR — JEDNO źródło prawdy dla całego serwisu, reklam i llms.txt.
+ *
+ * 🔴 NIE wpisuj procentów na sztywno w komponentach i treściach. To jest liczba, którą
+ * możemy musieć skorygować po weryfikacji u PARP albo po uwadze prawnika — a wtedy zmiana
+ * ma być JEDNĄ linią tutaj, nie przeczesywaniem dwudziestu plików (stan przed 13.09.2026:
+ * „do 90%" występowało w 21 miejscach w kodzie i treściach).
+ *
+ * Zakres ustawiony 13.09.2026 pod start kampanii i ZWERYFIKOWANY u źródła (PARP):
+ *  - górna granica: mazowiecki Projekt 3 daje „od 92,2% do 96,2%", łódzkie „do 93%"
+ *    → komunikujemy 95%, czyli MNIEJ niż udokumentowane maksimum. Bezpieczna strona.
+ *  - dolna granica: łódzkie 50% dla dużych przedsiębiorstw i pracodawców spoza biznesu.
+ * Pełny rozbiór z tabelą źródeł:
+ * `Zasoby/research/2026-09-13-poziomy-dofinansowania-bur-weryfikacja.md`
+ *
+ * 🔴 SUFFIX `SUBSIDY_CONDITION` JEST OBOWIĄZKOWY przy każdej liczbie. Powód nie jest
+ * kosmetyczny: duża część operatorów ogranicza wsparcie NIE procentem, lecz KWOTĄ
+ * (wielkopolskie: 5 000 zł na uczestnika). Przy kursie za 8 000 zł realne dofinansowanie
+ * wyniesie tam 62%, nie 95% — i bez warunku byłby to zarzut wprowadzenia w błąd.
+ */
+export const SUBSIDY_MIN_PERCENT = 50;
+export const SUBSIDY_MAX_PERCENT = 95;
+/** „od 50% do nawet 95%" — gotowa fraza do treści. */
+export const SUBSIDY_RANGE = `od ${SUBSIDY_MIN_PERCENT}% do nawet ${SUBSIDY_MAX_PERCENT}%`;
+/** Warunek, który MUSI towarzyszyć każdej liczbie — guardrail przeciw „0 zł" i obietnicy bez pokrycia. */
+export const SUBSIDY_CONDITION = "zależnie od województwa, naboru i Twojego statusu zawodowego";
+
+/**
+ * Jednozdaniowa definicja encji — używana w schema.org, llms.txt i OG. Trzymamy JEDNĄ wersję.
+ * Musi siedzieć PO `SUBSIDY_RANGE` (zależność) — dlatego nie jest zdefiniowana na górze pliku,
+ * gdzie była do 13.09.2026, kiedy jeszcze cytowała „do 90%" na sztywno.
+ */
+export const ORG_DESCRIPTION = `Uniwersytet Beauty to polska platforma, która łączy kobiety chcące zdobyć zawód w branży beauty z certyfikowanymi trenerkami i prowadzi je przez proces dofinansowania szkolenia z Bazy Usług Rozwojowych (BUR) — ${SUBSIDY_RANGE} ceny kursu.`;
 
 export const CATEGORIES = [
   "PMU / Makijaż permanentny",

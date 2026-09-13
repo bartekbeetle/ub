@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { CONTACT_EMAIL, OPERATOR, SITE_NAME } from "@/lib/constants";
+import { CONTACT_EMAIL, OPERATOR, SITE_NAME, SUBSIDY_RANGE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: `Regulamin serwisu`,
@@ -54,7 +54,7 @@ export default function RegulaminPage() {
         <p>
           3. <strong>Operator nie gwarantuje przyznania dofinansowania</strong> — decyzję podejmuje właściwy
           operator programu (m.in. BUR, PUP, KFS) według własnych kryteriów. Informacje o poziomie
-          dofinansowania (np. „do 90%”) mają charakter orientacyjny; rzeczywista wysokość dopłaty i kwota do
+          dofinansowania (np. „{SUBSIDY_RANGE}”) mają charakter orientacyjny; rzeczywista wysokość dopłaty i kwota do
           zapłaty przez Kandydatkę zależą od programu, regionu i sytuacji zawodowej Kandydatki.
         </p>
         <p>

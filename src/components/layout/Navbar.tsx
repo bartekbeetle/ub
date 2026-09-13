@@ -8,7 +8,6 @@ import { IconMenu, IconX, IconSearch } from "@/components/icons";
 const LINKS = [
   { href: "/kursy", label: "Szkolenia" },
   { href: "/dofinansowania", label: "Dofinansowania" },
-  { href: "/trenerki", label: "Trenerki" },
   { href: "/blog", label: "Baza Wiedzy" },
   { href: "/kontakt", label: "Kontakt" },
 ];
@@ -39,7 +38,7 @@ export function Navbar() {
           <Link href="/kursy" aria-label="Szukaj kursu" className="p-2 text-ink hover:text-sand-700 transition-colors">
             <IconSearch />
           </Link>
-          <Link href="/konsultacja" className="btn-primary !px-5 !py-2.5 !text-sm">
+          <Link href="/quiz" className="btn-primary !px-5 !py-2.5 !text-sm">
             Bezpłatna Konsultacja
           </Link>
         </div>
@@ -71,7 +70,7 @@ export function Navbar() {
               </li>
             ))}
           </ul>
-          <Link href="/konsultacja" onClick={() => setOpen(false)} className="btn-primary mt-4 w-full">
+          <Link href="/quiz" onClick={() => setOpen(false)} className="btn-primary mt-4 w-full">
             Bezpłatna Konsultacja
           </Link>
         </div>

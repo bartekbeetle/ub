@@ -41,22 +41,22 @@ export function metaDescription(text: string, max = 158): string {
  * dostawało jeden i ten sam meta description (duplikat = Google ignoruje i pisze snippet sam).
  * Guardrail ceny: NIE piszemy „0 zł" ani „darmowe" — przy dofinansowaniu 100% podajemy
  * sam procent, bez kwoty dopłaty.
+ *
+ * 🔴 13.09.2026: ŻADNEJ kwoty w złotych ani nazwiska trenerki. Meta description trafia
+ * widocznie do snippetu w Google — to publiczna witryna, nie dane strukturalne — więc
+ * podlega tej samej decyzji właściciela co reszta UI: chowamy ceny i tożsamość trenerek
+ * przed startem kampanii. Parametr `trainerName` zostaje w sygnaturze na wypadek odwrócenia
+ * tej decyzji, ale świadomie nieużywany.
  */
-export function courseMetaDescription(course: Course, trainerName?: string | null): string {
-  const priceAfter = Math.round(course.price * (1 - course.subsidyPercent / 100));
+export function courseMetaDescription(course: Course, _trainerName?: string | null): string {
   // Miasto po przecinku, nie „w {miasto}" — nazwy miast wymagałyby odmiany
   // przez przypadki („w Katowicach", nie „w Katowice"), a tego z bazy nie wyliczymy.
   const base = [
     `${course.title}${course.city ? `, ${course.city}` : ""} — dofinansowanie do ${course.subsidyPercent}% z BUR.`,
-    priceAfter > 0
-      ? `Dopłacasz ${priceAfter} zł zamiast ${course.price} zł.`
-      : `Wysokość dopłaty ustalasz z operatorem dofinansowania.`,
+    `Sprawdź swoje dofinansowanie w bezpłatnym formularzu.`,
     `${course.durationHours} h praktyki.`,
   ].join(" ");
-  // Trenerkę dopisujemy tylko wtedy, gdy zmieści się CAŁA — ucięte nazwisko
-  // w snippetcie wygląda na błąd strony, a nie na skrót.
-  const withTrainer = trainerName ? `${base} Prowadzi ${trainerName}.` : base;
-  return metaDescription(withTrainer.length <= 158 ? withTrainer : base);
+  return metaDescription(base);
 }
 
 /**
@@ -195,7 +195,10 @@ export function courseJsonLd(course: Course, trainerName?: string | null) {
       courseMode: schemaCourseMode(course.mode),
       courseWorkload: `PT${course.durationHours}H`,
       inLanguage: "pl-PL",
-      ...(trainerName ? { instructor: { "@type": "Person", name: trainerName } } : {}),
+      // 🔴 `instructor` USUNIĘTY 13.09.2026. Chowamy trenerki przed startem kampanii — a dane
+      // strukturalne są publiczne i czytane przez Google, więc nazwisko w JSON-LD wyciekałoby
+      // dokładnie to, co zdjęliśmy z widocznej strony. Parametr zostaje w sygnaturze na wypadek
+      // odwrócenia decyzji, ale nie jest emitowany.
       ...(course.city
         ? {
             location: {
@@ -206,25 +209,30 @@ export function courseJsonLd(course: Course, trainerName?: string | null) {
           }
         : {}),
       ...(course.nextDate ? { startDate: course.nextDate } : {}),
-      offers: {
-        "@type": "Offer",
-        price: course.price,
-        priceCurrency: "PLN",
-        category: "Paid",
-        availability: "https://schema.org/InStock",
-        url,
-      },
+      offers: COURSE_OFFER(url),
     },
-    offers: {
-      "@type": "Offer",
-      price: course.price,
-      priceCurrency: "PLN",
-      category: "Paid",
-      availability: "https://schema.org/InStock",
-      url,
-    },
+    offers: COURSE_OFFER(url),
   };
 }
+
+/**
+ * Oferta bez ceny — świadomie.
+ *
+ * Od 13.09.2026 nie pokazujemy cen kursów nigdzie w serwisie. Zostawienie `price` w JSON-LD
+ * dawałoby znacznik NIEZGODNY z widoczną treścią, a to Google traktuje jako błąd jakości
+ * (a nie jako sprytne obejście) — i naraża na ręczne działanie. Schema.org dopuszcza `Offer`
+ * bez ceny, więc oddajemy dostępność i adres, a kwotę pomijamy.
+ *
+ * Koszt tej decyzji: kurs może wypaść z wyników rozszerzonych Google, które dla typu `Course`
+ * lubią mieć cenę. Przyjęte świadomie — spójność z polityką „bez cen" jest ważniejsza niż
+ * rich result, a ruch na start i tak jedzie z płatnych reklam, nie z SEO.
+ */
+const COURSE_OFFER = (url: string) => ({
+  "@type": "Offer",
+  category: "Paid",
+  availability: "https://schema.org/InStock",
+  url,
+});
 
 /**
  * UWAGA: świadomie BEZ `aggregateRating`. Oceny trenerek pochodzą z ich wizytówek Google,
