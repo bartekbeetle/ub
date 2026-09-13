@@ -130,6 +130,105 @@ const PROSPECTS: SeedProspect[] = [
       "niepodpisana — dlatego auto-przydział leadów w katalogu zostaje wyłączony.",
     trainerSlug: "weronika-kachel",
   },
+  {
+    name: "ZDZ — Centrum Kształcenia w Kaliszu",
+    legalName: "Zakład Doskonalenia Zawodowego w Poznaniu",
+    nip: "7770001720",
+    krs: "0000101221",
+    city: "Kalisz",
+    voivodeship: "wielkopolskie",
+    categories: [
+      "Stylizacja paznokci",
+      "Manicure & Pedicure",
+      "Stylizacja rzęs",
+      "Kosmetologia",
+      "Inne",
+    ],
+    phone: "787 010 733",
+    email: "zdz@zdz.kalisz.pl",
+    status: "do_kontaktu",
+    priority: "wysoki",
+    source: "reczny",
+    burSegment: "A",
+    burProviderId: "7392",
+    burServicesCompleted: 1237,
+    burServicesActive: 90,
+    burRatingX10: 47,
+    burReviewCount: 5567,
+    dossierPath: "Zasoby/uniwersytet-beauty/trenerki/zdz-poznan.md",
+    researchNotes:
+      "Dane z karty dostawcy BUR (PARP), weryfikacja 13.09.2026. NAJWIĘKSZY dostawca w naszej bazie — " +
+      "1237 usług zrealizowanych wobec 112 u BIAR i 106 u Only Beauty. Uczy stylizacji paznokci " +
+      "(hybryda, żel, Acrygel, tytan) w Kaliszu, czyli w kategorii i województwie leadów czekających " +
+      "w panelu.\n\n" +
+      "ROZWIĄZANA PUŁAPKA NAZW: „ZDZ Kalisz” i „ZDZ Konin” to NIE są osobne podmioty. Oba to Centra " +
+      "Kształcenia jednej osoby prawnej — Zakładu Doskonalenia Zawodowego w Poznaniu (NIP 7770001720, " +
+      "KRS 0000101221). Potwierdzone tożsamością NIP i REGON (000512421) na stronie ZDZ Kalisz " +
+      "i na karcie BUR. Karta BUR id=15082 to ZDZ TORUŃ (NIP 8790169015) — inny podmiot, odrzucony.\n\n" +
+      "DŹWIGNIA: jedna umowa pokrywa pięć miast — Poznań, Kalisz, Konin, Leszno, Piła.\n\n" +
+      "UWAGA przed rozmową: (1) nie znamy ceny kursu paznokci — pytanie nr 1; (2) nie potwierdzono, " +
+      "czy któraś z 90 aktywnych usług BUR to paznokcie w Kaliszu (karta usługi wymaga logowania " +
+      "Profilem Zaufanym); (3) to instytucja z własnym działem naboru, nie solowa trenerka — " +
+      "decyzja nie zapadnie w jednej rozmowie; (4) KOLIZJA: centrala w Poznaniu też uczy paznokci, " +
+      "czyli zderza się z Only Beauty. Kalisz i Konin są wolne.",
+  },
+  {
+    name: "SNH Magdalena Kaźmierczak-Polowczyk",
+    nip: "8272188298",
+    city: "Kalisz",
+    voivodeship: "wielkopolskie",
+    categories: ["Stylizacja rzęs", "Stylizacja brwi", "Fryzjerstwo", "Inne"],
+    phone: "601 458 848",
+    email: "snhkazmierczak@gmail.com",
+    status: "do_kontaktu",
+    priority: "sredni",
+    source: "reczny",
+    burSegment: "A",
+    burProviderId: "15618",
+    burServicesCompleted: 577,
+    burServicesActive: 5,
+    burRatingX10: 49,
+    burReviewCount: 6343,
+    dossierPath: "Zasoby/uniwersytet-beauty/trenerki/snh-kalisz.md",
+    researchNotes:
+      "Dane z karty dostawcy BUR (PARP), weryfikacja 13.09.2026. Najwyżej oceniany podmiot w bazie — " +
+      "4,9 przy 6343 ocenach. Wcześniejsza hipoteza („RSPO 482089 → prawdopodobnie segment A”) " +
+      "potwierdzona wpisem w rejestrze.\n\n" +
+      "NIE UCZY PAZNOKCI — sprawdzone na stronie. Zakres beauty: stylizacja oka (henna pudrowa, " +
+      "lifting i laminacja rzęs, botoks rzęs, laminacja brwi) oraz fryzjerstwo i barbering. " +
+      "Dlatego NIE jest adresatem leadów paznokciowych leżących dziś w panelu — czeka na leada " +
+      "rzęsy/brwi z rejonu kaliskiego.\n\n" +
+      "UWAGA: tylko 5 usług aktywnych wobec 577 zrealizowanych — kursantka może trafić na przerwę " +
+      "między naborami. Ceny szkoleń beauty nieustalone (kwota 1120 zł netto z wyszukiwarki dotyczy " +
+      "nieznanej usługi, a SNH szkoli też ze sprzedaży i zarządzania — nie przenoszę jej na beauty). " +
+      "KOLIZJA do rozstrzygnięcia, gdy podpiszemy obu: ZDZ Kalisz też uczy rzęs.",
+  },
+  {
+    name: "Julia Nessa",
+    nip: "9721250453",
+    city: "Poznań",
+    voivodeship: "wielkopolskie",
+    categories: ["Stylizacja paznokci", "Manicure & Pedicure"],
+    phone: "515 238 216",
+    status: "parking",
+    priority: "niski",
+    source: "reczny",
+    burSegment: "B",
+    researchNotes:
+      "Weryfikacja 13.09.2026. SEGMENT B — brak śladu w rejestrze BUR, a strona szkoleniowa " +
+      "(szkolenia.julianessa.pl) nie wspomina o dofinansowaniu, BUR, KFS ani PARP ani razu. " +
+      "Dziś leada nie dostaje. Nie kasować — to rynek etapu „wpis do BUR jako aktywo wynajmowane”. " +
+      "Mocna wizytówka: 4,9 przy 269 opiniach GMB, REGON 302783563, Pogodna 16, 60-275 Poznań.\n\n" +
+      "🔴 WARTOŚĆ TEGO WPISU TO CENNIK, nie sam podmiot. To pierwszy publiczny cennik kursów " +
+      "paznokciowych w Wielkopolsce, jaki mamy: grupowo manicure hybrydowy 600 zł, zdobienia 550 zł, " +
+      "manicure kombinowany 750 zł, doszkolenie żelowe 850 zł, 5 kształtów 1000 zł, podstawy " +
+      "przedłużania żelem 1200 zł. Indywidualnie 1200–2500 zł.\n\n" +
+      "KONSEKWENCJA DLA MODELU: przy tych cenach prowizja 500 zł za zapis to 42–91% ceny kursu — " +
+      "nie spina się. ZASTRZEŻENIE: to cennik rynku otwartego u podmiotu BEZ wpisu do BUR; " +
+      "szkolenia z dofinansowaniem bywają wyceniane 2–4× wyżej i wtedy 500 zł to 5–10%. " +
+      "Cen u Only Beauty, ZDZ i BIAR nadal nie znamy. Wniosek operacyjny: „ile kosztuje szkolenie” " +
+      "musi być pytaniem nr 1 w każdej rozmowie, ZANIM padnie kwota 500 zł.",
+  },
 ];
 
 async function main() {
