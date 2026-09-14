@@ -15,7 +15,10 @@ export const dynamic = "force-dynamic";
 // a promowanie ich w sitemapie wysyłałoby Google mieszany sygnał (redirect + sitemap razem).
 // `/quiz` jest w sitemapie mimo `robots: noindex` na stronie — Google i tak jej nie zaindeksuje
 // (noindex wygrywa), a obecność w sitemapie nie szkodzi; zostaje więc dla porządku listy tras.
-const MAIN_PAGES = ["", "/kursy", "/dofinansowania", "/blog", "/kontakt", "/konsultacja", "/quiz", "/o-nas"];
+// `/quiz` USUNIĘTY z sitemapy 14.09: ma `robots: noindex`, więc zgłaszanie go Google
+// było sprzecznością, którą Search Console raportuje jako „Strona z noindex w mapie witryny".
+// `/poradnik` wchodzi — to realna treść pod frazy o dofinansowaniu, indeksowalna.
+const MAIN_PAGES = ["", "/kursy", "/dofinansowania", "/blog", "/kontakt", "/konsultacja", "/poradnik", "/o-nas"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const db = await getDb();
