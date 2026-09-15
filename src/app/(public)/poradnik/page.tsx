@@ -53,18 +53,22 @@ export default function PoradnikPage() {
           <h1 className="mt-3 max-w-2xl text-3xl font-bold leading-tight md:text-4xl">
             Jak zacząć w branży beauty i sprawdzić, czy przysługuje Ci dofinansowanie
           </h1>
+          {/* Bez „zamiast obietnic” (framing porównawczy) i bez „trzydzieści stron” —
+              to była liczba wzięta z powietrza, poradnik ma 7-8 stron. Mówimy, co jest. */}
           <p className="mt-4 max-w-2xl text-lg text-muted">
-            Trzydzieści stron konkretów zamiast obietnic. Jak wygląda szkolenie od środka,
-            jak wejść do zawodu i jak działa dofinansowanie z Bazy Usług Rozwojowych.
+            Cztery rozdziały: jak wygląda szkolenie od środka, jak wejść do zawodu,
+            jak działa dofinansowanie z Bazy Usług Rozwojowych i o co zapytać akademię
+            przed zapisem.
           </p>
 
-          {/* 🔴 Kluczowe rozróżnienie wobec konkurencji: to są środki publiczne z rejestru,
-              a nie rabat handlowy sprzedawcy kursów. Klientka ma to móc SPRAWDZIĆ sama. */}
+          {/* Komunikat pozytywny, o nas — nie porównawczy. Decyzja Bartka 15.09:
+              „nie skupiamy się na innych tylko na sobie, to ma być prosta i jasna komunikacja".
+              Link do rejestru PARP zostaje, bo to zaproszenie do weryfikacji, nie przytyk. */}
           <div className="mt-6 rounded-[12px] border border-sand-200 bg-sand-50 p-5">
             <p className="text-sm leading-relaxed text-ink">
-              <strong>To nie jest rabat sprzedawcy kursów.</strong> Dofinansowanie z BUR pochodzi
-              z funduszy europejskich rozdzielanych przez operatorów regionalnych, a każdą
-              akademię i każdą usługę możesz sprawdzić w publicznym rejestrze PARP:{" "}
+              <strong>Dofinansowanie z BUR to środki publiczne z funduszy europejskich</strong>,
+              rozdzielane przez operatorów w Twoim regionie. Każdą akademię i każdy kurs
+              sprawdzisz w publicznym rejestrze PARP:{" "}
               <a
                 href="https://uslugirozwojowe.parp.gov.pl"
                 target="_blank"
