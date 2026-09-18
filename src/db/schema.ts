@@ -712,21 +712,72 @@ export const settings = pgTable("settings", {
   leadEmailTemplate: text("lead_email_template").notNull().default(
     "Dzień dobry {{trenerka}},\n\nmamy dla Ciebie nową kandydatkę na szkolenie:\n\nImię i nazwisko: {{imie}}\nTelefon: {{telefon}}\nEmail: {{email}}\nKategoria: {{kategoria}}\nWojewództwo: {{wojewodztwo}}\nStatus zawodowy: {{status_zawodowy}}\n\nProsimy o kontakt z kandydatką w ciągu 24h.\n\nPozdrawiamy,\nZespół Uniwersytet Beauty"
   ),
+
+  /**
+   * Potwierdzenie dla KURSANTKI zaraz po zgłoszeniu. Do 18.09.2026 nie istniało:
+   * kobieta zostawiała telefon, zgadzała się na kontakt i nie dostawała nic — cisza
+   * aż do telefonu z akademii (albo w ogóle, gdy akademii w jej regionie nie mieliśmy).
+   *
+   * ⚠️ Guardrail ceny (voice.md): NIGDY „kurs za 0 zł". Dofinansowanie zawsze z warunkiem
+   * („do 90%, zależnie od województwa i naboru"), bo nabory i progi realnie się różnią.
+   * To jest mail TRANSAKCYJNY (obsługa zgłoszenia), nie marketingowy — nie wymaga zgody
+   * marketingowej i nie wolno mu sprzedawać niczego dodatkowego.
+   */
+  confirmEmailSubject: text("confirm_email_subject")
+    .notNull()
+    .default("Mamy Twoje zgłoszenie — {{kategoria}}"),
+  confirmEmailTemplate: text("confirm_email_template").notNull().default(
+    "Dzień dobry {{imie}},\n\npotwierdzamy, że otrzymaliśmy Twoje zgłoszenie na szkolenie z zakresu: {{kategoria}} ({{wojewodztwo}}).\n\nCo dzieje się dalej:\n\n1. Dobieramy akademię w Twoim regionie, która prowadzi ten kurs i ma wpis do Bazy Usług Rozwojowych.\n2. Osoba z akademii kontaktuje się z Tobą telefonicznie — zwykle w ciągu 1-2 dni roboczych.\n3. Podczas rozmowy ustalacie termin, zakres szkolenia i to, jakie dofinansowanie możesz uzyskać.\n\nO dofinansowaniu: wsparcie z Bazy Usług Rozwojowych sięga 90% ceny szkolenia, a jego wysokość zależy od województwa, aktualnego naboru i Twojej sytuacji zawodowej. Dokładną kwotę poznasz po weryfikacji — akademia przeprowadzi Cię przez formalności.\n\nJeśli zgłoszenie było pomyłką albo chcesz wycofać zgodę na kontakt, po prostu odpisz na tę wiadomość.\n\nPozdrawiamy,\nZespół Uniwersytet Beauty\nbiuro@uniwersytetbeauty.pl · uniwersytetbeauty.pl"
+  ),
+
+  /**
+   * Mail do KURSANTKI w chwili, gdy akademia oznaczy ją jako zapisaną. Domyka pętlę
+   * i mówi wprost, że od tego momentu organizacja jest po stronie akademii — bez tego
+   * kursantka wraca z pytaniami o termin do nas, a my ich nie znamy.
+   * Zawiera też prośbę o sygnał, gdyby szkolenie nie doszło do skutku: to jedyny moment,
+   * w którym dowiemy się o problemie, zanim wystawimy trenerce fakturę.
+   */
+  signupEmailSubject: text("signup_email_subject")
+    .notNull()
+    .default("Potwierdzenie zapisu na szkolenie — {{kategoria}}"),
+  signupEmailTemplate: text("signup_email_template").notNull().default(
+    "Dzień dobry {{imie}},\n\nakademia {{trenerka}} potwierdziła Twój zapis na szkolenie z zakresu: {{kategoria}}.\n\nOd tej chwili wszystkie sprawy organizacyjne — termin, miejsce, materiały i formalności dofinansowania — ustalasz bezpośrednio z akademią. To ona prowadzi szkolenie i wystawia dokumenty.\n\nGdyby coś poszło nie tak albo szkolenie nie doszło do skutku, daj nam znać na biuro@uniwersytetbeauty.pl. Chcemy o tym wiedzieć.\n\nPowodzenia na kursie,\nZespół Uniwersytet Beauty"
+  ),
 });
 
 // ===== KOLEJKA EMAIL =====
 
-export const emailQueue = pgTable("email_queue", {
-  id: serial("id").primaryKey(),
-  toEmail: varchar("to_email", { length: 255 }).notNull(),
-  subject: text("subject").notNull(),
-  body: text("body").notNull(),
-  status: emailStatusEnum("status").notNull().default("w_kolejce"),
-  error: text("error"),
-  leadId: integer("lead_id").references(() => leads.id, { onDelete: "set null" }),
-  sentAt: timestamp("sent_at", { withTimezone: true }),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+export const emailQueue = pgTable(
+  "email_queue",
+  {
+    id: serial("id").primaryKey(),
+    toEmail: varchar("to_email", { length: 255 }).notNull(),
+    subject: text("subject").notNull(),
+    body: text("body").notNull(),
+    status: emailStatusEnum("status").notNull().default("w_kolejce"),
+    error: text("error"),
+    leadId: integer("lead_id").references(() => leads.id, { onDelete: "set null" }),
+    /**
+     * Rodzaj maila — patrz EMAIL_KIND w `@/lib/email`. Służy do DWÓCH rzeczy:
+     * (a) idempotencji: status „zapisana" da się ustawić z trzech różnych miejsc w panelu
+     *     (trenerka, admin-przydział, admin-lead) i bez tego pola każde kliknięcie wysyłałoby
+     *     kursantce kolejnego maila z gratulacjami;
+     * (b) diagnostyki: w kolejce widać, czego dokładnie nie udało się wysłać.
+     */
+    kind: varchar("kind", { length: 40 }).notNull().default("inne"),
+    /**
+     * Ile razy worker próbował wysłać. Bez licznika jeden trwale błędny adres
+     * blokowałby kolejkę w nieskończonej pętli ponawiania.
+     */
+    attempts: integer("attempts").notNull().default(0),
+    sentAt: timestamp("sent_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("email_queue_status_idx").on(t.status),
+    index("email_queue_lead_kind_idx").on(t.leadId, t.kind),
+  ]
+);
 
 // ===== RELACJE =====
 

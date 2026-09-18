@@ -22,6 +22,10 @@ export function SettingsForm({ settings }: { settings: Settings }) {
         notifyEmail: String(fd.get("notifyEmail")),
         leadEmailSubject: String(fd.get("leadEmailSubject")),
         leadEmailTemplate: String(fd.get("leadEmailTemplate")),
+        confirmEmailSubject: String(fd.get("confirmEmailSubject")),
+        confirmEmailTemplate: String(fd.get("confirmEmailTemplate")),
+        signupEmailSubject: String(fd.get("signupEmailSubject")),
+        signupEmailTemplate: String(fd.get("signupEmailTemplate")),
       }),
     });
     setState(res.ok ? "saved" : "error");

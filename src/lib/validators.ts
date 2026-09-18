@@ -200,6 +200,11 @@ export const settingsSchema = z.object({
   notifyEmail: z.string().trim().email().max(255),
   leadEmailSubject: z.string().trim().min(3).max(300),
   leadEmailTemplate: z.string().trim().min(10).max(10000),
+  // Maile do kursantki: potwierdzenie zgłoszenia i potwierdzenie zapisu.
+  confirmEmailSubject: z.string().trim().min(3).max(300),
+  confirmEmailTemplate: z.string().trim().min(10).max(10000),
+  signupEmailSubject: z.string().trim().min(3).max(300),
+  signupEmailTemplate: z.string().trim().min(10).max(10000),
 });
 
 // ===== CRM TRENEREK =====

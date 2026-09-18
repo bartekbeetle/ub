@@ -3,6 +3,7 @@ import { eq, and, ne } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { logAudit, actorLabel } from "@/lib/audit";
+import { onLeadSigned } from "@/lib/lead-events";
 import { leadStatusUpdateSchema } from "@/lib/validators";
 import { z } from "zod";
 
@@ -44,6 +45,8 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
   if (!lead) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
 
   const data = parsed.data;
+  // Patrz `@/lib/lead-events` — maile wysyłamy raz, po zapisaniu zmian.
+  let signedLeadId: number | null = null;
   const update: Partial<typeof schema.leads.$inferInsert> = {};
   if ("notes" in data && data.notes !== undefined) update.notes = data.notes;
 
@@ -67,6 +70,7 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
           })
           .where(eq(schema.leadAssignments.id, assignment.id));
       }
+      signedLeadId = leadId;
     }
 
     await logAudit({
@@ -81,6 +85,11 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
   }
 
   const [updated] = await db.update(schema.leads).set(update).where(eq(schema.leads.id, leadId)).returning();
+
+  if (signedLeadId !== null) {
+    await onLeadSigned({ leadId: signedLeadId, actor: actorLabel(user) });
+  }
+
   return NextResponse.json(updated);
 }
 

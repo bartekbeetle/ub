@@ -96,6 +96,8 @@ export async function distributeLead(lead: Lead): Promise<{ assignedTo: Trainer[
         subject: renderTemplate(settings.leadEmailSubject, vars),
         body: renderTemplate(settings.leadEmailTemplate, vars),
         leadId: lead.id,
+        // Bez `kind` — ten sam lead trafia świadomie do kilku trenerek (multi-sell),
+        // więc idempotencja per (lead, kind) zablokowałaby drugie powiadomienie.
       });
     }
 

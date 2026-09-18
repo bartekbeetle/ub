@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { logAudit, actorLabel } from "@/lib/audit";
+import { onLeadSigned } from "@/lib/lead-events";
 import { z } from "zod";
 
 export const runtime = "nodejs";
@@ -36,6 +37,9 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
   const row = rows[0];
   if (!row) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
 
+  // Patrz komentarz w `@/lib/lead-events`: maile lecą PO zapisie przydziału, jednym wspólnym
+  // wywołaniem, a przed duplikatem (admin i trenerka klikają ten sam zapis) chroni `kind`.
+  let signedLeadId: number | null = null;
   const update: Partial<typeof schema.leadAssignments.$inferInsert> = {};
   const { status, rejectionReason, billingStatus } = parsed.data;
 
@@ -55,6 +59,7 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
         entityId: row.assignment.leadId,
         details: { to: "zapisana", via: `assignment:${assignmentId}` },
       });
+      signedLeadId = row.assignment.leadId;
     }
     await logAudit({
       actor: actorLabel(user),
@@ -70,5 +75,14 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
     .set(update)
     .where(eq(schema.leadAssignments.id, assignmentId))
     .returning();
+
+  if (signedLeadId !== null) {
+    await onLeadSigned({
+      leadId: signedLeadId,
+      trainerName: row.trainer.name,
+      actor: actorLabel(user),
+    });
+  }
+
   return NextResponse.json(updated);
 }

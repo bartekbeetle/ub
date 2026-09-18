@@ -3,6 +3,7 @@ import { getDb, schema } from "@/db";
 import { leadSchema } from "@/lib/validators";
 import { rateLimit, getClientIp } from "@/lib/ratelimit";
 import { distributeLead } from "@/lib/matching";
+import { sendLeadConfirmation } from "@/lib/lead-events";
 import { logAudit } from "@/lib/audit";
 import { CONSENT_VERSION } from "@/lib/constants";
 
@@ -89,6 +90,12 @@ export async function POST(req: Request) {
   } catch (err) {
     console.error("[lead] Nie udało się utworzyć zadania researchu:", err);
   }
+
+  // Potwierdzenie dla kursantki. Leci PRZED dystrybucją, bo jest niezależne od tego,
+  // czy znaleźliśmy jej akademię — a najczęściej nie znajdujemy (6 z 13 leadów w panelu
+  // nie ma dziś adresata). Właśnie wtedy cisza po zgłoszeniu boli najbardziej.
+  // Funkcja łapie własne błędy, więc nie potrzebuje try/catch.
+  await sendLeadConfirmation(lead);
 
   // automatyczna dystrybucja (nie blokuje odpowiedzi przy błędzie)
   try {

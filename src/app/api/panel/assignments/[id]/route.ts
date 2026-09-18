@@ -3,6 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireTrainer } from "@/lib/auth";
 import { logAudit, actorLabel } from "@/lib/audit";
+import { onLeadSigned } from "@/lib/lead-events";
 import { z } from "zod";
 
 export const runtime = "nodejs";
@@ -45,6 +46,9 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
     return NextResponse.json({ error: "Podaj powód odrzucenia." }, { status: 400 });
   }
 
+  // Ustawiane tylko przy przejściu na „zapisana" — maile wysyłamy PO zapisie przydziału,
+  // bo `onLeadSigned` czyta z bazy przydział o tym statusie (nazwa akademii, kwota).
+  let signedLeadId: number | null = null;
   const update: Partial<typeof schema.leadAssignments.$inferInsert> = {};
   if (status !== row.assignment.status) {
     update.status = status;
@@ -61,6 +65,7 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
         entityId: row.assignment.leadId,
         details: { to: "zapisana", via: `assignment:${assignmentId}` },
       });
+      signedLeadId = row.assignment.leadId;
     }
     await logAudit({
       actor: actorLabel(user),
@@ -76,5 +81,14 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
     .set(update)
     .where(and(eq(schema.leadAssignments.id, assignmentId), eq(schema.leadAssignments.trainerId, user.trainerId)))
     .returning();
+
+  if (signedLeadId !== null) {
+    await onLeadSigned({
+      leadId: signedLeadId,
+      trainerName: row.trainer.name,
+      actor: actorLabel(user),
+    });
+  }
+
   return NextResponse.json(updated);
 }
