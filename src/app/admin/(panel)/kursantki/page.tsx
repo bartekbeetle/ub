@@ -355,7 +355,20 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
       <p className="mt-4 text-sm text-muted">
         W widoku: <strong className="text-ink-soft">{liczbaLeadow}</strong> leadów ·{" "}
         <strong className="text-ink-soft">{liczbaZgloszen}</strong> zgłoszeń ·{" "}
-        <strong className="text-ink-soft">{liczbaPorzuconych}</strong> porzuconych aplikacji
+        {pokazPorzucone ? (
+          <>
+            <strong className="text-ink-soft">{liczbaPorzuconych}</strong> porzuconych aplikacji
+          </>
+        ) : lejek.porzuconeRazem > 0 ? (
+          <>
+            porzucone aplikacje ukryte —{" "}
+            <Link href="/admin/kursantki?etap=porzucone" className="font-semibold text-sand-700 underline">
+              pokaż {lejek.porzuconeRazem}
+            </Link>
+          </>
+        ) : (
+          <>brak porzuconych aplikacji</>
+        )}
         {rows.length === MAX_ROWS ? " (limit 300 — zawęź filtry)" : ""}
       </p>
 
