@@ -211,6 +211,6 @@ export async function flushEmailQueue(
   return { processed: pending.length, sent, failed, skipped: false, skippedTooOld };
 }
 
-export function renderTemplate(template: string, vars: Record<string, string>): string {
-  return template.replace(/\{\{(\w+)\}\}/g, (_, key) => vars[key] ?? "");
-}
+// Implementacja mieszka w `./template` (bez `server-only`), żeby dało się ją odpalić
+// ze skryptów i testów. Re-eksport zachowuje istniejące importy z `@/lib/email`.
+export { renderTemplate } from "./template";

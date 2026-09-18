@@ -71,6 +71,13 @@
       "when": 1789730906871,
       "tag": "0009_glorious_mojo",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1789731761696,
+      "tag": "0010_closed_darwin",
+      "breakpoints": true
     }
   ]
 }

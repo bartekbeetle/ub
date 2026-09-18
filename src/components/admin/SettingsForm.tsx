@@ -78,7 +78,11 @@ export function SettingsForm({ settings }: { settings: Settings }) {
       <div>
         <label className="label" htmlFor="s-confirm-template">
           Treść: potwierdzenie zgłoszenia (wysyłane od razu po wypełnieniu formularza) — zmienne:{" "}
-          {"{{imie}} {{kategoria}} {{wojewodztwo}} {{miasto}} {{telefon}} {{email}} {{status_zawodowy}}"}
+          {"{{imie_wolacz}} {{imie}} {{kategoria}} {{wojewodztwo}} {{miasto}} {{telefon}} {{email}} {{status_zawodowy}}"}
+          <span className="mt-1 block font-normal text-slate-500">
+            Do powitania używaj {"{{imie_wolacz}}"} — daje „Dzień dobry Gabrielo". {"{{imie}}"} to pełne
+            imię i nazwisko z formularza, więc po „Dzień dobry" wyszłoby „Gabriela Nowak".
+          </span>
         </label>
         <textarea id="s-confirm-template" name="confirmEmailTemplate" rows={12} defaultValue={settings.confirmEmailTemplate} className="input resize-y font-mono text-sm" />
       </div>
@@ -90,7 +94,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
       <div>
         <label className="label" htmlFor="s-signup-template">
           Treść: potwierdzenie zapisu (wysyłane, gdy akademia oznaczy kursantkę jako zapisaną) — zmienne:{" "}
-          {"{{imie}} {{trenerka}} {{kategoria}} {{wojewodztwo}}"}
+          {"{{imie_wolacz}} {{imie}} {{trenerka}} {{kategoria}} {{wojewodztwo}}"}
         </label>
         <textarea id="s-signup-template" name="signupEmailTemplate" rows={10} defaultValue={settings.signupEmailTemplate} className="input resize-y font-mono text-sm" />
       </div>

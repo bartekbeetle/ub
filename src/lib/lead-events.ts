@@ -2,6 +2,7 @@ import "server-only";
 import { and, desc, eq, inArray } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { EMAIL_KIND, renderTemplate, sendOrQueueEmail } from "./email";
+import { greetingName } from "./template";
 import { getSettings } from "./settings";
 import { voivodeshipName } from "./constants";
 
@@ -22,7 +23,11 @@ type LeadRow = typeof schema.leads.$inferSelect;
 
 function leadVars(lead: LeadRow, extra: Record<string, string> = {}) {
   return {
+    // `imie` to pełne „imię i nazwisko" — tak działa pole w formularzu i tego oczekuje
+    // istniejący szablon maila do trenerki (tam nazwisko jest potrzebne).
     imie: lead.name,
+    // Do powitania w mailu DO KURSANTKI: sam pierwszy człon, w wołaczu.
+    imie_wolacz: greetingName(lead.name),
     telefon: lead.phone,
     email: lead.email,
     kategoria: lead.category,
