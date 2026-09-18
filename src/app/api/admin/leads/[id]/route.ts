@@ -83,3 +83,57 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
   const [updated] = await db.update(schema.leads).set(update).where(eq(schema.leads.id, leadId)).returning();
   return NextResponse.json(updated);
 }
+
+/**
+ * Trwałe usunięcie leada z bazy — dla rekordów testowych i śmieciowych, które zawyżają
+ * liczniki i psują pomiar konwersji.
+ *
+ * To NIE jest ścieżka RODO. Żądanie „prawa do bycia zapomnianą" obsługuje `POST .../anonymize`,
+ * które zostawia wiersz (historia przydziałów i rozliczeń musi przeżyć), czyszcząc dane osobowe.
+ * Tutaj wiersz znika razem z przydziałami — używać tylko wtedy, gdy rekord nigdy nie był realną
+ * kursantką.
+ *
+ * Ślad po usunięciu zostaje w `audit_log` (kto, kiedy, jaki to był rekord) — zapisywany PRZED
+ * kasowaniem, żeby nie zniknął razem z wierszem.
+ */
+export async function DELETE(_req: Request, { params }: { params: Params }) {
+  const user = await requireAdmin();
+  if (!user) return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
+  const { id } = await params;
+  const leadId = Number(id);
+  if (!Number.isInteger(leadId)) return NextResponse.json({ error: "Nieprawidłowe ID." }, { status: 400 });
+
+  const db = await getDb();
+  const rows = await db.select().from(schema.leads).where(eq(schema.leads.id, leadId)).limit(1);
+  const lead = rows[0];
+  if (!lead) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
+
+  // Ślad idzie do audytu ZANIM wiersz zniknie.
+  await logAudit({
+    actor: actorLabel(user),
+    action: "usuniecie_leada",
+    entityType: "lead",
+    entityId: leadId,
+    details: {
+      name: lead.name,
+      source: lead.source,
+      status: lead.status,
+      category: lead.category,
+      voivodeship: lead.voivodeship,
+      createdAt: lead.createdAt?.toISOString?.() ?? null,
+    },
+  });
+
+  // `quiz_sessions.lead_id` nie ma ON DELETE — bez rozbrojenia baza odrzuci kasowanie
+  // każdego leada, który przyszedł z quizu (czyli dziś: większości).
+  await db
+    .update(schema.quizSessions)
+    .set({ leadId: null })
+    .where(eq(schema.quizSessions.leadId, leadId));
+
+  // Reszta powiązań ma ON DELETE w schemacie: przydziały kaskadują,
+  // zgłoszenia / prospekty / rozmowy / zadania researchu dostają NULL.
+  await db.delete(schema.leads).where(eq(schema.leads.id, leadId));
+
+  return NextResponse.json({ ok: true });
+}

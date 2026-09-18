@@ -5,6 +5,7 @@ import type { Lead, Submission } from "@/db/schema";
 import { RevealContact } from "@/components/admin/RevealContact";
 import { LeadStatusSelect } from "@/components/admin/LeadStatusSelect";
 import { SubmissionToggle } from "@/components/admin/SubmissionToggle";
+import { DeleteRecordButton } from "@/components/admin/DeleteRecordButton";
 import { formatDateTime, maskEmail, maskPhone } from "@/lib/utils";
 import {
   CATEGORIES,
@@ -419,6 +420,7 @@ function WierszLeada({
             <div><RevealContact masked={maskEmail(lead.email)} full={lead.email} /></div>
           </div>
         )}
+        <DeleteRecordButton id={lead.id} kind="lead" name={lead.name} />
       </td>
       <td className="px-4 py-3 text-xs text-muted">{SOURCE_LABELS[lead.source] ?? lead.source}</td>
       <td className="px-4 py-3">
@@ -460,6 +462,7 @@ function WierszZgloszenia({ submission }: { submission: Submission }) {
             <div className="text-xs italic text-muted">brak telefonu</div>
           )}
         </div>
+        <DeleteRecordButton id={submission.id} kind="zgloszenie" name={submission.name} />
       </td>
       <td className="px-4 py-3 text-xs text-muted">
         {SUBMISSION_TYPE_LABELS[submission.type] ?? submission.type}
