@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { eq } from "drizzle-orm";
-import { getDb, schema } from "@/db";
+import { getPublishedPosts } from "@/lib/public-cache";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
 import { BlogCta } from "@/components/BlogCta";
@@ -17,11 +16,9 @@ export const dynamic = "force-dynamic";
 type Params = Promise<{ slug: string }>;
 
 async function getPost(slug: string) {
-  const db = await getDb();
-  const rows = await db.select().from(schema.blogPosts).where(eq(schema.blogPosts.slug, slug)).limit(1);
-  const post = rows[0];
-  if (!post || post.status !== "opublikowane") return null;
-  return post;
+  // Lista jest cache'owana i zawiera tylko opublikowane — patrz public-cache.ts.
+  const posts = await getPublishedPosts();
+  return posts.find((p) => p.slug === slug) ?? null;
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {

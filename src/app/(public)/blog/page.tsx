@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { and, desc, eq, ilike, type SQL } from "drizzle-orm";
-import { getDb, schema } from "@/db";
+import { getPublishedPosts } from "@/lib/public-cache";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
 import { itemListJsonLd } from "@/lib/seo";
@@ -40,16 +39,11 @@ export default async function BlogPage({ searchParams }: { searchParams: Search 
   const q = typeof sp.q === "string" ? sp.q.trim().slice(0, 100) : "";
   const kat = typeof sp.kategoria === "string" && (BLOG_CATEGORIES as readonly string[]).includes(sp.kategoria) ? sp.kategoria : "";
 
-  const db = await getDb();
-  const conditions: SQL[] = [eq(schema.blogPosts.status, "opublikowane")];
-  if (q) conditions.push(ilike(schema.blogPosts.title, `%${q}%`));
-  if (kat) conditions.push(eq(schema.blogPosts.category, kat));
-
-  const posts = await db
-    .select()
-    .from(schema.blogPosts)
-    .where(and(...conditions))
-    .orderBy(desc(schema.blogPosts.publishedAt));
+  // Filtrowanie w pamięci nad cache'owaną listą (kilkanaście wpisów) — patrz public-cache.ts.
+  const qLower = q.toLowerCase();
+  const posts = (await getPublishedPosts()).filter(
+    (p) => (!qLower || p.title.toLowerCase().includes(qLower)) && (!kat || p.category === kat)
+  );
 
   const [featured, ...rest] = posts;
 

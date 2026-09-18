@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { eq } from "drizzle-orm";
-import { getDb, schema } from "@/db";
+import { getPublishedCoursesWithTrainers } from "@/lib/public-cache";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Quiz } from "@/components/Quiz";
 import { CATEGORIES, SITE_NAME } from "@/lib/constants";
@@ -37,13 +36,9 @@ type Search = { [key: string]: string | string[] | undefined };
 
 async function resolveCourse(slug: string | undefined) {
   if (!slug) return null;
-  const db = await getDb();
-  const rows = await db
-    .select({ id: schema.courses.id, category: schema.courses.category, voivodeship: schema.courses.voivodeship })
-    .from(schema.courses)
-    .where(eq(schema.courses.slug, slug))
-    .limit(1);
-  return rows[0] ?? null;
+  // Cache'owana lista opublikowanych — linki do quizu prowadzą tylko z opublikowanych kursów.
+  const rows = await getPublishedCoursesWithTrainers();
+  return rows.find((r) => r.course.slug === slug)?.course ?? null;
 }
 
 export default async function QuizPage({ searchParams }: { searchParams: Promise<Search> }) {

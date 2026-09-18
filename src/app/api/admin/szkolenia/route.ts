@@ -4,6 +4,8 @@ import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { logAudit, actorLabel } from "@/lib/audit";
 import { courseSchema } from "@/lib/validators";
+import { revalidateTag } from "next/cache";
+import { CACHE_TAGS } from "@/lib/public-cache";
 
 export const runtime = "nodejs";
 
@@ -39,6 +41,7 @@ export async function POST(req: Request) {
       })
       .returning();
     await logAudit({ actor: actorLabel(user), action: "szkolenie_utworzone", entityType: "course", entityId: created.id });
+    revalidateTag(CACHE_TAGS.courses);
     return NextResponse.json(created, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Slug już istnieje albo dane są nieprawidłowe." }, { status: 409 });

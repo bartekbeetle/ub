@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { and, desc, eq, ilike, or, type SQL } from "drizzle-orm";
-import { getDb, schema } from "@/db";
+import { getPublishedCoursesWithTrainers } from "@/lib/public-cache";
 import { CourseCard } from "@/components/CourseCard";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
@@ -60,28 +59,17 @@ export default async function KursyPage({ searchParams }: { searchParams: Promis
   const tryb = typeof sp.tryb === "string" && (MODES as readonly string[]).includes(sp.tryb) ? sp.tryb : "";
   const poziomy = asArray(sp.poziom).filter((p) => (LEVELS as readonly string[]).includes(p));
 
-  const db = await getDb();
-  const conditions: SQL[] = [eq(schema.courses.status, "opublikowane")];
-  if (woj) conditions.push(eq(schema.courses.voivodeship, woj));
-  if (kategorie.length) {
-    conditions.push(or(...kategorie.map((k) => eq(schema.courses.category, k)))!);
-  }
-  if (tryb) conditions.push(eq(schema.courses.mode, tryb));
-  if (poziomy.length) {
-    conditions.push(or(...poziomy.map((p) => eq(schema.courses.level, p)))!);
-  }
-  if (q) {
-    conditions.push(
-      or(ilike(schema.courses.title, `%${q}%`), ilike(schema.trainers.name, `%${q}%`))!
-    );
-  }
-
-  const rows = await db
-    .select({ course: schema.courses, trainer: schema.trainers })
-    .from(schema.courses)
-    .leftJoin(schema.trainers, eq(schema.courses.trainerId, schema.trainers.id))
-    .where(and(...conditions))
-    .orderBy(desc(schema.courses.createdAt));
+  // Filtrowanie w pamięci nad cache'owaną listą (kilkanaście kursów) — patrz public-cache.ts.
+  const qLower = q.toLowerCase();
+  const rows = (await getPublishedCoursesWithTrainers()).filter(({ course, trainer }) => {
+    if (woj && course.voivodeship !== woj) return false;
+    if (kategorie.length && !kategorie.includes(course.category)) return false;
+    if (tryb && course.mode !== tryb) return false;
+    if (poziomy.length && !poziomy.includes(course.level)) return false;
+    if (qLower && !course.title.toLowerCase().includes(qLower) && !(trainer?.name ?? "").toLowerCase().includes(qLower))
+      return false;
+    return true;
+  });
 
   const wojName = voivodeshipName(woj);
   const heading =

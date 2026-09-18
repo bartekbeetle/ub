@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { desc, eq } from "drizzle-orm";
-import { getDb, schema } from "@/db";
+import { getPublishedCoursesWithTrainers } from "@/lib/public-cache";
 import { CourseCard } from "@/components/CourseCard";
 import { IconGraduation, IconShield, IconUsers, IconAward, IconArrowRight, IconCheck } from "@/components/icons";
 import { JsonLd } from "@/components/JsonLd";
@@ -86,14 +85,7 @@ const WHY = [
 ];
 
 export default async function HomePage() {
-  const db = await getDb();
-  const featured = await db
-    .select({ course: schema.courses, trainer: schema.trainers })
-    .from(schema.courses)
-    .leftJoin(schema.trainers, eq(schema.courses.trainerId, schema.trainers.id))
-    .where(eq(schema.courses.status, "opublikowane"))
-    .orderBy(desc(schema.courses.createdAt))
-    .limit(3);
+  const featured = (await getPublishedCoursesWithTrainers()).slice(0, 3);
 
   return (
     <>

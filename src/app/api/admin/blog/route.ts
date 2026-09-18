@@ -4,6 +4,8 @@ import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { logAudit, actorLabel } from "@/lib/audit";
 import { blogPostSchema } from "@/lib/validators";
+import { revalidateTag } from "next/cache";
+import { CACHE_TAGS } from "@/lib/public-cache";
 
 export const runtime = "nodejs";
 
@@ -35,6 +37,7 @@ export async function POST(req: Request) {
       })
       .returning();
     await logAudit({ actor: actorLabel(user), action: "post_utworzony", entityType: "blogPost", entityId: created.id });
+    revalidateTag(CACHE_TAGS.blog);
     return NextResponse.json(created, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Slug już istnieje." }, { status: 409 });

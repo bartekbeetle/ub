@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { eq } from "drizzle-orm";
-import { getDb, schema } from "@/db";
+import { getPublishedCoursesWithTrainers } from "@/lib/public-cache";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
 import { TrackEvent } from "@/components/TrackEvent";
@@ -17,16 +16,9 @@ export const dynamic = "force-dynamic";
 type Params = Promise<{ slug: string }>;
 
 async function getCourse(slug: string) {
-  const db = await getDb();
-  const rows = await db
-    .select({ course: schema.courses, trainer: schema.trainers })
-    .from(schema.courses)
-    .leftJoin(schema.trainers, eq(schema.courses.trainerId, schema.trainers.id))
-    .where(eq(schema.courses.slug, slug))
-    .limit(1);
-  const row = rows[0];
-  if (!row || row.course.status !== "opublikowane") return null;
-  return row;
+  // Lista jest cache'owana i zawiera tylko opublikowane — patrz public-cache.ts.
+  const rows = await getPublishedCoursesWithTrainers();
+  return rows.find((r) => r.course.slug === slug) ?? null;
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {

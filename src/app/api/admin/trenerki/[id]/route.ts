@@ -4,6 +4,8 @@ import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { logAudit, actorLabel } from "@/lib/audit";
 import { trainerSchema, zodErrorMessage } from "@/lib/validators";
+import { revalidateTag } from "next/cache";
+import { CACHE_TAGS } from "@/lib/public-cache";
 
 export const runtime = "nodejs";
 
@@ -37,6 +39,7 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
     .returning();
   if (!updated) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
   await logAudit({ actor: actorLabel(user), action: "trenerka_edytowana", entityType: "trainer", entityId: trainerId });
+  revalidateTag(CACHE_TAGS.courses);
   return NextResponse.json(updated);
 }
 
@@ -55,5 +58,6 @@ export async function DELETE(_req: Request, { params }: { params: Params }) {
     .returning();
   if (!updated) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
   await logAudit({ actor: actorLabel(user), action: "trenerka_dezaktywowana", entityType: "trainer", entityId: trainerId });
+  revalidateTag(CACHE_TAGS.courses);
   return NextResponse.json({ ok: true });
 }

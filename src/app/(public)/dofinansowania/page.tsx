@@ -7,7 +7,7 @@ import { faqJsonLd } from "@/lib/seo";
 import { IconCheck, IconChevronDown } from "@/components/icons";
 import { SITE_NAME, SUBSIDY_RANGE, SUBSIDY_CONDITION, SUBSIDY_MAX_PERCENT } from "@/lib/constants";
 
-export const dynamic = "force-dynamic";
+// Strona nie dotyka bazy — bez force-dynamic prerenderuje się przy buildzie i leci z cache.
 
 export const metadata: Metadata = {
   title: { absolute: `Dofinansowania na szkolenia beauty — BUR, UP, KFS` },
