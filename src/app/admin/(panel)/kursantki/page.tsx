@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { and, desc, eq, gte, ilike, inArray, isNull, lte, or, sql, type SQL } from "drizzle-orm";
+import { and, desc, eq, gte, ilike, inArray, isNotNull, isNull, lte, or, sql, type SQL } from "drizzle-orm";
 import { getDb, schema } from "@/db";
-import type { Lead, Submission } from "@/db/schema";
+import type { Lead, QuizSession, Submission } from "@/db/schema";
+import { LejekKursantek, type EtapLejka } from "@/components/admin/LejekKursantek";
 import { RevealContact } from "@/components/admin/RevealContact";
 import { LeadStatusSelect } from "@/components/admin/LeadStatusSelect";
 import { SubmissionToggle } from "@/components/admin/SubmissionToggle";
@@ -36,13 +37,36 @@ type Search = Promise<{ [key: string]: string | string[] | undefined }>;
  * Filtry kwalifikacyjne (status leada, województwo, kategoria, przydział) z natury
  * dotyczą wyłącznie leadów — gdy któryś jest aktywny, zgłoszeń nie pobieramy wcale
  * i mówimy o tym wprost, zamiast po cichu pokazywać pustą listę.
+ *
+ * 18.09.2026: wchłonięty ekran „Porzucone quizy". Porzucone aplikacje to trzeci typ wiersza
+ * w tej samej tabeli, a nad nią stoi LEJEK spinający całość — od pierwszego kroku formularza
+ * po rozliczenie. Powód: to jest jedna droga jednej kobiety i oglądanie jej w dwóch
+ * zakładkach ukrywało miejsce, w którym ucieka pieniądz.
+ *
+ * ⚠️ Liczby w lejku dotyczą CAŁEJ BAZY, a tabela pod nim jest przefiltrowana i ucięta
+ * do 300 wierszy. To jest celowe: lejek ma pokazywać stan firmy, tabela — robotę do zrobienia.
  */
 
 const MAX_ROWS = 300;
 
 type Row =
   | { kind: "lead"; id: number; createdAt: Date; lead: Lead }
-  | { kind: "submission"; id: number; createdAt: Date; submission: Submission };
+  | { kind: "submission"; id: number; createdAt: Date; submission: Submission }
+  | { kind: "porzucona"; id: number; createdAt: Date; sesja: QuizSession };
+
+/** Stawka modelu pay-per-result: 500 zł naliczane przy statusie „zapisana". */
+const STAWKA_ZA_ZAPIS = 500;
+
+/** Kroki aplikacji — etykiety muszą odpowiadać krokom w `src/components/Quiz.tsx`. */
+const KROKI_APLIKACJI = [
+  "Imię, e-mail, zgoda",
+  "Szkolenie i region",
+  "Sytuacja zawodowa",
+  "Cel",
+  "Wiek i dojazd",
+  "Telefon",
+  "Złożenie aplikacji",
+];
 
 export default async function KursantkiPage({ searchParams }: { searchParams: Search }) {
   const sp = await searchParams;
@@ -61,19 +85,41 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
   const from = str("od");
   const to = str("do");
 
+  /**
+   * `?etap=` — skrót z lejka. Nie duplikuje filtrów, tylko je ustawia: jedno kliknięcie
+   * w pasek ma pokazać dokładnie te kobiety, które w nim siedzą.
+   */
+  const etap = str("etap");
+  const krokPorzucenia = etap.startsWith("krok-") ? Number(etap.slice(5)) : 0;
+  const pokazPorzucone = etap === "porzucone" || krokPorzucenia > 0;
+  const etapStatus = (LEAD_STATUSES as readonly string[]).includes(etap) ? etap : "";
+  const etapBezPrzydzialu = etap === "bez-przydzialu";
+  const etapZlozone = etap === "zlozone";
+  const etapInneWejscia = etap === "inne-wejscia";
+  const etapZgloszenia = etap === "zgloszenia";
+
+  const statusEfektywny = etapStatus || status;
+  const przydzialEfektywny = etapBezPrzydzialu ? "brak" : przydzial;
+
   // Filtry, których zgłoszenie nie jest w stanie spełnić — bo nie ma tych danych.
-  const leadOnlyFilter = Boolean(status || woj || kategoria || przydzial || leadSource);
-  const pobierzLeady = typ !== "zgloszenie" && !submissionType;
-  const pobierzZgloszenia = typ !== "lead" && !leadOnlyFilter;
+  const leadOnlyFilter = Boolean(statusEfektywny || woj || kategoria || przydzialEfektywny || leadSource);
+  const pobierzLeady =
+    typ !== "zgloszenie" && !submissionType && !pokazPorzucone && !etapZgloszenia;
+  const pobierzZgloszenia =
+    typ !== "lead" && !leadOnlyFilter && !pokazPorzucone && !etapZlozone && !etapInneWejscia;
 
   const db = await getDb();
 
   // --- LEADY ---
   const leadConditions: SQL[] = [];
-  if (status) leadConditions.push(eq(schema.leads.status, status as (typeof LEAD_STATUSES)[number]));
+  if (statusEfektywny)
+    leadConditions.push(eq(schema.leads.status, statusEfektywny as (typeof LEAD_STATUSES)[number]));
   if (stan === "do_zrobienia") leadConditions.push(inArray(schema.leads.status, [...LEAD_STATUSES_OPEN]));
   if (stan === "obsluzone") leadConditions.push(inArray(schema.leads.status, [...LEAD_STATUSES_CLOSED]));
   if (leadSource) leadConditions.push(eq(schema.leads.source, leadSource as (typeof LEAD_SOURCES)[number]));
+  // Wejście 1 = aplikacja (źródło `quiz`), wejście 2 = cała reszta formularzy.
+  if (etapZlozone) leadConditions.push(eq(schema.leads.source, "quiz"));
+  if (etapInneWejscia) leadConditions.push(sql`${schema.leads.source} <> 'quiz'`);
   if (woj) leadConditions.push(eq(schema.leads.voivodeship, woj));
   if (kategoria) leadConditions.push(eq(schema.leads.category, kategoria));
   if (from) leadConditions.push(gte(schema.leads.createdAt, new Date(from)));
@@ -107,7 +153,21 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
     );
   }
 
-  const [leadRows, submissionRows, assignments, converted, liczniki] = await Promise.all([
+  const porzuconeConditions: SQL[] = [
+    eq(schema.quizSessions.completed, false),
+    ...(krokPorzucenia > 0 ? [eq(schema.quizSessions.maxStepReached, krokPorzucenia)] : []),
+    ...(q
+      ? [
+          or(
+            ilike(schema.quizSessions.name, `%${q}%`),
+            ilike(schema.quizSessions.email, `%${q}%`)
+          )!,
+        ]
+      : []),
+  ];
+
+  const [leadRows, submissionRows, assignments, converted, liczniki, porzuconeRows, lejek] =
+    await Promise.all([
     pobierzLeady
       ? db
           .select()
@@ -135,6 +195,15 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
       .from(schema.submissions)
       .where(sql`${schema.submissions.convertedToLeadId} is not null`),
     liczLiczniki(db),
+    pokazPorzucone
+      ? db
+          .select()
+          .from(schema.quizSessions)
+          .where(and(...porzuconeConditions))
+          .orderBy(desc(schema.quizSessions.updatedAt))
+          .limit(MAX_ROWS)
+      : Promise.resolve([] as QuizSession[]),
+    policzLejek(db),
   ]);
 
   const assignedBy = new Map<number, string[]>();
@@ -150,58 +219,63 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
   // Filtr przydziału działa po pobraniu — mapa przydziałów i tak jest potrzebna do tabeli,
   // więc drugie zapytanie do bazy nic by nie dało.
   const leadyPoPrzydziale = leadRows.filter((l) => {
-    if (przydzial === "brak") return !assignedBy.has(l.id);
-    if (przydzial === "jest") return assignedBy.has(l.id);
+    if (przydzialEfektywny === "brak") return !assignedBy.has(l.id);
+    if (przydzialEfektywny === "jest") return assignedBy.has(l.id);
     return true;
   });
 
   const rows: Row[] = [
     ...leadyPoPrzydziale.map((l): Row => ({ kind: "lead", id: l.id, createdAt: l.createdAt, lead: l })),
     ...submissionRows.map((s): Row => ({ kind: "submission", id: s.id, createdAt: s.createdAt, submission: s })),
+    // Tylko sesje NIEDOKOŃCZONE (warunek w zapytaniu) — dokończona ma już swojego leada
+    // w wierszach wyżej i wpadłaby na listę drugi raz jako ta sama kobieta.
+    ...porzuconeRows.map((s): Row => ({ kind: "porzucona", id: s.id, createdAt: s.updatedAt, sesja: s })),
   ]
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
     .slice(0, MAX_ROWS);
 
   const liczbaLeadow = rows.filter((r) => r.kind === "lead").length;
-  const liczbaZgloszen = rows.length - liczbaLeadow;
+  const liczbaZgloszen = rows.filter((r) => r.kind === "submission").length;
+  const liczbaPorzuconych = rows.filter((r) => r.kind === "porzucona").length;
 
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-serif text-2xl font-bold">
-            Kursantki <span className="text-base font-normal text-muted">({rows.length})</span>
-          </h1>
+          <h1 className="font-serif text-2xl font-bold">Kursantki</h1>
           <p className="mt-1 max-w-2xl text-sm text-muted">
-            Leady i zgłoszenia na jednej osi czasu. Lead jest gotowy do przydziału trenerce; zgłoszenie
-            nie ma kwalifikacji, więc dopóki go nie uzupełnisz, nie da się na nim zarobić.
+            Cała droga kursantki w jednym miejscu: porzucone aplikacje, zgłoszenia i leady.
+            Lejek liczy <strong className="text-ink-soft">rekordy</strong>, nie osoby — jedna kobieta,
+            która wysłała formularz dwa razy, jest tu dwa razy.
           </p>
         </div>
         <a href="/api/admin/leads/export" className="btn-outline !px-4 !py-2 !text-sm">Eksport leadów CSV</a>
       </div>
 
-      {/* LICZNIKI */}
-      <div className="mt-6 grid gap-3 sm:grid-cols-3">
-        <LicznikKarta
-          href="/admin/kursantki?stan=do_zrobienia"
-          label="Do obsłużenia"
-          value={liczniki.doObsluzenia}
-          hint="otwarte leady + nieobsłużone zgłoszenia"
+      {/* LEJEK — zastąpił trzy kafelki i osobną zakładkę „Porzucone quizy" */}
+      <div className="mt-6">
+        <LejekKursantek
+          aplikacja={lejek.aplikacja}
+          inneWejscia={lejek.inneWejscia}
+          wspolny={lejek.wspolny}
+          naStole={lejek.naStole}
         />
-        <LicznikKarta
-          href="/admin/kursantki?typ=lead&przydzial=brak"
-          label="Leady bez przydziału"
-          value={liczniki.leadyBezPrzydzialu}
-          hint="mają komplet danych, nie mają trenerki"
-          alarm={liczniki.leadyBezPrzydzialu > 0}
-        />
-        <LicznikKarta
-          href="/admin/kursantki?typ=zgloszenie&stan=do_zrobienia"
-          label="Zgłoszenia do uzupełnienia"
-          value={liczniki.zgloszeniaDoUzupelnienia}
-          hint="czekają na kwalifikację"
-          alarm={liczniki.zgloszeniaDoUzupelnienia > 0}
-        />
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+        <span className="text-muted">Szybko:</span>
+        <Link href="/admin/kursantki?stan=do_zrobienia" className="rounded-full border px-3 py-1 hover:bg-sand-50">
+          Do obsłużenia <strong>{liczniki.doObsluzenia}</strong>
+        </Link>
+        <Link href="/admin/kursantki?etap=porzucone" className="rounded-full border px-3 py-1 hover:bg-sand-50">
+          Porzucone aplikacje <strong>{lejek.porzuconeRazem}</strong>
+        </Link>
+        <Link
+          href="/admin/kursantki?etap=porzucone"
+          className="rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-emerald-900 hover:bg-emerald-100"
+        >
+          Wolno napisać maila <strong>{lejek.zgodyPorzuconych}</strong>
+        </Link>
       </div>
 
       {liczniki.zgloszeniaBezKwalifikacji > 0 && (
@@ -280,9 +354,22 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
 
       <p className="mt-4 text-sm text-muted">
         W widoku: <strong className="text-ink-soft">{liczbaLeadow}</strong> leadów ·{" "}
-        <strong className="text-ink-soft">{liczbaZgloszen}</strong> zgłoszeń
+        <strong className="text-ink-soft">{liczbaZgloszen}</strong> zgłoszeń ·{" "}
+        <strong className="text-ink-soft">{liczbaPorzuconych}</strong> porzuconych aplikacji
         {rows.length === MAX_ROWS ? " (limit 300 — zawęź filtry)" : ""}
       </p>
+
+      {liczbaPorzuconych > 0 && (
+        <p className="mt-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-900">
+          🔴 Przy porzuconych aplikacjach kolumna „Można pisać?" nie jest podpowiedzią, tylko granicą
+          prawną. <strong>Zgoda na kontakt</strong> pozwala wyłącznie przypomnieć o dokończeniu TEJ
+          aplikacji; oferty i nabory wymagają osobnej <strong>zgody marketingowej</strong>. Wysyłka do
+          rekordów bez podstawy to marketing bez zgody (art. 398 Prawa komunikacji elektronicznej) —
+          kara do 3% przychodu albo 1 mln zł, plus odpowiedzialność osobista. UOKiK 24.07.2026 ukarał
+          za to spółkę na 308 728 zł, a prezesa na 100 000 zł. Tych osób nie odzyskujemy mailem, tylko
+          remarketingiem przez piksel.
+        </p>
+      )}
 
       <div className="card mt-3 overflow-x-auto">
         <table className="w-full text-left text-sm">
@@ -307,8 +394,10 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
                   trenerki={assignedBy.get(row.id) ?? []}
                   zeZgloszenia={leadFromSubmission.get(row.id)}
                 />
-              ) : (
+              ) : row.kind === "submission" ? (
                 <WierszZgloszenia key={`z-${row.id}`} submission={row.submission} />
+              ) : (
+                <WierszPorzuconej key={`p-${row.id}`} sesja={row.sesja} />
               )
             )}
             {rows.length === 0 && (
@@ -325,10 +414,239 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
   );
 }
 
+
+
+/**
+ * Wiersz PORZUCONEJ APLIKACJI — kobieta zaczęła wypełniać i przerwała.
+ * Kolumny celowo pokrywają się z leadem (data, kontakt, kwalifikacja), żeby jedna tabela
+ * dała się czytać w pionie. W miejsce statusu wchodzi krok, na którym odpadła,
+ * a w miejsce przydziału — podstawa prawna kontaktu.
+ */
+function WierszPorzuconej({ sesja }: { sesja: QuizSession }) {
+  const krok = KROKI_APLIKACJI[sesja.maxStepReached - 1] ?? `krok ${sesja.maxStepReached}`;
+  const mozeMail = Boolean(sesja.contactConsentAt && sesja.email);
+
+  return (
+    <tr className="align-top bg-red-50/20 hover:bg-red-50/40">
+      <td className="whitespace-nowrap px-4 py-3 text-muted">{formatDateTime(sesja.updatedAt)}</td>
+      <td className="px-4 py-3">
+        <span className="inline-flex rounded-full bg-red-100 px-2.5 py-0.5 text-[11px] font-bold text-red-800">
+          Porzucona
+        </span>
+      </td>
+      <td className="px-4 py-3 font-medium">
+        {sesja.name || <span className="text-muted">— (nie zdążyła podać)</span>}
+      </td>
+      <td className="px-4 py-3">
+        <div className="space-y-1">
+          {sesja.email ? (
+            <div><RevealContact masked={maskEmail(sesja.email)} full={sesja.email} /></div>
+          ) : (
+            <div className="text-xs italic text-muted">brak e-maila</div>
+          )}
+          {sesja.phone && (
+            <div><RevealContact masked={maskPhone(sesja.phone)} full={sesja.phone} /></div>
+          )}
+        </div>
+      </td>
+      <td className="px-4 py-3 text-xs text-muted">Aplikacja</td>
+      <td className="px-4 py-3">
+        {sesja.category ? (
+          <>
+            <span className="block">{sesja.category}</span>
+            <span className="block text-xs text-muted">
+              {sesja.voivodeship ? voivodeshipName(sesja.voivodeship) : ""}
+              {sesja.city ? `, ${sesja.city}` : ""}
+            </span>
+          </>
+        ) : (
+          <span className="text-xs italic text-muted">nie doszła do tego pytania</span>
+        )}
+      </td>
+      <td className="px-4 py-3 text-xs">
+        <span className="text-muted">przerwała na:</span>
+        <span className="block font-medium">{`${sesja.maxStepReached}. ${krok}`}</span>
+      </td>
+      <td className="px-4 py-3 text-xs">
+        {mozeMail ? (
+          <div className="space-y-1">
+            <span className="block w-fit rounded bg-emerald-100 px-2 py-0.5 text-emerald-800">
+              przypomnienie o aplikacji
+            </span>
+            {sesja.marketingConsentAt && (
+              <span className="block w-fit rounded bg-emerald-50 px-2 py-0.5 text-[11px] text-emerald-700">
+                + oferty i nabory
+              </span>
+            )}
+          </div>
+        ) : sesja.marketingConsentAt && sesja.email ? (
+          <span className="rounded bg-amber-100 px-2 py-0.5 text-amber-800">tylko oferty</span>
+        ) : (
+          <span className="rounded bg-red-100 px-2 py-0.5 text-red-700">nie pisać</span>
+        )}
+      </td>
+    </tr>
+  );
+}
+
+/* ===== LEJEK ===== */
+
+/**
+ * Wszystko liczone agregatami po stronie bazy, nie filtrowaniem tablicy w JS.
+ * Ekran jest `force-dynamic`, więc każde wejście to realne zapytania — a po pracy
+ * wydajnościowej z 18.09 nie wracamy do mielenia setek wierszy w pamięci.
+ */
+async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
+  const [wgKroku, wgStatusu, przydzielone, wgZrodla, zgloszenia, zgodyPorzuconych] =
+    await Promise.all([
+      db
+        .select({
+          krok: schema.quizSessions.maxStepReached,
+          dokonczone: schema.quizSessions.completed,
+          c: sql<number>`count(*)::int`,
+        })
+        .from(schema.quizSessions)
+        .groupBy(schema.quizSessions.maxStepReached, schema.quizSessions.completed),
+      db
+        .select({
+          status: schema.leads.status,
+          c: sql<number>`count(*)::int`,
+        })
+        .from(schema.leads)
+        .groupBy(schema.leads.status),
+      db
+        .select({ c: sql<number>`count(distinct ${schema.leadAssignments.leadId})::int` })
+        .from(schema.leadAssignments),
+      db
+        .select({ zrodlo: schema.leads.source, c: sql<number>`count(*)::int` })
+        .from(schema.leads)
+        .groupBy(schema.leads.source),
+      db.select({ c: sql<number>`count(*)::int` }).from(schema.submissions),
+      db
+        .select({ c: sql<number>`count(*)::int` })
+        .from(schema.quizSessions)
+        .where(
+          and(
+            eq(schema.quizSessions.completed, false),
+            isNotNull(schema.quizSessions.contactConsentAt)
+          )
+        ),
+    ]);
+
+  const statusy = new Map(wgStatusu.map((r) => [r.status as string, r.c]));
+  const ile = (...s: string[]) => s.reduce((sum, k) => sum + (statusy.get(k) ?? 0), 0);
+
+  const leadyRazem = wgStatusu.reduce((sum, r) => sum + r.c, 0);
+  const leadyZAplikacji = wgZrodla.find((r) => r.zrodlo === "quiz")?.c ?? 0;
+  const leadyZInnych = leadyRazem - leadyZAplikacji;
+  const zPrzydzialem = przydzielone[0]?.c ?? 0;
+
+  // --- WEJŚCIE 1: aplikacja, krok po kroku ---
+  const sesjeRazem = wgKroku.reduce((sum, r) => sum + r.c, 0);
+  const doszloDoKroku = (k: number) =>
+    wgKroku.filter((r) => r.krok >= k).reduce((sum, r) => sum + r.c, 0);
+  const porzuconeNaKroku = (k: number) =>
+    wgKroku.filter((r) => r.krok === k && !r.dokonczone).reduce((sum, r) => sum + r.c, 0);
+
+  const aplikacja: EtapLejka[] = KROKI_APLIKACJI.map((etykieta, i) => {
+    const krok = i + 1;
+    const doszlo = doszloDoKroku(krok);
+    const odpadlo = porzuconeNaKroku(krok);
+    return {
+      klucz: `krok-${krok}`,
+      etykieta: `${krok}. ${etykieta}`,
+      liczba: doszlo,
+      procent: sesjeRazem ? Math.round((doszlo / sesjeRazem) * 100) : 0,
+      ubytek: odpadlo,
+      // Największy wyciek zaznaczamy na czerwono dopiero przy realnej skali,
+      // żeby przy trzech sesjach nie malować alarmu z jednej osoby.
+      alarm: odpadlo >= 3,
+    };
+  });
+
+  // --- WEJŚCIE 2: konsultacja / kontakt ---
+  const inneWejscia: EtapLejka[] = [
+    {
+      klucz: "inne-wejscia",
+      etykieta: "Leady z konsultacji i kontaktu",
+      liczba: leadyZInnych,
+      procent: 100,
+      opis: "formularz konsultacji, karta kursu, landing, recepcjonistka",
+    },
+    {
+      klucz: "zgloszenia",
+      etykieta: "Zgłoszenia bez kwalifikacji",
+      liczba: zgloszenia[0]?.c ?? 0,
+      procent: leadyZInnych ? Math.round(((zgloszenia[0]?.c ?? 0) / leadyZInnych) * 100) : 0,
+      opis: "brak województwa i kategorii — warte 0 zł, dopóki ich nie uzupełnisz",
+      alarm: (zgloszenia[0]?.c ?? 0) > 0,
+    },
+  ];
+
+  // --- WSPÓLNA DROGA ---
+  const zapisane = ile("zapisana", "rozliczony");
+  const rozliczone = ile("rozliczony");
+  const skontaktowane = ile("skontaktowany", "zapisana", "rozliczony");
+  const bezPrzydzialu = leadyRazem - zPrzydzialem;
+
+  const pct = (n: number) => (leadyRazem ? Math.round((n / leadyRazem) * 100) : 0);
+
+  const wspolny: EtapLejka[] = [
+    {
+      klucz: "lead",
+      etykieta: "Lead — komplet danych",
+      liczba: leadyRazem,
+      procent: 100,
+      opis: `${leadyZAplikacji} z aplikacji · ${leadyZInnych} z pozostałych wejść`,
+    },
+    {
+      klucz: "bez-przydzialu",
+      etykieta: "Przydzielona trenerce",
+      liczba: zPrzydzialem,
+      procent: pct(zPrzydzialem),
+      ubytek: bezPrzydzialu,
+      alarm: bezPrzydzialu > 0,
+      opis: bezPrzydzialu > 0 ? `${bezPrzydzialu} czeka bez adresata` : undefined,
+    },
+    {
+      klucz: "skontaktowany",
+      etykieta: "Skontaktowana",
+      liczba: skontaktowane,
+      procent: pct(skontaktowane),
+      ubytek: zPrzydzialem - skontaktowane,
+    },
+    {
+      klucz: "zapisana",
+      etykieta: "Zapisana na szkolenie",
+      liczba: zapisane,
+      procent: pct(zapisane),
+      kwota: zapisane * STAWKA_ZA_ZAPIS,
+      opis: "tu powstaje należność 500 zł",
+    },
+    {
+      klucz: "rozliczony",
+      etykieta: "Rozliczona",
+      liczba: rozliczone,
+      procent: pct(rozliczone),
+      kwota: rozliczone * STAWKA_ZA_ZAPIS,
+      opis: "pieniądze na koncie",
+    },
+  ];
+
+  return {
+    aplikacja,
+    inneWejscia,
+    wspolny,
+    naStole: { leadow: bezPrzydzialu, kwota: bezPrzydzialu * STAWKA_ZA_ZAPIS },
+    zgodyPorzuconych: zgodyPorzuconych[0]?.c ?? 0,
+    porzuconeRazem: sesjeRazem - doszloDoKroku(7),
+  };
+}
+
 /* ===== LICZNIKI ===== */
 
 async function liczLiczniki(db: Awaited<ReturnType<typeof getDb>>) {
-  const [openLeads, unhandledSubs, unqualifiedSubs, unassignedLeads, neverQualified] = await Promise.all([
+  const [openLeads, unhandledSubs, neverQualified] = await Promise.all([
     db
       .select({ c: sql<number>`count(*)::int` })
       .from(schema.leads)
@@ -340,46 +658,13 @@ async function liczLiczniki(db: Awaited<ReturnType<typeof getDb>>) {
     db
       .select({ c: sql<number>`count(*)::int` })
       .from(schema.submissions)
-      .where(and(eq(schema.submissions.isHandled, false), isNull(schema.submissions.convertedToLeadId))),
-    db
-      .select({ c: sql<number>`count(*)::int` })
-      .from(schema.leads)
-      .leftJoin(schema.leadAssignments, eq(schema.leadAssignments.leadId, schema.leads.id))
-      .where(isNull(schema.leadAssignments.id)),
-    db
-      .select({ c: sql<number>`count(*)::int` })
-      .from(schema.submissions)
       .where(isNull(schema.submissions.convertedToLeadId)),
   ]);
 
   return {
     doObsluzenia: (openLeads[0]?.c ?? 0) + (unhandledSubs[0]?.c ?? 0),
-    leadyBezPrzydzialu: unassignedLeads[0]?.c ?? 0,
-    zgloszeniaDoUzupelnienia: unqualifiedSubs[0]?.c ?? 0,
     zgloszeniaBezKwalifikacji: neverQualified[0]?.c ?? 0,
   };
-}
-
-function LicznikKarta({
-  href,
-  label,
-  value,
-  hint,
-  alarm,
-}: {
-  href: string;
-  label: string;
-  value: number;
-  hint: string;
-  alarm?: boolean;
-}) {
-  return (
-    <Link href={href} className={`card p-4 transition-shadow ${alarm ? "ring-1 ring-amber-300" : ""}`}>
-      <p className="text-xs font-bold uppercase tracking-wide text-muted">{label}</p>
-      <p className="mt-1 font-serif text-3xl font-bold text-ink-soft">{value}</p>
-      <p className="mt-1 text-xs text-muted">{hint}</p>
-    </Link>
-  );
 }
 
 /* ===== WIERSZE ===== */

@@ -19,11 +19,11 @@ const GROUPS: { label: string | null; items: Item[] }[] = [
   {
     label: "CRM Kursantki",
     items: [
-      // Jedna pozycja zamiast „Leady" + „Zgłoszenia": obie tabele to ta sama kolejka
-      // i ta sama droga do przydziału, tylko na różnym etapie kwalifikacji.
-      { href: "/admin/kursantki", label: "Kursantki" },
-      // Sesje quizu, które NIE skończyły się leadem — widać, na którym kroku ludzie odpadają.
-      { href: "/admin/porzucone", label: "Porzucone quizy" },
+      // JEDNA pozycja na cały lejek B2C. Kolejno wchłonęła: „Leady" + „Zgłoszenia"
+      // (ta sama kolejka, inny etap kwalifikacji), a 18.09.2026 także „Porzucone quizy"
+      // (porzucona aplikacja to ten sam człowiek o krok wcześniej). Rozbicie tego na
+      // zakładki ukrywało jedyne, co się liczy: w którym miejscu ucieka pieniądz.
+      { href: "/admin/kursantki", label: "Kursantki — lejek" },
       { href: "/admin/rozliczenia", label: "Rozliczenia" },
     ],
   },

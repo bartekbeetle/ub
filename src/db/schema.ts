@@ -857,6 +857,7 @@ export type Lead = typeof leads.$inferSelect;
 export type LeadAssignment = typeof leadAssignments.$inferSelect;
 export type Review = typeof reviews.$inferSelect;
 export type Submission = typeof submissions.$inferSelect;
+export type QuizSession = typeof quizSessions.$inferSelect;
 export type Settings = typeof settings.$inferSelect;
 export type Prospect = typeof prospects.$inferSelect;
 export type ProspectActivity = typeof prospectActivities.$inferSelect;
