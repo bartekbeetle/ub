@@ -225,7 +225,7 @@ export default async function KursPage({ params }: { params: Params }) {
               </div>
             )}
 
-            <Link href={`/quiz?kurs=${course.slug}`} className="btn-primary w-full">Aplikuj do finansowania</Link>
+            <Link href={`/aplikacja?kurs=${course.slug}`} className="btn-primary w-full">Aplikuj o dofinansowanie</Link>
 
             <ul className="space-y-2.5 border-t border-sand-100 pt-4 text-sm">
               {["Certyfikowany kurs", "Bezpieczne dofinansowanie", "Gwarancja jakości"].map((t) => (

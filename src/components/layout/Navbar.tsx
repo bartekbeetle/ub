@@ -38,8 +38,8 @@ export function Navbar() {
           <Link href="/kursy" aria-label="Szukaj kursu" className="p-2 text-ink hover:text-sand-700 transition-colors">
             <IconSearch />
           </Link>
-          <Link href="/quiz" className="btn-primary !px-5 !py-2.5 !text-sm">
-            Bezpłatna Konsultacja
+          <Link href="/aplikacja" className="btn-primary !px-5 !py-2.5 !text-sm">
+            Aplikuj
           </Link>
         </div>
 
@@ -70,8 +70,8 @@ export function Navbar() {
               </li>
             ))}
           </ul>
-          <Link href="/quiz" onClick={() => setOpen(false)} className="btn-primary mt-4 w-full">
-            Bezpłatna Konsultacja
+          <Link href="/aplikacja" onClick={() => setOpen(false)} className="btn-primary mt-4 w-full">
+            Aplikuj
           </Link>
         </div>
       )}

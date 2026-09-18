@@ -203,7 +203,7 @@ export default function DofinansowaniaPage() {
           ))}
         </div>
         <div className="mt-10 text-center">
-          <Link href="/quiz" className="btn-primary">Umów bezpłatną konsultację</Link>
+          <Link href="/aplikacja" className="btn-primary">Złóż aplikację</Link>
         </div>
       </section>
     </div>

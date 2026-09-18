@@ -54,7 +54,7 @@ export async function GET() {
 - [Przewodnik po dofinansowaniach](${SITE_URL}/dofinansowania): BUR, KFS i urząd pracy — kto się kwalifikuje, jak wygląda proces krok po kroku, najczęstsze pytania.
 - [Katalog kursów](${SITE_URL}/kursy): wszystkie szkolenia z filtrowaniem po kategorii i województwie.
 - [Baza wiedzy](${SITE_URL}/blog): artykuły o dofinansowaniach i karierze w branży beauty.
-- [Formularz kwalifikacyjny](${SITE_URL}/quiz): sprawdzenie dofinansowania i dobór trenerki po kategorii szkolenia i województwie.
+- [Formularz kwalifikacyjny](${SITE_URL}/aplikacja): sprawdzenie dofinansowania i dobór trenerki po kategorii szkolenia i województwie.
 - [Kontakt](${SITE_URL}/kontakt)
 
 ## Kursy

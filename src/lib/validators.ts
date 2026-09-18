@@ -44,7 +44,7 @@ export const leadSchema = z.object({
     errorMap: () => ({ message: "Wybierz status zawodowy" }),
   }),
   preferredDate: z.string().trim().max(120).optional().or(z.literal("")),
-  // === Pola miękkie z quizu kwalifikacyjnego (/quiz) — wszystkie opcjonalne, wszystkie
+  // === Pola miękkie z quizu kwalifikacyjnej (/aplikacja) — wszystkie opcjonalne, wszystkie
   // mapują na kolumny, które już istnieją w `leads` (patrz src/db/schema.ts) i były
   // dotąd zasilane tylko z panelu recepcjonistki. Żadna migracja nie jest potrzebna.
   city: z.string().trim().max(120).optional().or(z.literal("")),

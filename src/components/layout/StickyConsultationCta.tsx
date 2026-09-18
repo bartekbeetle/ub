@@ -5,14 +5,14 @@ import { usePathname } from "next/navigation";
 
 /**
  * Pasek „Bezpłatna Konsultacja" przyklejony do dołu na mobile (`md:hidden` — na desktopie
- * nie istnieje). Ukryty na `/quiz`: to jest strona z WŁASNYM, jedynym słusznym CTA („Dalej" /
+ * nie istnieje). Ukryty na `/aplikacja`: to jest strona z WŁASNYM, jedynym słusznym CTA („Dalej" /
  * „Aplikuj o dofinansowanie"), a drugi, konkurencyjny przycisk zaklejony na dole ekranu
  * odciąga uwagę od dokończenia quizu — i fizycznie zabiera miejsce, które i tak jest
  * ciasne na telefonie (13.09.2026, audyt mobile przed startem płatnego ruchu Meta).
  */
 export function StickyConsultationCta() {
   const pathname = usePathname();
-  if (pathname?.startsWith("/quiz")) return null;
+  if (pathname?.startsWith("/aplikacja")) return null;
 
   return (
     <>

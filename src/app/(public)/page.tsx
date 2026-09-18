@@ -120,8 +120,8 @@ export default async function HomePage() {
             <Link href="/kursy" className="btn-primary !px-10 !py-4 !text-lg">
               Zobacz Jak Zacząć
             </Link>
-            <Link href="/quiz" className="btn-outline !px-8 !py-3.5">
-              Sprawdź dofinansowanie
+            <Link href="/aplikacja" className="btn-outline !px-8 !py-3.5">
+              Aplikuj o dofinansowanie
             </Link>
           </div>
         </div>
@@ -165,7 +165,7 @@ export default async function HomePage() {
             ))}
           </ol>
           <div className="mt-10 text-center">
-            <Link href="/quiz" className="btn-primary">Umów bezpłatną konsultację</Link>
+            <Link href="/aplikacja" className="btn-primary">Złóż aplikację</Link>
           </div>
         </div>
       </section>
@@ -212,8 +212,8 @@ export default async function HomePage() {
           </div>
           <p className="mt-8 text-center text-muted">
             Nie znalazłaś odpowiedzi?{" "}
-            <Link href="/quiz" className="link-inline">
-              Zapytaj na bezpłatnej konsultacji
+            <Link href="/aplikacja" className="link-inline">
+              Zapytaj w aplikacji
             </Link>{" "}
             albo sprawdź{" "}
             <Link href="/dofinansowania" className="link-inline">

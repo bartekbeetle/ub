@@ -60,7 +60,7 @@ export default function ONasPage() {
       <div className="card mt-10 bg-cream-warm p-8 text-center">
         <h2 className="font-serif text-2xl font-bold">Chcesz zacząć karierę w beauty?</h2>
         <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link href="/quiz" className="btn-primary">Umów bezpłatną konsultację</Link>
+          <Link href="/aplikacja" className="btn-primary">Złóż aplikację</Link>
           <Link href="/kursy" className="btn-outline">Zobacz szkolenia</Link>
         </div>
       </div>

@@ -60,8 +60,8 @@ export default async function PoradnikDziekujemyPage({ searchParams }: { searchP
           Poradnik tłumaczy zasady ogólne. Jeśli wolisz od razu wiedzieć, co przysługuje
           konkretnie Tobie, wypełnij krótki formularz — sprawdzimy to i oddzwonimy.
         </p>
-        <Link href="/quiz" className="btn-primary mt-5 inline-flex">
-          Sprawdź swoje dofinansowanie
+        <Link href="/aplikacja" className="btn-primary mt-5 inline-flex">
+          Aplikuj o dofinansowanie
         </Link>
       </div>
     </div>

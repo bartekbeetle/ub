@@ -16,7 +16,14 @@ import { CONSENT_VERSION } from "@/lib/constants";
  * komunikacji elektronicznej — kara do 3% przychodu albo 1 mln zł; UOKiK 24.07.2026 ukarał
  * spółkę na 308 728 zł, a prezesa osobiście na 100 000 zł).
  * Dlatego `marketingConsentAt` zapisujemy WYŁĄCZNIE, gdy checkbox był realnie zaznaczony,
- * i to ta kolumna — nie samo istnienie maila — jest jedynym dopuszczalnym filtrem wysyłki.
+ * i to ta kolumna — nie samo istnienie maila — jest jedynym dopuszczalnym filtrem wysyłki
+ * treści MARKETINGOWYCH (nabory, terminy, inne szkolenia).
+ *
+ * Osobno od niej stoi `contactConsentAt` — zgoda wymagana na kroku 1, dotycząca kontaktu
+ * W SPRAWIE TEJ APLIKACJI. Na niej opiera się jedyny mail, jaki wolno wysłać osobie, która
+ * aplikacji nie dokończyła: przypomnienie o dokończeniu WŁASNEGO zgłoszenia. Rozdzielenie
+ * tych dwóch zgód jest celowe — wymaganie zgody marketingowej jako warunku usługi łamie
+ * art. 7 ust. 4 RODO (zgoda nie jest wtedy dobrowolna).
  *
  * Świadomie NIE zwracamy niczego poza `{ ok: true }` — endpoint jest publiczny, więc nie może
  * potwierdzać, czy dany e-mail już u nas był (to byłby wyciek informacji o bazie).
@@ -30,6 +37,7 @@ const progressSchema = z.object({
   category: z.string().max(60).optional(),
   voivodeship: z.string().max(40).optional(),
   city: z.string().max(120).optional(),
+  contactConsent: z.boolean().optional(),
   marketingConsent: z.boolean().optional(),
   answers: z.record(z.string(), z.unknown()).optional(),
   utmSource: z.string().max(120).optional(),
@@ -53,7 +61,12 @@ export async function POST(request: Request) {
     const { quizSessions } = schema;
 
     const [istnieje] = await db
-      .select({ id: quizSessions.id, maxStep: quizSessions.maxStepReached, zgoda: quizSessions.marketingConsentAt })
+      .select({
+        id: quizSessions.id,
+        maxStep: quizSessions.maxStepReached,
+        zgoda: quizSessions.marketingConsentAt,
+        zgodaKontakt: quizSessions.contactConsentAt,
+      })
       .from(quizSessions)
       .where(eq(quizSessions.sessionKey, parsed.sessionKey))
       .limit(1);
@@ -79,10 +92,14 @@ export async function POST(request: Request) {
 
     // Zgodę zapisujemy tylko przy realnym zaznaczeniu i nigdy jej nie kasujemy tym endpointem —
     // wycofanie zgody to osobna, świadoma operacja, nie efekt uboczny cofnięcia się w quizie.
-    const zgoda =
-      parsed.marketingConsent === true && !istnieje?.zgoda
+    const zgoda = {
+      ...(parsed.marketingConsent === true && !istnieje?.zgoda
         ? { marketingConsentAt: new Date(), consentVersion: CONSENT_VERSION }
-        : {};
+        : {}),
+      ...(parsed.contactConsent === true && !istnieje?.zgodaKontakt
+        ? { contactConsentAt: new Date(), consentVersion: CONSENT_VERSION }
+        : {}),
+    };
 
     if (istnieje) {
       await db

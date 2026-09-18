@@ -10,14 +10,14 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: `Aplikuj o dofinansowanie`,
   description:
-    "Odpowiedz na kilka pytań, a sprawdzimy Twoje dofinansowanie na szkolenie beauty i połączymy Cię z certyfikowaną trenerką.",
-  alternates: { canonical: "/quiz" },
+    "Złóż aplikację o szkolenie beauty z dofinansowaniem. Sprawdzimy, co Ci przysługuje, i połączymy Cię z certyfikowaną trenerką.",
+  alternates: { canonical: "/aplikacja" },
   robots: { index: false, follow: true }, // strona formularza — nic tu nie ma do zaindeksowania
   openGraph: {
     title: `Aplikuj o dofinansowanie — ${SITE_NAME}`,
     description:
-      "Odpowiedz na kilka pytań, a sprawdzimy Twoje dofinansowanie na szkolenie beauty i połączymy Cię z certyfikowaną trenerką.",
-    url: "/quiz",
+      "Złóż aplikację o szkolenie beauty z dofinansowaniem. Sprawdzimy, co Ci przysługuje, i połączymy Cię z certyfikowaną trenerką.",
+    url: "/aplikacja",
     type: "website",
     locale: "pl_PL",
     siteName: SITE_NAME,
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
 };
 
 const BENEFITS = [
-  "Zajmuje mniej niż 2 minuty",
-  "Sprawdzimy Twoje dofinansowanie bezpłatnie i bez zobowiązań",
+  "Wypełnienie aplikacji zajmuje mniej niż 2 minuty",
+  "Rozpatrzenie aplikacji jest bezpłatne i nie zobowiązuje Cię do niczego",
   // „w Twojej okolicy" zdjęte 13.09 (spotkanie zespołu): przy partnerach w 2 województwach
   // to była obietnica niedowożalna dla większości Polski — konsensus 3 głosów.
   "Sprawdzimy, czy w Twoim regionie działa certyfikowana trenerka",
@@ -54,9 +54,9 @@ export default async function QuizPage({ searchParams }: { searchParams: Promise
   return (
     <div className="bg-gradient-to-b from-sand-100 via-cream-warm to-cream">
       <div className="mx-auto max-w-2xl px-4 py-10 md:px-6 md:py-14">
-        <Breadcrumbs items={[{ name: "Strona główna", url: "/" }, { name: "Aplikuj o dofinansowanie", url: "/quiz" }]} />
+        <Breadcrumbs items={[{ name: "Strona główna", url: "/" }, { name: "Aplikuj o dofinansowanie", url: "/aplikacja" }]} />
 
-        <h1 className="mt-4 text-center text-3xl font-bold md:text-4xl">Sprawdź swoje dofinansowanie</h1>
+        <h1 className="mt-4 text-center text-3xl font-bold md:text-4xl">Aplikuj o dofinansowanie szkolenia</h1>
         <ul className="mx-auto mt-5 flex max-w-md flex-col gap-2">
           {BENEFITS.map((b) => (
             <li key={b} className="flex items-start gap-2.5 text-sm text-ink">

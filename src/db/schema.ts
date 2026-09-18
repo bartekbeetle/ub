@@ -295,7 +295,18 @@ export const quizSessions = pgTable(
     stepReached: integer("step_reached").notNull().default(1),
     maxStepReached: integer("max_step_reached").notNull().default(1),
 
-    /** Zgoda marketingowa z kroku 1 — JEDYNA podstawa do maila, gdy quiz nie został dokończony. */
+    /**
+     * Zgoda na kontakt W SPRAWIE TEJ APLIKACJI (e-mail + telefon), wymagana na kroku 1.
+     * To jest podstawa maila „dokończ aplikację" do osoby, która nie doszła do końca —
+     * komunikacja serwisowa dotycząca zgłoszenia, które sama zaczęła, nie oferta handlowa.
+     */
+    contactConsentAt: timestamp("contact_consent_at", { withTimezone: true }),
+
+    /**
+     * Zgoda MARKETINGOWA z kroku 1 — dobrowolna. Podstawa wysyłki o naborach i terminach
+     * (art. 398 PKE), czyli treści wykraczających poza samą aplikację.
+     * ⚠️ Nie mylić z `contactConsentAt`: tamta dotyczy tego zgłoszenia, ta — reszty.
+     */
     marketingConsentAt: timestamp("marketing_consent_at", { withTimezone: true }),
     consentVersion: varchar("consent_version", { length: 20 }),
 

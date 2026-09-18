@@ -37,8 +37,8 @@ export default function KontaktPage() {
             Szybciej niż mailem — odpowiedz na kilka pytań, a sprawdzimy Twoje dofinansowanie od razu.
           </p>
         </div>
-        <Link href="/quiz" className="btn-primary shrink-0 whitespace-nowrap">
-          Sprawdź dofinansowanie <IconArrowRight width={18} height={18} />
+        <Link href="/aplikacja" className="btn-primary shrink-0 whitespace-nowrap">
+          Aplikuj o dofinansowanie <IconArrowRight width={18} height={18} />
         </Link>
       </div>
 

@@ -39,8 +39,8 @@ export function SubsidyCalculator() {
         <p className="mt-3 text-sm text-muted">{program.note}</p>
       </div>
 
-      <Link href="/quiz" className="btn-primary mt-6 w-full">
-        Sprawdź swoje dofinansowanie →
+      <Link href="/aplikacja" className="btn-primary mt-6 w-full">
+        Aplikuj o to dofinansowanie →
       </Link>
     </div>
   );

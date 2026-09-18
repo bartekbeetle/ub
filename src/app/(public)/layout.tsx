@@ -20,7 +20,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         {children}
       </main>
       <Footer />
-      {/* Sticky CTA na mobile — ukrywa się sama na /quiz, patrz komponent */}
+      {/* Sticky CTA na mobile — ukrywa się sama na /aplikacja, patrz komponent */}
       <StickyConsultationCta />
       <CookieConsent />
     </>

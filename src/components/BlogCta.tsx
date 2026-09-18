@@ -18,7 +18,7 @@ export function BlogCta({ variant = "inline" }: { variant?: "inline" | "end" }) 
           Odpowiedz na kilka pytań — sprawdzimy Twoje dofinansowanie i pomożemy Ci przejść przez cały proces.
         </p>
         <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link href="/quiz" className="btn-primary">Bezpłatna konsultacja</Link>
+          <Link href="/aplikacja" className="btn-primary">Złóż aplikację</Link>
           <Link href="/kursy" className="btn-outline">Przeglądaj kursy</Link>
         </div>
       </aside>
@@ -30,8 +30,8 @@ export function BlogCta({ variant = "inline" }: { variant?: "inline" | "end" }) 
       <p className="text-sm font-semibold text-ink-soft">
         Chcesz sprawdzić, ile dofinansowania dostaniesz na szkolenie beauty?
       </p>
-      <Link href="/quiz" className="btn-primary shrink-0 whitespace-nowrap !px-5 !py-2.5 !text-sm">
-        Sprawdź teraz <IconArrowRight width={16} height={16} />
+      <Link href="/aplikacja" className="btn-primary shrink-0 whitespace-nowrap !px-5 !py-2.5 !text-sm">
+        Aplikuj teraz <IconArrowRight width={16} height={16} />
       </Link>
     </aside>
   );

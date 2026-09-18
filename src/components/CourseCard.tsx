@@ -46,8 +46,8 @@ export function CourseCard({ course }: { course: Course; trainer?: Trainer | nul
           </span>
         </div>
 
-        <Link href={`/quiz?kurs=${course.slug}`} className="btn-primary mt-auto w-full !py-2.5 !text-sm">
-          Aplikuj do finansowania
+        <Link href={`/aplikacja?kurs=${course.slug}`} className="btn-primary mt-auto w-full !py-2.5 !text-sm">
+          Aplikuj o dofinansowanie
         </Link>
       </div>
     </article>

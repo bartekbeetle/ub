@@ -58,7 +58,7 @@ export function CookieConsent() {
       role="dialog"
       aria-label="Zgoda na pliki cookies"
       // bottom-20 na mobile, żeby nie zasłonić sticky CTA konsultacji (gdzie ten pasek istnieje —
-      // na /quiz jest ukryty, patrz src/app/(public)/layout.tsx, więc tam ten odstęp jest niegroźnym
+      // na /aplikacja jest ukryty, patrz src/app/(public)/layout.tsx, więc tam ten odstęp jest niegroźnym
       // marginesem, nie zależnością).
       className="fixed inset-x-0 bottom-20 z-50 px-3 md:bottom-4"
     >

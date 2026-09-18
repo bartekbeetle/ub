@@ -181,7 +181,7 @@ export default async function KursyPage({ searchParams }: { searchParams: Promis
             <div className="card p-10 text-center">
               <h2 className="font-serif text-xl font-semibold">Brak kursów dla wybranych filtrów</h2>
               <p className="mt-2 text-muted">
-                Zmień kryteria wyszukiwania albo <a href="/quiz" className="font-semibold text-sand-700 underline">napisz do nas</a> — pomożemy znaleźć szkolenie w Twojej okolicy.
+                Zmień kryteria wyszukiwania albo <a href="/aplikacja" className="font-semibold text-sand-700 underline">złóż aplikację</a> — pomożemy znaleźć szkolenie w Twojej okolicy.
               </p>
             </div>
           ) : (

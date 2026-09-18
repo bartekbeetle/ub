@@ -34,7 +34,7 @@ export function Footer() {
             <li><Link href="/dofinansowania" className={FOOTER_LINK}>Dofinansowania</Link></li>
             <li><Link href="/blog" className={FOOTER_LINK}>Baza wiedzy</Link></li>
             <li><Link href="/o-nas" className={FOOTER_LINK}>O nas</Link></li>
-            <li><Link href="/quiz" className={FOOTER_LINK}>Bezpłatna konsultacja</Link></li>
+            <li><Link href="/aplikacja" className={FOOTER_LINK}>Aplikuj o dofinansowanie</Link></li>
           </ul>
         </nav>
 

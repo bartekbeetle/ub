@@ -122,6 +122,13 @@ function validateStep(step: number, f: FormState): Errors {
     const email = f.email.trim();
     if (!email) e.email = "Podaj adres e-mail.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) e.email = "Ten adres e-mail wygląda na niepełny.";
+    // Zgoda na kontakt stoi na PIERWSZYM kroku, nie na ostatnim. Powód jest biznesowy:
+    // osoba, która porzuci aplikację w połowie, zostawiła już podstawę do przypomnienia
+    // o dokończeniu WŁASNEGO zgłoszenia. Wcześniej zgoda wisiała na kroku 7 i porzucone
+    // aplikacje były prawnie nie do ruszenia.
+    if (!f.contactConsent) {
+      e.contactConsent = "Bez zgody na kontakt nie mamy jak przekazać Ci decyzji w sprawie aplikacji.";
+    }
   }
   if (step === 2) {
     if (!f.category) e.category = "Wybierz kategorię szkolenia.";
@@ -141,12 +148,11 @@ function validateStep(step: number, f: FormState): Errors {
   }
   if (step === 7) {
     if (!f.rodoConsent) e.rodoConsent = "Bez tej zgody nie możemy przekazać Twojego zgłoszenia trenerce.";
-    // `contactConsent` lustruje `leadSchema.contactConsent` (`src/lib/validators.ts`) — tam jest
-    // `z.literal(true)`, więc backend i tak odrzuca zgłoszenie bez tej zgody (400 z /api/lead).
-    // Bez walidacji tutaj kandydatka traciła leada dopiero na ostatnim kliknięciu, po siedmiu
-    // krokach. Te dwa miejsca muszą zmieniać się RAZEM — zmiana wymogu w jednym bez drugiego
-    // psuje formularz (albo blokuje wysyłkę czymś, czego UI nie sygnalizuje, albo odwrotnie).
-    if (!f.contactConsent) e.contactConsent = "Bez tej zgody nie możemy do Ciebie zadzwonić.";
+    // `contactConsent` NIE jest już sprawdzana tutaj — zebraliśmy ją na kroku 1 i bez niej
+    // aplikacja nie ruszyła z miejsca. Nadal lustruje `leadSchema.contactConsent`
+    // (`src/lib/validators.ts`, `z.literal(true)`), więc backend odrzuca zgłoszenie bez niej.
+    // Te dwa miejsca muszą zmieniać się RAZEM — przeniesienie wymogu w UI bez zmiany walidatora
+    // (albo odwrotnie) psuje formularz po cichu.
   }
   return e;
 }
@@ -213,6 +219,7 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
         category: f.category,
         voivodeship: f.voivodeship,
         city: f.city,
+        contactConsent: f.contactConsent,
         marketingConsent: f.marketingConsent,
         answers: f as unknown as Record<string, unknown>,
         ...utm,
@@ -366,7 +373,7 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       <div>
         <div className="flex items-center justify-between text-xs font-semibold text-muted">
           <span>
-            Krok {step} z {TOTAL_STEPS}
+            Aplikacja — krok {step} z {TOTAL_STEPS}
           </span>
           <span>{pct}%</span>
         </div>
@@ -389,10 +396,11 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       {step === 1 && (
         <div className="space-y-4">
           <h2 ref={headingRef} tabIndex={-1} className="scroll-mt-36 font-serif text-xl font-bold outline-none">
-            Zacznijmy od podstaw
+            Rozpocznij aplikację
           </h2>
           <p className="text-sm text-muted">
-            Sprawdzimy, jakie dofinansowanie Ci przysługuje. Zajmie to około dwóch minut.
+            Wypełnienie aplikacji zajmuje około dwóch minut. Na jej podstawie sprawdzimy,
+            jakie dofinansowanie Ci przysługuje, i dobierzemy certyfikowaną akademię.
           </p>
           <div>
             <label className="label" htmlFor="q-name">Imię i nazwisko *</label>
@@ -404,9 +412,29 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
             <input id="q-email" type="email" autoComplete="email" className="input" placeholder="np. anna@email.pl" value={form.email} onChange={(e) => set("email", e.target.value)} {...err("email")} />
             {errors.email && <p id="quiz-err-email" role="alert" className="field-error">{errors.email}</p>}
             <p className="mt-1.5 text-xs text-muted">
-              Na ten adres wyślemy podsumowanie tego, co Ci przysługuje.
+              Na ten adres wyślemy decyzję w sprawie Twojej aplikacji.
             </p>
           </div>
+          {/* Zgoda WYMAGANA — dotyczy tej aplikacji, nie marketingu. Rozdzielenie jest celowe:
+              uzależnienie usługi od zgody marketingowej łamie art. 7 ust. 4 RODO. */}
+          <label className="flex cursor-pointer items-start gap-3 rounded-[10px] border border-sand-200 bg-white p-3 text-sm">
+            <input
+              type="checkbox"
+              className="mt-0.5 h-5 w-5 shrink-0 accent-sand-700"
+              checked={form.contactConsent}
+              onChange={(e) => set("contactConsent", e.target.checked)}
+              {...err("contactConsent")}
+            />
+            <span className="text-ink">
+              Zgadzam się na kontakt w sprawie mojej aplikacji — e-mailem, telefonicznie lub SMS-em —
+              ze strony Uniwersytetu Beauty oraz dopasowanych trenerek. Obejmuje to przypomnienie
+              o dokończeniu aplikacji, jeśli jej nie złożę. *
+            </span>
+          </label>
+          {errors.contactConsent && (
+            <p id="quiz-err-contactConsent" role="alert" className="field-error">{errors.contactConsent}</p>
+          )}
+
           <label className="flex cursor-pointer items-start gap-3 rounded-[10px] bg-sand-50 p-3 text-sm text-muted">
             <input
               type="checkbox"
@@ -415,8 +443,9 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
               onChange={(e) => set("marketingConsent", e.target.checked)}
             />
             <span>
-              Chcę dostawać e-mailem informacje o naborach i terminach szkoleń z dofinansowaniem.
-              Zgoda jest dobrowolna i mogę ją wycofać w każdej chwili.
+              Dodatkowo chcę dostawać e-mailem informacje o nowych naborach i terminach szkoleń
+              z dofinansowaniem. Ta zgoda jest dobrowolna — aplikacja działa bez niej — i mogę ją
+              wycofać w każdej chwili.
             </span>
           </label>
         </div>
@@ -663,7 +692,7 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       {step === 7 && (
         <div className="space-y-4">
           <h2 ref={headingRef} tabIndex={-1} className="scroll-mt-36 font-serif text-xl font-bold outline-none">
-            Ostatni krok
+            Złóż aplikację
           </h2>
           <div className="space-y-3">
             <label className="flex cursor-pointer items-start gap-3 text-sm text-muted">
@@ -686,25 +715,13 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
             </label>
             {errors.rodoConsent && <p id="quiz-err-rodoConsent" role="alert" className="field-error">{errors.rodoConsent}</p>}
 
-            <label className="flex cursor-pointer items-start gap-3 text-sm text-muted">
-              <input
-                type="checkbox"
-                className="mt-1 h-5 w-5 shrink-0 accent-sand-700"
-                checked={form.contactConsent}
-                onChange={(e) => set("contactConsent", e.target.checked)}
-                {...err("contactConsent")}
-              />
-              <span>
-                Wyrażam zgodę na kontakt telefoniczny i SMS — ze strony Uniwersytetu Beauty oraz dopasowanych
-                trenerek — w celu omówienia szkolenia i dofinansowania. *
-              </span>
-            </label>
-            {errors.contactConsent && <p id="quiz-err-contactConsent" role="alert" className="field-error">{errors.contactConsent}</p>}
-
-            {/* Zgoda marketingowa przeniesiona na KROK 1 (obok e-maila) — musi być zebrana
-                zanim ktokolwiek porzuci quiz, bo inaczej do osoby, która go nie dokończyła,
-                nie wolno napisać maila. Tutaj tylko przypominamy stan, bez drugiego checkboxa:
-                dwa pola sterujące tą samą wartością to prosta droga do przypadkowego odznaczenia. */}
+            {/* Zgoda na kontakt oraz marketingowa są zbierane na KROKU 1 — obie muszą istnieć,
+                ZANIM ktokolwiek porzuci aplikację w połowie. Tutaj tylko przypominamy stan,
+                bez drugiego checkboxa: dwa pola sterujące tą samą wartością to prosta droga
+                do przypadkowego odznaczenia tuż przed wysłaniem. */}
+            <p className="text-sm text-muted">
+              ✓ Zgodziłaś się na kontakt w sprawie tej aplikacji (e-mail, telefon, SMS).
+            </p>
             {form.marketingConsent && (
               <p className="text-sm text-muted">
                 ✓ Zgodziłaś się na e-maile o naborach i terminach szkoleń. Możesz to wycofać w każdej chwili.
@@ -743,7 +760,7 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
         )}
       </div>
       {step === TOTAL_STEPS && (
-        <p className="text-center text-xs text-muted">Skontaktujemy się z Tobą w ciągu 24h. Zero spamu.</p>
+        <p className="text-center text-xs text-muted">Odpowiemy na Twoją aplikację w ciągu 24 h. Zero spamu.</p>
       )}
     </form>
   );

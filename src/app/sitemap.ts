@@ -13,9 +13,9 @@ export const dynamic = "force-dynamic";
 // `/trenerki` i profile `/trenerka/[slug]` NIE są tu od 13.09.2026 — decyzja właściciela
 // o chowaniu trenerek przed startem kampanii, obie trasy przekierowują 308 na /kursy,
 // a promowanie ich w sitemapie wysyłałoby Google mieszany sygnał (redirect + sitemap razem).
-// `/quiz` jest w sitemapie mimo `robots: noindex` na stronie — Google i tak jej nie zaindeksuje
+// `/aplikacja` jest w sitemapie mimo `robots: noindex` na stronie — Google i tak jej nie zaindeksuje
 // (noindex wygrywa), a obecność w sitemapie nie szkodzi; zostaje więc dla porządku listy tras.
-// `/quiz` USUNIĘTY z sitemapy 14.09: ma `robots: noindex`, więc zgłaszanie go Google
+// `/aplikacja` (dawniej `/quiz`) USUNIĘTY z sitemapy 14.09: ma `robots: noindex`, więc zgłaszanie go Google
 // było sprzecznością, którą Search Console raportuje jako „Strona z noindex w mapie witryny".
 // `/poradnik` wchodzi — to realna treść pod frazy o dofinansowaniu, indeksowalna.
 const MAIN_PAGES = ["", "/kursy", "/dofinansowania", "/blog", "/kontakt", "/konsultacja", "/poradnik", "/o-nas"];

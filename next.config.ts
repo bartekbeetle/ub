@@ -53,6 +53,11 @@ const nextConfig: NextConfig = {
       // Zakładka w menu nazywa się „Szkolenia" — ludzie wpisują /szkolenia z ręki.
       { source: "/szkolenia", destination: "/kursy", permanent: true },
       { source: "/szkolenia/:slug", destination: "/kurs/:slug", permanent: true },
+      // `/quiz` → `/aplikacja` (18.09.2026): formularz przestał być „quizem" i stał się
+      // aplikacją o dofinansowanie — zmiana dotyczy też adresu, bo kursantka go widzi.
+      // 308 zachowuje parametry (`?kurs=`, `?kategoria=`, UTM-y z reklam), więc stare linki
+      // z bloga, wizytówki i llms.txt dalej działają.
+      { source: "/quiz", destination: "/aplikacja", permanent: true },
     ];
   },
 };

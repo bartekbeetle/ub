@@ -6,24 +6,29 @@ import { voivodeshipName } from "@/lib/constants";
 export const dynamic = "force-dynamic";
 
 /**
- * PORZUCONE QUIZY — kto zaczął wypełniać i na którym kroku przerwał.
+ * PORZUCONE APLIKACJE — kto zaczął wypełniać i na którym kroku przerwał.
  *
- * 🔴 Najważniejsza kolumna na tym ekranie to NIE e-mail, tylko „zgoda marketingowa".
- * Do osoby, która porzuciła quiz, wolno napisać **wyłącznie** jeśli zaznaczyła zgodę
- * na kroku 1. Bez niej rekord służy do dwóch rzeczy: statystyki (gdzie sypie się formularz)
- * i remarketingu przez piksel Meta — nie do maila.
- * Podstawa: art. 398 Prawa komunikacji elektronicznej. UOKiK 24.07.2026 ukarał za to
- * spółkę na 308 728 zł, a prezesa osobiście na 100 000 zł.
+ * 🔴 Najważniejsza kolumna na tym ekranie to NIE e-mail, tylko podstawa kontaktu.
+ * Od 18.09.2026 są DWIE i pozwalają na różne rzeczy:
+ *
+ * - `contactConsentAt` — zgoda WYMAGANA na kroku 1, dotyczy TEJ aplikacji. Pozwala
+ *   przypomnieć o dokończeniu własnego zgłoszenia i zadzwonić w jego sprawie.
+ *   Nie pozwala wysyłać oferty niezwiązanej z tym, co sama zaczęła.
+ * - `marketingConsentAt` — zgoda DOBROWOLNA: nabory, terminy, inne szkolenia
+ *   (art. 398 Prawa komunikacji elektronicznej).
+ *
+ * Rekord bez żadnej z nich służy do statystyki i remarketingu przez piksel — nie do maila.
+ * UOKiK 24.07.2026 ukarał za wysyłkę bez podstawy spółkę na 308 728 zł, a prezesa na 100 000 zł.
  */
 
 const KROKI = [
-  "1. Imię i e-mail",
+  "1. Imię, e-mail i zgoda na kontakt",
   "2. Szkolenie i region",
   "3. Sytuacja zawodowa",
   "4. Cel",
   "5. Wiek i dojazd",
   "6. Telefon",
-  "7. Zgody",
+  "7. Złożenie aplikacji",
 ];
 
 export default async function PorzuconePage() {
@@ -38,7 +43,9 @@ export default async function PorzuconePage() {
 
   const porzucone = sesje.filter((s) => !s.completed);
   const dokonczone = sesje.filter((s) => s.completed);
-  const doMaila = porzucone.filter((s) => s.marketingConsentAt && s.email);
+  // Komu wolno przypomnieć o dokonczeniu aplikacji - to jest liczba, ktora robi robote.
+  const doMaila = porzucone.filter((s) => s.contactConsentAt && s.email);
+  const doOferty = porzucone.filter((s) => s.marketingConsentAt && s.email);
 
   // Ile osób odpadło na którym kroku — pokazuje, które pytanie zabija konwersję.
   const lejek = KROKI.map((etykieta, i) => {
@@ -52,7 +59,7 @@ export default async function PorzuconePage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold">Porzucone quizy</h1>
+        <h1 className="text-2xl font-bold">Porzucone aplikacje</h1>
         <p className="mt-1 text-sm text-muted">
           Kto zaczął wypełniać i gdzie przerwał. Ostatnie 300 sesji.
         </p>
@@ -63,6 +70,7 @@ export default async function PorzuconePage() {
           { etykieta: "Rozpoczęte", wartosc: sesje.length },
           { etykieta: "Dokończone", wartosc: dokonczone.length },
           { etykieta: "Porzucone", wartosc: porzucone.length },
+          { etykieta: "Zgoda na oferty", wartosc: doOferty.length },
           { etykieta: "Wolno napisać maila", wartosc: doMaila.length },
         ].map((k) => (
           <div key={k.etykieta} className="card p-4">
@@ -132,9 +140,20 @@ export default async function PorzuconePage() {
                     </td>
                     <td className="p-3">{KROKI[s.maxStepReached - 1] ?? `krok ${s.maxStepReached}`}</td>
                     <td className="p-3">
-                      {s.marketingConsentAt && s.email ? (
-                        <span className="rounded bg-emerald-100 px-2 py-0.5 text-emerald-800">
-                          tak — zgoda marketingowa
+                      {s.contactConsentAt && s.email ? (
+                        <div className="space-y-1">
+                          <span className="block w-fit rounded bg-emerald-100 px-2 py-0.5 text-emerald-800">
+                            tak — przypomnienie o aplikacji
+                          </span>
+                          {s.marketingConsentAt && (
+                            <span className="block w-fit rounded bg-emerald-50 px-2 py-0.5 text-[11px] text-emerald-700">
+                              + oferty i nabory
+                            </span>
+                          )}
+                        </div>
+                      ) : s.marketingConsentAt && s.email ? (
+                        <span className="rounded bg-amber-100 px-2 py-0.5 text-amber-800">
+                          tylko oferty — bez zgody na kontakt
                         </span>
                       ) : (
                         <span className="rounded bg-red-100 px-2 py-0.5 text-red-700">
