@@ -63,7 +63,7 @@ export const leadSchema = z.object({
     errorMap: () => ({ message: "Zgoda na przekazanie danych trenerkom jest wymagana" }),
   }),
   contactConsent: z.literal(true, {
-    errorMap: () => ({ message: "Zgoda na kontakt telefoniczny jest wymagana" }),
+    errorMap: () => ({ message: "Zgoda na kontakt w sprawie aplikacji jest wymagana" }),
   }),
   marketingConsent: z.boolean().optional().default(false),
   courseId: z.number().int().positive().optional().nullable(),

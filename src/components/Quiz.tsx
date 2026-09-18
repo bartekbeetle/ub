@@ -399,8 +399,8 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
             Rozpocznij aplikację
           </h2>
           <p className="text-sm text-muted">
-            Wypełnienie aplikacji zajmuje około dwóch minut. Na jej podstawie sprawdzimy,
-            jakie dofinansowanie Ci przysługuje, i dobierzemy certyfikowaną akademię.
+            Na podstawie aplikacji sprawdzimy, jakie dofinansowanie Ci przysługuje,
+            i dobierzemy certyfikowaną akademię.
           </p>
           <div>
             <label className="label" htmlFor="q-name">Imię i nazwisko *</label>
