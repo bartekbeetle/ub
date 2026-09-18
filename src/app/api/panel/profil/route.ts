@@ -3,6 +3,8 @@ import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireTrainer } from "@/lib/auth";
 import { logAudit, actorLabel } from "@/lib/audit";
+import { revalidateTag } from "next/cache";
+import { CACHE_TAGS } from "@/lib/public-cache";
 import { z } from "zod";
 
 export const runtime = "nodejs";
@@ -42,5 +44,7 @@ export async function PATCH(req: Request) {
     .where(eq(schema.trainers.id, user.trainerId));
 
   await logAudit({ actor: actorLabel(user), action: "edycja_profilu", entityType: "trainer", entityId: user.trainerId });
+  // Nazwisko/bio trenerki renderują się na cache'owanych kartach kursów.
+  revalidateTag(CACHE_TAGS.courses);
   return NextResponse.json({ ok: true });
 }
