@@ -1,5 +1,5 @@
 import "server-only";
-import { and, eq, inArray, lt, or } from "drizzle-orm";
+import { and, eq, gte, inArray, lt, or, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 
 /**
@@ -146,36 +146,59 @@ export async function sendOrQueueEmail(params: {
 }
 
 /**
+ * Domyślne okno wieku maila. Kolejka rośnie od lipca 2026, bo SMTP nigdy nie był ustawiony —
+ * w środku leżą powiadomienia o leadach sprzed miesięcy. Wysłanie ich w dniu włączenia SMTP
+ * byłoby gorsze niż niewysłanie niczego: trenerka dostaje „pilny lead" na kursantkę, która
+ * dawno kupiła gdzie indziej, i traci zaufanie do kanału przy pierwszym kontakcie.
+ * Stare maile zostają w bazie jako historia — po prostu ich nie wysyłamy.
+ */
+export const DEFAULT_MAX_EMAIL_AGE_DAYS = 7;
+
+/**
  * Opróżnia kolejkę: bierze maile czekające i te po nieudanych próbach, próbuje wysłać.
  * Wołane przez `/api/cron/email-queue`.
  *
  * Bez tego workera samo ustawienie SMTP nic nie daje — zaległe maile zostają w bazie
  * na zawsze, bo `sendOrQueueEmail` próbuje wysłać tylko w momencie zdarzenia.
+ *
+ * `maxAgeDays: null` wyłącza filtr wieku — świadoma decyzja operatora, nie domyślne zachowanie.
  */
-export async function flushEmailQueue(limit = 50): Promise<{
+export async function flushEmailQueue(
+  limit = 50,
+  maxAgeDays: number | null = DEFAULT_MAX_EMAIL_AGE_DAYS
+): Promise<{
   processed: number;
   sent: number;
   failed: number;
   skipped: boolean;
+  skippedTooOld: number;
 }> {
   if (!smtpConfigured()) {
-    return { processed: 0, sent: 0, failed: 0, skipped: true };
+    return { processed: 0, sent: 0, failed: 0, skipped: true, skippedTooOld: 0 };
   }
 
   const db = await getDb();
-  const pending = await db
-    .select()
-    .from(schema.emailQueue)
-    .where(
-      and(
-        or(
-          eq(schema.emailQueue.status, "w_kolejce"),
-          and(eq(schema.emailQueue.status, "blad"), lt(schema.emailQueue.attempts, MAX_EMAIL_ATTEMPTS))
-        ),
-        lt(schema.emailQueue.attempts, MAX_EMAIL_ATTEMPTS)
-      )
-    )
-    .limit(limit);
+  const readyFilter = and(
+    or(
+      eq(schema.emailQueue.status, "w_kolejce"),
+      and(eq(schema.emailQueue.status, "blad"), lt(schema.emailQueue.attempts, MAX_EMAIL_ATTEMPTS))
+    ),
+    lt(schema.emailQueue.attempts, MAX_EMAIL_ATTEMPTS)
+  );
+
+  let skippedTooOld = 0;
+  let ageFilter = readyFilter;
+  if (maxAgeDays !== null) {
+    const cutoff = new Date(Date.now() - maxAgeDays * 24 * 60 * 60 * 1000);
+    const [tooOld] = await db
+      .select({ c: sql<number>`count(*)::int` })
+      .from(schema.emailQueue)
+      .where(and(readyFilter, lt(schema.emailQueue.createdAt, cutoff)));
+    skippedTooOld = tooOld?.c ?? 0;
+    ageFilter = and(readyFilter, gte(schema.emailQueue.createdAt, cutoff))!;
+  }
+
+  const pending = await db.select().from(schema.emailQueue).where(ageFilter).limit(limit);
 
   let sent = 0;
   let failed = 0;
@@ -185,7 +208,7 @@ export async function flushEmailQueue(limit = 50): Promise<{
     else failed++;
   }
 
-  return { processed: pending.length, sent, failed, skipped: false };
+  return { processed: pending.length, sent, failed, skipped: false, skippedTooOld };
 }
 
 export function renderTemplate(template: string, vars: Record<string, string>): string {

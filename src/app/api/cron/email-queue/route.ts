@@ -29,7 +29,15 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
   }
 
-  const result = await flushEmailQueue();
+  // Domyślnie pomijamy maile starsze niż 7 dni (zaległości sprzed konfiguracji SMTP —
+  // patrz DEFAULT_MAX_EMAIL_AGE_DAYS). `?maxAgeDays=0` wysyła wszystko, świadomie.
+  const rawAge = url.searchParams.get("maxAgeDays");
+  const maxAgeDays = rawAge === null ? undefined : Number(rawAge) === 0 ? null : Number(rawAge);
+  const limit = Number(url.searchParams.get("limit") || 50);
+
+  const result =
+    maxAgeDays === undefined ? await flushEmailQueue(limit) : await flushEmailQueue(limit, maxAgeDays);
+
   if (result.skipped) {
     return NextResponse.json({
       ok: false,
