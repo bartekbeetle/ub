@@ -62,6 +62,39 @@ export function SettingsForm({ settings }: { settings: Settings }) {
         </label>
         <textarea id="s-template" name="leadEmailTemplate" rows={12} defaultValue={settings.leadEmailTemplate} className="input resize-y font-mono text-sm" />
       </div>
+
+      <div className="border-t border-slate-200 pt-5">
+        <h2 className="text-base font-bold text-ink">Maile do kursantki</h2>
+        <p className="mt-1 text-sm text-slate-600">
+          Wiadomości transakcyjne — wysyłane automatycznie. Obowiązuje guardrail ceny:
+          nigdy „kurs za 0 zł", zawsze „do 90%, zależnie od województwa i naboru".
+        </p>
+      </div>
+
+      <div>
+        <label className="label" htmlFor="s-confirm-subject">Temat: potwierdzenie zgłoszenia</label>
+        <input id="s-confirm-subject" name="confirmEmailSubject" defaultValue={settings.confirmEmailSubject} className="input font-mono text-sm" />
+      </div>
+      <div>
+        <label className="label" htmlFor="s-confirm-template">
+          Treść: potwierdzenie zgłoszenia (wysyłane od razu po wypełnieniu formularza) — zmienne:{" "}
+          {"{{imie}} {{kategoria}} {{wojewodztwo}} {{miasto}} {{telefon}} {{email}} {{status_zawodowy}}"}
+        </label>
+        <textarea id="s-confirm-template" name="confirmEmailTemplate" rows={12} defaultValue={settings.confirmEmailTemplate} className="input resize-y font-mono text-sm" />
+      </div>
+
+      <div>
+        <label className="label" htmlFor="s-signup-subject">Temat: potwierdzenie zapisu</label>
+        <input id="s-signup-subject" name="signupEmailSubject" defaultValue={settings.signupEmailSubject} className="input font-mono text-sm" />
+      </div>
+      <div>
+        <label className="label" htmlFor="s-signup-template">
+          Treść: potwierdzenie zapisu (wysyłane, gdy akademia oznaczy kursantkę jako zapisaną) — zmienne:{" "}
+          {"{{imie}} {{trenerka}} {{kategoria}} {{wojewodztwo}}"}
+        </label>
+        <textarea id="s-signup-template" name="signupEmailTemplate" rows={10} defaultValue={settings.signupEmailTemplate} className="input resize-y font-mono text-sm" />
+      </div>
+
       <div className="flex items-center gap-3">
         <button type="submit" disabled={state === "saving"} className="btn-primary disabled:opacity-50">
           {state === "saving" ? "Zapisywanie…" : "Zapisz ustawienia"}
