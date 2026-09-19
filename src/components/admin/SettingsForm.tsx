@@ -4,9 +4,33 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Settings } from "@/db/schema";
 
+type SmtpResult = { ok: boolean; error?: string; config: Record<string, string> };
+
 export function SettingsForm({ settings }: { settings: Settings }) {
   const router = useRouter();
   const [state, setState] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [testTo, setTestTo] = useState("");
+  const [testState, setTestState] = useState<"idle" | "sending">("idle");
+  const [testResult, setTestResult] = useState<SmtpResult | null>(null);
+
+  async function onTestSmtp() {
+    setTestState("sending");
+    setTestResult(null);
+    try {
+      const res = await fetch("/api/admin/smtp-test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ to: testTo }),
+      });
+      const data = await res.json();
+      setTestResult(
+        res.ok ? data : { ok: false, error: data.error ?? `HTTP ${res.status}`, config: data.config ?? {} }
+      );
+    } catch (err) {
+      setTestResult({ ok: false, error: err instanceof Error ? err.message : String(err), config: {} });
+    }
+    setTestState("idle");
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -61,6 +85,54 @@ export function SettingsForm({ settings }: { settings: Settings }) {
           Treść maila do trenerki — zmienne: {"{{trenerka}} {{imie}} {{telefon}} {{email}} {{kategoria}} {{wojewodztwo}} {{status_zawodowy}}"}
         </label>
         <textarea id="s-template" name="leadEmailTemplate" rows={12} defaultValue={settings.leadEmailTemplate} className="input resize-y font-mono text-sm" />
+      </div>
+
+      <div className="border-t border-slate-200 pt-5">
+        <h2 className="text-base font-bold text-ink">Test wysyłki</h2>
+        <p className="mt-1 text-sm text-slate-600">
+          Sprawdza, czy serwer poczty przyjmuje wiadomości — zanim pierwsza kursantka
+          przestanie je dostawać. Wysyła na adres, który wpiszesz; nigdy do leadów.
+        </p>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <input
+            type="email"
+            value={testTo}
+            onChange={(e) => setTestTo(e.target.value)}
+            placeholder="twoj@adres.pl"
+            className="input max-w-xs"
+            aria-label="Adres do testu wysyłki"
+          />
+          <button
+            type="button"
+            onClick={onTestSmtp}
+            disabled={testState === "sending" || !testTo.includes("@")}
+            className="btn-outline disabled:opacity-50"
+          >
+            {testState === "sending" ? "Wysyłanie…" : "Wyślij testowy e-mail"}
+          </button>
+        </div>
+
+        {testResult && (
+          <div
+            role="status"
+            className={`mt-3 rounded-lg border p-3 text-sm ${
+              testResult.ok ? "border-money/40 bg-money/5 text-money-dark" : "border-red-300 bg-red-50 text-red-800"
+            }`}
+          >
+            <p className="font-semibold">
+              {testResult.ok ? "Wysłane — sprawdź skrzynkę." : "Nie udało się wysłać."}
+            </p>
+            {testResult.error && (
+              <p className="mt-1 break-words font-mono text-xs">{testResult.error}</p>
+            )}
+            {testResult.config?.host && (
+              <p className="mt-2 text-xs text-slate-600">
+                Serwer: {testResult.config.host}:{testResult.config.port} · użytkownik: {testResult.config.user} ·
+                hasło: {testResult.config.pass} · nadawca: {testResult.config.from}
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="border-t border-slate-200 pt-5">

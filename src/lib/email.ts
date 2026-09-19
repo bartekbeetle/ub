@@ -146,6 +146,65 @@ export async function sendOrQueueEmail(params: {
 }
 
 /**
+ * Diagnostyka SMTP dla panelu admina. Świadomie zwraca SUROWY komunikat błędu,
+ * a nie „coś poszło nie tak" — trzy możliwe przyczyny wyglądają z zewnątrz identycznie,
+ * a prowadzą do zupełnie różnych działań:
+ *  - `ECONNREFUSED` / timeout → zły host albo port zablokowany przez dostawcę VPS,
+ *  - `EAUTH` / „535" → złe hasło skrzynki,
+ *  - `ENOTFOUND` → literówka w SMTP_HOST.
+ *
+ * Parametry potwierdzone z produkcyjnego VPS (19.09.2026): `mail16.lh.pl:587`,
+ * STARTTLS, `AUTH LOGIN PLAIN`, porty 25/465/587 wychodzące otwarte.
+ */
+export async function sendTestEmail(to: string): Promise<{ ok: boolean; error?: string; config: Record<string, string> }> {
+  const config = {
+    host: process.env.SMTP_HOST || "(brak)",
+    port: process.env.SMTP_PORT || "587",
+    user: process.env.SMTP_USER || "(brak)",
+    from: process.env.SMTP_FROM || process.env.SMTP_USER || "(brak)",
+    pass: process.env.SMTP_PASS ? "(ustawione)" : "(brak)",
+  };
+
+  if (!smtpConfigured()) {
+    return {
+      ok: false,
+      error: "Brak konfiguracji SMTP w zmiennych środowiskowych (SMTP_HOST / SMTP_USER / SMTP_PASS).",
+      config,
+    };
+  }
+
+  try {
+    const nodemailer = (await import("nodemailer")).default;
+    const transport = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT || 587),
+      secure: Number(process.env.SMTP_PORT) === 465,
+      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+    });
+    // `verify` sprawdza połączenie i logowanie OSOBNO od wysyłki — dzięki temu
+    // widać, czy problem jest z serwerem, czy dopiero z samą wiadomością.
+    await transport.verify();
+    await transport.sendMail({
+      from: process.env.SMTP_FROM || process.env.SMTP_USER,
+      to,
+      subject: "Test wysyłki — Uniwersytet Beauty",
+      text: [
+        "To jest testowa wiadomość z panelu Uniwersytetu Beauty.",
+        "",
+        "Jeśli ją widzisz, wysyłka maili działa: kursantki dostaną potwierdzenie zgłoszenia",
+        "i potwierdzenie zapisu na szkolenie.",
+        "",
+        `Serwer: ${config.host}:${config.port}`,
+        `Nadawca: ${config.from}`,
+      ].join("\n"),
+    });
+    return { ok: true, config };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : String(err), config };
+  }
+}
+
+/**
  * Domyślne okno wieku maila. Kolejka rośnie od lipca 2026, bo SMTP nigdy nie był ustawiony —
  * w środku leżą powiadomienia o leadach sprzed miesięcy. Wysłanie ich w dniu włączenia SMTP
  * byłoby gorsze niż niewysłanie niczego: trenerka dostaje „pilny lead" na kursantkę, która
