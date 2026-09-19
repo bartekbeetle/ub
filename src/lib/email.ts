@@ -15,6 +15,8 @@ export const EMAIL_KIND = {
   KURSANTKA_ZAPIS: "kursantka_zapis",
   /** Do nas (notifyEmail): kursantka zapisana, jest za co fakturować. */
   WEWNETRZNE_ZAPIS: "wewnetrzne_zapis",
+  /** Mailing z propozycjami szkoleń — jedyny rodzaj, który wymaga zgody i linku rezygnacji. */
+  MARKETING: "marketing",
 } as const;
 
 export type EmailKind = (typeof EMAIL_KIND)[keyof typeof EMAIL_KIND];
@@ -50,12 +52,26 @@ async function alreadyQueued(leadId: number, kind: EmailKind): Promise<boolean> 
   return rows.length > 0;
 }
 
+/**
+ * Adres, na który trafiają ODPOWIEDZI kursantek.
+ *
+ * Rozdzielenie nadawcy od adresu zwrotnego jest celowe (decyzja Bartka 19.09):
+ * automaty wychodzą ze `szkolenia@`, ale gdy kursantka kliknie „Odpowiedz" — a oba maile
+ * wprost ją do tego zapraszają („chcesz wycofać zgodę, odpisz") — wiadomość ma wylądować
+ * w `biuro@`, czyli w oficjalnej skrzynce, którą ktoś realnie czyta.
+ * Bez tego prośba o wycofanie zgody trafiałaby do skrzynki automatu.
+ */
+function replyToAddress(): string | undefined {
+  return process.env.SMTP_REPLY_TO || "biuro@uniwersytetbeauty.pl";
+}
+
 async function deliver(row: {
   id: number;
   toEmail: string;
   subject: string;
   body: string;
   attempts: number;
+  headers?: Record<string, string> | null;
 }): Promise<{ sent: boolean }> {
   const db = await getDb();
   try {
@@ -68,9 +84,11 @@ async function deliver(row: {
     });
     await transport.sendMail({
       from: process.env.SMTP_FROM || process.env.SMTP_USER,
+      replyTo: replyToAddress(),
       to: row.toEmail,
       subject: row.subject,
       text: row.body,
+      headers: row.headers ?? undefined,
     });
     await db
       .update(schema.emailQueue)
@@ -106,6 +124,8 @@ export async function sendOrQueueEmail(params: {
   body: string;
   leadId?: number | null;
   kind?: EmailKind;
+  /** Dodatkowe nagłówki (np. `List-Unsubscribe`). Zapisywane w kolejce, żeby przetrwały ponowienie. */
+  headers?: Record<string, string>;
 }): Promise<{ sent: boolean; skipped?: boolean }> {
   const db = await getDb();
   const kind = params.kind ?? "inne";
@@ -128,6 +148,7 @@ export async function sendOrQueueEmail(params: {
       body: params.body,
       leadId: params.leadId ?? null,
       kind,
+      headers: params.headers ?? null,
     })
     .returning();
 
@@ -142,6 +163,7 @@ export async function sendOrQueueEmail(params: {
     subject: queued.subject,
     body: queued.body,
     attempts: queued.attempts,
+    headers: params.headers,
   });
 }
 
@@ -273,3 +295,57 @@ export async function flushEmailQueue(
 // Implementacja mieszka w `./template` (bez `server-only`), żeby dało się ją odpalić
 // ze skryptów i testów. Re-eksport zachowuje istniejące importy z `@/lib/email`.
 export { renderTemplate } from "./template";
+
+/**
+ * Wysyłka MARKETINGOWA (propozycje szkoleń) — inna ścieżka niż maile transakcyjne.
+ *
+ * Trzy rzeczy, których transakcyjne nie mają i mieć nie powinny:
+ *  1. **sprawdzenie listy wypisanych** przed wysłaniem czegokolwiek,
+ *  2. **stopka z linkiem „nie chcę więcej propozycji szkoleń"**,
+ *  3. **nagłówek `List-Unsubscribe`** — Gmail i Outlook pokazują dzięki niemu własny
+ *     przycisk rezygnacji; jego brak przy masowej wysyłce realnie obniża dostarczalność.
+ *
+ * ⛔ **Nie używaj tego do potwierdzeń zgłoszenia i zapisu.** Tamte to obsługa sprawy,
+ * o którą kursantka sama poprosiła — doklejenie do nich rezygnacji sugerowałoby, że można
+ * zrezygnować z odpowiedzi, na którą czeka.
+ */
+export async function sendMarketingEmail(params: {
+  to: string;
+  subject: string;
+  body: string;
+  leadId?: number | null;
+}): Promise<{ sent: boolean; skipped?: boolean; reason?: string }> {
+  const { isUnsubscribed, getOrCreateUnsubscribeToken } = await import("./marketing-list");
+
+  if (await isUnsubscribed(params.to)) {
+    return { sent: false, skipped: true, reason: "adres wypisany z mailingu" };
+  }
+
+  const token = await getOrCreateUnsubscribeToken(params.to);
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://uniwersytetbeauty.pl";
+  const unsubUrl = `${base}/wypisz/${token}`;
+
+  const body = [
+    params.body,
+    "",
+    "—",
+    "Dostajesz tę wiadomość, bo zgodziłaś się na propozycje szkoleń od Uniwersytetu Beauty.",
+    `Nie chcesz otrzymywać więcej propozycji szkoleń? ${unsubUrl}`,
+  ].join("\n");
+
+  return sendOrQueueEmail({
+    to: params.to,
+    subject: params.subject,
+    body,
+    leadId: params.leadId ?? null,
+    kind: EMAIL_KIND.MARKETING,
+    // RFC 8058: adres w `List-Unsubscribe` musi przyjmować POST, żeby przycisk „Wypisz"
+    // w Gmailu/Outlooku zadziałał jednym kliknięciem — dlatego wskazuje na trasę API,
+    // a nie na stronę z potwierdzeniem. Link w treści maila prowadzi do strony,
+    // bo tam człowiek ma zobaczyć, co robi, zanim kliknie.
+    headers: {
+      "List-Unsubscribe": `<${base}/api/wypisz?token=${token}>, <mailto:biuro@uniwersytetbeauty.pl?subject=Wypisz>`,
+      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+    },
+  });
+}

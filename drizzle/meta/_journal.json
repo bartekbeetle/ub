@@ -85,6 +85,13 @@
       "when": 1789733151777,
       "tag": "0011_abnormal_abomination",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1789829534060,
+      "tag": "0012_chief_viper",
+      "breakpoints": true
     }
   ]
 }

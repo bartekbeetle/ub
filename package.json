@@ -24,7 +24,8 @@
     "blog:qa": "tsx scripts/blog-factory/qa.ts",
     "blog:build": "npm run blog:generuj && npm run blog:qa && npm run db:seed-blog",
     "db:seed-kursy-ogolne": "tsx scripts/seed-kursy-ogolne.ts",
-    "email:preview": "tsx scripts/email-preview.ts"
+    "email:preview": "tsx scripts/email-preview.ts",
+    "test:wypisanie": "tsx scripts/test-wypisanie.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.3.0",

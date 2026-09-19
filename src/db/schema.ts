@@ -756,6 +756,52 @@ export const settings = pgTable("settings", {
   ),
 });
 
+// ===== WYPISANIA Z MAILINGU =====
+
+/**
+ * Lista osób, które nie chcą dostawać propozycji szkoleń.
+ *
+ * 🔴 **Kluczem jest ADRES E-MAIL, nie lead — i to jest sedno tej tabeli.**
+ * Jedna kobieta potrafi mieć kilka wierszy w `leads` (w panelu leży już duplikat z 15.09:
+ * ten sam adres, dwa zgłoszenia minutę po sobie) plus osobne wiersze w `quiz_sessions`.
+ * Flaga „wypisana" postawiona na leadzie wyciszyłaby jeden rekord i dalej wysyłała z drugiego,
+ * czyli dokładnie to, na co człowiek się skarży, gdy raz się wypisał.
+ *
+ * Wiersz powstaje przy PIERWSZYM mailingu do danego adresu (wtedy generujemy `token` do linku
+ * „nie chcę więcej propozycji szkoleń"). `optOutAt = NULL` znaczy „token wydany, osoba nadal
+ * zapisana"; ustawienie daty = wypisana.
+ *
+ * **Adres zostaje w bazie po wypisaniu — świadomie.** Usunięcie go oznaczałoby, że przy
+ * kolejnym imporcie wyśle się jej znowu. Lista wypisanych musi przeżyć, żeby działać.
+ */
+export const marketingSuppression = pgTable(
+  "marketing_suppression",
+  {
+    id: serial("id").primaryKey(),
+    /** Zawsze zapisywany małymi literami i przycięty — inaczej „Ania@X.pl" ominie blokadę „ania@x.pl". */
+    email: varchar("email", { length: 255 }).notNull().unique(),
+    /** Losowy, nieodgadywalny — w linku nigdy nie umieszczamy adresu e-mail (wyciekłby w logach i Refererze). */
+    token: varchar("token", { length: 64 }).notNull().unique(),
+    /** NULL = nadal zapisana. Data = wypisana i od tej chwili pomijana w każdej wysyłce marketingowej. */
+    optOutAt: timestamp("opt_out_at", { withTimezone: true }),
+    /** Skąd przyszło wypisanie: `link` (klik w mailu), `panel` (admin), `telefon`, `mail`. */
+    optOutSource: varchar("opt_out_source", { length: 40 }),
+    /**
+     * 🔴 Czy wolno użyć tego adresu jako materiału wyjściowego do grup podobnych odbiorców
+     * (look-alike) w Meta. **Domyślnie FALSE i tak zostaje do czasu opinii prawnej.**
+     *
+     * Powód ostrożności: wgranie adresu do Meta jest udostępnieniem danych podmiotowi
+     * trzeciemu w celu marketingu bezpośredniego, a sprzeciw wobec marketingu bezpośredniego
+     * (art. 21 ust. 2 RODO) jest bezwarunkowy — nie ma testu równowagi interesów, który
+     * dałoby się przeciwstawić. Pytanie do kancelarii jest w pakiecie; do odpowiedzi
+     * eksport marketingowy pomija wypisanych CAŁKOWICIE.
+     */
+    lookalikeAllowed: boolean("lookalike_allowed").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("suppression_optout_idx").on(t.optOutAt)]
+);
+
 // ===== KOLEJKA EMAIL =====
 
 export const emailQueue = pgTable(
@@ -776,6 +822,12 @@ export const emailQueue = pgTable(
      * (b) diagnostyki: w kolejce widać, czego dokładnie nie udało się wysłać.
      */
     kind: varchar("kind", { length: 40 }).notNull().default("inne"),
+    /**
+     * Dodatkowe nagłówki wiadomości (dziś: `List-Unsubscribe` przy mailingach).
+     * Trzymane w kolejce, bo worker ponawiający wysyłkę musi odtworzyć maila wiernie —
+     * mail marketingowy bez nagłówka rezygnacji leci w filtry antyspamowe.
+     */
+    headers: jsonb("headers").$type<Record<string, string>>(),
     /**
      * Ile razy worker próbował wysłać. Bez licznika jeden trwale błędny adres
      * blokowałby kolejkę w nieskończonej pętli ponawiania.
