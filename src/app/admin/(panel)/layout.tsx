@@ -1,53 +1,56 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { getSessionUser } from "@/lib/auth";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { LogoutButton } from "@/components/admin/LogoutButton";
-import { PasswordForm } from "@/components/admin/PasswordForm";
+import { PanelShell } from "@/components/PanelShell";
 
 export const dynamic = "force-dynamic";
+
+const HASLO = "/admin/haslo";
 
 export default async function AdminPanelLayout({ children }: { children: React.ReactNode }) {
   const user = await getSessionUser();
   if (!user || user.role !== "admin") redirect("/admin/login");
 
+  // 🔴 Przekierowanie, nie podmiana widoku — pełne uzasadnienie w layoucie panelu trenerki
+  // (`src/app/panel/(panel)/layout.tsx`). Skrótowo: samo nierenderowanie `children` NIE
+  // powstrzymuje Nexta przed wykonaniem segmentu strony i wrzuceniem danych do payloadu RSC.
+  if (user.mustChangePassword) {
+    const pathname = (await headers()).get("x-pathname") ?? "";
+    if (pathname !== HASLO) redirect(HASLO);
+  }
+
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* SIDEBAR navy */}
-      <aside className="fixed inset-y-0 left-0 z-30 flex w-60 flex-col bg-navy px-3 py-6">
-        <Link href="/admin" className="px-4 font-serif text-lg font-bold tracking-[3px] text-cream-warm">
+    <PanelShell
+      brandHref="/admin"
+      brand={
+        <>
           UB <span className="text-sand-300">ADMIN</span>
-        </Link>
-        <div className="mt-8 flex-1">
-          <AdminNav />
-        </div>
-        <div className="border-t border-white/10 pt-3">
+        </>
+      }
+      nav={<AdminNav />}
+      footer={
+        <>
           <p className="truncate px-4 pb-2 text-xs text-sand-200/50">{user.email}</p>
-          <Link href="/admin/haslo" className="flex items-center gap-3 rounded-lg px-4 py-2 text-sm font-medium text-sand-200/70 transition-colors hover:bg-white/5 hover:text-white">
+          <Link
+            href="/admin/haslo"
+            className="flex items-center gap-3 rounded-lg px-4 py-2 text-sm font-medium text-sand-200/70 transition-colors hover:bg-white/5 hover:text-white"
+          >
             Zmień hasło
           </Link>
           <LogoutButton />
+        </>
+      }
+    >
+      {user.mustChangePassword && (
+        <div className="mx-auto mb-6 max-w-md rounded-[12px] border border-amber-300 bg-amber-50 px-5 py-4 text-sm text-amber-900">
+          <strong>Zmień hasło startowe.</strong> Konto używa hasła z seeda. Ustaw własne hasło,
+          żeby uzyskać dostęp do panelu.
         </div>
-      </aside>
-
-      <div className="ml-60 flex-1 p-8">
-        {user.mustChangePassword ? (
-          // Hasło z seeda → renderujemy WYŁĄCZNIE formularz zmiany hasła, nigdy `children`.
-          // Serwerowa bramka, nie kliencki overlay (patrz audyt bezpieczeństwa 21.09).
-          <div className="mx-auto max-w-md">
-            <div className="mb-6 rounded-[12px] border border-amber-300 bg-amber-50 px-5 py-4 text-sm text-amber-900">
-              <strong>Zmień hasło startowe.</strong> Konto używa hasła z seeda. Ustaw własne hasło,
-              żeby uzyskać dostęp do panelu.
-            </div>
-            <div className="card p-6">
-              <h1 className="mb-4 font-serif text-xl font-bold">Ustaw własne hasło</h1>
-              <PasswordForm />
-            </div>
-          </div>
-        ) : (
-          children
-        )}
-      </div>
-    </div>
+      )}
+      {children}
+    </PanelShell>
   );
 }

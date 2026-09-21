@@ -156,10 +156,10 @@ export function MailingRunner({
           </button>
         )}
 
-        <div className="flex items-center gap-2">
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
           <input
             type="email"
-            className="input w-56"
+            className="input w-full sm:w-56"
             placeholder="adres do testu"
             value={testTo}
             onChange={(e) => setTestTo(e.target.value)}

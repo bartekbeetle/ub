@@ -90,7 +90,9 @@ export default async function RozliczeniaPage({ searchParams }: { searchParams: 
                 <span>Kwota: <strong className="text-money-dark">{formatPln(agg.amountDue)}</strong></span>
               </div>
             </div>
-            <table className="w-full text-left text-sm">
+            {/* Przewijanie w kontenerze, nie całą stroną — patrz komentarz na dashboardzie. */}
+            <div className="overflow-x-auto">
+            <table className="w-full min-w-[620px] text-left text-sm">
               <thead className="text-xs uppercase tracking-wide text-muted">
                 <tr>
                   <th className="px-6 py-2.5 font-semibold">Data</th>
@@ -120,6 +122,7 @@ export default async function RozliczeniaPage({ searchParams }: { searchParams: 
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         ))}
         {aggregates.length === 0 && (

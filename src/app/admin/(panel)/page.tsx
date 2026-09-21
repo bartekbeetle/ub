@@ -145,7 +145,10 @@ export default async function AdminDashboard() {
             Zobacz wszystkie →
           </Link>
         </div>
-        <table className="w-full text-left text-sm">
+        {/* Tabela przewija się w swoim kontenerze — bez tego na telefonie sideways
+            przewijała się CAŁA strona i treść uciekała poza ekran. */}
+        <div className="overflow-x-auto">
+        <table className="w-full min-w-[560px] text-left text-sm">
           <thead className="bg-gray-50 text-xs uppercase tracking-wide text-muted">
             <tr>
               <th className="px-6 py-3 font-semibold">Data</th>
@@ -178,6 +181,7 @@ export default async function AdminDashboard() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
