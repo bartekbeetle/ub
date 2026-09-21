@@ -46,7 +46,12 @@ export function maskEmail(email: string): string {
 /** CSV z BOM (Excel + polskie znaki) */
 export function toCsv(rows: (string | number | null | undefined)[][]): string {
   const esc = (v: string | number | null | undefined) => {
-    const s = v === null || v === undefined ? "" : String(v);
+    let s = v === null || v === undefined ? "" : String(v);
+    // Neutralizacja CSV/Formula Injection: dane leadów pochodzą z publicznego formularza,
+    // a admin otwiera eksport w Excelu/LibreOffice. Komórka zaczynająca się od = + - @ (albo
+    // tab/CR) jest tam traktowana jak formuła — spreparowany `name` mógłby wykonać DDE/link
+    // phishingowy. Poprzedzamy ją apostrofem, który arkusze traktują jako „to jest tekst".
+    if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
     return /[";\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
   };
   return "﻿" + rows.map((r) => r.map(esc).join(";")).join("\r\n");

@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { loginSchema } from "@/lib/validators";
 import { rateLimit, getClientIp } from "@/lib/ratelimit";
-import { verifyPassword, createSession } from "@/lib/auth";
+import { verifyPassword, createSession, DUMMY_PASSWORD_HASH } from "@/lib/auth";
 import { logAudit } from "@/lib/audit";
 
 export const runtime = "nodejs";
@@ -26,7 +26,9 @@ export async function POST(req: Request) {
   const db = await getDb();
   const rows = await db.select().from(schema.users).where(eq(schema.users.email, parsed.data.email.toLowerCase())).limit(1);
   const user = rows[0];
-  const valid = user && user.isActive && (await verifyPassword(parsed.data.password, user.passwordHash));
+  // Stałoczasowo: jedno porównanie bcrypt zawsze (atrapa gdy konta nie ma) — patrz /admin/login.
+  const passwordOk = await verifyPassword(parsed.data.password, user?.passwordHash ?? DUMMY_PASSWORD_HASH);
+  const valid = Boolean(user && user.isActive && passwordOk);
   if (!valid) {
     return NextResponse.json({ error: "Nieprawidłowy email lub hasło." }, { status: 401 });
   }

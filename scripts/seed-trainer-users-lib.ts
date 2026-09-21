@@ -1,6 +1,20 @@
 import bcrypt from "bcryptjs";
+import { randomBytes } from "crypto";
 
-const TRAINER_PASSWORD = "Trenerka!2026";
+/**
+ * Hasło startowe kont trenerek.
+ *
+ * NIE jest już zaszyte w repo (audyt bezpieczeństwa 21.09.2026): wspólny, publicznie znany
+ * string + wyliczalne loginy `<slug>@demo.…` dawały gotowy klucz do PII kursantek. Teraz:
+ *   1) `TRAINER_SEED_PASSWORD` z env, jeśli ustawione (jedno, świadome hasło na batch), albo
+ *   2) losowe 24-znakowe hasło wygenerowane per uruchomienie seeda (nie do odczytania z kodu).
+ * W obu wariantach konto i tak dostaje `mustChangePassword: true`, a od 21.09 serwerowy guard
+ * (`requireTrainer`) blokuje dostęp do danych do czasu ustawienia własnego hasła — więc nawet
+ * znajomość hasła startowego nie daje wglądu w leady. Hasło startowe służy wyłącznie do
+ * pierwszego logowania i natychmiastowej zmiany.
+ */
+const TRAINER_PASSWORD =
+  process.env.TRAINER_SEED_PASSWORD?.trim() || randomBytes(18).toString("base64url");
 
 function slugToDemoEmail(slug: string): string {
   return `${slug}@demo.uniwersytetbeauty.pl`;

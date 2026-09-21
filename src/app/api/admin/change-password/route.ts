@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { changePasswordSchema } from "@/lib/validators";
-import { getSessionUser, verifyPassword, hashPassword } from "@/lib/auth";
+import { getSessionUser, verifyPassword, hashPassword, invalidateUserSessions, createSession } from "@/lib/auth";
 import { logAudit, actorLabel } from "@/lib/audit";
 
 export const runtime = "nodejs";
@@ -24,6 +24,11 @@ export async function POST(req: Request) {
     .update(schema.users)
     .set({ passwordHash: await hashPassword(parsed.data.newPassword), mustChangePassword: false })
     .where(eq(schema.users.id, user.id));
+
+  // Zmiana hasła unieważnia wszystkie sesje (w tym potencjalnie skradzione), a bieżące
+  // urządzenie dostaje świeżą — patrz `invalidateUserSessions`.
+  await invalidateUserSessions(user.id);
+  await createSession(user.id);
 
   await logAudit({ actor: actorLabel(user), action: "zmiana_hasla", entityType: "user", entityId: user.id });
   return NextResponse.json({ ok: true });

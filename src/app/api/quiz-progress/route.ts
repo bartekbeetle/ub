@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { getDb, schema } from "@/db";
 import { CONSENT_VERSION } from "@/lib/constants";
+import { rateLimit, getClientIp } from "@/lib/ratelimit";
 
 /**
  * Zapis POSTĘPU w quizie — kto zaczął i gdzie się zatrzymał.
@@ -49,6 +50,15 @@ const progressSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  // Rate limit: endpoint publiczny, zapisuje wiersz w `quiz_sessions` przy KAŻDYM wywołaniu.
+  // Bez limitu dało się zasypać tabelę milionami sesji i fałszywymi „porzuconymi" (audyt 21.09).
+  // Próg hojniejszy niż na /lead (5/min), bo autozapis leci po każdym kroku wieloetapowego
+  // formularza — 30/min mieści realną kursantkę, a odsiewa skrypt bijący w pętli.
+  const ip = getClientIp(request);
+  if (!rateLimit(`quiz:${ip}`, 30, 60_000)) {
+    return NextResponse.json({ ok: false }, { status: 429 });
+  }
+
   let parsed;
   try {
     parsed = progressSchema.parse(await request.json());

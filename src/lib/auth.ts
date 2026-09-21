@@ -21,6 +21,15 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
   return bcrypt.compare(password, hash);
 }
 
+/**
+ * Hash-atrapa (bcrypt cost 12) do porównania stałoczasowego, gdy logowanie nie znajdzie konta.
+ * Bez tego `bcrypt.compare` odpalał się TYLKO dla istniejącego e-maila, więc odpowiedź dla
+ * nieistniejącego wracała mierzalnie szybciej — furtka do enumeracji kont (audyt 21.09).
+ * Trasy logowania mają zawsze wykonać jedno porównanie bcrypt, niezależnie od istnienia usera.
+ */
+export const DUMMY_PASSWORD_HASH =
+  "$2b$12$hFuicGs4bO7dnukHFypQ1.EB48b8.BmfaIMQeC05mN910TaBQQXu6";
+
 export async function createSession(userId: number): Promise<void> {
   const db = await getDb();
   const token = randomBytes(32).toString("hex");
@@ -36,6 +45,17 @@ export async function createSession(userId: number): Promise<void> {
     path: "/",
     expires: expiresAt,
   });
+}
+
+/**
+ * Kasuje WSZYSTKIE sesje danego użytkownika. Wołane po zmianie hasła: skradziony cookie
+ * (np. z przejętego urządzenia) przestaje działać natychmiast, zamiast żyć pełne 8h TTL
+ * mimo „zabezpieczenia się" przez właściciela (audyt 21.09). Bieżące urządzenie dostaje
+ * świeżą sesję osobnym `createSession`, więc zmieniający hasło nie wylatuje z panelu.
+ */
+export async function invalidateUserSessions(userId: number): Promise<void> {
+  const db = await getDb();
+  await db.delete(schema.sessions).where(eq(schema.sessions.userId, userId));
 }
 
 export async function destroySession(): Promise<void> {
@@ -65,16 +85,30 @@ export async function getSessionUser(): Promise<User | null> {
   return row.user;
 }
 
+/**
+ * Konto z ustawionym `mustChangePassword` (hasło startowe z seeda) NIE dostaje dostępu
+ * do żadnych danych — dopóki nie ustawi własnego hasła. Wcześniej blokował to wyłącznie
+ * baner na froncie (`ForcePasswordChange`), a API i Server Components wydawały dane mimo
+ * domyślnego hasła. Ponieważ hasło startowe było wspólne i zaszyte w repo, a loginy
+ * trenerek dają się wyliczyć z publicznych nazw, była to gotowa furtka do PII kursantek.
+ *
+ * `allowPasswordChange` przepuszcza WYŁĄCZNIE trasę zmiany hasła — inaczej użytkownik
+ * z hasłem startowym nie mógłby go zmienić (mechanizm naprawy blokowałby sam siebie).
+ */
+type GuardOpts = { allowPasswordChange?: boolean };
+
 /** Guard dla API admina — zwraca usera albo null (handler zwraca 401). */
-export async function requireAdmin(): Promise<User | null> {
+export async function requireAdmin(opts?: GuardOpts): Promise<User | null> {
   const user = await getSessionUser();
   if (!user || user.role !== "admin") return null;
+  if (user.mustChangePassword && !opts?.allowPasswordChange) return null;
   return user;
 }
 
 /** Guard dla API panelu trenerki — zwraca usera tylko gdy rola trenerka i ma przypisany trainerId. */
-export async function requireTrainer(): Promise<User | null> {
+export async function requireTrainer(opts?: GuardOpts): Promise<User | null> {
   const user = await getSessionUser();
   if (!user || user.role !== "trenerka" || !user.trainerId) return null;
+  if (user.mustChangePassword && !opts?.allowPasswordChange) return null;
   return user;
 }

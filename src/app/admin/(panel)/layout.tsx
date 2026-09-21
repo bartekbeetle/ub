@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { LogoutButton } from "@/components/admin/LogoutButton";
-import { ForcePasswordChange } from "@/components/ForcePasswordChange";
+import { PasswordForm } from "@/components/admin/PasswordForm";
 
 export const dynamic = "force-dynamic";
 
@@ -31,16 +31,22 @@ export default async function AdminPanelLayout({ children }: { children: React.R
       </aside>
 
       <div className="ml-60 flex-1 p-8">
-        {user.mustChangePassword && (
-          <>
-            <ForcePasswordChange passwordPath="/admin/haslo" />
+        {user.mustChangePassword ? (
+          // Hasło z seeda → renderujemy WYŁĄCZNIE formularz zmiany hasła, nigdy `children`.
+          // Serwerowa bramka, nie kliencki overlay (patrz audyt bezpieczeństwa 21.09).
+          <div className="mx-auto max-w-md">
             <div className="mb-6 rounded-[12px] border border-amber-300 bg-amber-50 px-5 py-4 text-sm text-amber-900">
-              <strong>Zmień hasło startowe.</strong> Konto używa hasła z seeda —{" "}
-              <Link href="/admin/haslo" className="font-semibold underline">ustaw własne hasło teraz</Link>.
+              <strong>Zmień hasło startowe.</strong> Konto używa hasła z seeda. Ustaw własne hasło,
+              żeby uzyskać dostęp do panelu.
             </div>
-          </>
+            <div className="card p-6">
+              <h1 className="mb-4 font-serif text-xl font-bold">Ustaw własne hasło</h1>
+              <PasswordForm />
+            </div>
+          </div>
+        ) : (
+          children
         )}
-        {children}
       </div>
     </div>
   );

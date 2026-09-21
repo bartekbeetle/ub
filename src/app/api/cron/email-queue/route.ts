@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { timingSafeEqual } from "crypto";
 import { flushEmailQueue } from "@/lib/email";
 
 export const runtime = "nodejs";
@@ -24,8 +25,12 @@ export async function GET(req: Request) {
   }
 
   const url = new URL(req.url);
-  const provided = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ?? url.searchParams.get("key");
-  if (provided !== secret) {
+  const provided = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ?? url.searchParams.get("key") ?? "";
+  // Porównanie stałoczasowe — `!==` zdradzałoby sekret znak-po-znaku przez pomiar czasu.
+  // Ryzyko było znikome (sekret jest długi i losowy), ale to jedna linia zgodna z dobrą praktyką.
+  const a = Buffer.from(provided);
+  const b = Buffer.from(secret);
+  if (a.length !== b.length || !timingSafeEqual(a, b)) {
     return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
   }
 

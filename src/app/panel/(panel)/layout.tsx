@@ -5,7 +5,7 @@ import { getSessionUser } from "@/lib/auth";
 import { getDb, schema } from "@/db";
 import { PanelNav } from "@/components/panel/PanelNav";
 import { PanelLogoutButton } from "@/components/panel/PanelLogoutButton";
-import { ForcePasswordChange } from "@/components/ForcePasswordChange";
+import { PanelPasswordForm } from "@/components/panel/PanelPasswordForm";
 
 export const dynamic = "force-dynamic";
 
@@ -41,16 +41,24 @@ export default async function TrainerPanelLayout({ children }: { children: React
       </aside>
 
       <div className="ml-60 flex-1 p-8">
-        {user.mustChangePassword && (
-          <>
-            <ForcePasswordChange passwordPath="/panel/haslo" />
+        {user.mustChangePassword ? (
+          // Dopóki trwa hasło startowe, layout renderuje WYŁĄCZNIE formularz zmiany hasła —
+          // nie `children`. Dzięki temu dane leadów nie trafiają do HTML/RSC nawet przy
+          // bezpośrednim wejściu na /panel/leady. Wcześniej `children` leciało zawsze,
+          // a ochrona była tylko klienckim overlayem (patrz audyt bezpieczeństwa 21.09).
+          <div className="mx-auto max-w-md">
             <div className="mb-6 rounded-[12px] border border-amber-300 bg-amber-50 px-5 py-4 text-sm text-amber-900">
-              <strong>Zmień hasło startowe.</strong> Twoje konto używa hasła tymczasowego —{" "}
-              <Link href="/panel/haslo" className="font-semibold underline">ustaw własne hasło teraz</Link>.
+              <strong>Zmień hasło startowe.</strong> Twoje konto używa hasła tymczasowego. Ustaw
+              własne hasło, żeby uzyskać dostęp do panelu i danych kandydatek.
             </div>
-          </>
+            <div className="card p-6">
+              <h1 className="mb-4 font-serif text-xl font-bold">Ustaw własne hasło</h1>
+              <PanelPasswordForm />
+            </div>
+          </div>
+        ) : (
+          children
         )}
-        {children}
       </div>
     </div>
   );
