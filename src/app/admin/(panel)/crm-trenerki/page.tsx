@@ -2,6 +2,7 @@ import Link from "next/link";
 import { and, asc, desc, eq, sql, type SQL } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { formatDate } from "@/lib/utils";
+import { callQueueCondition, getCallQueue, warsawCalendarDaysDiff } from "@/lib/prospects";
 import {
   BUR_SEGMENTS,
   BUR_SEGMENT_COLORS,
@@ -19,8 +20,23 @@ import {
   voivodeshipName,
 } from "@/lib/constants";
 import { ProspectStatusSelect } from "@/components/admin/ProspectStatusSelect";
+import { ProspectQuickActions } from "@/components/admin/ProspectQuickActions";
 
 export const dynamic = "force-dynamic";
+
+/** "nigdy" / "dzisiaj" / "wczoraj" / "N dni temu" — dla kolumny „ostatni kontakt". */
+function lastContactLabel(lastContactAt: Date | null): string {
+  if (!lastContactAt) return "nigdy";
+  const days = warsawCalendarDaysDiff(lastContactAt);
+  if (days <= 0) return "dzisiaj";
+  if (days === 1) return "wczoraj";
+  return `${days} dni temu`;
+}
+
+/** `tel:` chce samych cyfr i ewentualnego `+` — numery w bazie bywają wpisane ze spacjami. */
+function telHref(phone: string): string {
+  return `tel:${phone.replace(/[^\d+]/g, "")}`;
+}
 
 type Search = Promise<{ [key: string]: string | string[] | undefined }>;
 
@@ -41,6 +57,7 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
   const kategoria = (CATEGORIES as readonly string[]).includes(str("kategoria")) ? str("kategoria") : "";
   const priorytet = (PROSPECT_PRIORITIES as readonly string[]).includes(str("priorytet")) ? str("priorytet") : "";
   const sortKey = (str("sort") in SORTS ? str("sort") : "ostatnie") as keyof typeof SORTS;
+  const widokDzis = str("widok") === "dzis";
 
   const db = await getDb();
   const conditions: SQL[] = [];
@@ -49,8 +66,11 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
   if (woj) conditions.push(eq(schema.prospects.voivodeship, woj));
   if (priorytet) conditions.push(eq(schema.prospects.priority, priorytet as (typeof PROSPECT_PRIORITIES)[number]));
   if (kategoria) conditions.push(sql`${schema.prospects.categories} @> ${JSON.stringify([kategoria])}::jsonb`);
+  // `?widok=dzis` zawęża tabelę do DOKŁADNIE tego samego zbioru co blok „Do zadzwonienia" —
+  // AND-owane z resztą filtrów, żeby dało się np. połączyć z wybranym województwem.
+  if (widokDzis) conditions.push(callQueueCondition());
 
-  const [prospects, counts, pendingJobs] = await Promise.all([
+  const [prospects, counts, pendingJobs, callQueue] = await Promise.all([
     db
       .select()
       .from(schema.prospects)
@@ -65,6 +85,7 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
       .select({ c: sql<number>`count(*)::int` })
       .from(schema.researchJobs)
       .where(eq(schema.researchJobs.status, "pending")),
+    getCallQueue(25),
   ]);
 
   const countByStatus = new Map(counts.map((c) => [c.status as string, c.c]));
@@ -91,6 +112,86 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
           <Link href="/admin/crm-trenerki/nowy" className="btn-primary !px-4 !py-2 !text-sm">+ Dodaj prospekta</Link>
         </div>
       </div>
+
+      {/* ☎️ DO ZADZWONIENIA — zaległe/dzisiejsze terminy + rozmowy zaczęte i porzucone bez ustalonego kroku */}
+      {callQueue.total === 0 ? (
+        <p className="mt-6 text-sm text-muted">Nic nie czeka na telefon.</p>
+      ) : (
+        <div className="card mt-6 overflow-hidden border-2 border-sand-300">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-sand-200 bg-sand-50 px-4 py-3">
+            <h2 className="font-serif text-lg font-semibold">
+              ☎️ Do zadzwonienia{" "}
+              <span className="text-sm font-normal text-muted">
+                ({callQueue.rows.length} z {callQueue.total})
+              </span>
+            </h2>
+            <Link href="/admin/crm-trenerki?widok=dzis" className="text-xs font-semibold text-sand-700 hover:underline">
+              Pokaż w pełnej tabeli →
+            </Link>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-gray-50 text-xs uppercase tracking-wide text-muted">
+                <tr>
+                  <th className="px-4 py-3 font-semibold">Podmiot</th>
+                  <th className="px-4 py-3 font-semibold">Kontakt</th>
+                  <th className="px-4 py-3 font-semibold">BUR</th>
+                  <th className="px-4 py-3 font-semibold">Następny ruch</th>
+                  <th className="px-4 py-3 font-semibold">Szybka akcja</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {callQueue.rows.map((p) => {
+                  const overdueDays = p.nextActionAt ? warsawCalendarDaysDiff(p.nextActionAt) : 0;
+                  return (
+                    <tr key={p.id} className="align-top hover:bg-gray-50">
+                      <td className="px-4 py-3">
+                        <Link href={`/admin/crm-trenerki/${p.id}`} className="font-semibold text-sand-700 hover:underline">
+                          {p.name}
+                        </Link>
+                        <p className="text-xs text-muted">
+                          {p.city ?? "—"}
+                          {p.voivodeship ? `, ${voivodeshipName(p.voivodeship)}` : ""}
+                        </p>
+                        <p className="max-w-[200px] text-xs text-muted">{p.categories.join(", ") || "—"}</p>
+                      </td>
+                      <td className="px-4 py-3">
+                        {p.phone ? (
+                          <a href={telHref(p.phone)} className="font-semibold text-sand-700 hover:underline">
+                            {p.phone}
+                          </a>
+                        ) : (
+                          <span className="text-muted">brak numeru</span>
+                        )}
+                        <p className="text-xs text-muted">ostatni kontakt: {lastContactLabel(p.lastContactAt)}</p>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold ${BUR_SEGMENT_COLORS[p.burSegment]}`}>
+                          {BUR_SEGMENT_SHORT[p.burSegment]}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        {p.nextActionAt ? (
+                          <p className={overdueDays > 0 ? "font-semibold text-red-700" : "text-ink-soft"}>
+                            {formatDate(p.nextActionAt)}
+                            {overdueDays > 0 && <span className="block text-xs">zaległe o {overdueDays} dni</span>}
+                          </p>
+                        ) : (
+                          <p className="text-muted">brak terminu — status „{PROSPECT_STATUS_LABELS[p.status]}"</p>
+                        )}
+                        {p.nextActionNote && <p className="mt-1 max-w-[220px] text-xs text-muted">{p.nextActionNote}</p>}
+                      </td>
+                      <td className="px-4 py-3">
+                        <ProspectQuickActions prospectId={p.id} />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {/* LICZNIKI LEJKA */}
       <div className="mt-6 grid gap-3 sm:grid-cols-4 xl:grid-cols-7">
@@ -140,6 +241,10 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
           </select>
           <button type="submit" className="btn-primary !px-4 !py-2 !text-sm">OK</button>
         </div>
+        <label className="flex items-center gap-2 text-xs font-semibold text-ink-soft sm:col-span-3 lg:col-span-6">
+          <input type="checkbox" name="widok" value="dzis" defaultChecked={widokDzis} className="h-4 w-4 rounded border-gray-300" />
+          Tylko dziś do zadzwonienia (ten sam zbiór co blok „Do zadzwonienia" powyżej)
+        </label>
       </form>
 
       {segmentA > 0 && (

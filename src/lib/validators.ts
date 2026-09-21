@@ -245,6 +245,14 @@ export const prospectSchema = z.object({
 
   dossierPath: optionalText(500),
   researchNotes: z.string().max(20000).optional().or(z.literal("")),
+
+  // --- follow-up: kiedy trzeba oddzwonić (21.09.2026) ---
+  /** `RRRR-MM-DD` z inputu `type="date"`; string pusty = wyczyść termin. Serwer dokleja 9:00 czasu Warszawy. */
+  nextActionAt: z.union([
+    z.literal(""),
+    z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Podaj datę w formacie RRRR-MM-DD"),
+  ]).optional(),
+  nextActionNote: optionalText(200),
 });
 
 /** Edycja: te same reguły, ale każde pole opcjonalne (PATCH częściowy). */
@@ -254,6 +262,19 @@ export const prospectActivitySchema = z.object({
   type: z.enum(PROSPECT_ACTIVITY_TYPES as unknown as [string, ...string[]]).default("notatka"),
   content: z.string().trim().min(1, "Treść nie może być pusta").max(4000),
 });
+
+/**
+ * Szybkie akcje z bloku „☎️ Do zadzwonienia" — ZAMKNIĘTA lista działań, nie dowolny PATCH pól bazy.
+ * `days` dotyczy wyłącznie „dzwonilem" (jutro / +3 dni / +7 dni z UI).
+ * Musi być sprawdzona PRZED `prospectPatchSchema`: ten drugi jest `.partial()`, więc payload
+ * `{quickAction, days}` przeszedłby go po cichu jako pusty obiekt (żadne pole nie pasuje) —
+ * PATCH zwróciłby 200 bez zmiany, a UI odczytałby to jako sukces.
+ */
+export const prospectQuickActionSchema = z.discriminatedUnion("quickAction", [
+  z.object({ quickAction: z.literal("dzwonilem"), days: z.union([z.literal(1), z.literal(3), z.literal(7)]) }),
+  z.object({ quickAction: z.literal("nie_odbiera") }),
+  z.object({ quickAction: z.literal("odloz") }),
+]);
 
 export const researchJobPatchSchema = z.object({
   status: z.enum(RESEARCH_JOB_STATUSES as unknown as [string, ...string[]]),

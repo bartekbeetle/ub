@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { prospectActivitySchema, zodErrorMessage } from "@/lib/validators";
+import { PROSPECT_CONTACT_ACTIVITY_TYPES } from "@/lib/prospects";
 
 export const runtime = "nodejs";
 
@@ -36,9 +37,15 @@ export async function POST(req: Request, { params }: { params: Params }) {
     })
     .returning();
 
-  // Aktywność = realny ruch na prospekcie, więc odświeżamy `updatedAt`,
-  // żeby sortowanie „ostatnio ruszone" pokazywało prawdę.
-  await db.update(schema.prospects).set({ updatedAt: new Date() }).where(eq(schema.prospects.id, prospectId));
+  // Aktywność = realny ruch na prospekcie, więc odświeżamy `updatedAt`, żeby sortowanie
+  // „ostatnio ruszone" pokazywało prawdę. Telefon/e-mail/spotkanie to REALNY kontakt — dopisujemy
+  // `lastContactAt`, żeby blok „Do zadzwonienia" wiedział, że ktoś już próbował. Notatka nie liczy się.
+  const now = new Date();
+  const isContact = PROSPECT_CONTACT_ACTIVITY_TYPES.has(parsed.data.type);
+  await db
+    .update(schema.prospects)
+    .set({ updatedAt: now, ...(isContact ? { lastContactAt: now } : {}) })
+    .where(eq(schema.prospects.id, prospectId));
 
   return NextResponse.json(created, { status: 201 });
 }

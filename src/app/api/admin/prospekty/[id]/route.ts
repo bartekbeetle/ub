@@ -3,8 +3,9 @@ import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { logAudit, actorLabel } from "@/lib/audit";
-import { prospectPatchSchema, zodErrorMessage } from "@/lib/validators";
-import { prospectValuesFromPayload, logProspectActivity } from "@/lib/prospects";
+import { prospectPatchSchema, prospectQuickActionSchema, zodErrorMessage } from "@/lib/validators";
+import { addWarsawDays, prospectValuesFromPayload, logProspectActivity } from "@/lib/prospects";
+import { formatDate } from "@/lib/utils";
 import { PROSPECT_STATUS_LABELS } from "@/lib/constants";
 
 export const runtime = "nodejs";
@@ -31,7 +32,73 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
   const prospectId = Number(id);
   if (!Number.isInteger(prospectId)) return NextResponse.json({ error: "Nieprawidłowe ID." }, { status: 400 });
 
-  const parsed = prospectPatchSchema.safeParse(await req.json().catch(() => null));
+  const body = await req.json().catch(() => null);
+
+  // Szybkie akcje z bloku „Do zadzwonienia" — sprawdzane PRZED `prospectPatchSchema` celowo:
+  // ten drugi jest `.partial()` i po cichu ODRZUCA nieznane klucze zamiast zwrócić błąd, więc
+  // payload `{quickAction, days}` przeszedłby jako pusty obiekt i PATCH zwróciłby 200 bez zmiany.
+  if (body && typeof body === "object" && "quickAction" in body) {
+    const parsedAction = prospectQuickActionSchema.safeParse(body);
+    if (!parsedAction.success) return NextResponse.json({ error: zodErrorMessage(parsedAction.error) }, { status: 400 });
+
+    const db = await getDb();
+    const rows = await db.select().from(schema.prospects).where(eq(schema.prospects.id, prospectId)).limit(1);
+    const prospect = rows[0];
+    if (!prospect) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
+
+    const now = new Date();
+    let nextActionAt: Date;
+    let activityType: typeof schema.prospectActivities.$inferInsert.type;
+    let activityContent: string;
+    let touchLastContact = false;
+
+    if (parsedAction.data.quickAction === "dzwonilem") {
+      nextActionAt = addWarsawDays(parsedAction.data.days, 9, 0, now);
+      activityType = "telefon";
+      activityContent = `Telefon wykonany — oddzwonić ${formatDate(nextActionAt)}.`;
+      touchLastContact = true;
+    } else if (parsedAction.data.quickAction === "nie_odbiera") {
+      nextActionAt = addWarsawDays(1, 9, 0, now);
+      activityType = "telefon";
+      activityContent = "Nie odbiera.";
+      touchLastContact = true;
+    } else {
+      nextActionAt = addWarsawDays(14, 9, 0, now);
+      activityType = "notatka";
+      activityContent = `Odłożone na ${formatDate(nextActionAt)}.`;
+      touchLastContact = false;
+    }
+
+    const [updated] = await db
+      .update(schema.prospects)
+      .set({
+        nextActionAt,
+        ...(touchLastContact ? { lastContactAt: now } : {}),
+        updatedAt: now,
+      })
+      .where(eq(schema.prospects.id, prospectId))
+      .returning();
+
+    // Wpis na oś czasu przez logProspectActivity (nie duplikujemy tu ustawienia lastContactAt —
+    // już ustawione wyżej w JEDNYM `db.update`, z tym samym `now`).
+    await logProspectActivity({
+      prospectId,
+      type: activityType,
+      content: activityContent,
+      createdBy: user.email,
+    });
+    await logAudit({
+      actor: actorLabel(user),
+      action: `prospekt_szybka_akcja_${parsedAction.data.quickAction}`,
+      entityType: "prospect",
+      entityId: prospectId,
+      details: { nextActionAt },
+    });
+
+    return NextResponse.json(updated);
+  }
+
+  const parsed = prospectPatchSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: zodErrorMessage(parsed.error) }, { status: 400 });
 
   const db = await getDb();

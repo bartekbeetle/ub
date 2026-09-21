@@ -539,6 +539,15 @@ export const prospects = pgTable(
     trainerId: integer("trainer_id").references(() => trainers.id, { onDelete: "set null" }),
     triggeredByLeadId: integer("triggered_by_lead_id").references(() => leads.id, { onDelete: "set null" }),
 
+    // --- follow-up (dodane 21.09.2026: CRM nie pamiętał, kiedy trzeba oddzwonić) ---
+    /** Kiedy MY odezwaliśmy się ostatnio — ustawiane automatycznie przez logProspectActivity
+     *  przy aktywności typu telefon/email/spotkanie, nigdy ręcznie z formularza. */
+    lastContactAt: timestamp("last_contact_at", { withTimezone: true }),
+    /** Umówiony następny kontakt. Bez tego pola rozmowa kończąca się „oddzwoń w czwartek" ginie. */
+    nextActionAt: timestamp("next_action_at", { withTimezone: true }),
+    /** Krótka notatka do następnego ruchu, np. „pyta o cenę dla 3 kursantek na raz". */
+    nextActionNote: varchar("next_action_note", { length: 200 }),
+
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
@@ -546,6 +555,7 @@ export const prospects = pgTable(
     index("prospects_status_idx").on(t.status),
     index("prospects_voiv_idx").on(t.voivodeship),
     index("prospects_bur_idx").on(t.burSegment),
+    index("prospects_next_action_idx").on(t.nextActionAt),
   ]
 );
 

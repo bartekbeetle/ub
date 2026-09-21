@@ -5,8 +5,11 @@ import { getDb, schema } from "@/db";
 import { ProspectForm } from "@/components/admin/ProspectForm";
 import { ProspectStatusSelect } from "@/components/admin/ProspectStatusSelect";
 import { ProspectActivityForm } from "@/components/admin/ProspectActivityForm";
+import { ProspectNextActionForm } from "@/components/admin/ProspectNextActionForm";
+import { ProspectQuickActions } from "@/components/admin/ProspectQuickActions";
 import { PromoteProspectButton } from "@/components/admin/PromoteProspectButton";
-import { formatDateTime } from "@/lib/utils";
+import { warsawCalendarDaysDiff } from "@/lib/prospects";
+import { formatDate, formatDateTime } from "@/lib/utils";
 import {
   BUR_SEGMENT_COLORS,
   BUR_SEGMENT_LABELS,
@@ -75,6 +78,45 @@ export default async function ProspektPage({ params }: { params: Promise<{ id: s
             Priorytet: {PROSPECT_PRIORITY_LABELS[prospect.priority]}
           </span>
         </div>
+      </div>
+
+      {/* KONTAKT I NASTĘPNY RUCH */}
+      <div className="card mt-6 p-5">
+        <h2 className="font-serif text-lg font-semibold">Kontakt i następny ruch</h2>
+        <div className="mt-3 grid gap-4 sm:grid-cols-2">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Ostatni kontakt</p>
+            <p className="mt-1 text-sm">
+              {prospect.lastContactAt
+                ? `${formatDateTime(prospect.lastContactAt)} (${warsawCalendarDaysDiff(prospect.lastContactAt)} dni temu)`
+                : "nigdy"}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Następny ruch</p>
+            {prospect.nextActionAt ? (
+              <p className="mt-1 text-sm">
+                {formatDate(prospect.nextActionAt)}
+                {warsawCalendarDaysDiff(prospect.nextActionAt) > 0 && (
+                  <span className="ml-2 font-semibold text-red-700">
+                    zaległe o {warsawCalendarDaysDiff(prospect.nextActionAt)} dni
+                  </span>
+                )}
+                {prospect.nextActionNote && <span className="block text-muted">{prospect.nextActionNote}</span>}
+              </p>
+            ) : (
+              <p className="mt-1 text-sm text-muted">Nie ustalono.</p>
+            )}
+          </div>
+        </div>
+        <div className="mt-4">
+          <ProspectQuickActions prospectId={prospect.id} />
+        </div>
+        <ProspectNextActionForm
+          prospectId={prospect.id}
+          nextActionAt={prospect.nextActionAt}
+          nextActionNote={prospect.nextActionNote}
+        />
       </div>
 
       {/* AWANS DO KATALOGU */}
