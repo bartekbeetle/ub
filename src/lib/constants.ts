@@ -302,12 +302,16 @@ export const BUR_SEGMENT_COLORS: Record<string, string> = {
   nieznany: "bg-gray-200 text-gray-600",
 };
 
-export const PROSPECT_SOURCES = ["research-lead", "reczny", "polecenie"] as const;
+export const PROSPECT_SOURCES = ["research-lead", "reczny", "polecenie", "rejestracja"] as const;
 
 export const PROSPECT_SOURCE_LABELS: Record<string, string> = {
   "research-lead": "Research po leadzie",
   reczny: "Dodany ręcznie",
   polecenie: "Polecenie",
+  // Akademia sama założyła konto na `/dla-akademii/rejestracja`. Wyróżniamy to w CRM,
+  // bo taka rozmowa zaczyna się z zupełnie innego miejsca niż zimny telefon z researchu:
+  // ona już zna ofertę, zostawiła dane dobrowolnie i CZEKA na kontakt.
+  rejestracja: "Zgłosiła się sama",
 };
 
 export const PROSPECT_ACTIVITY_TYPES = ["notatka", "telefon", "email", "spotkanie", "zmiana_statusu"] as const;

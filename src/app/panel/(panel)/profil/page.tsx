@@ -35,12 +35,25 @@ export default async function PanelProfilPage() {
           <dd>{trainer.city ?? "—"}</dd>
           <dt className="text-muted">Województwo</dt>
           <dd>{voivodeshipName(trainer.voivodeship) || "—"}</dd>
-          <dt className="text-muted">Model rozliczenia</dt>
-          <dd>{trainer.billingModel === "per_lead" ? "opłata za lead" : "opłata za zapisaną kursantkę"}</dd>
-          <dt className="text-muted">Stawka</dt>
-          <dd>{formatPln(trainer.rate)}</dd>
-          <dt className="text-muted">Limit leadów / mies.</dt>
-          <dd>{trainer.leadLimitMonthly}</dd>
+          {/* Warunki rozliczenia pokazujemy DOPIERO po umowie (`autoAssign` = bramka umowy).
+              Wcześniej w bazie stoi wyłącznie wartość domyślna z ustawień — pokazanie jej
+              akademii, która jeszcze z nikim nie rozmawiała, byłoby złożeniem oferty cenowej
+              przez interfejs. Stawkę ustala rozmowa i umowa, nie widok profilu. */}
+          {trainer.autoAssign ? (
+            <>
+              <dt className="text-muted">Model rozliczenia</dt>
+              <dd>{trainer.billingModel === "per_lead" ? "opłata za lead" : "opłata za zapisaną kursantkę"}</dd>
+              <dt className="text-muted">Stawka</dt>
+              <dd>{formatPln(trainer.rate)}</dd>
+              <dt className="text-muted">Limit leadów / mies.</dt>
+              <dd>{trainer.leadLimitMonthly}</dd>
+            </>
+          ) : (
+            <>
+              <dt className="text-muted">Rozliczenie</dt>
+              <dd>Ustalamy w rozmowie i zapisujemy w umowie partnerskiej.</dd>
+            </>
+          )}
         </dl>
       </div>
 

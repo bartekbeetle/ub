@@ -149,6 +149,14 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
                         <Link href={`/admin/crm-trenerki/${p.id}`} className="font-semibold text-sand-700 hover:underline">
                           {p.name}
                         </Link>
+                        {/* Akademia, która sama założyła konto, dzwoni się inaczej niż kontakt
+                            z researchu: zna ofertę, zostawiła dane dobrowolnie i CZEKA na telefon.
+                            Dlatego wyróżniamy ją w kolejce, zamiast chować w kolumnie „źródło". */}
+                        {p.source === "rejestracja" && (
+                          <span className="mt-1 inline-flex rounded-full bg-money-bg px-2 py-0.5 text-xs font-bold text-money-dark">
+                            zgłosiła się sama
+                          </span>
+                        )}
                         <p className="text-xs text-muted">
                           {p.city ?? "—"}
                           {p.voivodeship ? `, ${voivodeshipName(p.voivodeship)}` : ""}
@@ -274,6 +282,11 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
                   <Link href={`/admin/crm-trenerki/${p.id}`} className="font-semibold text-sand-700 hover:underline">
                     {p.name}
                   </Link>
+                  {p.source === "rejestracja" && (
+                    <span className="ml-2 inline-flex rounded-full bg-money-bg px-2 py-0.5 text-xs font-bold text-money-dark">
+                      zgłosiła się sama
+                    </span>
+                  )}
                   <p className="text-xs text-muted">{p.phone ?? p.email ?? "brak kontaktu"}</p>
                 </td>
                 <td className="px-4 py-3">

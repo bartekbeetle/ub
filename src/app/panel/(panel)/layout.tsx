@@ -15,20 +15,25 @@ export default async function TrainerPanelLayout({ children }: { children: React
 
   const db = await getDb();
   const [trainer] = await db
-    .select({ name: schema.trainers.name })
+    .select({ name: schema.trainers.name, isActive: schema.trainers.isActive })
     .from(schema.trainers)
     .where(eq(schema.trainers.id, user.trainerId))
     .limit(1);
+  // Konto po samodzielnej rejestracji, przed aktywacją — patrz `@/lib/onboarding`.
+  const pending = !trainer?.isActive;
 
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* SIDEBAR navy */}
       <aside className="fixed inset-y-0 left-0 z-30 flex w-60 flex-col bg-navy px-3 py-6">
-        <Link href="/panel/leady" className="px-4 font-serif text-lg font-bold tracking-[3px] text-cream-warm">
+        <Link
+          href={pending ? "/panel/start" : "/panel/leady"}
+          className="px-4 font-serif text-lg font-bold tracking-[3px] text-cream-warm"
+        >
           UB <span className="text-sand-300">PANEL</span>
         </Link>
         <div className="mt-8 flex-1">
-          <PanelNav />
+          <PanelNav pending={pending} />
         </div>
         <div className="border-t border-white/10 pt-3">
           <p className="truncate px-4 pb-0.5 text-xs font-semibold text-sand-200/80">{trainer?.name ?? "Trenerka"}</p>

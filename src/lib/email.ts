@@ -17,6 +17,10 @@ export const EMAIL_KIND = {
   WEWNETRZNE_ZAPIS: "wewnetrzne_zapis",
   /** Mailing z propozycjami szkoleń — jedyny rodzaj, który wymaga zgody i linku rezygnacji. */
   MARKETING: "marketing",
+  /** Do nas: akademia sama założyła konto na /dla-akademii/rejestracja — jest do kogo zadzwonić. */
+  WEWNETRZNE_AKADEMIA: "wewnetrzne_akademia",
+  /** Do akademii: potwierdzenie założenia konta i co dzieje się dalej. */
+  AKADEMIA_POWITANIE: "akademia_powitanie",
 } as const;
 
 export type EmailKind = (typeof EMAIL_KIND)[keyof typeof EMAIL_KIND];

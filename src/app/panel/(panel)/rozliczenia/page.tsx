@@ -19,6 +19,9 @@ export default async function PanelRozliczeniaPage() {
 
   const db = await getDb();
   const [trainer] = await db.select().from(schema.trainers).where(eq(schema.trainers.id, user.trainerId)).limit(1);
+  // BRAMKA ONBOARDINGU — jak w „Moje leady”: rozliczenia pokazują nazwiska kursantek
+  // i kwoty, więc konto przed umową nie ma tu czego oglądać.
+  if (!trainer?.isActive) redirect("/panel/start");
 
   // TWARDA IZOLACJA: tylko przydziały tej trenerki
   const rows = await db

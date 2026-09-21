@@ -40,6 +40,16 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
     .limit(1);
   const row = rows[0];
   if (!row) return NextResponse.json({ error: "Nie znaleziono przydziału." }, { status: 404 });
+  // BRAMKA ONBOARDINGU (ta sama co na stronach panelu): konto z samodzielnej rejestracji,
+  // zanim zostanie aktywowane, nie może dotknąć przydziału — także wtedy, gdy ktoś wyśle
+  // PATCH-a z palca, omijając interfejs. Zmiana statusu na „zapisana” uruchamia maile
+  // do kursantki i nalicza należność, więc to nie jest tylko kwestia widoczności.
+  if (!row.trainer.isActive) {
+    return NextResponse.json(
+      { error: "Konto czeka na aktywację. Skontaktujemy się telefonicznie przed pierwszym zgłoszeniem." },
+      { status: 403 }
+    );
+  }
 
   const { status, rejectionReason } = parsed.data;
   if (status === "odrzucony" && !rejectionReason?.trim()) {

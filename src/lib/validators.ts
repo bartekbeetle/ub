@@ -132,6 +132,59 @@ export const changePasswordSchema = z.object({
   newPassword: z.string().min(10, "Hasło musi mieć min. 10 znaków").max(200),
 });
 
+/**
+ * SAMODZIELNA REJESTRACJA AKADEMII (publiczny formularz `/dla-akademii/rejestracja`).
+ *
+ * Zbiera dokładnie tyle, ile potrzeba, żeby (a) założyć konto do panelu i (b) mieć o czym
+ * rozmawiać przez telefon. Wszystko poza tym — bio, zdjęcia, certyfikaty — akademia uzupełnia
+ * już zalogowana, bo wymaganie tego przy rejestracji zabiłoby konwersję formularza.
+ *
+ * 🔴 `burSegment` NIE jest kosmetyką: podmiot bez wpisu do Bazy Usług Rozwojowych nie sprzeda
+ * szkolenia z dofinansowaniem, więc nie może dostać leada. Deklaracja z formularza jest tylko
+ * DEKLARACJĄ — weryfikuje ją człowiek w karcie dostawcy PARP przed umową (skill `research-trenerek`).
+ */
+export const academyRegistrationSchema = z.object({
+  name: z.string().trim().min(3, "Podaj nazwę akademii lub swoje imię i nazwisko").max(160),
+  contactPerson: z.string().trim().min(3, "Podaj imię i nazwisko osoby do kontaktu").max(160),
+  email: z.string().trim().email("Podaj poprawny adres e-mail").max(255),
+  phone: z
+    .string()
+    .trim()
+    .min(9, "Podaj numer telefonu — na niego zadzwonimy")
+    .max(20)
+    .regex(/^[+\d\s-]+$/, "Podaj poprawny numer telefonu"),
+  city: z.string().trim().min(2, "Podaj miasto").max(100),
+  voivodeship: z.enum(voivodeshipSlugs, { errorMap: () => ({ message: "Wybierz województwo" }) }),
+  categories: z
+    .array(z.enum(CATEGORIES as unknown as [string, ...string[]]))
+    .min(1, "Zaznacz przynajmniej jedną kategorię szkoleń"),
+  nip: z
+    .string()
+    .trim()
+    .max(20)
+    .regex(/^[\d\s-]*$/, "NIP to same cyfry")
+    .optional()
+    .or(z.literal("")),
+  burSegment: z.enum(["A", "B", "nieznany"], { errorMap: () => ({ message: "Zaznacz, czy masz wpis do BUR" }) }),
+  burProviderId: z.string().trim().max(20).optional().or(z.literal("")),
+  academyWebsite: z.string().trim().max(300).optional().or(z.literal("")),
+  instagram: z.string().trim().max(300).optional().or(z.literal("")),
+  password: z.string().min(10, "Hasło musi mieć min. 10 znaków").max(200),
+  // Akceptacja regulaminu i polityki prywatności — wymagana, bo bez niej nie ma podstawy
+  // do założenia konta. `literal(true)` (nie boolean), żeby odznaczony checkbox był błędem.
+  termsAccepted: z.literal(true, {
+    errorMap: () => ({ message: "Bez akceptacji regulaminu i polityki prywatności nie założymy konta" }),
+  }),
+  // Prośba o kontakt handlowy — też wymagana, bo cały sens rejestracji to rozmowa o współpracy.
+  // Osobny checkbox, nie doklejony do regulaminu: art. 398 Prawa komunikacji elektronicznej
+  // wymaga zgody na kontakt telefoniczny/e-mail wyrażonej odrębnie.
+  contactConsent: z.literal(true, {
+    errorMap: () => ({ message: "Potrzebujemy zgody na kontakt — inaczej nie mamy jak się odezwać" }),
+  }),
+  // honeypot — patrz `/api/lead`: bot wypełnia, człowiek nie widzi
+  fax: z.string().max(200).optional().or(z.literal("")),
+});
+
 export const trainerSchema = z.object({
   name: z.string().trim().min(3).max(160),
   slug: z.string().trim().min(2).max(160).regex(/^[a-z0-9-]+$/, "Slug: małe litery, cyfry, myślniki"),

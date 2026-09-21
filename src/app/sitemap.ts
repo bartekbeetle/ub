@@ -18,7 +18,10 @@ export const dynamic = "force-dynamic";
 // `/aplikacja` (dawniej `/quiz`) USUNIĘTY z sitemapy 14.09: ma `robots: noindex`, więc zgłaszanie go Google
 // było sprzecznością, którą Search Console raportuje jako „Strona z noindex w mapie witryny".
 // `/poradnik` wchodzi — to realna treść pod frazy o dofinansowaniu, indeksowalna.
-const MAIN_PAGES = ["", "/kursy", "/dofinansowania", "/blog", "/kontakt", "/konsultacja", "/poradnik", "/o-nas"];
+// `/dla-akademii` (B2B) wchodzi — to jedyna strona mówiąca do drugiej publiczności serwisu
+// (akademie i trenerki) i ma się indeksować. Sam formularz `/dla-akademii/rejestracja` NIE,
+// bo ma `robots: noindex` — tak jak `/aplikacja` po stronie kursantek.
+const MAIN_PAGES = ["", "/kursy", "/dofinansowania", "/blog", "/kontakt", "/konsultacja", "/poradnik", "/o-nas", "/dla-akademii"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const db = await getDb();

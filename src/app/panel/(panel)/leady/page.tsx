@@ -20,6 +20,17 @@ export default async function PanelLeadyPage() {
   if (!user || user.role !== "trenerka" || !user.trainerId) redirect("/panel/login");
 
   const db = await getDb();
+  // BRAMKA ONBOARDINGU. Konto z samodzielnej rejestracji (`trainers.isActive = false`) nie ma
+  // prawa zobaczyć danych kursantek — podstawą przekazania jest umowa, nie założenie konta.
+  // Sprawdzamy to SERWEROWO i przed zapytaniem o przydziały, a nie licząc na to, że lista
+  // i tak będzie pusta: „puste, bo nikt jej nic nie przydzielił” to poprawność przez przypadek
+  // (dokładnie ten błąd wyszedł w audycie 21.09 przy wymuszaniu zmiany hasła).
+  const [gate] = await db
+    .select({ isActive: schema.trainers.isActive })
+    .from(schema.trainers)
+    .where(eq(schema.trainers.id, user.trainerId))
+    .limit(1);
+  if (!gate?.isActive) redirect("/panel/start");
   // TWARDA IZOLACJA: tylko przydziały tej trenerki
   const rows = await db
     .select({ assignment: schema.leadAssignments, lead: schema.leads })

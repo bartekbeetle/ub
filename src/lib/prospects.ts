@@ -1,7 +1,7 @@
 import "server-only";
 import { getDb, schema } from "@/db";
 import { slugify } from "./utils";
-import { and, asc, desc, eq, inArray, isNotNull, isNull, lte, notInArray, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, isNotNull, isNull, lte, notInArray, or, sql, type SQL } from "drizzle-orm";
 
 type ProspectValues = Partial<typeof schema.prospects.$inferInsert>;
 
@@ -222,6 +222,86 @@ export async function getCallQueue(limit = 25): Promise<{ rows: ProspectRow[]; t
     db.select({ c: sql<number>`count(*)::int` }).from(schema.prospects).where(where),
   ]);
   return { rows, total: totalRows[0]?.c ?? 0 };
+}
+
+// ===== DOPASOWANIE SAMODZIELNEJ REJESTRACJI DO ISTNIEJĄCEGO PROSPEKTA =====
+//
+// 🔴 To jest najważniejszy fragment obsługi `/dla-akademii/rejestracja`.
+// W CRM leży dziś 15 akademii zebranych researchem — z numerami telefonu, czasem bez maila.
+// Jeżeli La Beauty (już w bazie, z telefonem 532 162 103) założy sobie konto sama, a my
+// utworzymy DRUGI wiersz, to Bartek dzwoni dwa razy do tej samej firmy albo dzwoni na stary
+// numer, mając w bazie nowy. Dedup po samym mailu tego nie łapie: adres z researchu
+// (info@…) prawie nigdy nie jest tym, który wpisuje właścicielka.
+//
+// Kolejność dopasowania od najmocniejszego identyfikatora do najsłabszego:
+// NIP → telefon → e-mail → nazwa+miasto.
+
+/** Ostatnie 9 cyfr numeru — wspólny mianownik dla `+48 532 162 103`, `532162103` i `0532-162-103`. */
+export function phoneKey(raw: string | null | undefined): string | null {
+  const digits = (raw ?? "").replace(/\D/g, "");
+  if (digits.length < 9) return null;
+  return digits.slice(-9);
+}
+
+/** Same cyfry NIP-u (`888-300-93-10` → `8883009310`). */
+export function nipKey(raw: string | null | undefined): string | null {
+  const digits = (raw ?? "").replace(/\D/g, "");
+  return digits.length === 10 ? digits : null;
+}
+
+/** To samo wyrażenie po stronie Postgresa — bez tego porównujemy sformatowany tekst z cyframi. */
+const PHONE_DIGITS_SQL = sql`right(regexp_replace(coalesce(${schema.prospects.phone}, ''), '[^0-9]', '', 'g'), 9)`;
+const NIP_DIGITS_SQL = sql`regexp_replace(coalesce(${schema.prospects.nip}, ''), '[^0-9]', '', 'g')`;
+
+export type ProspectMatch = { prospect: ProspectRow; matchedBy: "nip" | "telefon" | "email" | "nazwa i miasto" };
+
+/**
+ * Szuka prospekta, którym JUŻ jest rejestrująca się akademia. Zwraca też powód dopasowania —
+ * ląduje on w osi czasu prospekta, żeby przy telefonie było widać, skąd wzięło się połączenie
+ * dwóch rekordów (i żeby dało się je podważyć, gdy dopasowanie po nazwie strzeli w kogoś innego).
+ */
+export async function findMatchingProspect(input: {
+  nip?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  name: string;
+  city?: string | null;
+}): Promise<ProspectMatch | null> {
+  const db = await getDb();
+  const first = async (where: SQL) => {
+    const rows = await db.select().from(schema.prospects).where(where).limit(1);
+    return rows[0] as ProspectRow | undefined;
+  };
+
+  const nip = nipKey(input.nip);
+  if (nip) {
+    const hit = await first(sql`${NIP_DIGITS_SQL} = ${nip}`);
+    if (hit) return { prospect: hit, matchedBy: "nip" };
+  }
+
+  const phone = phoneKey(input.phone);
+  if (phone) {
+    const hit = await first(sql`${PHONE_DIGITS_SQL} = ${phone}`);
+    if (hit) return { prospect: hit, matchedBy: "telefon" };
+  }
+
+  const email = input.email?.trim().toLowerCase();
+  if (email) {
+    const hit = await first(sql`lower(coalesce(${schema.prospects.email}, '')) = ${email}`);
+    if (hit) return { prospect: hit, matchedBy: "email" };
+  }
+
+  // Najsłabsze kryterium — tylko z miastem. Sama nazwa („Akademia Beauty") powtarza się w kraju
+  // wielokrotnie i bez miasta skleiłaby dwa różne podmioty.
+  const city = input.city?.trim().toLowerCase();
+  if (city) {
+    const hit = await first(
+      sql`lower(${schema.prospects.name}) = ${input.name.trim().toLowerCase()} and lower(coalesce(${schema.prospects.city}, '')) = ${city}`
+    );
+    if (hit) return { prospect: hit, matchedBy: "nazwa i miasto" };
+  }
+
+  return null;
 }
 
 /**

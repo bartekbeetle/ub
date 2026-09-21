@@ -35,6 +35,9 @@ export function Footer() {
             <li><Link href="/blog" className={FOOTER_LINK}>Baza wiedzy</Link></li>
             <li><Link href="/o-nas" className={FOOTER_LINK}>O nas</Link></li>
             <li><Link href="/aplikacja" className={FOOTER_LINK}>Aplikuj o dofinansowanie</Link></li>
+            {/* Jedyne wejście do ścieżki B2B widoczne z każdej strony — akademie trafiają
+                tu z rozmowy telefonicznej („wejdź na stronę, w stopce jest Dla akademii”). */}
+            <li><Link href="/dla-akademii" className={FOOTER_LINK}>Dla akademii i trenerek</Link></li>
           </ul>
         </nav>
 
