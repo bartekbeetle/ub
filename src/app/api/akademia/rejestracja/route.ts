@@ -126,7 +126,35 @@ export async function POST(req: Request) {
     `Zgody z formularza (wersja ${CONSENT_VERSION}, IP ${ip}): regulamin i polityka prywatności ✓, kontakt telefoniczny/e-mail ✓.`;
 
   let prospectId: number;
-  if (match) {
+  /** Podmiot jest w bazie, ale ma już własny profil — sytuacja do rozstrzygnięcia przez człowieka. */
+  const conflict = Boolean(match && match.prospect.trainerId && match.prospect.trainerId !== trainer.id);
+  if (match && match.prospect.trainerId && match.prospect.trainerId !== trainer.id) {
+    // 🔴 PODMIOT MA JUŻ PROFIL, a ktoś zakłada dla niego DRUGIE konto (inny adres e-mail,
+    // więc dedup po `users.email` tego nie złapał). Nie wolno tu ruszyć ani jednego pola:
+    // przepięcie `trainerId` na świeżą, pustą skorupę zabrałoby działającej akademii
+    // powiązanie z jej realnym profilem — a nadpisanie e-maila podmieniłoby kontakt
+    // partnera na adres osoby, której jeszcze nie zweryfikowaliśmy.
+    // Nie dowiązujemy też nowego konta do istniejącego profilu: ten profil bywa aktywny,
+    // więc dowiązanie oddałoby dostęp do danych kursantek bez weryfikacji. Rozstrzyga człowiek.
+    const { prospect, matchedBy } = match;
+    prospectId = prospect.id;
+    await db
+      .update(schema.prospects)
+      .set({ nextActionAt: now, nextActionNote: "Drugie konto dla podmiotu z profilem — wyjaśnij", updatedAt: now })
+      .where(eq(schema.prospects.id, prospect.id));
+    await logProspectActivity({
+      prospectId,
+      type: "notatka",
+      content:
+        `⚠️ DRUGIE KONTO dla podmiotu, który MA JUŻ profil trenerki #${prospect.trainerId} ` +
+        `(dopasowano po: ${matchedBy}). Ktoś zarejestrował się z adresu ${email} jako „${d.name}”, ` +
+        `osoba do kontaktu: ${d.contactPerson}, telefon ${d.phone}. ` +
+        `Utworzono osobne konto i profil-szkic #${trainer.id} — NIC nie zostało podmienione ` +
+        `w tym wierszu ani w istniejącym profilu. Do rozstrzygnięcia ręcznie: to ta sama osoba ` +
+        `(scalić) czy inna filia/podmiot (rozdzielić). ${consentNote}`,
+      createdBy: "system",
+    });
+  } else if (match) {
     const { prospect, matchedBy } = match;
     const changes: string[] = [];
     if (prospect.phone && prospect.phone !== d.phone) changes.push(`telefon: „${prospect.phone}” → „${d.phone}”`);
@@ -214,7 +242,7 @@ export async function POST(req: Request) {
     details: {
       prospectId,
       email,
-      dopasowanie: match ? match.matchedBy : "nowy",
+      dopasowanie: conflict ? "konflikt-ma-juz-profil" : match ? match.matchedBy : "nowy",
       burSegment,
       voivodeship: d.voivodeship,
       zgody: { regulamin: true, kontakt: true, wersja: CONSENT_VERSION, ip },
@@ -236,7 +264,13 @@ export async function POST(req: Request) {
       `Kategorie: ${d.categories.join(", ")}\n` +
       `Wpis do BUR (deklaracja): ${burLabel(burSegment)}${d.burProviderId ? ` — ID ${d.burProviderId}` : ""}\n` +
       `NIP: ${d.nip || "—"}\n\n` +
-      `W CRM: prospekt #${prospectId}${match ? ` (dopasowany do istniejącego po: ${match.matchedBy})` : " (nowy)"}.\n` +
+      `W CRM: prospekt #${prospectId}${
+        conflict
+          ? ` — ⚠️ TEN PODMIOT MA JUŻ PROFIL TRENERKI. Powstało drugie, osobne konto; nic nie zostało podmienione. Sprawdź, czy scalić.`
+          : match
+            ? ` (dopasowany do istniejącego po: ${match.matchedBy})`
+            : " (nowy)"
+      }.\n` +
       `Profil-szkic #${trainer.id} — ukryty, bez auto-przydziału. Konto do panelu już działa.\n\n` +
       `Następny ruch: telefon. Kolejka: /admin/crm-trenerki`,
   });

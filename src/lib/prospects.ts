@@ -249,8 +249,16 @@ export function nipKey(raw: string | null | undefined): string | null {
   return digits.length === 10 ? digits : null;
 }
 
-/** To samo wyrażenie po stronie Postgresa — bez tego porównujemy sformatowany tekst z cyframi. */
-const PHONE_DIGITS_SQL = sql`right(regexp_replace(coalesce(${schema.prospects.phone}, ''), '[^0-9]', '', 'g'), 9)`;
+/**
+ * To samo wyrażenie po stronie Postgresa — bez tego porównujemy sformatowany tekst z cyframi.
+ *
+ * Świadomie CAŁY ciąg cyfr, a nie ostatnie dziewięć: pole `phone` w CRM bywa wypełnione
+ * dwoma numerami naraz („532 162 103 (Daria) · 606 910 328 (Agnieszka)" — tak jest opisana
+ * La Beauty w rejestrze). Porównanie ogona złapałoby wtedy wyłącznie drugą osobę, a telefon
+ * pierwszej — czyli ten, pod który realnie dzwonimy — dałby „brak dopasowania" i duplikat
+ * na najcenniejszym wierszu bazy. Dlatego pytamy, czy ciąg ZAWIERA dany numer.
+ */
+const PHONE_DIGITS_SQL = sql`regexp_replace(coalesce(${schema.prospects.phone}, ''), '[^0-9]', '', 'g')`;
 const NIP_DIGITS_SQL = sql`regexp_replace(coalesce(${schema.prospects.nip}, ''), '[^0-9]', '', 'g')`;
 
 export type ProspectMatch = { prospect: ProspectRow; matchedBy: "nip" | "telefon" | "email" | "nazwa i miasto" };
@@ -281,7 +289,7 @@ export async function findMatchingProspect(input: {
 
   const phone = phoneKey(input.phone);
   if (phone) {
-    const hit = await first(sql`${PHONE_DIGITS_SQL} = ${phone}`);
+    const hit = await first(sql`position(${phone} in ${PHONE_DIGITS_SQL}) > 0`);
     if (hit) return { prospect: hit, matchedBy: "telefon" };
   }
 
