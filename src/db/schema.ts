@@ -156,6 +156,34 @@ export const messageRoleEnum = pgEnum("message_role", [
   "system",
 ]);
 
+/**
+ * Stan kampanii mailingowej. Świadomie BEZ stanu „wysłana" ustawianego ręcznie —
+ * patrz komentarz przy `mailingCampaigns.status`: to, czy mail wyszedł, wynika
+ * ze statusów w `email_queue`, nie z tego, że ktoś kliknął „wyślij".
+ */
+export const mailingStatusEnum = pgEnum("mailing_status", [
+  /** Treść w edycji, odbiorcy jeszcze nie zamrożeni. */
+  "szkic",
+  /** Lista odbiorców zamrożona (snapshot) — można wysyłać. */
+  "gotowa",
+  /** Wysyłka partiami w toku. */
+  "wysylanie",
+  /** Wszyscy odbiorcy przetworzeni (wysłani, pominięci albo z błędem). */
+  "zakonczona",
+]);
+
+export const mailingRecipientStatusEnum = pgEnum("mailing_recipient_status", [
+  /** W snapshocie, jeszcze nieprzetworzona. */
+  "oczekuje",
+  /** Trafiła do `email_queue`, ale SMTP jeszcze jej nie doręczył (np. brak konfiguracji). */
+  "w_kolejce",
+  /** Serwer pocztowy przyjął wiadomość. */
+  "wyslany",
+  /** Świadomie nie wysłano — wypisała się między snapshotem a wysyłką albo brak adresu. */
+  "pominiety",
+  "blad",
+]);
+
 // ===== UŻYTKOWNICY I SESJE =====
 
 export const users = pgTable("users", {
@@ -852,6 +880,96 @@ export const emailQueue = pgTable(
   ]
 );
 
+// ===== MAILING (propozycje szkoleń do kursantek) =====
+
+/**
+ * KAMPANIA MAILINGOWA — jedna treść wysłana do zamrożonej listy odbiorców.
+ *
+ * Dlaczego osobna tabela, skoro jest już `email_queue`: kolejka odpowiada na pytanie
+ * „czy ten konkretny mail wyszedł". Kampania odpowiada na „do kogo to miało pójść i co
+ * się z tym stało" — bez niej nie da się ani wysłać drugiej partii po przerwaniu, ani
+ * powiedzieć komukolwiek, ile osób realnie dostało wiadomość.
+ *
+ * 🔴 Granica prawna wpisana w konstrukcję: odbiorców dobiera się WYŁĄCZNIE po
+ * `marketingConsentAt IS NOT NULL` (art. 398 Prawa komunikacji elektronicznej).
+ * Nie ma segmentu „wszyscy" i nie wolno takiego dorabiać — `contactConsentAt`
+ * to podstawa maila serwisowego o TEJ aplikacji, nie zgoda na propozycje szkoleń.
+ */
+export const mailingCampaigns = pgTable(
+  "mailing_campaigns",
+  {
+    id: serial("id").primaryKey(),
+    /** Nazwa robocza — tylko dla nas, nie trafia do wiadomości. */
+    name: varchar("name", { length: 200 }).notNull(),
+    subject: text("subject").notNull(),
+    /**
+     * Treść w czystym tekście. `deliver()` wysyła `text:` i nie zna HTML-a —
+     * dodanie części HTML wymagałoby zmiany wspólnego transportu, czyli dotknięcia
+     * także maili transakcyjnych. Świadomie tego nie robimy przy pierwszej wersji.
+     * Stopka z linkiem rezygnacji NIE jest tu trzymana — dokleja ją `sendMarketingEmail`,
+     * żeby istniało jedno miejsce, które o niej decyduje.
+     */
+    body: text("body").notNull(),
+    /** Filtry użyte do zbudowania listy — zapisane, żeby było wiadomo, kogo objęła wysyłka. */
+    segment: jsonb("segment").$type<Record<string, unknown>>().notNull().default({}),
+    /**
+     * ⚠️ „zakonczona" znaczy tylko tyle, że przetworzyliśmy każdego odbiorcę — NIE, że
+     * wszyscy dostali maila. Przy nieskonfigurowanym SMTP wiersze kończą jako „w_kolejce".
+     * Licznik doręczeń bierzemy z `email_queue.status`, nigdy z faktu kliknięcia „wyślij".
+     */
+    status: mailingStatusEnum("status").notNull().default("szkic"),
+    createdBy: varchar("created_by", { length: 160 }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    /** Moment zamrożenia listy odbiorców. */
+    preparedAt: timestamp("prepared_at", { withTimezone: true }),
+    /** Moment rozpoczęcia pierwszej partii. */
+    startedAt: timestamp("started_at", { withTimezone: true }),
+    finishedAt: timestamp("finished_at", { withTimezone: true }),
+  },
+  (t) => [index("mailing_campaigns_status_idx").on(t.status)]
+);
+
+/**
+ * ODBIORCA KAMPANII — zamrożony snapshot listy w chwili „Przygotuj wysyłkę".
+ *
+ * 🔴 Kluczem jest ZNORMALIZOWANY adres e-mail, nie lead. Ta sama kobieta potrafi mieć
+ * kilka wierszy w `leads` (w panelu leży duplikat z 15.09) plus osobny wiersz
+ * w `quiz_sessions`. Uniqueness po surowym adresie wysłałaby jej dwie kopie jednej
+ * kampanii — dokładnie to, na co ludzie narzekają najgłośniej.
+ *
+ * Ta tabela jest też jedynym mechanizmem zapobiegającym podwójnej wysyłce przy ponowieniu
+ * partii; NIE polegamy tu na idempotencji `email_queue` po parze (leadId, kind), bo ta
+ * blokowałaby KAŻDĄ kolejną kampanię do osoby, która dostała pierwszą.
+ */
+export const mailingRecipients = pgTable(
+  "mailing_recipients",
+  {
+    id: serial("id").primaryKey(),
+    campaignId: integer("campaign_id")
+      .notNull()
+      .references(() => mailingCampaigns.id, { onDelete: "cascade" }),
+    /** Zawsze `normalizeEmail()` — małymi literami, przycięty. */
+    email: varchar("email", { length: 255 }).notNull(),
+    /** Imię i nazwisko do personalizacji ({{imie_wolacz}}); może być puste przy porzuconej aplikacji. */
+    name: varchar("name", { length: 160 }),
+    /** Skąd przyszedł ten adres — `lead` albo `aplikacja` (porzucona sesja). Do diagnostyki segmentu. */
+    sourceKind: varchar("source_kind", { length: 20 }).notNull().default("lead"),
+    leadId: integer("lead_id").references(() => leads.id, { onDelete: "set null" }),
+    status: mailingRecipientStatusEnum("status").notNull().default("oczekuje"),
+    /** Powód pominięcia (np. „adres wypisany z mailingu") albo treść błędu. */
+    reason: text("reason"),
+    /** Wiersz w kolejce maili — przez niego czytamy PRAWDZIWY stan doręczenia. */
+    emailQueueId: integer("email_queue_id").references(() => emailQueue.id, {
+      onDelete: "set null",
+    }),
+    processedAt: timestamp("processed_at", { withTimezone: true }),
+  },
+  (t) => [
+    uniqueIndex("mailing_recipients_campaign_email_idx").on(t.campaignId, t.email),
+    index("mailing_recipients_status_idx").on(t.campaignId, t.status),
+  ]
+);
+
 // ===== RELACJE =====
 
 export const trainersRelations = relations(trainers, ({ many }) => ({
@@ -926,3 +1044,5 @@ export type ProspectActivity = typeof prospectActivities.$inferSelect;
 export type ResearchJob = typeof researchJobs.$inferSelect;
 export type Conversation = typeof conversations.$inferSelect;
 export type Message = typeof messages.$inferSelect;
+export type MailingCampaign = typeof mailingCampaigns.$inferSelect;
+export type MailingRecipient = typeof mailingRecipients.$inferSelect;

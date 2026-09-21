@@ -130,16 +130,29 @@ export async function sendOrQueueEmail(params: {
   kind?: EmailKind;
   /** Dodatkowe nagłówki (np. `List-Unsubscribe`). Zapisywane w kolejce, żeby przetrwały ponowienie. */
   headers?: Record<string, string>;
-}): Promise<{ sent: boolean; skipped?: boolean }> {
+  /**
+   * Czy pominąć maila, gdy ten sam `kind` poszedł już do tego leada. **Domyślnie TAK**
+   * i tak ma zostać dla maili transakcyjnych — to jest jedyna ochrona przed sytuacją,
+   * w której trenerka i admin klikają ten sam zapis (500 zł/zapis, obie strony klikają)
+   * i kursantka dostaje dwa maile z gratulacjami.
+   *
+   * ⛔ Wyłączamy TYLKO dla mailingu. Tam „ten rodzaj już poszedł" znaczyłoby
+   * „ta osoba dostała kiedykolwiek jakikolwiek mailing", czyli druga kampania nigdy by
+   * do niej nie dotarła. Za brak duplikatów w mailingu odpowiada `mailing_recipients`
+   * (unikalny indeks po parze kampania + znormalizowany adres).
+   */
+  dedupe?: boolean;
+}): Promise<{ sent: boolean; skipped?: boolean; queueId?: number }> {
   const db = await getDb();
   const kind = params.kind ?? "inne";
+  const dedupe = params.dedupe ?? true;
 
   if (!params.to) {
     console.warn(`[email] Pominięto maila (${kind}) — pusty adres odbiorcy.`);
     return { sent: false, skipped: true };
   }
 
-  if (params.kind && params.leadId && (await alreadyQueued(params.leadId, params.kind))) {
+  if (dedupe && params.kind && params.leadId && (await alreadyQueued(params.leadId, params.kind))) {
     console.log(`[email] Pominięto duplikat ${kind} dla leada ${params.leadId}.`);
     return { sent: false, skipped: true };
   }
@@ -158,10 +171,10 @@ export async function sendOrQueueEmail(params: {
 
   if (!smtpConfigured()) {
     console.log(`[email] SMTP nieskonfigurowane — mail do ${params.to} w kolejce (id=${queued.id})`);
-    return { sent: false };
+    return { sent: false, queueId: queued.id };
   }
 
-  return deliver({
+  const res = await deliver({
     id: queued.id,
     toEmail: queued.toEmail,
     subject: queued.subject,
@@ -169,6 +182,9 @@ export async function sendOrQueueEmail(params: {
     attempts: queued.attempts,
     headers: params.headers,
   });
+  // `queueId` oddajemy ZAWSZE, także po nieudanej próbie: kampania mailingowa czyta
+  // przez niego prawdziwy stan doręczenia, a mail po błędzie zostaje w kolejce do ponowienia.
+  return { ...res, queueId: queued.id };
 }
 
 /**
@@ -318,31 +334,55 @@ export async function sendMarketingEmail(params: {
   subject: string;
   body: string;
   leadId?: number | null;
-}): Promise<{ sent: boolean; skipped?: boolean; reason?: string }> {
-  const { isUnsubscribed, getOrCreateUnsubscribeToken } = await import("./marketing-list");
+  /** Patrz `sendOrQueueEmail.dedupe`. Mailing przekazuje `false` — dedup robi `mailing_recipients`. */
+  dedupe?: boolean;
+}): Promise<{ sent: boolean; skipped?: boolean; reason?: string; queueId?: number }> {
+  const { isUnsubscribed } = await import("./marketing-list");
 
+  // Sprawdzenie TUŻ przed wysyłką, nie tylko przy budowaniu listy: między zamrożeniem
+  // snapshotu kampanii a wysłaniem partii ktoś mógł kliknąć „nie chcę więcej".
   if (await isUnsubscribed(params.to)) {
     return { sent: false, skipped: true, reason: "adres wypisany z mailingu" };
   }
 
-  const token = await getOrCreateUnsubscribeToken(params.to);
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://uniwersytetbeauty.pl";
-  const unsubUrl = `${base}/wypisz/${token}`;
-
-  const body = [
-    params.body,
-    "",
-    "—",
-    "Dostajesz tę wiadomość, bo zgodziłaś się na propozycje szkoleń od Uniwersytetu Beauty.",
-    `Nie chcesz otrzymywać więcej propozycji szkoleń? ${unsubUrl}`,
-  ].join("\n");
+  const message = await buildMarketingMessage(params.to, params.body);
 
   return sendOrQueueEmail({
     to: params.to,
     subject: params.subject,
-    body,
+    body: message.body,
     leadId: params.leadId ?? null,
     kind: EMAIL_KIND.MARKETING,
+    headers: message.headers,
+    dedupe: params.dedupe,
+  });
+}
+
+/**
+ * Składa treść mailingu tak, jak realnie wyjdzie: tekst + stopka z powodem otrzymania
+ * i linkiem rezygnacji, plus nagłówki `List-Unsubscribe`.
+ *
+ * Wydzielone, żeby **podgląd w panelu pokazywał dokładnie to samo, co wysyłka**.
+ * Gdy podgląd renderuje samą treść bez stopki, admin zatwierdza coś innego niż to,
+ * co dostaje kursantka — a stopka jest tu elementem zgodności, nie ozdobnikiem.
+ */
+export async function buildMarketingMessage(
+  to: string,
+  body: string
+): Promise<{ body: string; headers: Record<string, string>; unsubUrl: string }> {
+  const { getOrCreateUnsubscribeToken } = await import("./marketing-list");
+  const token = await getOrCreateUnsubscribeToken(to);
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://uniwersytetbeauty.pl";
+  const unsubUrl = `${base}/wypisz/${token}`;
+
+  return {
+    body: [
+      body,
+      "",
+      "—",
+      "Dostajesz tę wiadomość, bo zgodziłaś się na propozycje szkoleń od Uniwersytetu Beauty.",
+      `Nie chcesz otrzymywać więcej propozycji szkoleń? ${unsubUrl}`,
+    ].join("\n"),
     // RFC 8058: adres w `List-Unsubscribe` musi przyjmować POST, żeby przycisk „Wypisz"
     // w Gmailu/Outlooku zadziałał jednym kliknięciem — dlatego wskazuje na trasę API,
     // a nie na stronę z potwierdzeniem. Link w treści maila prowadzi do strony,
@@ -351,5 +391,11 @@ export async function sendMarketingEmail(params: {
       "List-Unsubscribe": `<${base}/api/wypisz?token=${token}>, <mailto:biuro@uniwersytetbeauty.pl?subject=Wypisz>`,
       "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
     },
-  });
+    unsubUrl,
+  };
+}
+
+/** Czy da się dziś w ogóle wysłać maila (są dane SMTP). Panel ma to mówić wprost, a nie udawać. */
+export function isSmtpConfigured(): boolean {
+  return smtpConfigured();
 }

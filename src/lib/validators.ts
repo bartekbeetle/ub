@@ -338,3 +338,31 @@ export const leadStatusUpdateSchema = z.object({
   status: z.enum(["nowy", "przydzielony", "skontaktowany", "zapisana", "rozliczony", "odrzucony"]),
   rejectionReason: z.string().max(1000).optional().or(z.literal("")),
 });
+
+// ===== MAILING =====
+
+/**
+ * Segment odbiorców mailingu.
+ *
+ * 🔴 Świadomie NIE ma tu pola „wszyscy" ani filtra po zgodzie na kontakt. Dobór odbiorców
+ * po `marketingConsentAt` jest zaszyty w `buildAudience` i nie jest parametrem — gdyby był,
+ * pierwsza pomyłka w UI oznaczałaby wysyłkę bez podstawy prawnej (art. 398 PKE).
+ */
+export const mailingSegmentSchema = z.object({
+  sources: z.array(z.enum(["lead", "aplikacja"])).max(2).optional(),
+  categories: z.array(z.enum(CATEGORIES as unknown as [string, ...string[]])).optional(),
+  voivodeships: z.array(z.enum(voivodeshipSlugs)).optional(),
+  since: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Data w formacie RRRR-MM-DD")
+    .optional()
+    .or(z.literal(""))
+    .or(z.null()),
+});
+
+export const mailingCampaignSchema = z.object({
+  name: z.string().trim().min(3, "Podaj nazwę kampanii").max(200),
+  subject: z.string().trim().min(3, "Podaj temat wiadomości").max(300),
+  body: z.string().trim().min(20, "Treść jest za krótka").max(50000),
+  segment: mailingSegmentSchema.default({}),
+});

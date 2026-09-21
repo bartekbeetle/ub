@@ -25,6 +25,9 @@ const GROUPS: { label: string | null; items: Item[] }[] = [
       // zakładki ukrywało jedyne, co się liczy: w którym miejscu ucieka pieniądz.
       { href: "/admin/kursantki", label: "Kursantki — lejek" },
       { href: "/admin/rozliczenia", label: "Rozliczenia" },
+      // Mailing stoi w lejku B2C, a nie w „Serwisie": to jest kontakt z kursantkami,
+      // a nie ustawienie techniczne. Obok lejka widać, do ilu z nich wolno w ogóle pisać.
+      { href: "/admin/mailing", label: "Mailing" },
     ],
   },
   {
