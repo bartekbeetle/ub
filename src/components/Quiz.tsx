@@ -28,7 +28,52 @@ const EMPLOYMENT_FORM_OPTIONS = [
   { label: "Nie pracuję, bierna zawodowo", employmentStatus: "inna" },
 ] as const;
 
-const EDUCATION_OPTIONS = ["Podstawowe", "Zawodowe", "Średnie", "Student(ka)", "Wyższe"] as const;
+/**
+ * KRYTERIA WYŻSZEGO DOFINANSOWANIA — wersja z 22.09.2026.
+ *
+ * 🔴 Dlaczego przepisane: poprzednio było JEDNO abstrakcyjne pytanie „czy należysz do grupy
+ * uprawnionej do wyższego poziomu dofinansowania?" z opcją „nie wiem — sprawdźcie za mnie".
+ * Efekt na produkcji: **praktycznie każda kandydatka klikała „nie wiem"** — bo nikt nie wie,
+ * czy należy do „grupy uprawnionej", dopóki nie zobaczy, co to znaczy. Pytanie nie dawało
+ * żadnej informacji do telefonu i zajmowało miejsce.
+ *
+ * Wzorzec: formularz Akademii Kachel (`akademiakachel.fillout.com/microblading`, odczytany
+ * 22.09.2026), czyli realny formularz akademii z wpisem do BUR. Ona wylicza kryteria wprost.
+ * Rozpoznanie („czy to o mnie?") jest zadaniem, które człowiek umie wykonać; ocena własnego
+ * statusu prawnego nie jest.
+ *
+ * ⚠️ ŚWIADOMA RÓŻNICA WOBEC PIERWOWZORU — nie pytamy o niepełnosprawność, przynależność do
+ * mniejszości ani kryzys bezdomności. To są **kategorie szczególne z art. 9 RODO**, a UB jest
+ * pośrednikiem: wniosek o dofinansowanie składa akademia i to ONA te dane zbiera (formularz
+ * Kachel jest tego dowodem). Duplikowanie cudzego obowiązku dołożyłoby nam wymogów, niczego
+ * nie dając. Zamiast tego ostatnia pozycja pozwala zasygnalizować „jest coś jeszcze" bez
+ * zapisywania JAKIEJ kategorii to dotyczy.
+ *
+ * ⛔ Nie dokładaj tu opcji „nie wiem". Konkretna lista działa tylko dopóty, dopóki nie ma
+ * z niej wyjścia bokiem — „Żadne z powyższych" jest świadomą odpowiedzią, „nie wiem" nie jest.
+ */
+const ELIGIBILITY_OPTIONS = [
+  { value: "wiek_55", label: "Mam 55 lat lub więcej" },
+  {
+    value: "wyksztalcenie",
+    label: "Moje wykształcenie to co najwyżej średnie",
+    hint: "podstawowe, gimnazjalne, zawodowe, liceum lub technikum",
+  },
+  {
+    value: "bez_pracy",
+    label: "Obecnie nie pracuję",
+    hint: "status osoby bezrobotnej lub poszukującej pracy trzeba będzie udokumentować",
+  },
+  {
+    value: "inne_do_rozmowy",
+    label: "Jest jeszcze coś, co może podnieść moje dofinansowanie",
+    hint: "powiesz o tym przez telefon — tutaj niczego nie zapisujemy",
+  },
+] as const;
+
+/** Wybór wykluczający resztę — bez niego „nic nie zaznaczone" znaczy jednocześnie
+ *  „nic mnie nie dotyczy" i „pominęłam pytanie", czyli tyle samo co dawne „nie wiem". */
+const ELIGIBILITY_NONE = "zadne";
 
 const GOAL_OPTIONS = [
   "Zmiana zawodu",
@@ -55,24 +100,19 @@ const HEARD_FROM_OPTIONS = [
   "Inne",
 ] as const;
 
-type YesNoUnknown = "" | "tak" | "nie" | "nie_wiem";
-
 type FormState = {
   category: string;
   voivodeship: string;
   city: string;
+  postalCode: string;
   employmentForm: string; // label z EMPLOYMENT_FORM_OPTIONS
-  hasBusinessActivity: "" | "tak" | "nie" | "nie_wiem";
-  education: string;
-  /**
-   * Neutralne pytanie o grupę uprawnioną do wyższego dofinansowania — ŚWIADOMIE bez
-   * wyliczania kategorii (niepełnosprawność, mniejszość narodowa, bezdomność). Te dane
-   * to kategorie szczególne z art. 9 RODO; nie zbieramy ich w dniu startu kampanii bez
-   * opinii prawnika. "Nie wiem — sprawdźcie za mnie" daje ten sam sygnał do telefonu,
-   * bez gromadzenia niczego wrażliwego.
-   */
-  eligibleGroup: YesNoUnknown;
+  /** Bez „nie wiem": pytanie ma teraz przy sobie definicję, więc nie ma czego nie wiedzieć. */
+  hasBusinessActivity: "" | "tak" | "nie";
+  /** Zaznaczone wartości z ELIGIBILITY_OPTIONS albo sam ELIGIBILITY_NONE. Patrz komentarz tam. */
+  eligibility: string[];
   goal: string;
+  /** Inne kategorie, którymi jest zainteresowana — pod multi-sell do 2-3 akademii. */
+  alsoInterestedIn: string[];
   worksInBeauty: "" | "tak" | "nie";
   ageRange: string;
   preferredDate: string;
@@ -91,11 +131,12 @@ const INITIAL: FormState = {
   category: "",
   voivodeship: "",
   city: "",
+  postalCode: "",
   employmentForm: "",
   hasBusinessActivity: "",
-  education: "",
-  eligibleGroup: "",
+  eligibility: [],
   goal: "",
+  alsoInterestedIn: [],
   worksInBeauty: "",
   ageRange: "",
   preferredDate: "",
@@ -137,6 +178,11 @@ function validateStep(step: number, f: FormState): Errors {
   }
   if (step === 3) {
     if (!f.employmentForm) e.employmentForm = "Wybierz formę zatrudnienia.";
+    // Grupa WYMAGANA. Pytanie nieobowiązkowe zamieniłoby dawne „nie wiem" na pustą wartość —
+    // ta sama ślepota, inny kształt. „Żadne z powyższych" jest pełnoprawną odpowiedzią.
+    if (f.eligibility.length === 0) {
+      e.eligibility = "Zaznacz, co Cię dotyczy — albo „Żadne z powyższych”.";
+    }
   }
   if (step === 4) {
     if (!f.goal) e.goal = "Wybierz, co jest dla Ciebie najważniejsze.";
@@ -239,6 +285,30 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       : {};
 
   /**
+   * „Żadne z powyższych" wyklucza się z resztą i odwrotnie — inaczej dałoby się oddać
+   * odpowiedź sprzeczną („mam 55 lat" + „żadne z powyższych"), której nikt nie umiałby
+   * odczytać przy telefonie.
+   */
+  function toggleEligibility(value: string) {
+    setForm((f) => {
+      const has = f.eligibility.includes(value);
+      if (value === ELIGIBILITY_NONE) return { ...f, eligibility: has ? [] : [ELIGIBILITY_NONE] };
+      const bez = f.eligibility.filter((v) => v !== ELIGIBILITY_NONE && v !== value);
+      return { ...f, eligibility: has ? bez : [...bez, value] };
+    });
+    if (errors.eligibility) setErrors((e) => ({ ...e, eligibility: undefined }));
+  }
+
+  function toggleInterest(value: string) {
+    setForm((f) => ({
+      ...f,
+      alsoInterestedIn: f.alsoInterestedIn.includes(value)
+        ? f.alsoInterestedIn.filter((v) => v !== value)
+        : [...f.alsoInterestedIn, value],
+    }));
+  }
+
+  /**
    * Kroki 3 i 5 mają dużo opcji — na telefonie jedyne wymagane pole bywa u góry ekranu,
    * a „Dalej" na dole. Bez tego kliknięcie „Dalej" z pustym polem wyglądało jak martwy
    * przycisk: błąd renderował się poza widocznym obszarem, nic nie było widać na ekranie.
@@ -284,13 +354,25 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
     setSubmitError(null);
 
     const employmentOption = EMPLOYMENT_FORM_OPTIONS.find((o) => o.label === form.employmentForm);
-    const eligibleGroupLabel =
-      form.eligibleGroup === "tak" ? "tak" : form.eligibleGroup === "nie" ? "nie" : form.eligibleGroup === "nie_wiem" ? "nie wiem — sprawdźcie za mnie" : "";
+    // Kryteria składamy w zdania, a nie w kody — `message` czyta człowiek przed telefonem,
+    // nie parser. „Żadne z powyższych" zapisujemy JAWNIE: cisza w tym miejscu znaczyłaby
+    // „nie zapytaliśmy", a właśnie z tej dwuznaczności wyszliśmy, kasując „nie wiem".
+    const eligibilityLabel = form.eligibility.includes(ELIGIBILITY_NONE)
+      ? "żadne z wymienionych kryteriów"
+      : ELIGIBILITY_OPTIONS.filter((o) => form.eligibility.includes(o.value))
+          .map((o) => o.label.toLowerCase())
+          .join("; ");
 
     const messageParts: string[] = [];
     if (form.employmentForm) messageParts.push(`Forma zatrudnienia (dosłownie): ${form.employmentForm}`);
-    if (form.education) messageParts.push(`Wykształcenie: ${form.education}`);
-    if (eligibleGroupLabel) messageParts.push(`Grupa uprawniona do wyższego dofinansowania: ${eligibleGroupLabel}`);
+    if (form.postalCode.trim()) messageParts.push(`Kod pocztowy: ${form.postalCode.trim()}`);
+    if (eligibilityLabel) messageParts.push(`Kryteria wyższego dofinansowania: ${eligibilityLabel}`);
+    if (form.eligibility.includes("inne_do_rozmowy")) {
+      messageParts.push("⚠️ Zaznaczyła, że jest coś jeszcze — zapytaj przez telefon (nie zapisujemy kategorii).");
+    }
+    if (form.alsoInterestedIn.length > 0) {
+      messageParts.push(`Interesuje ją też (multi-sell): ${form.alsoInterestedIn.join(", ")}`);
+    }
     if (form.goal) messageParts.push(`Cel: ${form.goal}`);
     if (form.ageRange) messageParts.push(`Wiek: ${form.ageRange}`);
     if (form.worksInBeauty) messageParts.push(`Pracuje już w beauty: ${form.worksInBeauty === "tak" ? "tak" : "nie"}`);
@@ -307,8 +389,7 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       employmentStatus: employmentOption?.employmentStatus ?? "inna",
       preferredDate: form.preferredDate.trim(),
       city: form.city.trim(),
-      hasBusinessActivity:
-        form.hasBusinessActivity === "tak" ? true : form.hasBusinessActivity === "nie" ? false : undefined,
+      hasBusinessActivity: form.hasBusinessActivity === "tak" ? true : form.hasBusinessActivity === "nie" ? false : undefined,
       travelKm: travelOption ? travelOption.km : undefined,
       message: messageParts.join("\n"),
       rodoConsent: form.rodoConsent,
@@ -503,6 +584,23 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
               {errors.city && <p id="quiz-err-city" role="alert" className="field-error">{errors.city}</p>}
             </div>
           </div>
+          {/* Kod pocztowy za formularzem Akademii Kachel. U nas ma jeden konkretny użytek:
+              operatorzy BUR dzielą województwa na subregiony, a akademię dobieramy po odległości.
+              Sama nazwa miasta bywa dwuznaczna (Lubanie ≠ Lubania) — kod nie jest. */}
+          <div className="sm:w-1/2 sm:pr-2">
+            <label className="label" htmlFor="q-postal">Kod pocztowy</label>
+            <input
+              id="q-postal"
+              type="text"
+              inputMode="numeric"
+              autoComplete="postal-code"
+              className="input"
+              placeholder="np. 43-100"
+              maxLength={6}
+              value={form.postalCode}
+              onChange={(e) => set("postalCode", e.target.value)}
+            />
+          </div>
         </div>
       )}
 
@@ -535,9 +633,15 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
           </fieldset>
 
           <fieldset>
-            <legend className="label">Czy prowadzisz działalność gospodarczą (także zawieszoną)?</legend>
+            <legend className="label">Czy prowadzisz działalność gospodarczą?</legend>
+            {/* Definicja przy pytaniu, nie w domyśle — to ona zastąpiła opcję „nie wiem”.
+                Sformułowanie za formularzem Akademii Kachel (art. 4 ust. 1-2 Prawa
+                przedsiębiorców), bo to ta definicja decyduje o ścieżce finansowania. */}
+            <p className="mb-2 text-xs text-muted">
+              Liczy się jednoosobowa działalność i wspólniczka spółki cywilnej — <strong>także zawieszona</strong>.
+            </p>
             <div className="flex flex-wrap gap-3">
-              {(["tak", "nie", "nie_wiem"] as const).map((v) => (
+              {(["tak", "nie"] as const).map((v) => (
                 <label key={v} className="flex min-h-[44px] cursor-pointer items-center gap-2 rounded-full border-2 border-sand-600 px-4 py-2 text-sm font-semibold text-ink has-[:checked]:bg-sand-400 has-[:checked]:text-ink-soft">
                   <input
                     type="radio"
@@ -546,42 +650,47 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
                     checked={form.hasBusinessActivity === v}
                     onChange={() => set("hasBusinessActivity", v)}
                   />
-                  {v === "tak" ? "Tak" : v === "nie" ? "Nie" : "Nie wiem"}
+                  {v === "tak" ? "Tak" : "Nie"}
                 </label>
               ))}
             </div>
           </fieldset>
 
-          <div>
-            <label className="label" htmlFor="q-education">Wykształcenie</label>
-            <select id="q-education" className="input" value={form.education} onChange={(e) => set("education", e.target.value)}>
-              <option value="">Wolę nie podawać</option>
-              {EDUCATION_OPTIONS.map((ed) => (
-                <option key={ed} value={ed}>{ed}</option>
-              ))}
-            </select>
-          </div>
-
           <fieldset>
-            <legend className="label">Czy należysz do grupy uprawnionej do wyższego poziomu dofinansowania?</legend>
-            <div className="flex flex-wrap gap-3">
-              {([
-                ["tak", "Tak"],
-                ["nie", "Nie"],
-                ["nie_wiem", "Nie wiem — sprawdźcie za mnie"],
-              ] as const).map(([v, label]) => (
-                <label key={v} className="flex min-h-[44px] cursor-pointer items-center gap-2 rounded-full border-2 border-sand-600 px-4 py-2 text-sm font-semibold text-ink has-[:checked]:bg-sand-400 has-[:checked]:text-ink-soft">
+            <legend className="label">Czy któreś z tych zdań jest o Tobie? *</legend>
+            <p className="mb-2 text-xs text-muted">
+              Każde z nich może podnieść Twój poziom dofinansowania. Zaznacz wszystkie, które pasują.
+            </p>
+            <div className="space-y-2">
+              {ELIGIBILITY_OPTIONS.map((o) => (
+                <label
+                  key={o.value}
+                  className="flex min-h-[44px] cursor-pointer items-start gap-3 rounded-[10px] border-2 border-sand-600 px-4 py-2.5 text-sm text-ink has-[:checked]:bg-sand-400 has-[:checked]:font-semibold has-[:checked]:text-ink-soft"
+                >
                   <input
-                    type="radio"
-                    name="q-eligible"
-                    className="sr-only"
-                    checked={form.eligibleGroup === v}
-                    onChange={() => set("eligibleGroup", v)}
+                    type="checkbox"
+                    className="mt-0.5 h-4 w-4 shrink-0 accent-sand-700"
+                    checked={form.eligibility.includes(o.value)}
+                    onChange={() => toggleEligibility(o.value)}
+                    {...err("eligibility")}
                   />
-                  {label}
+                  <span>
+                    {o.label}
+                    {"hint" in o && o.hint && <span className="block text-xs font-normal text-muted">{o.hint}</span>}
+                  </span>
                 </label>
               ))}
+              <label className="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-[10px] border-2 border-dashed border-sand-600 px-4 py-2.5 text-sm text-ink has-[:checked]:bg-sand-400 has-[:checked]:font-semibold has-[:checked]:text-ink-soft">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 shrink-0 accent-sand-700"
+                  checked={form.eligibility.includes(ELIGIBILITY_NONE)}
+                  onChange={() => toggleEligibility(ELIGIBILITY_NONE)}
+                />
+                Żadne z powyższych
+              </label>
             </div>
+            {errors.eligibility && <p id="quiz-err-eligibility" role="alert" className="field-error">{errors.eligibility}</p>}
           </fieldset>
         </div>
       )}
@@ -625,6 +734,30 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
                     onChange={() => set("worksInBeauty", v)}
                   />
                   {v === "tak" ? "Tak" : "Nie"}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          {/* Multi-sell: model zakłada sprzedanie jednego leada 2-3 akademiom. Kandydatka
+              zainteresowana rzęsami I paznokciami ma dwóch adresatów zamiast jednego.
+              Pytanie z formularza Akademii Kachel („Jakie szkolenia Cię interesują?"),
+              ale na NASZEJ taksonomii CATEGORIES — tej samej, po której matchujemy.
+              ⚠️ Dziś to informacja DO TELEFONU (ląduje w karcie leada), nie automat:
+              przydział nadal idzie po kategorii głównej. */}
+          <fieldset>
+            <legend className="label">Jakie jeszcze szkolenia Cię interesują?</legend>
+            <p className="mb-2 text-xs text-muted">Możesz zaznaczyć kilka albo pominąć.</p>
+            <div className="flex flex-wrap gap-2">
+              {CATEGORIES.filter((c) => c !== form.category).map((c) => (
+                <label key={c} className="flex min-h-[44px] cursor-pointer items-center gap-2 rounded-full border-2 border-sand-600 px-4 py-2 text-sm font-semibold text-ink has-[:checked]:bg-sand-400 has-[:checked]:text-ink-soft">
+                  <input
+                    type="checkbox"
+                    className="sr-only"
+                    checked={form.alsoInterestedIn.includes(c)}
+                    onChange={() => toggleInterest(c)}
+                  />
+                  {c}
                 </label>
               ))}
             </div>
