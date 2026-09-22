@@ -1,16 +1,16 @@
 import Link from "next/link";
 
 /**
- * LEJEK KURSANTEK — jeden ekran od „zaczęła wypełniać" do „zapłacone".
+ * LEJEK KURSANTEK — droga od leada do zapłaty. Tylko ta jedna.
  *
- * 🔴 Dlaczego to NIE jest jeden słupek od góry do dołu:
- * do leada prowadzą DWIE różne drogi i one nie mają wspólnej historii.
- *  — Aplikacja (`/aplikacja`): 7 kroków, każdy zapisywany w `quiz_sessions`, więc widać,
- *    na którym pytaniu kobieta odpada.
- *  — Konsultacja i kontakt: jeden formularz, zero kroków pośrednich.
- * Gdyby wrzucić je w jeden słupek, leady z konsultacji wyglądałyby na takie, które
- * „przeszły" kroki aplikacji, których nigdy nie widziały — a procenty odpadania
- * stałyby się fikcją. Dlatego dwie ścieżki wejścia zbiegają się dopiero na „Lead".
+ * 🔴 Decyzja Bartka 22.09.2026: **kafle „Wejście 1 — aplikacja" i „Wejście 2 — konsultacja"
+ * usunięte.** Pokazywały, na którym kroku formularza kobieta odpada, i na ile wejść dzielą
+ * się leady — czyli przegląd statystyk, a nie rzecz, po której da się coś zrobić. Zaśmiecały
+ * podgląd nad tabelą, przez którą realnie się pracuje.
+ * Co przejęło ich sygnał: chip **„Porzucone aplikacje"** nad tabelą (z filtrem po kroku
+ * porzucenia) i linijka o zgłoszeniach bez kwalifikacji. Filtry `?etap=krok-N`,
+ * `?etap=zlozone` i `?etap=inne-wejscia` **nadal działają** z adresu — usunięte są kafle,
+ * nie dane. Gdyby kiedyś wróciły: `git show d6db398^:src/components/admin/LejekKursantek.tsx`.
  *
  * Liczby dotyczą CAŁEJ BAZY, nie przefiltrowanej tabeli niżej — inaczej kafelek
  * i lista pod nim pokazywałyby różne wartości i wyglądało to na błąd.
@@ -31,10 +31,7 @@ export type EtapLejka = {
   alarm?: boolean;
 };
 
-function Pasek({ e, ton }: { e: EtapLejka; ton: "aplikacja" | "inne" | "wspolny" }) {
-  const kolor =
-    ton === "wspolny" ? "bg-money" : ton === "aplikacja" ? "bg-sand-700" : "bg-sand-400";
-
+function Pasek({ e }: { e: EtapLejka }) {
   return (
     <Link
       href={`/admin/kursantki?etap=${e.klucz}`}
@@ -47,7 +44,7 @@ function Pasek({ e, ton }: { e: EtapLejka; ton: "aplikacja" | "inne" | "wspolny"
 
       <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-sand-100">
         <span
-          className={`block h-full rounded-full ${kolor}`}
+          className="block h-full rounded-full bg-money"
           style={{ width: `${Math.max(e.procent, e.liczba > 0 ? 2 : 0)}%` }}
         />
       </span>
@@ -68,13 +65,9 @@ function Pasek({ e, ton }: { e: EtapLejka; ton: "aplikacja" | "inne" | "wspolny"
 }
 
 export function LejekKursantek({
-  aplikacja,
-  inneWejscia,
   wspolny,
   naStole,
 }: {
-  aplikacja: EtapLejka[];
-  inneWejscia: EtapLejka[];
   wspolny: EtapLejka[];
   /** Leady bez trenerki × stawka — pieniądz leżący bez adresata. */
   naStole: { leadow: number; kwota: number };
@@ -99,42 +92,16 @@ export function LejekKursantek({
         </div>
       )}
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div className="card overflow-hidden">
-          <div className="border-b bg-sand-50 px-3 py-2">
-            <h3 className="text-sm font-bold">Wejście 1 — aplikacja</h3>
-            <p className="text-[11px] text-muted">7 kroków formularza; widać, które pytanie zabija konwersję</p>
-          </div>
-          <div className="divide-y">
-            {aplikacja.map((e) => (
-              <Pasek key={e.klucz} e={e} ton="aplikacja" />
-            ))}
-          </div>
-        </div>
-
-        <div className="card overflow-hidden">
-          <div className="border-b bg-sand-50 px-3 py-2">
-            <h3 className="text-sm font-bold">Wejście 2 — konsultacja i kontakt</h3>
-            <p className="text-[11px] text-muted">jeden formularz, bez kroków pośrednich — nie ma tu czego mierzyć</p>
-          </div>
-          <div className="divide-y">
-            {inneWejscia.map((e) => (
-              <Pasek key={e.klucz} e={e} ton="inne" />
-            ))}
-          </div>
-        </div>
-      </div>
-
       <div className="card overflow-hidden">
         <div className="border-b bg-money-bg px-3 py-2">
-          <h3 className="text-sm font-bold">Wspólna droga — tu powstaje przychód</h3>
+          <h3 className="text-sm font-bold">Od leada do przychodu</h3>
           <p className="text-[11px] text-muted">
-            obie ścieżki zbiegają się na leadzie · 500 zł naliczamy dopiero przy statusie „zapisana"
+            wszystkie wejścia zbiegają się na leadzie · 500 zł naliczamy dopiero przy statusie „zapisana"
           </p>
         </div>
         <div className="divide-y">
           {wspolny.map((e) => (
-            <Pasek key={e.klucz} e={e} ton="wspolny" />
+            <Pasek key={e.klucz} e={e} />
           ))}
         </div>
       </div>

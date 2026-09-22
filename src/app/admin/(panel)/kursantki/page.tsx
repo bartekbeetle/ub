@@ -254,12 +254,7 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
 
       {/* LEJEK — zastąpił trzy kafelki i osobną zakładkę „Porzucone quizy" */}
       <div className="mt-6">
-        <LejekKursantek
-          aplikacja={lejek.aplikacja}
-          inneWejscia={lejek.inneWejscia}
-          wspolny={lejek.wspolny}
-          naStole={lejek.naStole}
-        />
+        <LejekKursantek wspolny={lejek.wspolny} naStole={lejek.naStole} />
       </div>
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
@@ -510,7 +505,7 @@ function WierszPorzuconej({ sesja }: { sesja: QuizSession }) {
  * wydajnościowej z 18.09 nie wracamy do mielenia setek wierszy w pamięci.
  */
 async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
-  const [wgKroku, wgStatusu, przydzielone, wgZrodla, zgloszenia, zgodyPorzuconych] =
+  const [wgKroku, wgStatusu, przydzielone, wgZrodla, zgodyPorzuconych] =
     await Promise.all([
       db
         .select({
@@ -534,7 +529,6 @@ async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
         .select({ zrodlo: schema.leads.source, c: sql<number>`count(*)::int` })
         .from(schema.leads)
         .groupBy(schema.leads.source),
-      db.select({ c: sql<number>`count(*)::int` }).from(schema.submissions),
       db
         .select({ c: sql<number>`count(*)::int` })
         .from(schema.quizSessions)
@@ -554,49 +548,13 @@ async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
   const leadyZInnych = leadyRazem - leadyZAplikacji;
   const zPrzydzialem = przydzielone[0]?.c ?? 0;
 
-  // --- WEJŚCIE 1: aplikacja, krok po kroku ---
+  // Kroki aplikacji nie mają już własnego kafla (usunięty 22.09), ale licznik porzuconych
+  // nad tabelą dalej z nich żyje — stąd te dwa pomocnicze liczenia zostają.
   const sesjeRazem = wgKroku.reduce((sum, r) => sum + r.c, 0);
   const doszloDoKroku = (k: number) =>
     wgKroku.filter((r) => r.krok >= k).reduce((sum, r) => sum + r.c, 0);
-  const porzuconeNaKroku = (k: number) =>
-    wgKroku.filter((r) => r.krok === k && !r.dokonczone).reduce((sum, r) => sum + r.c, 0);
 
-  const aplikacja: EtapLejka[] = KROKI_APLIKACJI.map((etykieta, i) => {
-    const krok = i + 1;
-    const doszlo = doszloDoKroku(krok);
-    const odpadlo = porzuconeNaKroku(krok);
-    return {
-      klucz: `krok-${krok}`,
-      etykieta: `${krok}. ${etykieta}`,
-      liczba: doszlo,
-      procent: sesjeRazem ? Math.round((doszlo / sesjeRazem) * 100) : 0,
-      ubytek: odpadlo,
-      // Największy wyciek zaznaczamy na czerwono dopiero przy realnej skali,
-      // żeby przy trzech sesjach nie malować alarmu z jednej osoby.
-      alarm: odpadlo >= 3,
-    };
-  });
-
-  // --- WEJŚCIE 2: konsultacja / kontakt ---
-  const inneWejscia: EtapLejka[] = [
-    {
-      klucz: "inne-wejscia",
-      etykieta: "Leady z konsultacji i kontaktu",
-      liczba: leadyZInnych,
-      procent: 100,
-      opis: "formularz konsultacji, karta kursu, landing, recepcjonistka",
-    },
-    {
-      klucz: "zgloszenia",
-      etykieta: "Zgłoszenia bez kwalifikacji",
-      liczba: zgloszenia[0]?.c ?? 0,
-      procent: leadyZInnych ? Math.round(((zgloszenia[0]?.c ?? 0) / leadyZInnych) * 100) : 0,
-      opis: "brak województwa i kategorii — warte 0 zł, dopóki ich nie uzupełnisz",
-      alarm: (zgloszenia[0]?.c ?? 0) > 0,
-    },
-  ];
-
-  // --- WSPÓLNA DROGA ---
+  // --- DROGA OD LEADA DO PRZYCHODU ---
   const zapisane = ile("zapisana", "rozliczony");
   const rozliczone = ile("rozliczony");
   const skontaktowane = ile("skontaktowany", "zapisana", "rozliczony");
@@ -647,8 +605,6 @@ async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
   ];
 
   return {
-    aplikacja,
-    inneWejscia,
     wspolny,
     naStole: { leadow: bezPrzydzialu, kwota: bezPrzydzialu * STAWKA_ZA_ZAPIS },
     zgodyPorzuconych: zgodyPorzuconych[0]?.c ?? 0,
