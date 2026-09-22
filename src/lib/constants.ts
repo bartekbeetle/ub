@@ -324,21 +324,9 @@ export const PROSPECT_ACTIVITY_LABELS: Record<string, string> = {
   zmiana_statusu: "Zmiana statusu",
 };
 
-export const RESEARCH_JOB_STATUSES = ["pending", "w_toku", "gotowe", "pominiete"] as const;
-
-export const RESEARCH_JOB_STATUS_LABELS: Record<string, string> = {
-  pending: "Czeka",
-  w_toku: "W toku",
-  gotowe: "Gotowe",
-  pominiete: "Pominięte",
-};
-
-export const RESEARCH_JOB_STATUS_COLORS: Record<string, string> = {
-  pending: "bg-amber-100 text-amber-800",
-  w_toku: "bg-blue-100 text-blue-800",
-  gotowe: "bg-emerald-100 text-emerald-800",
-  pominiete: "bg-gray-200 text-gray-600",
-};
+/* Kolejka researchu usunięta 22.09.2026 (UI, API i zakładanie zadań przy nowym leadzie).
+   Stałe statusów zeszły razem z nią; tabela `research_jobs` ZOSTAJE w bazie nietknięta —
+   gdyby kiedyś wracała: `git show 4bfa59e..` i ten sam commit, który ją zdjął. */
 
 /** Link do karty dostawcy w Bazie Usług Rozwojowych (PARP). */
 export function burProviderUrl(providerId: string | null | undefined): string | null {

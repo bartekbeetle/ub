@@ -76,20 +76,12 @@ export async function POST(req: Request) {
     details: { source: data.source, category: data.category, voivodeship: data.voivodeship },
   });
 
-  // Kolejka researchu trenerek: każdy lead to sygnał „poszukaj akademii w tym województwie
-  // i kategorii". Sam wiersz nic nie miele — przerabia go człowiek/agent w sesji
-  // (skill `research-trenerek`), panel pokazuje tylko licznik zaległości.
-  // Owinięte w try/catch świadomie: lead ma się zapisać nawet gdy kolejka padnie.
-  try {
-    await db.insert(schema.researchJobs).values({
-      leadId: lead.id,
-      voivodeship: lead.voivodeship,
-      category: lead.category,
-      status: "pending",
-    });
-  } catch (err) {
-    console.error("[lead] Nie udało się utworzyć zadania researchu:", err);
-  }
+  // 🔴 22.09.2026: nowy lead NIE zakłada już zadania w kolejce researchu — kolejka usunięta
+  // w całości (decyzja Bartka). Powód: mieliła 3–5 akademii dziennie, baza urosła 7 → 15,
+  // a kontaktowanych było zero. Brakuje telefonów do akademii, które już mamy, nie akademii.
+  // Lead bez adresata widać teraz tam, gdzie jest realnym problemem: w lejku kursantek
+  // („X zł leży bez adresata") i w kolejce telefonów w CRM trenerek.
+  // Tabela `research_jobs` i jej wiersze ZOSTAJĄ w bazie — nic nie kasujemy z danych.
 
   // Potwierdzenie dla kursantki. Leci PRZED dystrybucją, bo jest niezależne od tego,
   // czy znaleźliśmy jej akademię — a najczęściej nie znajdujemy (6 z 13 leadów w panelu

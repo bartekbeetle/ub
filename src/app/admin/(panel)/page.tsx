@@ -24,7 +24,6 @@ export default async function AdminDashboard() {
     [{ c: activeTrainers }],
     [{ s: revenueMonth }],
     [{ c: pendingBilling }],
-    [{ c: pendingResearch }],
     [{ c: prospectsActive }],
     recentLeads,
     dailyRaw,
@@ -42,10 +41,6 @@ export default async function AdminDashboard() {
       .select({ c: sql<number>`count(*)::int` })
       .from(schema.leadAssignments)
       .where(and(eq(schema.leadAssignments.billingStatus, "do_zafakturowania"), ne(schema.leadAssignments.amount, 0))),
-    db
-      .select({ c: sql<number>`count(*)::int` })
-      .from(schema.researchJobs)
-      .where(eq(schema.researchJobs.status, "pending")),
     db
       .select({ c: sql<number>`count(*)::int` })
       .from(schema.prospects)
@@ -99,19 +94,10 @@ export default async function AdminDashboard() {
         ))}
       </div>
 
-      {/* CRM TRENEREK — zaległości po stronie B2B, czyli tam, skąd bierze się przychód */}
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <Link href="/admin/crm-trenerki/kolejka" className="card p-5">
-          <span className={`inline-flex rounded-lg px-2.5 py-1 text-xs font-bold ${pendingResearch > 0 ? "bg-amber-100 text-amber-800" : "bg-gray-200 text-gray-600"}`}>
-            Leady czekające na research
-          </span>
-          <p className="mt-3 font-serif text-3xl font-bold text-ink-soft">{pendingResearch}</p>
-          <p className="mt-1 text-xs text-muted">
-            {pendingResearch > 0
-              ? "Do przerobienia: znajdź akademię w tym województwie i kategorii →"
-              : "Kolejka pusta — nic nie zalega."}
-          </p>
-        </Link>
+      {/* CRM TRENEREK — zaległości po stronie B2B, czyli tam, skąd bierze się przychód.
+          Kafel „Leady czekające na research" usunięty 22.09.2026 razem z całą kolejką:
+          liczył, ile roboty researchowej zalega, a zalegają telefony, nie research. */}
+      <div className="mt-4 grid gap-4">
         <Link href="/admin/crm-trenerki" className="card p-5">
           <span className="inline-flex rounded-lg bg-sand-100 px-2.5 py-1 text-xs font-bold text-sand-700">
             Prospekty w pipeline

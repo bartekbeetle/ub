@@ -11,7 +11,6 @@ import {
   PROSPECT_SOURCES,
   PROSPECT_ACTIVITY_TYPES,
   BUR_SEGMENTS,
-  RESEARCH_JOB_STATUSES,
 } from "./constants";
 
 const voivodeshipSlugs = VOIVODESHIPS.map((v) => v.slug) as [string, ...string[]];
@@ -328,11 +327,6 @@ export const prospectQuickActionSchema = z.discriminatedUnion("quickAction", [
   z.object({ quickAction: z.literal("nie_odbiera") }),
   z.object({ quickAction: z.literal("odloz") }),
 ]);
-
-export const researchJobPatchSchema = z.object({
-  status: z.enum(RESEARCH_JOB_STATUSES as unknown as [string, ...string[]]),
-  resultNotes: z.string().max(4000).optional().or(z.literal("")),
-});
 
 export const leadStatusUpdateSchema = z.object({
   status: z.enum(["nowy", "przydzielony", "skontaktowany", "zapisana", "rozliczony", "odrzucony"]),

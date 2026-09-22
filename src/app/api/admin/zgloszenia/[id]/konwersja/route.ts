@@ -114,20 +114,9 @@ export async function POST(req: Request, { params }: { params: Params }) {
     details: { leadId: lead.id },
   });
 
-  // Dalej lead idzie DOKŁADNIE tą samą drogą co ten z formularza kwalifikacyjnego:
-  // kolejka researchu trenerek + automatyczna dystrybucja. Oba w try/catch — lead
-  // ma istnieć nawet wtedy, gdy któryś z tych mechanizmów się wywróci.
-  try {
-    await db.insert(schema.researchJobs).values({
-      leadId: lead.id,
-      voivodeship: lead.voivodeship,
-      category: lead.category,
-      status: "pending",
-    });
-  } catch (err) {
-    console.error("[konwersja] Nie udało się utworzyć zadania researchu:", err);
-  }
-
+  // Dalej lead idzie DOKŁADNIE tą samą drogą co ten z formularza kwalifikacyjnego —
+  // czyli od 22.09.2026 samą dystrybucją. Zakładanie zadania w kolejce researchu wypadło
+  // stąd razem z usunięciem całej kolejki (powód opisany w `src/app/api/lead/route.ts`).
   try {
     await distributeLead(lead);
   } catch (err) {

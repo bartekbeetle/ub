@@ -34,7 +34,6 @@ const GROUPS: { label: string | null; items: Item[] }[] = [
     label: "CRM Trenerki",
     items: [
       { href: "/admin/crm-trenerki", label: "CRM trenerki" },
-      { href: "/admin/crm-trenerki/kolejka", label: "Kolejka researchu" },
       { href: "/admin/trenerki", label: "Katalog trenerek" },
       { href: "/admin/szkolenia", label: "Szkolenia" },
     ],
@@ -50,10 +49,8 @@ const GROUPS: { label: string | null; items: Item[] }[] = [
 
 function isActive(pathname: string, item: Item): boolean {
   if (item.exact) return pathname === item.href;
-  // „CRM trenerki" nie może się podświetlać, gdy jesteśmy w kolejce researchu (zagnieżdżona trasa).
-  if (item.href === "/admin/crm-trenerki") {
-    return pathname === "/admin/crm-trenerki" || /^\/admin\/crm-trenerki\/(?!kolejka)/.test(pathname);
-  }
+  // Wyjątek na trasę `/admin/crm-trenerki/kolejka` zdjęty 22.09.2026 razem z samą kolejką —
+  // pod „CRM trenerki" nie ma już zagnieżdżonej trasy z osobnym wpisem w menu.
   return pathname === item.href || pathname.startsWith(item.href + "/");
 }
 

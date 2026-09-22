@@ -70,7 +70,7 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
   // AND-owane z resztą filtrów, żeby dało się np. połączyć z wybranym województwem.
   if (widokDzis) conditions.push(callQueueCondition());
 
-  const [prospects, counts, pendingJobs, callQueue] = await Promise.all([
+  const [prospects, counts, callQueue] = await Promise.all([
     db
       .select()
       .from(schema.prospects)
@@ -81,17 +81,12 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
       .select({ status: schema.prospects.status, c: sql<number>`count(*)::int` })
       .from(schema.prospects)
       .groupBy(schema.prospects.status),
-    db
-      .select({ c: sql<number>`count(*)::int` })
-      .from(schema.researchJobs)
-      .where(eq(schema.researchJobs.status, "pending")),
     getCallQueue(25),
   ]);
 
   const countByStatus = new Map(counts.map((c) => [c.status as string, c.c]));
   const total = counts.reduce((sum, c) => sum + c.c, 0);
   const segmentA = prospects.filter((p) => p.burSegment === "A").length;
-  const pending = pendingJobs[0]?.c ?? 0;
 
   return (
     <div>
@@ -106,9 +101,6 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Link href="/admin/crm-trenerki/kolejka" className="btn-outline !px-4 !py-2 !text-sm">
-            Kolejka researchu{pending > 0 ? ` (${pending})` : ""}
-          </Link>
           <Link href="/admin/crm-trenerki/nowy" className="btn-primary !px-4 !py-2 !text-sm">+ Dodaj prospekta</Link>
         </div>
       </div>
