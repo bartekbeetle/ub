@@ -7,9 +7,16 @@ import { getDb, schema } from "@/db";
 import type { User } from "@/db/schema";
 
 const SESSION_COOKIE = "ub_session";
-const SESSION_TTL_MS = 1000 * 60 * 60 * 8; // 8h
+export const SESSION_TTL_MS = 1000 * 60 * 60 * 8; // 8h
 
-function hashToken(token: string): string {
+/**
+ * Eksportowane wyłącznie po to, żeby warstwa mobilna (`src/lib/mobile-auth.ts`) liczyła
+ * identyfikator sesji DOKŁADNIE tak samo — duplikat tej funkcji po drugiej stronie
+ * rozjechałby się przy pierwszej zmianie i dawałby ciche 401 zamiast głośnego błędu.
+ * Sama zmiana to dopisanie `export`: żadna istniejąca ścieżka (cookie, panel, admin)
+ * nie zmienia zachowania.
+ */
+export function hashToken(token: string): string {
   return createHash("sha256").update(token + (process.env.SESSION_SECRET || "")).digest("hex");
 }
 

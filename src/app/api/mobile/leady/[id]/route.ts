@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireTrainer } from "@/lib/auth";
+import { requireTrainerMobile } from "@/lib/mobile-auth";
 import { assignmentStatusSchema, updateTrainerAssignmentStatus } from "@/lib/assignment-status";
 
 export const runtime = "nodejs";
@@ -7,21 +7,21 @@ export const runtime = "nodejs";
 type Params = Promise<{ id: string }>;
 
 /**
- * Zmiana statusu WŁASNEGO przydziału przez trenerkę (panel webowy).
- * Sama logika (izolacja po trainerId, bramka onboardingu, naliczanie kwoty, maile)
- * leży w `@/lib/assignment-status` i jest współdzielona z aplikacją mobilną —
- * inaczej te dwie ścieżki rozjechałyby się w naliczaniu należności.
+ * Zmiana statusu przydziału z telefonu. Cała logika (izolacja, bramka onboardingu,
+ * naliczanie należności, maile do kursantki) leży we wspólnym `@/lib/assignment-status`,
+ * dzielonym z panelem webowym.
  */
 export async function PATCH(req: Request, { params }: { params: Params }) {
-  const user = await requireTrainer();
-  if (!user || !user.trainerId) return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
+  const auth = await requireTrainerMobile(req);
+  if (!auth) return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
+
   const { id } = await params;
   const parsed = assignmentStatusSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Nieprawidłowe dane." }, { status: 400 });
 
   const result = await updateTrainerAssignmentStatus({
-    user,
-    trainerId: user.trainerId,
+    user: auth.user,
+    trainerId: auth.trainer.id,
     assignmentId: Number(id),
     input: parsed.data,
   });
