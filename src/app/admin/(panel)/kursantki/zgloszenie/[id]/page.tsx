@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { SubmissionConversionForm } from "@/components/admin/SubmissionConversionForm";
+import { QuizAnswers } from "@/components/admin/QuizAnswers";
 import { formatDateTime } from "@/lib/utils";
 import { SUBMISSION_TYPE_LABELS } from "@/lib/constants";
 
@@ -44,7 +45,7 @@ export default async function KonwersjaZgloszeniaPage({ params }: { params: Prom
           <dt className="text-muted">Telefon</dt>
           <dd>{submission.phone ?? "— brak —"}</dd>
           <dt className="text-muted">Wiadomość</dt>
-          <dd className="whitespace-pre-line">{submission.message ?? "—"}</dd>
+          <dd>{submission.message ? <QuizAnswers message={submission.message} /> : "—"}</dd>
         </dl>
       </div>
 

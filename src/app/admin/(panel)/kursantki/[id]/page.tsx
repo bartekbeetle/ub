@@ -8,6 +8,7 @@ import { AssignTrainer, UnassignButton } from "@/components/admin/AssignTrainer"
 import { AssignmentStatusSelect } from "@/components/admin/AssignmentStatusSelect";
 import { LeadNotes } from "@/components/admin/LeadNotes";
 import { AnonymizeButton } from "@/components/admin/AnonymizeButton";
+import { QuizAnswers } from "@/components/admin/QuizAnswers";
 import { formatDateTime, maskEmail, maskPhone, formatPln } from "@/lib/utils";
 import { voivodeshipName, SOURCE_LABELS, LEAD_STATUS_LABELS, LEAD_STATUS_COLORS } from "@/lib/constants";
 
@@ -88,7 +89,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             {lead.message && (
               <>
                 <dt className="text-muted">Wiadomość</dt>
-                <dd className="whitespace-pre-line">{lead.message}</dd>
+                <dd><QuizAnswers message={lead.message} /></dd>
               </>
             )}
             <dt className="text-muted">Źródło</dt>
