@@ -28,6 +28,8 @@ Poza samą aplikacją dobre szkolenie uczy czterech rzeczy, bez których technik
 
 ## Po czym poznać dobre szkolenie
 
+Warto też sprawdzić, ile osób przypada na jedną trenerkę podczas zajęć praktycznych. Grupa liczna na tyle, że trenerka fizycznie nie zdąży poprawić każdej kursantki przy modelce, uczy gorzej niż mniejsza grupa z tym samym programem - technikę rzęs poprawia się na żywo, nie na filmie z tyłu sali.
+
 Nie każdy kurs z tą samą ceną daje tyle samo. Największą różnicę robi liczba godzin spędzonych na żywych modelkach, nie na modelu treningowym - błędy przy prawdziwym oku widać dopiero w praktyce, i tam trzeba je poprawiać pod okiem trenerki. Drugim sygnałem jest to, czy trenerka zostaje dostępna po kursie, gdy pojawia się pierwszy trudny przypadek u klientki - reakcja alergiczna, słaba przyczepność, pytanie, którego nie przewidziano na sali szkoleniowej. Pełną listę sygnałów, po których rozpoznasz solidne szkolenie zamiast kursu tylko na papierze, rozkłada wpis [jak wybrać dobrą trenerkę beauty](/blog/jak-wybrac-dobra-trenerke-beauty).
 
 ## Zestaw startowy i pierwsze portfolio
@@ -44,9 +46,13 @@ Pierwsze płacące klientki przychodzą najczęściej z najbliższego kręgu - k
 
 Tu ujawnia się przewaga rzęs nad wieloma innymi usługami beauty: stylizacja wymaga uzupełnienia co 2-4 tygodnie, w zależności od metody i tempa odrastania rzęs naturalnych. Zadowolona klientka, która wraca regularnie na uzupełnienie, nie znika z kalendarza po jednej wizycie - z czasem baza takich stałych terminów zaczyna wypełniać grafik sama, a nowe klientki dokładasz na wolne okienka, zamiast zaczynać każdy miesiąc od zera.
 
+Warto od pierwszej klientki notować termin kolejnej wizyty od razu, zanim wyjdzie z fotela, zamiast czekać, aż sama napisze, że rzęsy już odrosły. Ten jeden nawyk decyduje w praktyce o tym, czy uzupełnienia rzeczywiście wypełniają kalendarz, czy część klientek po prostu znika, bo nikt im nie przypomniał o terminie.
+
 ## Ile trwa dojście do pełnego grafiku i ile kosztuje kurs
 
 Uczciwa oś czasu wygląda inaczej niż w reklamach kursów. Miesiąc pierwszy to szkolenie i praca na modelkach - część nauki, nie zarabiania. Miesiąc drugi to pierwsze płatne wizyty z kręgu znajomych i pierwsze zdjęcia do portfolio z realnych klientek. Miesiąc trzeci to moment, w którym pierwsze uzupełnienia zaczynają się pojawiać w kalendarzu obok nowych zapisów. Pełny grafik, w którym uzupełnienia same wypełniają większość terminów, buduje się zwykle przez wiele miesięcy regularnej pracy, nie w pierwszym kwartale - kto zakłada inaczej, rozczarowuje się i odpuszcza dokładnie wtedy, gdy powtarzalność zaczyna działać na jego korzyść.
+
+Nie każdy tydzień w tym okresie wygląda tak samo - bywają tygodnie z kilkoma zapisami i tygodnie z jednym albo żadnym, zwłaszcza zanim baza stałych klientek urośnie na tyle, żeby wypełniać kalendarz samodzielnie. To normalna część budowania zawodu, nie sygnał, że coś idzie źle. Traktowanie chudszych tygodni jako powodu do rezygnacji jest częstszym błędem niż zbyt wolne tempo nauki.
 
 Kurs stylizacji rzęs kosztuje zwykle 1500-2500 zł, zależnie od zakresu metod i tego, czy w cenie jest startowy zestaw materiałów. Wpisany do Bazy Usług Rozwojowych (BUR) - rejestru prowadzonego przez PARP, rządową agencję rozliczającą fundusze unijne - można sfinansować w 80-90%, więc wkład własny wynosi orientacyjnie 150-500 zł zamiast pełnej kwoty. Przy takim wkładzie kurs zwraca się po dwóch, trzech pierwszych stylizacjach, licząc po cenie zabiegu 150-300 zł. Pełny koszt i zasady dofinansowania rozkłada wpis [kurs rzęs i brwi z dofinansowaniem](/blog/kurs-rzes-brwi-z-dofinansowaniem-ile-doplacasz), a widełki zarobków na tle innych specjalizacji beauty - wpis [ile zarabia linergistka i stylistka beauty](/blog/ile-zarabia-linergistka-stylistka-beauty).
 

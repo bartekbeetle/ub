@@ -37,7 +37,7 @@ Poniżej porównanie wszystkich czterech kierunków w jednym miejscu, trzy pytan
 | Stylizacja paznokci | 800-2500 zł | najniższy, zwykle kilkaset złotych | 80-150 zł (hybryda) | co 3-4 tygodnie |
 | Stylizacja rzęs | 1500-2500 zł | niski do średniego, zwykle kilkaset złotych | 150-300 zł | co 2-4 tygodnie (uzupełnienia) |
 | Brwi i laminacja | ok. 1000-2000 zł | najniższy z czterech, bez specjalistycznych urządzeń | 100-200 zł (laminacja) | co 4-6 tygodni |
-| Makijaż permanentny (PMU) | 3000-6000 zł, przy pełnym zakresie 4000-8000 zł | najwyższy, sięga kilku tysięcy złotych (maszynka, materiały jednorazowe) | 800-2000 zł | rzadko - korekta po zabiegu, odświeżenie po dłuższym czasie |
+| Makijaż permanentny (PMU) | 3000-6000 zł, przy pełnym zakresie 4000-8000 zł | najwyższy, sięga kilku tysięcy złotych (maszynka, materiały jednorazowe) | 500-900 zł (brwi; z korektą w cenie) | rzadko - korekta po zabiegu, odświeżenie po dłuższym czasie |
 
 Ceny w tabeli to widełki rynkowe, nie gotowa oferta - dokładna kwota zależy od miasta, doświadczenia osoby wykonującej zabieg i renomy trenerki prowadzącej kurs. Im wyższa cena zabiegu, tym zwykle dłuższa i droższa nauka oraz większa odpowiedzialność - PMU nie jest kierunkiem, który wybiera się na pierwszy tydzień w branży.
 
@@ -56,6 +56,8 @@ Zamiast zgadywać, odpowiedz na trzy pytania o swoją sytuację. Odpowiedzi zaw�
 ## Typowe ścieżki - od czego zaczynają inne kursantki
 
 Brwi z laminacją najczęściej pojawiają się jako krótki start albo dodatek do innej specjalizacji - niski koszt wejścia pozwala sprawdzić, czy praca z klientką w ogóle odpowiada, zanim zainwestujesz więcej. Paznokcie mają najniższy próg wejścia ze wszystkich kierunków i dlatego są najczęściej wybieranym pierwszym kursem w beauty - krótka nauka, tani sprzęt, szybki pierwszy zabieg.
+
+Rzęsy z kolei wybierają najczęściej osoby, którym zależy na szybkim zbudowaniu bazy stałych klientek - wysoka częstotliwość uzupełnień oznacza, że kalendarz zapełnia się powtarzalnymi wizytami wcześniej niż w kierunkach, gdzie klientka wraca raz na kilka miesięcy albo rzadziej.
 
 Makijaż permanentny bywa kierunkiem docelowym, a nie pierwszym kursem. Wyższa cena zabiegu i większa odpowiedzialność sprawiają, że wiele osób wchodzi w PMU po roku lub dwóch pracy w innej specjalizacji, gdy ma już zbudowaną bazę klientek, obycie z prowadzeniem własnego stanowiska i budżet na droższą naukę. Ścieżkę wejścia do zawodu bez wcześniejszego doświadczenia opisuje szerzej wpis [jak zacząć w beauty bez doświadczenia](/blog/jak-zaczac-w-beauty-bez-doswiadczenia).
 
