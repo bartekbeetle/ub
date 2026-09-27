@@ -12,6 +12,7 @@ fraza_glowna: "marketing dla trenerki makijażu permanentnego"
 filar: B
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Marketing dla trenerki makijażu permanentnego: co działa, a co zjada czas
@@ -68,7 +69,7 @@ Zewnętrzne źródło kursantek na wynik wchodzi tam, gdzie marketing własny si
 
 Ten model ma sens w kilku sytuacjach. Gdy Twój czas jest wart więcej włożony w szkolenie niż w prowadzenie kampanii. Gdy nie chcesz zamrażać budżetu reklamowego, który może się nie zwrócić. Gdy potrzebujesz przewidywalności zamiast miesięcznej huśtawki zapisów. Różnica między płaceniem za dotarcie a płaceniem za wynik, razem z rachunkiem kosztu i ryzyka, rozłożona jest w osobnym tekście o [modelach rozliczeń przy pozyskaniu kursantek](https://uniwersytetbeauty.pl/blog/prowizja-vs-flat-fee-pozyskanie-kursantek).
 
-Tak działa Uniwersytet Beauty. Prowadzimy kampanie skierowane do kobiet szukających szkoleń PMU z dofinansowaniem, kwalifikujemy zgłoszenia pod kątem regionu i gotowości, i przekazujemy Ci kursantki, które faktycznie chcą się zapisać. Płacisz 500 zł dopiero za zapisaną kursantkę - zero opłat z góry, zero abonamentu, zero prowizji od Twoich stałych klientek. Kampania, która nie dowiezie, nic Cię nie kosztuje.
+Tak działa Uniwersytet Beauty. Prowadzimy kampanie skierowane do kobiet szukających szkoleń PMU z dofinansowaniem, kwalifikujemy zgłoszenia pod kątem regionu i gotowości, i przekazujemy Ci kursantki, które faktycznie chcą się zapisać. Pierwsze akademie wchodzą w pilotażu bez opłat, w zamian za dane o wynikach. Warunki po pilotażu ustalamy z góry, zanim zaczniemy - bez prowizji od Twoich stałych klientek i bez opłaty za samo wystawienie profilu. Kampania, która nie dowiezie, nic Cię nie kosztuje.
 
 To nie zastępuje Twojego Instagrama ani portfolio - te zostają fundamentem, który buduje zaufanie. Uzupełnia je o strumień kursantek, którego marketing własny nie daje w przewidywalnym tempie. Jeśli chcesz sprawdzić, jak to liczbowo wygląda dla Twojej akademii PMU, napisz na biuro@uniwersytetbeauty.pl. Pokażemy mechanizm i policzymy, czy w Twoim regionie jest dla Ciebie realny strumień zapisów. Rozmowa niczego nie przesądza.
 

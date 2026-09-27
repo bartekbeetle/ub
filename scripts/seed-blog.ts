@@ -82,6 +82,10 @@ type ParsedPost = {
   readingMinutes: number;
   status: "opublikowane" | "szkic";
   publishedAt: Date;
+  /** Frontmatter `nadpisz_w_bazie: true` — wpis istniejący ma zostać zaktualizowany także w trybie --tylko-nowe.
+   *  Do jednorazowych poprawek treści na prodzie bez ręcznego seeda w terminalu Coolify (27.09: przepisanie
+   *  modelu rozliczeń w 3 wpisach B2B). Flagę zdejmuje się w kolejnym commicie, żeby nie kasowała edycji z panelu. */
+  nadpisz: boolean;
 };
 
 /** Wczytuje wszystkie artykuły z content/blog/*.md, parsuje frontmatter, tnie H1. */
@@ -111,6 +115,7 @@ function loadPosts(): ParsedPost[] {
       readingMinutes: Number(data.reading_minutes || 6),
       status: "opublikowane",
       publishedAt: data.data ? new Date(data.data as string) : new Date(),
+      nadpisz: data.nadpisz_w_bazie === true,
     });
   }
   return posts;
@@ -148,8 +153,8 @@ async function main() {
 
   const POSTS = loadPosts();
   let dodane = 0;
-  for (const p of POSTS) {
-    if (TYLKO_NOWE) {
+  for (const { nadpisz, ...p } of POSTS) {
+    if (TYLKO_NOWE && !nadpisz) {
       const wynik = await db
         .insert(blogPosts)
         .values(p)
@@ -180,7 +185,7 @@ async function main() {
           publishedAt: p.publishedAt,
         },
       });
-    console.log(`✓ upsert: ${p.slug}`);
+    console.log(`✓ upsert${TYLKO_NOWE ? " (nadpisz_w_bazie)" : ""}: ${p.slug}`);
   }
 
   const [{ c }] = await db.select({ c: sql<number>`count(*)::int` }).from(blogPosts);

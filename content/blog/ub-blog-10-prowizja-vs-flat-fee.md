@@ -12,6 +12,7 @@ fraza_glowna: "pozyskiwanie kursantek prowizja alternatywa"
 filar: B
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Prowizja vs opłata za wynik: ile naprawdę kosztuje Cię pozyskanie kursantki
@@ -54,11 +55,11 @@ Im silniejsza Twoja marka i im więcej masz powrotów, tym większa część pro
 
 ## Model „płacisz tylko za nową zapisaną kursantkę": jak działa
 
-Opłata za wynik odwraca ten układ. Płacisz 500 zł za jedną nową zapisaną kursantkę i na tym Twój koszt się kończy. Nie ma opłaty z góry, nie ma abonamentu, nie ma procentu od ceny szkolenia. Cena kursu 3500 czy 6000 zł nie zmienia stawki, bo płacisz za pozyskanie głowy, a nie za wartość transakcji.
+Opłata za wynik odwraca ten układ. Płacisz stałą kwotę za jedną nową zapisaną kursantkę, w przykładzie poniżej przyjmujemy 500 zł jako wartość ilustracyjną, i na tym Twój koszt się kończy. Nie ma opłaty z góry, nie ma abonamentu, nie ma procentu od ceny szkolenia. Cena kursu 3500 czy 6000 zł nie zmienia stawki, bo płacisz za pozyskanie głowy, a nie za wartość transakcji.
 
 Trzy rzeczy odróżniają ten model od prowizji. Po pierwsze, płacisz raz za daną kursantkę. Wróci na kolejne szkolenie, na rozszerzenie, na kurs mistrzowski, nie dopłacasz ani grosza, bo jest już Twoja. Po drugie, zero prowizji od Twoich własnych kursantek. Powroty, polecenia, osoby z Twojego Instagrama rozliczasz sama i zostawiasz w kieszeni całą marżę. Płacisz wyłącznie za tych, których faktycznie dostajesz z zewnątrz. Po trzecie, ryzyko przenosi się na dostawcę. Nie ma zapisu, nie ma faktury. Pusty miesiąc kosztuje Cię zero, a nie budżet reklamowy przepalony bez efektu.
 
-Na liczbach z poprzedniego przykładu: te same cztery nowe kursantki z zewnątrz kosztują 4 razy 500 zł, czyli 2000 zł. Sześć własnych, powroty i polecenia, kosztuje zero. Razem 2000 zł zamiast 5600 zł prowizji za ten sam wynik. Różnica to 3600 zł w jednym miesiącu, którą zostawiasz sobie.
+Na liczbach z poprzedniego przykładu, przy ilustracyjnej stawce 500 zł: te same cztery nowe kursantki z zewnątrz kosztują 4 razy 500 zł, czyli 2000 zł. Sześć własnych, powroty i polecenia, kosztuje zero. Razem 2000 zł zamiast 5600 zł prowizji za ten sam wynik. Różnica to 3600 zł w jednym miesiącu, którą zostawiasz sobie.
 
 Ten model działa lepiej im lepiej idzie Twojej marce, bo nie opodatkowuje ani wyższej ceny, ani Twojej stałej bazy. Prowizja działa odwrotnie.
 
@@ -66,7 +67,7 @@ Ten model działa lepiej im lepiej idzie Twojej marce, bo nie opodatkowuje ani w
 
 Zestawienie trzech modeli na jednym scenariuszu: akademia PMU, kurs 3500 zł, dziesięć zapisów miesięcznie, z czego cztery to nowe kursantki pozyskane z zewnątrz, a sześć to własne powroty i polecenia.
 
-| Wymiar | Reklama własna | Prowizja procentowa (16%) | Opłata za wynik (500 zł) |
+| Wymiar | Reklama własna | Prowizja procentowa (16%) | Opłata za wynik (przykład: 500 zł) |
 |--------|----------------|---------------------------|--------------------------|
 | Kiedy płacisz | Z góry, niezależnie od zapisów | Po każdej sprzedaży przez platformę | Po każdej nowej zapisanej kursantce |
 | Koszt w tym miesiącu | Budżet reklamy + Twój czas, także gdy pusto | 5600 zł (od wszystkich 10 zapisów) | 2000 zł (tylko 4 nowe) |
@@ -90,18 +91,18 @@ Prowizja procentowa bywa akceptowalna na samym starcie, gdy nie masz jeszcze ża
 
 Opłata za wynik pasuje, gdy chcesz dołożyć przewidywalne, zewnętrzne źródło nowych kursantek do własnego marketingu, bez oddawania procentu od całej sprzedaży i bez ryzyka pustego miesiąca. Płacisz za realny przyrost, a stałą bazę zatrzymujesz w całości dla siebie. Szerszy przegląd wszystkich kanałów pozyskania znajdziesz w tekście [Jak zapełnić grafik szkoleń: skąd brać kursantki](https://uniwersytetbeauty.pl/blog/jak-pozyskac-kursantki-na-szkolenia-beauty).
 
-Nasz model to właśnie opłata za wynik: 500 zł za nową zapisaną kursantkę, zero opłat z góry, zero abonamentu, zero prowizji od Twoich własnych klientek. Płacisz dopiero wtedy, gdy kursantka realnie się zapisze i skorzysta ze szkolenia. Jeśli chcesz sprawdzić, ile nowych zgłoszeń możemy dostarczyć w Twojej kategorii i województwie, napisz na biuro@uniwersytetbeauty.pl. Rozpisanie warunków do niczego nie zobowiązuje, a od razu zobaczysz konkretną liczbę zamiast obietnicy.
+W Uniwersytecie Beauty pierwsze akademie wchodzą w pilotażu bez opłat. W zamian prosimy o jedno: dane o tym, jak poszło, czyli ile zgłoszeń, ile rozmów i ile zapisów. Tej informacji nie ma dziś nikt na tym rynku, a bez niej nie da się uczciwie ustalić ceny na później. Warunki po pilotażu ustalamy z góry, zanim zaczniemy, i w żadnym wariancie nie ma prowizji od kursantek, które pozyskałaś sama. Jeśli chcesz sprawdzić, ile zgłoszeń przychodzi z Twojej kategorii i województwa, napisz na biuro@uniwersytetbeauty.pl. Rozmowa do niczego nie zobowiązuje.
 
 ## Najczęstsze pytania
 
 **Czym opłata za wynik różni się od prowizji?**
 Prowizja to procent od każdej sprzedaży, także od Twoich stałych i wracających klientek, i rośnie razem z ceną kursu. Opłata za wynik to stała kwota za jedną nową kursantkę, płacona raz i tylko za osoby pozyskane z zewnątrz. Przy droższych kursach i przy większej bazie powrotów różnica w kosztach robi się bardzo duża.
 
-**Czy przy modelu 500 zł płacę coś z góry albo w abonamencie?**
-Nie. Nie ma opłaty wstępnej ani miesięcznego abonamentu. Płacisz dopiero wtedy, gdy nowa kursantka realnie się zapisze i skorzysta ze szkolenia. Pusty miesiąc kosztuje Cię zero.
+**Ile płacę w Uniwersytecie Beauty?**
+Pierwsze akademie wchodzą w pilotażu bez opłat, w zamian za dane o wynikach. Cenę po pilotażu podajemy z góry, zanim zaczniemy, i nie jest to procent od ceny kursu ani opłata za samo wystawienie profilu.
 
 **Czy zapłacę, jeśli kursantka i tak była moja?**
-Nie. Rozliczana jest wyłącznie nowa kursantka pozyskana z zewnątrz. Za powroty, polecenia i osoby z Twojego własnego marketingu nie płacisz nic. To główna różnica wobec modelu prowizyjnego, w którym opłatę pobiera się od każdej transakcji przechodzącej przez platformę.
+Nie. Za powroty, polecenia i osoby z Twojego własnego marketingu nie płacisz nic, w żadnym wariancie. To główna różnica wobec modelu prowizyjnego, w którym opłatę pobiera się od każdej transakcji przechodzącej przez platformę.
 
 **Kiedy prowizja procentowa faktycznie się opłaca?**
 Głównie na starcie, gdy nie masz jeszcze marki ani bazy stałych klientek, sprzedajesz niewiele i tanio, a najważniejszy jest zerowy koszt wejścia. Gdy ceny rosną i pojawiają się powroty, prowizja zaczyna zabierać coraz większą część marży, więc na dłuższą metę rzadko wygrywa z opłatą za wynik.

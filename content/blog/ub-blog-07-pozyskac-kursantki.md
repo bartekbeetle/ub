@@ -12,6 +12,7 @@ fraza_glowna: "jak pozyskać kursantki na szkolenia"
 filar: B
 rola: "pillar"
 reading_minutes: 10
+nadpisz_w_bazie: true
 ---
 
 # Jak zapełnić grafik szkoleń: skąd brać kursantki w 2026
@@ -82,7 +83,7 @@ Po drugie, jeśli Twoje szkolenie nie jest jeszcze w BUR, zacznij procedurę wpi
 
 Po trzecie, policz swój realny koszt pozyskania jednej kursantki razem z czasem. Dopiero ta liczba pokaże Ci, czy warto dokładać do reklamy własnej, czy sensowniej przerzucić ryzyko na model, w którym płacisz wyłącznie za efekt.
 
-To ostatnie jest sednem tego, co robimy w Uniwersytecie Beauty. Prowadzimy kampanie skierowane do kobiet szukających szkoleń z dofinansowaniem, kwalifikujemy zgłoszenia i przekazujemy Ci gotowe kursantki. Płacisz 500 zł dopiero za kursantkę, która realnie się zapisze - zero opłat z góry, zero abonamentu, zero prowizji od Twoich własnych, stałych klientek. Ryzyko przepalonej kampanii zostaje po naszej stronie.
+To ostatnie jest sednem tego, co robimy w Uniwersytecie Beauty. Prowadzimy kampanie skierowane do kobiet szukających szkoleń z dofinansowaniem, kwalifikujemy zgłoszenia i przekazujemy Ci gotowe kursantki. Pierwsze akademie wchodzą w pilotażu bez opłat, w zamian za dane o tym, jak poszło: ile zgłoszeń, ile rozmów, ile zapisów. Warunki po pilotażu ustalamy z góry, zanim zaczniemy, i nie ma w nich prowizji od kursantek, które pozyskałaś sama. Ryzyko przepalonej kampanii zostaje po naszej stronie.
 
 Jeśli chcesz sprawdzić, jak to wygląda dla Twojej akademii, napisz na biuro@uniwersytetbeauty.pl. Rozmowa niczego nie przesądza - pokażemy mechanizm i policzymy, czy w Twoim regionie i kategorii jest dla Ciebie realny strumień kursantek.
 
