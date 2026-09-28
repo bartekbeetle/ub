@@ -15,7 +15,7 @@ export const PORADNIK_SALON = {
   podtytul: "Od otwarcia do pełnego grafiku",
   /** Cena brutto w zł; musi być identyczna jak w EasyCart. Sprzedawca zwolniony z VAT. */
   cena: 49,
-  strony: 37,
+  strony: 36,
   checkoutUrl: "",
 } as const;
 
