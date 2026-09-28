@@ -14,7 +14,7 @@ export const PORADNIK_SALON = {
   tytul: "Własny salon beauty",
   podtytul: "Od otwarcia do pełnego grafiku",
   /** Cena brutto w zł; musi być identyczna jak w naffy. Sprzedawca zwolniony z VAT. */
-  cena: 49,
+  cena: 28,
   strony: 36,
   checkoutUrl: "",
 } as const;
