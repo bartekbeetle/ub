@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { eq, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { SITE_URL } from "@/lib/constants";
+import { PORADNIK_SALON, PORADNIK_SALON_W_SPRZEDAZY } from "@/lib/produkty";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +23,8 @@ export const dynamic = "force-dynamic";
 // (akademie i trenerki) i ma się indeksować. Sam formularz `/dla-akademii/rejestracja` NIE,
 // bo ma `robots: noindex` — tak jak `/aplikacja` po stronie kursantek.
 const MAIN_PAGES = ["", "/kursy", "/dofinansowania", "/blog", "/kontakt", "/konsultacja", "/poradnik", "/o-nas", "/dla-akademii"];
+// Płatny poradnik wchodzi dopiero razem z linkiem do płatności — wcześniej ma noindex.
+if (PORADNIK_SALON_W_SPRZEDAZY) MAIN_PAGES.push(`/${PORADNIK_SALON.slug}`);
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const db = await getDb();

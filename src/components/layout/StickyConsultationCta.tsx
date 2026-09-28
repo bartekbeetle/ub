@@ -13,6 +13,8 @@ import { usePathname } from "next/navigation";
 export function StickyConsultationCta() {
   const pathname = usePathname();
   if (pathname?.startsWith("/aplikacja")) return null;
+  // Strona płatnego poradnika ma własny przycisk zakupu — drugi, przyklejony CTA rozprasza decyzję.
+  if (pathname?.startsWith("/poradnik-wlasny-salon")) return null;
 
   return (
     <>
