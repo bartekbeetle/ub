@@ -5,6 +5,7 @@ import { changePasswordSchema } from "@/lib/validators";
 import { verifyPassword, hashPassword, invalidateUserSessions } from "@/lib/auth";
 import { requireTrainerMobile, createMobileSession } from "@/lib/mobile-auth";
 import { logAudit, actorLabel } from "@/lib/audit";
+import { rateLimit } from "@/lib/ratelimit";
 
 export const runtime = "nodejs";
 
@@ -23,6 +24,12 @@ export const runtime = "nodejs";
 export async function POST(req: Request) {
   const auth = await requireTrainerMobile(req, { allowPasswordChange: true });
   if (!auth) return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
+
+  // Limit prób na użytkownika (audyt 28.09): trasa wymaga sesji, ale ze skradzionym cookie
+  // dało się bez końca zgadywać OBECNE hasło. 5 prób / 15 min na konto, niezależnie od IP.
+  if (!rateLimit(`change-password:${auth.user.id}`, 5, 15 * 60_000)) {
+    return NextResponse.json({ error: "Zbyt wiele prób zmiany hasła. Odczekaj 15 minut." }, { status: 429 });
+  }
 
   const parsed = changePasswordSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {

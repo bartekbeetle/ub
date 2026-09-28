@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { loginSchema } from "@/lib/validators";
-import { rateLimit, getClientIp } from "@/lib/ratelimit";
+import { rateLimit, getClientIp, isAccountLocked, recordFailedLogin, clearFailedLogins, LOCKOUT_MESSAGE } from "@/lib/ratelimit";
 import { verifyPassword, createSession, DUMMY_PASSWORD_HASH } from "@/lib/auth";
 import { logAudit } from "@/lib/audit";
 
@@ -23,15 +23,23 @@ export async function POST(req: Request) {
   const parsed = loginSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Podaj email i hasło." }, { status: 400 });
 
+  const email = parsed.data.email.toLowerCase();
+  // Blokada per konto (obok limitu per IP) — patrz `isAccountLocked` w ratelimit.ts.
+  if (isAccountLocked(email)) {
+    return NextResponse.json({ error: LOCKOUT_MESSAGE }, { status: 429 });
+  }
+
   const db = await getDb();
-  const rows = await db.select().from(schema.users).where(eq(schema.users.email, parsed.data.email.toLowerCase())).limit(1);
+  const rows = await db.select().from(schema.users).where(eq(schema.users.email, email)).limit(1);
   const user = rows[0];
   // Stałoczasowo: jedno porównanie bcrypt zawsze (atrapa gdy konta nie ma) — patrz /admin/login.
   const passwordOk = await verifyPassword(parsed.data.password, user?.passwordHash ?? DUMMY_PASSWORD_HASH);
   const valid = Boolean(user && user.isActive && passwordOk);
   if (!valid) {
+    recordFailedLogin(email);
     return NextResponse.json({ error: "Nieprawidłowy email lub hasło." }, { status: 401 });
   }
+  clearFailedLogins(email);
   // panel wyłącznie dla trenerek — admin loguje się przez /admin/login
   if (user.role !== "trenerka" || !user.trainerId) {
     return NextResponse.json({ error: "To konto nie ma dostępu do panelu trenerki. Zaloguj się w panelu administracyjnym." }, { status: 403 });
