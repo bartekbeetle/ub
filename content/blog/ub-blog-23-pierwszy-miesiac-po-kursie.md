@@ -12,6 +12,7 @@ fraza_glowna: "co po kursie stylizacji paznokci"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Co po kursie stylizacji paznokci - pierwszy miesiąc
@@ -74,7 +75,7 @@ Więcej o tym, dlaczego warto myśleć o powracalności już od pierwszych klien
 
 Jeśli ten plan brzmi jak coś, co jesteś w stanie zrobić obok obecnych obowiązków, następny krok to sprawdzenie, na jaki kurs możesz wejść z dofinansowaniem.
 
-Formularz zajmuje 2 minuty: odpowiadasz na kilka pytań o swoją sytuację i kierunek, który Cię interesuje, a dopasowanie prowadzi do akredytowanej trenerki i naboru, w którym możesz otrzymać zwrot części ceny kursu.
+Formularz zajmuje 2 minuty: odpowiadasz na kilka pytań o swoją sytuację i kierunek, który Cię interesuje, a dopasowanie prowadzi do akredytowanej trenerki i naboru, w którym możesz obniżyć koszt kursu dzięki dofinansowaniu z BUR.
 
 [Sprawdź, czy się kwalifikujesz](https://uniwersytetbeauty.pl)
 

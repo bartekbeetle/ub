@@ -12,6 +12,7 @@ fraza_glowna: "jak wybrać kurs beauty"
 filar: A
 rola: "podtemat"
 reading_minutes: 10
+nadpisz_w_bazie: true
 ---
 
 # Jak wybrać dobrą trenerkę i akademię beauty
@@ -26,7 +27,7 @@ Naturalny odruch przy wyborze kursu to porównanie cen. Trzy oferty w tabelce, s
 
 Popatrz na to jak na inwestycję z konkretnym zwrotem. Kurs beauty ma sens tylko wtedy, gdy po nim zaczynasz przyjmować klientki. Żeby przyjmować klientki, musisz umieć wykonać usługę na tyle dobrze, żeby ktoś za nią zapłacił i wrócił. Tej umiejętności nie daje najtańsza oferta z najkrótszym programem - daje ją trenerka, która pilnuje, żebyś przećwiczyła zabieg na żywych modelkach tyle razy, ile trzeba, żeby ręka była pewna.
 
-Policz to na liczbach. Różnica między kursem za 2000 a 2800 zł to 800 zł. Jedna klientka na stylizacji rzęs to zwykle 150-250 zł. Jeśli lepszy kurs sprawi, że zaczniesz przyjmować choćby tydzień wcześniej i z większą pewnością, ta różnica w cenie zwraca się po kilku pierwszych wizytach. Oszczędność na kursie, po którym boisz się dotknąć klientki, nie jest żadną oszczędnością.
+Policz to na liczbach. Różnica między kursem za 2000 a 2800 zł to 800 zł. Jedna klientka na stylizacji rzęs to orientacyjnie 150-300 zł. Jeśli lepszy kurs sprawi, że zaczniesz przyjmować choćby tydzień wcześniej i z większą pewnością, ta różnica w cenie zwraca się po kilku pierwszych wizytach. Oszczędność na kursie, po którym boisz się dotknąć klientki, nie jest żadną oszczędnością.
 
 Dlatego pytanie nie brzmi „który kurs jest najtańszy", tylko „który przygotuje mnie do zarabiania". A na to odpowiada jakość trenerki, nie kwota na fakturze.
 
@@ -70,11 +71,11 @@ Wpis kursu do Bazy Usług Rozwojowych robi dwie rzeczy jednocześnie, i o obu wa
 
 Po pierwsze, jest filtrem jakości. Żeby trenerka albo akademia mogła wpisać szkolenie do BUR, musi przejść formalną weryfikację prowadzoną w ramach systemu nadzorowanego przez PARP - spełnić wymogi dotyczące programu, kadry i sposobu prowadzenia usługi. To nie gwarancja, że kurs jest wybitny, ale to sito, przez które nie przechodzi przypadkowa oferta z ogłoszenia. Akredytacja odsiewa część słabych szkoleń, zanim w ogóle na nie trafisz.
 
-Po drugie, jest warunkiem koniecznym dofinansowania. Zwrot 80-90% ceny z BUR przysługuje wyłącznie na kursy wpisane do bazy. Jeśli wybierzesz trenerkę spoza BUR, kurs zrobisz - ale za pełną cenę, bez refundacji z tego programu. Akredytacja to brama, przez którą kilka tysięcy złotych zamienia się w kilkaset.
+Po drugie, jest warunkiem koniecznym dofinansowania. Dofinansowanie 80-95% ceny z BUR (zależnie od województwa i naboru) przysługuje wyłącznie na kursy wpisane do bazy. Jeśli wybierzesz trenerkę spoza BUR, kurs zrobisz - ale za pełną cenę, bez dofinansowania z tego programu. Akredytacja to brama, przez którą kilka tysięcy złotych zamienia się w wydatek, który przy tańszych kursach to kilkaset złotych, a przy droższych zależy od limitu kwotowego operatora.
 
 Te dwie funkcje spinają się w jedną praktyczną zasadę: zaczynając od trenerek z akredytacją BUR, jednym ruchem zawężasz wybór do zweryfikowanych szkoleń i do tych, na które dostaniesz dofinansowanie. Sprawdzisz to sama - baza jest publiczna, dostępna na uslugirozwojowe.parp.gov.pl. Wpisujesz nazwę kursu albo trenerki i widzisz, czy szkolenie tam figuruje.
 
-Przy okazji warto rozprawić się z mitem, który zatrzymuje wiele kobiet: dofinansowanie z BUR to nie to samo co skierowanie z urzędu pracy. Nie musisz być bezrobotna. BUR jest kierowany głównie do osób aktywnych zawodowo - pracujących, na działalności, mam wracających na rynek pracy, studentek. Więcej o tym, komu przysługuje zwrot, znajdziesz w tekście [BUR ≠ urząd pracy: dofinansowanie należy się też pracującym](https://uniwersytetbeauty.pl/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych).
+Przy okazji warto rozprawić się z mitem, który zatrzymuje wiele kobiet: dofinansowanie z BUR to nie to samo co skierowanie z urzędu pracy. Nie musisz być bezrobotna. Programy regionalne dla osób dorosłych nie wymagają statusu bezrobotnej: kwalifikują się osoby pracujące, prowadzące firmę, uczące się i nieaktywne zawodowo, na warunkach z regulaminu naboru. Więcej o tym, komu przysługuje zwrot, znajdziesz w tekście [BUR ≠ urząd pracy: dofinansowanie należy się też pracującym](https://uniwersytetbeauty.pl/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych).
 
 ## Pytania, które warto zadać trenerce przed zapisem
 
@@ -90,7 +91,7 @@ Rozmowa przed zapisem powie Ci o kursie więcej niż najładniejsza strona. Dobr
 
 To ostatnie pytanie jest testem uczciwości. Trenerka, która przyzna, czego kurs nie uczy, jest wiarygodniejsza od tej, która obiecuje, że po dwóch dniach będziesz umiała wszystko.
 
-Wybór szkoły to jeden z kroków większej ścieżki — całość opisuje [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac). Formalności po stronie wniosku rozkłada [dofinansowanie na szkolenie krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku), a ceny w najczęściej wybieranej specjalizacji — [kurs PMU z dofinansowaniem](/blog/kurs-pmu-z-dofinansowaniem-ile-zaplacisz).
+Wybór szkoły to jeden z kroków większej ścieżki, całość opisuje [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac). Formalności po stronie wniosku rozkłada [dofinansowanie na szkolenie krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku), a ceny w najczęściej wybieranej specjalizacji: [kurs PMU z dofinansowaniem](/blog/kurs-pmu-z-dofinansowaniem-ile-zaplacisz).
 
 ## Jak szybko znaleźć dopasowaną, akredytowaną trenerkę
 
@@ -111,10 +112,10 @@ Na jakość szkolenia, nie na samą cenę. Sprawdź liczbę modelek i godzin pra
 Nie, cena sama w sobie nic nie gwarantuje. Zdarzają się drogie kursy z minimalną praktyką i tanie z solidnym programem. Zamiast patrzeć na kwotę, sprawdź, co konkretnie dostajesz: ile praktyki, jak duża grupa, jakie efekty osiągają absolwentki. Dobra jakość zwraca się szybciej niż niska cena.
 
 **Po co sprawdzać akredytację BUR przy wyborze trenerki?**
-Bo działa jak podwójny filtr. Wpis do Bazy Usług Rozwojowych oznacza, że kurs przeszedł formalną weryfikację w systemie nadzorowanym przez PARP, a jednocześnie to warunek dofinansowania - zwrot 80-90% ceny przysługuje wyłącznie na kursy z bazy. Zaczynając od akredytowanych trenerek, zawężasz wybór do zweryfikowanych i dofinansowanych szkoleń naraz.
+Bo działa jak podwójny filtr. Wpis do Bazy Usług Rozwojowych oznacza, że kurs przeszedł formalną weryfikację w systemie nadzorowanym przez PARP, a jednocześnie to warunek dofinansowania - 80-95% ceny (zależnie od województwa i naboru) przysługuje wyłącznie na kursy z bazy. Zaczynając od akredytowanych trenerek, zawężasz wybór do zweryfikowanych i dofinansowanych szkoleń naraz.
 
 **Jak rozpoznać słaby kurs beauty?**
 Po kilku sygnałach: przewaga teorii nad praktyką, brak ćwiczeń na modelkach, brak realnego portfolio prac absolwentek, presja „ostatnie miejsca" i sztuczna pilność, cena mocno poniżej rynku bez wyjaśnienia. Jedna czerwona flaga to powód, żeby dopytać. Kilka naraz to powód, żeby szukać dalej.
 
 **Muszę być bezrobotna, żeby dostać kurs z akredytacją BUR z dofinansowaniem?**
-Nie. BUR to nie urząd pracy - dofinansowanie jest kierowane głównie do osób aktywnych zawodowo: pracujących na etacie, na działalności, mam wracających na rynek pracy, studentek. Warunki zależą od województwa i naboru, dlatego najlepiej sprawdzić swoją sytuację indywidualnie, zamiast zakładać z góry, że się nie kwalifikujesz.
+Nie. BUR to nie urząd pracy - kwalifikują się osoby pracujące, prowadzące firmę, uczące się i nieaktywne zawodowo. Warunki zależą od województwa i naboru, dlatego najlepiej sprawdzić swoją sytuację indywidualnie, zamiast zakładać z góry, że się nie kwalifikujesz.

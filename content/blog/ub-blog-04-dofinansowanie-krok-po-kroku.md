@@ -12,11 +12,12 @@ fraza_glowna: "jak dostać dofinansowanie na szkolenie BUR"
 filar: A
 rola: podtemat
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Jak dostać dofinansowanie na kurs beauty krok po kroku
 
-Kurs rzęs czy PMU można zrobić ze zwrotem 80-90% ceny i nie trzeba być bezrobotną, żeby z tego skorzystać. Zostaje pytanie, na którym zatrzymuje się większość kobiet: co konkretnie zrobić, żeby to dofinansowanie otrzymać.
+Kurs rzęs czy PMU można zrobić z dofinansowaniem 80-95% ceny (zależnie od województwa i naboru) i nie trzeba być bezrobotną, żeby z tego skorzystać. Zostaje pytanie, na którym zatrzymuje się większość kobiet: co konkretnie zrobić, żeby to dofinansowanie otrzymać.
 
 Poniżej cała procedura rozłożona na kroki - napisana z myślą o osobie, która pierwszy raz styka się ze słowem „operator" i nie wie, czy to firma, człowiek, czy strona internetowa. Dowiesz się, co przygotować zawczasu, gdzie złożyć zgłoszenie, ile realnie czeka się na decyzję i przez jakie błędy wnioski przepadają. Na końcu: co robisz sama, a co zdejmuje z Ciebie trenerka albo platforma.
 
@@ -24,7 +25,7 @@ Poniżej cała procedura rozłożona na kroki - napisana z myślą o osobie, kt�
 
 Zanim w ogóle dotkniesz jakiegokolwiek wniosku, zbierz trzy rzeczy. Nie musisz mieć niczego skomplikowanego, ale bez tego reszta będzie się przeciągać.
 
-**Twój status zawodowy.** Musisz umieć jednoznacznie odpowiedzieć, kim jesteś na rynku pracy: pracujesz na etacie, prowadzisz działalność, jesteś na urlopie wychowawczym, studiujesz. To pierwsze pytanie, które padnie - od statusu zależy, do którego naboru pasujesz. Jedno zastrzeżenie na start: praca na etacie Cię nie wyklucza. BUR jest kierowany właśnie do osób aktywnych zawodowo, a nie do zarejestrowanych bezrobotnych - w większości naborów to osoby pracujące są grupą docelową.
+**Twój status zawodowy.** Musisz umieć jednoznacznie odpowiedzieć, kim jesteś na rynku pracy: pracujesz na etacie, prowadzisz działalność, jesteś na urlopie wychowawczym, studiujesz. To pierwsze pytanie, które padnie - od statusu zależy, do którego naboru pasujesz. Jedno zastrzeżenie na start: praca na etacie Cię nie wyklucza. Programy regionalne dla osób dorosłych nie wymagają statusu bezrobotnej: kwalifikują się osoby pracujące, prowadzące firmę, uczące się i nieaktywne zawodowo - szczegółowe warunki ustala regulamin naboru.
 
 **Twój region.** Dofinansowanie z BUR rozdzielają operatorzy regionalni - osobno w każdym województwie, według osobnych zasad i osobnych terminów. To, co jest dostępne w śląskim, nie musi być dostępne w mazowieckim, i odwrotnie. Musisz wiedzieć, gdzie jesteś zameldowana albo gdzie mieszkasz, bo to decyduje, do którego operatora trafiasz.
 
@@ -42,9 +43,9 @@ Cała droga, od decyzji do pierwszego dnia szkolenia, to pięć kroków. Każdy 
 
 **Krok 3. Podpisz umowę z operatorem i przejdź kwalifikację do projektu.** Kiedy operator potwierdzi, że się kwalifikujesz, dostajesz do wypełnienia dokumenty zgłoszeniowe - formularz z danymi, oświadczenia o statusie, czasem zaświadczenie od pracodawcy. Po pozytywnej ocenie podpisujesz umowę o dofinansowanie. Brzmi poważnie, w praktyce to kilka podpisów. Ta umowa określa, ile procent ceny pokrywa operator i jaki jest Twój wkład własny.
 
-**Krok 4. Wybierz kurs i trenerkę wpisaną do BUR.** Teraz - i dopiero teraz - wybierasz konkretne szkolenie. Warunek jest jeden i twardy: kurs musi być wystawiony w Bazie Usług Rozwojowych przez certyfikowaną trenerkę albo firmę. Szkolenie spoza BUR nie kwalifikuje się do zwrotu, choćby było najlepsze na rynku. Zapisujesz się na kurs przez platformę, wpłacasz swój wkład własny, a resztę operator rozlicza bezpośrednio z trenerką.
+**Krok 4. Wybierz kurs i trenerkę wpisaną do BUR.** Teraz - i dopiero teraz - wybierasz konkretne szkolenie. Warunek jest jeden i twardy: kurs musi być wystawiony w Bazie Usług Rozwojowych przez certyfikowaną trenerkę albo firmę. Szkolenie spoza BUR nie kwalifikuje się do dofinansowania, choćby było najlepsze na rynku. Zapisujesz się na kurs przez platformę. Zależnie od operatora albo wpłacasz tylko wkład własny, a resztę operator rozlicza bezpośrednio z trenerką, albo płacisz całość i dostajesz zwrot swojej części po zakończeniu kursu.
 
-**Krok 5. Skończ szkolenie i rozlicz dofinansowanie.** Kończysz kurs, otrzymujesz certyfikat i wypełniasz ankietę oceniającą szkolenie (to część procedury, nie formalność do pominięcia - operatorzy jej pilnują). Po tym następuje ostateczne rozliczenie dofinansowania. Z certyfikatem w ręku zaczynasz pracę z pierwszymi modelkami i budujesz grafik.
+**Krok 5. Skończ szkolenie i rozlicz dofinansowanie.** Kończysz kurs, otrzymujesz certyfikat i wypełniasz ankietę oceniającą szkolenie (to część procedury, nie formalność do pominięcia - operatorzy jej pilnują). Jeśli wybrany wariant to płatność wkładu własnego z góry, na tym etapie nie zostaje już nic do rozliczenia. Jeśli płaciłaś całość, po ankiecie następuje zwrot Twojej części. Z certyfikatem w ręku zaczynasz pracę z pierwszymi modelkami i budujesz grafik.
 
 ### Ile trwa rozpatrzenie wniosku - realne terminy
 
@@ -80,7 +81,7 @@ Reszta - ustalenie, który operator obsługuje Twój region, jaki nabór jest ot
 
 Tę samą rolę pełni Uniwersytet Beauty. Zamiast samodzielnie przeszukiwać strony kilku operatorów i zgadywać, czy się kwalifikujesz, odpowiadasz na kilka pytań, a my dopasowujemy Cię do trenerki i naboru, w którym możesz otrzymać zwrot. Wniosku nie wypełniamy za Ciebie - to Twoje dane - ale prowadzimy Cię przez każdy krok i łączymy z osobą, która przechodzi tę procedurę na co dzień. Różnica jest podobna do tej między samodzielnym poruszaniem się po urzędzie a wizytą z kimś, kto zna procedurę od środka.
 
-Jeżeli nie masz pewności, czy w ogóle się kwalifikujesz, zacznij od wpisu [dofinansowanie BUR — nie musisz być bezrobotna](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych). Kwotę, która zostaje po Twojej stronie, rozbijamy w tekście [kurs beauty za 0 zł](/blog/kurs-beauty-za-0-zl-kiedy-realne), a wybór kierunku i trenerki omawia [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
+Jeżeli nie masz pewności, czy w ogóle się kwalifikujesz, zacznij od wpisu [dofinansowanie BUR: nie musisz być bezrobotna](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych). Kwotę, która zostaje po Twojej stronie, rozbijamy w tekście [kurs beauty za 0 zł](/blog/kurs-beauty-za-0-zl-kiedy-realne), a wybór kierunku i trenerki omawia [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
 
 ## Twój następny krok
 
@@ -90,7 +91,7 @@ Cała procedura sprowadza się do jednej pierwszej decyzji: sprawdzić, czy i na
 
 [Wypełnij formularz na uniwersytetbeauty.pl](https://uniwersytetbeauty.pl)
 
-Jeśli się kwalifikujesz, otrzymujesz kontakt do trenerki wpisanej do BUR, informację o otwartym naborze i wsparcie w formalnościach - a zamiast kilku tysięcy złotych dopłacasz zwykle kilkaset. Jeśli nabór jest akurat zamknięty, dowiadujesz się, kiedy sprawdzić ponownie, zamiast odkładać decyzję bezterminowo.
+Jeśli się kwalifikujesz, otrzymujesz kontakt do trenerki wpisanej do BUR, informację o otwartym naborze i wsparcie w formalnościach - a zamiast pełnej ceny dopłacasz swój wkład własny - przy tańszych kursach kilkaset złotych, przy droższych tyle, ile wynika z limitu operatora. Jeśli nabór jest akurat zamknięty, dowiadujesz się, kiedy sprawdzić ponownie, zamiast odkładać decyzję bezterminowo.
 
 ## Najczęstsze pytania
 
@@ -104,7 +105,7 @@ Tak, konto w Bazie Usług Rozwojowych zakładasz na swoje dane osobowe - tego ni
 Sama ocena zgłoszenia u operatora to zwykle 2-4 tygodnie od złożenia kompletu dokumentów. Doliczając czas na założenie konta, zebranie zaświadczeń i podpisanie umowy, realnie od pierwszego kontaktu do wejścia na kurs mija najczęściej 3-6 tygodni. Dlatego nie zostawiaj tego na ostatnią chwilę.
 
 **Czy dostanę dofinansowanie, jeśli pracuję na etacie?**
-Tak. BUR jest kierowany głównie do osób aktywnych zawodowo, a nie do bezrobotnych - etat Cię nie wyklucza. To jedno z najczęstszych nieporozumień, przez które kobiety w ogóle nie sprawdzają, czy się kwalifikują. Warunki zależą od naboru i regionu.
+Tak. BUR nie wymaga statusu osoby bezrobotnej - kwalifikują się też osoby pracujące, prowadzące firmę, uczące się i nieaktywne zawodowo, na warunkach z regulaminu naboru. Etat Cię nie wyklucza. To jedno z najczęstszych nieporozumień, przez które kobiety w ogóle nie sprawdzają, czy się kwalifikują. Warunki zależą od naboru i regionu.
 
 **Co się stanie, jeśli zapłacę za kurs przed podpisaniem umowy z operatorem?**
 Ryzykujesz, że wydatek nie zostanie zrefundowany. W większości naborów koszt poniesiony przed formalnym wejściem do projektu nie podlega zwrotowi. Najpierw załatwiasz formalności z operatorem, dopiero potem płacisz za szkolenie - nigdy odwrotnie.

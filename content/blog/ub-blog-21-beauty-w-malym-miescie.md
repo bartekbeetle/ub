@@ -12,6 +12,7 @@ fraza_glowna: "stylistka paznokci w małym mieście"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Zawód beauty w małym mieście - czy jest z czego żyć
@@ -31,7 +32,7 @@ Dla porównania, laminacja brwi wraca co 6-8 tygodni, więc przy tym samym celu 
 | Usługa | Cykl powrotu | Baza potrzebna na 16-20 wizyt/tydzień |
 |---|---|---|
 | Stylizacja paznokci | 3-4 tygodnie | ok. 65-80 klientek |
-| Uzupełnienie rzęs | 2-4 tygodnie | ok. 50-80 klientek |
+| Uzupełnienie rzęs | 2-4 tygodnie | ok. 32-80 klientek |
 | Laminacja brwi | 6-8 tygodni | ok. 100-140 klientek |
 
 To są rzędy wielkości, nie gwarancje - zależą od realnej liczby dni pracy, długości zabiegu i tego, ile osób w Twojej okolicy w ogóle korzysta z takich usług. Miejscowość licząca kilka tysięcy mieszkańców ma zwykle wystarczająco dużo kobiet w wieku i sytuacji, w której takie usługi kupują, żeby baza rzędu kilkudziesięciu-kilkuset klientek była osiągalna w ciągu roku, dwóch regularnej pracy.
@@ -72,7 +73,7 @@ Ostatnia praktyczna kwestia: sam kurs najczęściej odbywa się w większym mie�
 
 Jeśli po tym rachunku myślisz, że w Twojej miejscowości jest miejsce na ten zawód, następny krok to sprawdzenie, jaki kurs i z jakim dofinansowaniem jest dla Ciebie dostępny.
 
-Formularz zajmuje 2 minuty: odpowiadasz na kilka pytań o swoją sytuację i kierunek, który Cię interesuje, a dopasowanie prowadzi do akredytowanej trenerki i naboru, w którym możesz otrzymać zwrot części ceny kursu.
+Formularz zajmuje 2 minuty: odpowiadasz na kilka pytań o swoją sytuację i kierunek, który Cię interesuje, a dopasowanie prowadzi do akredytowanej trenerki i naboru, w którym możesz obniżyć koszt kursu dzięki dofinansowaniu z BUR.
 
 [Sprawdź, czy się kwalifikujesz](https://uniwersytetbeauty.pl)
 

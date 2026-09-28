@@ -12,6 +12,7 @@ fraza_glowna: "jaki kurs beauty wybrać"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Jaki kurs beauty wybrać - paznokcie, rzęsy, brwi czy PMU
@@ -32,14 +33,14 @@ Poniżej porównanie wszystkich czterech kierunków w jednym miejscu, trzy pytan
 
 ## Porównanie w liczbach
 
-| Kierunek | Cena kursu (orientacyjnie) | Koszt sprzętu na start | Cena zabiegu (orientacyjnie) | Jak często wraca klientka |
+| Kierunek | Cena kursu w BUR (orientacyjnie) | Koszt sprzętu na start | Cena zabiegu (orientacyjnie) | Jak często wraca klientka |
 |---|---|---|---|---|
-| Stylizacja paznokci | 800-2500 zł | najniższy, zwykle kilkaset złotych | 80-150 zł (hybryda) | co 3-4 tygodnie |
-| Stylizacja rzęs | 1500-2500 zł | niski do średniego, zwykle kilkaset złotych | 150-300 zł | co 2-4 tygodnie (uzupełnienia) |
-| Brwi i laminacja | ok. 1000-2000 zł | najniższy z czterech, bez specjalistycznych urządzeń | 100-200 zł (laminacja) | co 4-6 tygodni |
-| Makijaż permanentny (PMU) | 3000-6000 zł, przy pełnym zakresie 4000-8000 zł | najwyższy, sięga kilku tysięcy złotych (maszynka, materiały jednorazowe) | 500-900 zł (brwi; z korektą w cenie) | rzadko - korekta po zabiegu, odświeżenie po dłuższym czasie |
+| Stylizacja paznokci | 1800-4300 zł | najniższy, zwykle kilkaset złotych | 80-150 zł (hybryda) | co 3-4 tygodnie |
+| Stylizacja rzęs | 1800-3400 zł | niski do średniego, zwykle kilkaset złotych | 150-300 zł | co 2-4 tygodnie (uzupełnienia) |
+| Brwi i laminacja | 1750-2200 zł (sama laminacja) | najniższy z czterech, bez specjalistycznych urządzeń | 100-200 zł (laminacja) | co 6-8 tygodni |
+| Makijaż permanentny (PMU) | 5500-7000 zł za jedną technikę, przy pełnym zakresie ok. 10 000 zł | najwyższy, sięga kilku tysięcy złotych (maszynka, materiały jednorazowe) | 500-900 zł (brwi; z korektą w cenie) | rzadko - korekta po zabiegu, odświeżenie po dłuższym czasie |
 
-Ceny w tabeli to widełki rynkowe, nie gotowa oferta - dokładna kwota zależy od miasta, doświadczenia osoby wykonującej zabieg i renomy trenerki prowadzącej kurs. Im wyższa cena zabiegu, tym zwykle dłuższa i droższa nauka oraz większa odpowiedzialność - PMU nie jest kierunkiem, który wybiera się na pierwszy tydzień w branży.
+Ceny kursów w tabeli są orientacyjne i pochodzą z ofert wpisanych do Bazy Usług Rozwojowych - konkretną ofertę sprawdzisz w rejestrze. Przy PMU o wysokości dopłaty częściej decyduje limit kwotowy operatora (najczęściej 5-7 tys. zł na osobę) niż sam procent dofinansowania. Ceny zabiegów zależą dodatkowo od miasta, doświadczenia osoby wykonującej zabieg i renomy trenerki prowadzącej kurs. Im wyższa cena zabiegu, tym zwykle dłuższa i droższa nauka oraz większa odpowiedzialność - PMU nie jest kierunkiem, który wybiera się na pierwszy tydzień w branży.
 
 Warto też spojrzeć na rytm pracy, jaki niesie każdy kierunek, a nie tylko na cenę pojedynczej pozycji w tabeli. Paznokcie, rzęsy i brwi to zabiegi krótkie i częste - dzień pracy dzieli się na kilka do kilkunastu wizyt, a grafik zapełnia się drobnymi, powtarzalnymi terminami. PMU to odwrotny rytm: jeden zabieg potrafi zająć kilka godzin, więc dzienny plan mieści zwykle jedną, dwie klientki, za to przy znacznie wyższej stawce. Osoba, która źle znosi długie, jednorazowe sesje przy jednej twarzy, może czuć się lepiej przy krótszych, częstszych wizytach - i odwrotnie.
 
@@ -55,7 +56,7 @@ Zamiast zgadywać, odpowiedz na trzy pytania o swoją sytuację. Odpowiedzi zaw�
 
 ## Typowe ścieżki - od czego zaczynają inne kursantki
 
-Brwi z laminacją najczęściej pojawiają się jako krótki start albo dodatek do innej specjalizacji - niski koszt wejścia pozwala sprawdzić, czy praca z klientką w ogóle odpowiada, zanim zainwestujesz więcej. Paznokcie mają najniższy próg wejścia ze wszystkich kierunków i dlatego są najczęściej wybieranym pierwszym kursem w beauty - krótka nauka, tani sprzęt, szybki pierwszy zabieg.
+Brwi z laminacją najczęściej pojawiają się jako krótki start albo dodatek do innej specjalizacji - niski koszt wejścia pozwala sprawdzić, czy praca z klientką w ogóle odpowiada, zanim zainwestujesz więcej. Paznokcie mają najniższy próg wejścia ze wszystkich kierunków i dlatego są jednym z najczęściej wybieranych pierwszych kursów w beauty - krótka nauka, tani sprzęt, szybki pierwszy zabieg.
 
 Rzęsy z kolei wybierają najczęściej osoby, którym zależy na szybkim zbudowaniu bazy stałych klientek - wysoka częstotliwość uzupełnień oznacza, że kalendarz zapełnia się powtarzalnymi wizytami wcześniej niż w kierunkach, gdzie klientka wraca raz na kilka miesięcy albo rzadziej.
 
@@ -63,9 +64,9 @@ Makijaż permanentny bywa kierunkiem docelowym, a nie pierwszym kursem. Wyższa 
 
 ## Dofinansowanie przy każdym z czterech kierunków
 
-Każdy z czterech kierunków można sfinansować z Bazy Usług Rozwojowych (BUR) - rejestru prowadzonego przez PARP, rządową agencję rozliczającą fundusze unijne - pod warunkiem że konkretny kurs jest w tym rejestrze wpisany. Dofinansowanie pokrywa zwykle 80-90% ceny, więc z własnej kieszeni dopłacasz ułamek pełnej kwoty niezależnie od tego, który kierunek wybierzesz.
+Każdy z czterech kierunków można sfinansować z Bazy Usług Rozwojowych (BUR) - rejestru prowadzonego przez PARP, rządową agencję rozliczającą fundusze unijne - pod warunkiem że konkretny kurs jest w tym rejestrze wpisany. Dofinansowanie pokrywa zwykle 80-95% ceny, zależnie od województwa i naboru, ale operatorzy mają też limit kwotowy na osobę - najczęściej 5-7 tys. zł. Przy tańszych kursach (paznokcie, rzęsy, brwi) ten limit rzadko gra rolę, więc dopłacasz rzeczywiście ułamek ceny.
 
-Im droższy kurs, tym wyższa kwota dofinansowania w złotówkach, ale proporcja wkładu własnego zostaje podobna. Przy kursie paznokci za 1500 zł to orientacyjnie 150-300 zł wkładu własnego, przy kursie PMU za 5000 zł - orientacyjnie 500-1000 zł. Dokładna kwota zależy od poziomu dofinansowania w danym naborze i województwie, dlatego realną kwotę sprawdza się dla konkretnego kursu, nie liczy z widełek w internecie.
+Przy droższych kursach proporcja się nie utrzymuje - decyduje limit, nie procent. Przy kursie paznokci za 2200 zł w województwie śląskim (95% dofinansowania, limit 5000 zł) wkład własny wynosi orientacyjnie 110 zł. Przy kursie PMU za 10 000 zł, gdy limit operatora to 5000 zł, dopłata sięga 5000 zł - połowy ceny kursu, mimo tego samego formalnie wysokiego procentu dofinansowania. Dokładna kwota zależy od poziomu dofinansowania i limitu w danym naborze i województwie, dlatego realną kwotę sprawdza się dla konkretnego kursu, nie liczy z widełek w internecie.
 
 ## Sprawdź dofinansowanie dla wybranego kierunku
 
@@ -90,4 +91,4 @@ Zależy od ceny kursu i częstotliwości powrotu klientki, nie tylko od ceny zab
 Może, ale zwykle nie jest to najlepszy wybór na start. Wyższa cena kursu, dłuższa nauka i większa odpowiedzialność sprawiają, że wiele osób wybiera go po zdobyciu doświadczenia w innej specjalizacji, a nie jako pierwsze wejście do zawodu.
 
 **Czy dofinansowanie działa tak samo dla każdego z czterech kierunków?**
-Mechanizm jest ten sam - dofinansowanie z BUR pokrywa zwykle 80-90% ceny kursu wpisanego do rejestru, niezależnie od kategorii. Różni się kwota w złotówkach, bo zależy od pełnej ceny konkretnego kursu, a ta rośnie wraz z długością i zakresem szkolenia.
+Procent dofinansowania u danego operatora jest zwykle ten sam niezależnie od kategorii - różnicę robi limit kwotowy na osobę (najczęściej 5-7 tys. zł). Przy tańszych kursach (paznokcie, rzęsy, brwi) limit rzadko ma znaczenie, więc dopłata zostaje ułamkiem ceny. Przy PMU, gdzie cena kursu bywa wyższa niż limit, to on decyduje o wysokości dopłaty i wkład własny rośnie bardziej niż przy tańszych kierunkach.

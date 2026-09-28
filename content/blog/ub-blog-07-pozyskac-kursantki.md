@@ -12,6 +12,7 @@ fraza_glowna: "jak pozyskać kursantki na szkolenia"
 filar: B
 rola: "pillar"
 reading_minutes: 10
+nadpisz_w_bazie: true
 ---
 
 # Jak zapełnić grafik szkoleń: skąd brać kursantki w 2026
@@ -42,21 +43,21 @@ Nie ma jednego najlepszego kanału. Jest kilka, które działają na różnych z
 
 **Współprace i obecność offline.** Targi branżowe, wspólne akcje z dystrybutorami sprzętu, pokazy. Budują pozycję i dają kontakty, których nie kupisz reklamą. Minus: efekt jest rozłożony w czasie i trudny do zmierzenia. Jeden dzień na targach nie przekłada się na przewidywalną liczbę zapisów w przyszłym tygodniu.
 
-**Pozyskanie na wynik przez zewnętrznego partnera.** Ktoś inny puszcza kampanie, kwalifikuje zgłoszenia i przekazuje Ci gotowe kursantki, a Ty płacisz dopiero za efekt. Minus: oddajesz część kontroli nad przekazem, więc partner musi rozumieć Twój zawód i Twoją grupę. Zaletą jest przerzucenie ryzyka i kosztu pozyskania na kogoś, kto robi to na skalę.
+**Zewnętrzne źródło zgłoszeń.** Ktoś inny puszcza kampanie, kwalifikuje zgłoszenia i przekazuje Ci kursantki gotowe do rozmowy, a Ty płacisz za przekazane zgłoszenia na warunkach ustalonych z góry, nie za samo dotarcie. Minus: oddajesz część kontroli nad przekazem, więc partner musi rozumieć Twój zawód i Twoją grupę. Zaletą jest przerzucenie ryzyka i kosztu pozyskania na kogoś, kto robi to na skalę.
 
-### Reklama własna vs pozyskanie na wynik
+### Reklama własna a zewnętrzne źródło zgłoszeń
 
-Różnica między tymi dwoma podejściami sprowadza się do tego, kto ponosi ryzyko. Przy reklamie własnej płacisz za dotarcie, nie za wynik. Wydajesz budżet niezależnie od tego, czy z kampanii wyjdzie pięć zapisów, czy zero. Cały koszt testów, nietrafionych kreacji i sezonowych spadków siedzi po Twojej stronie.
+Różnica między tymi dwoma podejściami sprowadza się do tego, kto ponosi ryzyko. Przy reklamie własnej płacisz za dotarcie, nie za zgłoszenie. Wydajesz budżet niezależnie od tego, czy z kampanii wyjdzie pięć zapisów, czy zero. Cały koszt testów, nietrafionych kreacji i sezonowych spadków siedzi po Twojej stronie.
 
-Przy pozyskaniu na wynik płacisz dopiero, gdy kursantka faktycznie się zapisze. Koszt pustej kampanii przechodzi na partnera. Ty księgujesz wydatek wtedy, kiedy pojawia się po nim przychód. Który model bardziej Ci się opłaca, zależy od tego, ile masz czasu, jaki budżet możesz zamrozić i jak bardzo boli Cię ryzyko przepalonej reklamy. Pełne porównanie kosztu, ryzyka i kontroli nad relacją z kursantką znajdziesz w tekście o [prowizji kontra opłacie za wynik](https://uniwersytetbeauty.pl/blog/prowizja-vs-flat-fee-pozyskanie-kursantek).
+Przy zewnętrznym źródle płacisz za zakwalifikowane zgłoszenia, które do Ciebie trafiły. Koszt pustej kampanii i testów kreacji przechodzi na partnera. Ty wiesz z góry, ile kosztuje kontakt z kursantką z Twojego regionu i Twojej kategorii. Który model bardziej Ci się opłaca, zależy od tego, ile masz czasu, jaki budżet możesz zamrozić i jak bardzo boli Cię ryzyko przepalonej reklamy. Pełne porównanie kosztu, ryzyka i kontroli nad relacją z kursantką znajdziesz w tekście o [prowizji kontra opłacie za wynik](https://uniwersytetbeauty.pl/blog/prowizja-vs-flat-fee-pozyskanie-kursantek).
 
 ## Dofinansowanie jako magnes na kursantki
 
-Największym pojedynczym hamulcem przy zapisie na kurs beauty jest cena. Szkolenie PMU potrafi kosztować od 3000 do nawet 6000 zł, kurs rzęs 1500-2500 zł. Dla dużej części zainteresowanych to kwota, przy której decyzja się zatrzymuje - niezależnie od tego, jak dobre jest szkolenie.
+Największym pojedynczym hamulcem przy zapisie na kurs beauty jest cena. Szkolenie PMU w Bazie Usług Rozwojowych kosztuje zwykle 5 500-7 000 zł za jedną technikę, kurs rzęs 1 800-3 400 zł. Dla dużej części zainteresowanych to kwota, przy której decyzja się zatrzymuje - niezależnie od tego, jak dobre jest szkolenie.
 
-Dofinansowanie z BUR rozbraja ten hamulec. Baza Usług Rozwojowych to platforma prowadzona przez PARP, przez którą płyną fundusze unijne rozdzielane regionalnie przez operatorów. Kursantka, która kwalifikuje się do naboru, dostaje zwrot zwykle na poziomie 80-90% ceny szkolenia i dopłaca kilkaset złotych zamiast kilku tysięcy. Dokładny poziom zależy od województwa i konkretnego naboru.
+Dofinansowanie z BUR rozbraja ten hamulec. Baza Usług Rozwojowych to platforma prowadzona przez PARP, przez którą płyną fundusze unijne rozdzielane regionalnie przez operatorów. Zależnie od operatora kursantka wpłaca tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płaci całość i dostaje zwrot. Poziom dofinansowania to 80-95% ceny szkolenia, zależnie od województwa i naboru, a większość operatorów ma też limit kwotowy na osobę, zwykle 5 000-7 000 zł; przy kursie droższym niż ten limit to on, nie procent, decyduje o dopłacie. Przy szkoleniach do około 5 000 zł dopłata to zwykle kilkaset złotych.
 
-Dla Ciebie jako trenerki oznacza to jedno: kurs, który wcześniej był poza zasięgiem części odbiorczyń, nagle mieści się w ich budżecie. Ten sam produkt, inna dostępna cena, znacznie szersza grupa gotowa się zapisać. Warunkiem jest wpisanie szkolenia do BUR - bez tego żaden operator nie zrefunduje kursantce ani złotówki. Jak przejść przez rejestrację podmiotu i kartę usługi, opisujemy krok po kroku w poradniku [jak wpisać szkolenie do BUR](https://uniwersytetbeauty.pl/blog/jak-wpisac-szkolenie-do-bur).
+Dla Ciebie jako trenerki oznacza to jedno: kurs, który wcześniej był poza zasięgiem części odbiorczyń, nagle mieści się w ich budżecie. Ten sam produkt, inna dostępna cena, znacznie szersza grupa gotowa się zapisać. Warunkiem jest wpisanie szkolenia do BUR - bez tego kursantka nie dostanie żadnego dofinansowania. Jak przejść przez rejestrację podmiotu i kartę usługi, opisujemy krok po kroku w poradniku [jak wpisać szkolenie do BUR](https://uniwersytetbeauty.pl/blog/jak-wpisac-szkolenie-do-bur).
 
 Jest jeszcze druga strona tej samej przewagi. Większość rynku szkoleniowego komunikuje dofinansowanie hasłem „dla bezrobotnych", co odsiewa pracujące kobiety, mamy wracające na rynek pracy i studentki - a to właśnie one najczęściej kwalifikują się do BUR i mają pieniądze na dopłatę. Trenerka, która umie to wytłumaczyć, przyciąga grupę, której konkurencja nawet nie zaprasza.
 
@@ -66,11 +67,11 @@ Koszt pozyskania kursantki to nie tylko kwota wydana na reklamę. To suma pieni�
 
 Policz uczciwie. Przy reklamie własnej na kampanię składa się budżet mediowy, koszt przygotowania kreacji i landing page'a oraz Twoje godziny na obsługę zapytań, kwalifikowanie zainteresowanych i domykanie rozmów. Jeśli z tysiąca złotych budżetu i dziesięciu godzin pracy wychodzą dwie zapisane kursantki, koszt jednej to pięćset złotych plus pięć Twoich godzin. Godzin, których nie poświęciłaś na szkolenie ani na odpoczynek.
 
-Przy poleceniach koszt gotówkowy jest bliski zeru, ale wolumen jest poza Twoją kontrolą. Przy pozyskaniu na wynik płacisz ustaloną stawkę za zapisaną kursantkę i nie dokładasz do niej własnych godzin na kwalifikację - to robi partner. Różnica bywa większa, niż się wydaje, bo czas trenerki jest najdroższym i najtrudniej odzyskiwalnym zasobem w tym rachunku.
+Przy poleceniach koszt gotówkowy jest bliski zeru, ale wolumen jest poza Twoją kontrolą. Przy zewnętrznym źródle płacisz ustaloną z góry stawkę za przekazane zgłoszenie i nie dokładasz do niej własnych godzin na kwalifikację - to robi partner. Różnica bywa większa, niż się wydaje, bo czas trenerki jest najdroższym i najtrudniej odzyskiwalnym zasobem w tym rachunku.
 
 Sedno: zanim uznasz, że dany kanał jest „za drogi" albo „darmowy", policz w nim oba składniki. Reklama, która wygląda na kosztowną, bywa tańsza od „darmowego" Instagrama, jeśli doliczysz do tego drugiego dziesięć godzin tygodniowo Twojej pracy.
 
-Poszczególne wątki rozwijamy osobno: co realnie działa w promocji szkoleń opisuje [marketing dla trenerki PMU](/blog/marketing-dla-trenerki-pmu), modele rozliczeń porównujemy w tekście [prowizja czy flat fee](/blog/prowizja-vs-flat-fee-pozyskanie-kursantek), a formalności po stronie akredytacji — w poradniku [jak wpisać szkolenie do BUR](/blog/jak-wpisac-szkolenie-do-bur).
+Poszczególne wątki rozwijamy osobno: co realnie działa w promocji szkoleń opisuje [marketing dla trenerki PMU](/blog/marketing-dla-trenerki-pmu), modele rozliczeń porównujemy w tekście [prowizja czy flat fee](/blog/prowizja-vs-flat-fee-pozyskanie-kursantek), a formalności po stronie akredytacji opisuje poradnik [jak wpisać szkolenie do BUR](/blog/jak-wpisac-szkolenie-do-bur).
 
 ## Od czego zacząć w tym miesiącu
 
@@ -80,7 +81,7 @@ Po pierwsze, ustaw jeden powtarzalny kanał organiczny i trzymaj się go - najcz
 
 Po drugie, jeśli Twoje szkolenie nie jest jeszcze w BUR, zacznij procedurę wpisu. To odblokowuje całą grupę kursantek, dla których cena była barierą, i daje Ci argument, którego konkurencja bez akredytacji nie ma.
 
-Po trzecie, policz swój realny koszt pozyskania jednej kursantki razem z czasem. Dopiero ta liczba pokaże Ci, czy warto dokładać do reklamy własnej, czy sensowniej przerzucić ryzyko na model, w którym płacisz wyłącznie za efekt.
+Po trzecie, policz swój realny koszt pozyskania jednej kursantki razem z czasem. Dopiero ta liczba pokaże Ci, czy warto dokładać do reklamy własnej, czy sensowniej przerzucić ryzyko kampanii na partnera i płacić wyłącznie za zgłoszenia, które do Ciebie docierają.
 
 To ostatnie jest sednem tego, co robimy w Uniwersytecie Beauty. Prowadzimy kampanie skierowane do kobiet szukających szkoleń z dofinansowaniem, kwalifikujemy zgłoszenia i przekazujemy Ci gotowe kursantki. Pierwsze akademie wchodzą w pilotażu bez opłat, w zamian za dane o tym, jak poszło: ile zgłoszeń, ile rozmów, ile zapisów. Warunki po pilotażu ustalamy z góry, zanim zaczniemy, i nie ma w nich prowizji od kursantek, które pozyskałaś sama. Ryzyko przepalonej kampanii zostaje po naszej stronie.
 
@@ -92,13 +93,13 @@ Jeśli chcesz sprawdzić, jak to wygląda dla Twojej akademii, napisz na biuro@u
 Najczęściej nic w samym szkoleniu. Problem leży w źródle kursantek: pojedynczy kanał (zwykle Instagram), który potrafi wyschnąć, brak odpowiedzi na barierę ceny i mylenie sprzedaży szkolenia ze sprzedażą pojedynczej usługi. Grafik zapełnia powtarzalne źródło leadów, nie lepsza jakość kursu.
 
 **Który kanał pozyskania kursantek jest najlepszy?**
-Nie ma jednego. Polecenia konwertują najlepiej, ale nie skalują się na zawołanie. Reklama daje zasięg od ręki, ale kosztuje z góry i wymaga obsługi. Pozyskanie na wynik przerzuca ryzyko na partnera. Sensowny miks to jeden stabilny kanał organiczny plus jedno źródło, które daje przewidywalny strumień zapisów.
+Nie ma jednego. Polecenia konwertują najlepiej, ale nie skalują się na zawołanie. Reklama daje zasięg od ręki, ale kosztuje z góry i wymaga obsługi. Zewnętrzne źródło zgłoszeń przerzuca ryzyko kampanii na partnera. Sensowny miks to jeden stabilny kanał organiczny plus jedno źródło, które daje przewidywalny strumień zapisów.
 
 **Ile kosztuje pozyskanie jednej kursantki?**
-Zależy od kanału i tego, czy liczysz też swój czas. Przy reklamie własnej na koszt składa się budżet mediowy plus Twoje godziny na kwalifikację i domykanie - łatwo wychodzi kilkaset złotych i kilka godzin za jedną kursantkę. Przy modelu na wynik płacisz ustaloną stawkę za zapis i nie dokładasz własnych godzin.
+Zależy od kanału i tego, czy liczysz też swój czas. Przy reklamie własnej na koszt składa się budżet mediowy plus Twoje godziny na kwalifikację i domykanie - łatwo wychodzi kilkaset złotych i kilka godzin za jedną kursantkę. Przy zewnętrznym źródle płacisz ustaloną z góry stawkę za przekazane zgłoszenie i nie dokładasz własnych godzin na kwalifikację.
 
 **Czy dofinansowanie realnie pomaga sprzedać szkolenie?**
-Tak, bo rozbraja główny hamulec, czyli cenę. Z dofinansowaniem BUR kursantka dopłaca zwykle kilkaset złotych zamiast kilku tysięcy, więc kurs mieści się w budżecie znacznie szerszej grupy. Warunek to wpisanie szkolenia do BUR - bez tego zwrot nie przysługuje.
+Tak, bo rozbraja główny hamulec, czyli cenę. Z dofinansowaniem BUR kursantka dopłaca, zależnie od operatora, tylko wkład własny albo płaci całość i dostaje zwrot; poziom to 80-95% ceny, zależnie od województwa i naboru, a przy droższych kursach o dopłacie decyduje limit kwotowy operatora, zwykle 5 000-7 000 zł. Przy tańszych szkoleniach dopłata to zwykle kilkaset złotych. Warunek to wpisanie szkolenia do BUR, bez tego dofinansowanie nie przysługuje.
 
 **Czy muszę mieć wpis do BUR, żeby korzystać z takiego modelu?**
-Żeby kursantka dostała dofinansowanie - tak, szkolenie musi być w Bazie Usług Rozwojowych. Jeśli akredytacji jeszcze nie masz, warto zacząć procedurę, bo to ona odblokowuje grupę kursantek szukających zwrotu. Proces wpisu opisujemy osobno w poradniku dla trenerek.
+Żeby kursantka dostała dofinansowanie - tak, szkolenie musi być w Bazie Usług Rozwojowych. Jeśli akredytacji jeszcze nie masz, warto zacząć procedurę, bo to ona odblokowuje grupę kursantek szukających dofinansowania. Proces wpisu opisujemy osobno w poradniku dla trenerek.

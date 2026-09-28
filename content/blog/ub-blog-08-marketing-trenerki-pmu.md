@@ -12,11 +12,12 @@ fraza_glowna: "marketing dla trenerki makijażu permanentnego"
 filar: B
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Marketing dla trenerki makijażu permanentnego: co działa, a co zjada czas
 
-Trenerka PMU sprzedaje jeden z najdroższych produktów w całym beauty. Kurs makijażu permanentnego kosztuje zwykle od 3000 do 6000 zł, więc kursantka podejmuje decyzję dłużej, ostrożniej i z większą liczbą pytań niż przy zapisie na tańsze szkolenie. To zmienia reguły marketingu. Taktyki, które sprawdzają się przy sprzedaży zabiegu za dwieście złotych, przy kursie za kilka tysięcy przestają wystarczać.
+Trenerka PMU sprzedaje jeden z najdroższych produktów w całym beauty. Kurs makijażu permanentnego wpisany do BUR kosztuje zwykle 5 500-7 000 zł za jedną technikę, więc kursantka podejmuje decyzję dłużej, ostrożniej i z większą liczbą pytań niż przy zapisie na tańsze szkolenie. To zmienia reguły marketingu. Taktyki, które sprawdzają się przy sprzedaży zabiegu za dwieście złotych, przy kursie za kilka tysięcy przestają wystarczać.
 
 Poniżej rozkładamy kanały, z których korzysta większość akademii PMU, z uczciwym rozdzieleniem tego, co realnie prowadzi do zapisu, od tego, co głównie zjada godziny. Na końcu wskazujemy granicę, przy której marketing własny się kończy, i co dołożyć, żeby grafik przestał zależeć od wahań zasięgów.
 
@@ -62,11 +63,11 @@ Sedno nie brzmi „rób więcej marketingu". Brzmi: marketing własny ma sufit, 
 
 Pełny przegląd kanałów pozyskania, wraz z kosztem czasu każdego z nich, znajdziesz we wpisie [jak pozyskać kursantki na szkolenia beauty](/blog/jak-pozyskac-kursantki-na-szkolenia-beauty). Sam sposób rozliczenia z zewnętrznym źródłem porównujemy w tekście [prowizja czy flat fee](/blog/prowizja-vs-flat-fee-pozyskanie-kursantek).
 
-## Kiedy dołożyć zewnętrzne źródło kursantek na wynik
+## Kiedy dołożyć zewnętrzne źródło zgłoszeń
 
-Zewnętrzne źródło kursantek na wynik wchodzi tam, gdzie marketing własny sięga sufitu. Zamiast płacić za dotarcie i mieć nadzieję na zapis, płacisz dopiero za kursantkę, która realnie się zapisała. Ryzyko pustej kampanii przechodzi na partnera, a Ty księgujesz wydatek wtedy, kiedy pojawia się po nim przychód.
+Zewnętrzne źródło zgłoszeń wchodzi tam, gdzie marketing własny sięga sufitu. Zamiast płacić za dotarcie i mieć nadzieję na zapis, płacisz za zakwalifikowane zgłoszenia z Twojego regionu i Twojej kategorii, na warunkach ustalonych z góry. Ryzyko pustej kampanii i testów kreacji przechodzi na partnera.
 
-Ten model ma sens w kilku sytuacjach. Gdy Twój czas jest wart więcej włożony w szkolenie niż w prowadzenie kampanii. Gdy nie chcesz zamrażać budżetu reklamowego, który może się nie zwrócić. Gdy potrzebujesz przewidywalności zamiast miesięcznej huśtawki zapisów. Różnica między płaceniem za dotarcie a płaceniem za wynik, razem z rachunkiem kosztu i ryzyka, rozłożona jest w osobnym tekście o [modelach rozliczeń przy pozyskaniu kursantek](https://uniwersytetbeauty.pl/blog/prowizja-vs-flat-fee-pozyskanie-kursantek).
+Ten model ma sens w kilku sytuacjach. Gdy Twój czas jest wart więcej włożony w szkolenie niż w prowadzenie kampanii. Gdy nie chcesz zamrażać budżetu reklamowego, który może się nie zwrócić. Gdy potrzebujesz przewidywalności zamiast miesięcznej huśtawki zapisów. Różnica między płaceniem za dotarcie a płaceniem za zgłoszenia, razem z rachunkiem kosztu i ryzyka, rozłożona jest w osobnym tekście o [modelach rozliczeń przy pozyskaniu kursantek](https://uniwersytetbeauty.pl/blog/prowizja-vs-flat-fee-pozyskanie-kursantek).
 
 Tak działa Uniwersytet Beauty. Prowadzimy kampanie skierowane do kobiet szukających szkoleń PMU z dofinansowaniem, kwalifikujemy zgłoszenia pod kątem regionu i gotowości, i przekazujemy Ci kursantki, które faktycznie chcą się zapisać. Pierwsze akademie wchodzą w pilotażu bez opłat, w zamian za dane o wynikach. Warunki po pilotażu ustalamy z góry, zanim zaczniemy - bez prowizji od Twoich stałych klientek i bez opłaty za samo wystawienie profilu. Kampania, która nie dowiezie, nic Cię nie kosztuje.
 
@@ -77,7 +78,7 @@ Pełny przegląd wszystkich kanałów pozyskania kursantek, z rachunkiem kosztu 
 ## Najczęstsze pytania
 
 **Czy sam Instagram wystarczy do sprzedaży kursów PMU?**
-Rzadko. Instagram i portfolio są konieczne, bo budują zaufanie i pokazują efekty, ale są zależne od zasięgów i przyciągają głównie klientki na zabieg, nie kursantki. Do przewidywalnego zapełniania grafiku zwykle trzeba dołożyć drugi kanał - płatną reklamę z dobrą ścieżką zapisu albo zewnętrzne źródło kursantek na wynik.
+Rzadko. Instagram i portfolio są konieczne, bo budują zaufanie i pokazują efekty, ale są zależne od zasięgów i przyciągają głównie klientki na zabieg, nie kursantki. Do przewidywalnego zapełniania grafiku zwykle trzeba dołożyć drugi kanał - płatną reklamę z dobrą ścieżką zapisu albo zewnętrzne źródło zakwalifikowanych zgłoszeń.
 
 **Kiedy reklama płatna na kurs PMU ma sens, a kiedy przepala budżet?**
 Ma sens, gdy prowadzi do konkretnej ścieżki zapisu, jest nastawiona na zebranie kontaktu i rozgrzanie decyzji (nie na sprzedaż z marszu za kilka tysięcy) oraz gdy masz zaplecze do szybkiej obsługi zgłoszeń. Przepala budżet, gdy kieruje ruch na profil bez ścieżki, sprzedaje drogi kurs „na klik" albo zostawia zapytania bez szybkiej odpowiedzi.
@@ -86,7 +87,7 @@ Ma sens, gdy prowadzi do konkretnej ścieżki zapisu, jest nastawiona na zebrani
 Odpowiadaj w treściach na realne obawy kursantki: czy się nauczy, czy zarobi, czy dostanie uwagę, czy dopłaci sensowną kwotę. Pokazuj ścieżkę i historie absolwentek, nie tylko efekt pracy. Zasięg bez zapytań o kurs to sygnał, że materiał pracuje pod statystyki, nie pod sprzedaż.
 
 **Czy dofinansowanie pomaga sprzedać drogi kurs PMU?**
-Tak, bo cena jest tu najwyższą barierą. Z dofinansowaniem BUR kursantka dopłaca zwykle kilkaset złotych zamiast pełnych kilku tysięcy, więc kurs mieści się w budżecie szerszej grupy. Warunkiem jest wpisanie szkolenia do BUR - bez tego zwrot nie przysługuje.
+Tak, bo cena jest tu najwyższą barierą. Zależnie od operatora kursantka wpłaca tylko wkład własny, a resztę operator rozlicza z akademią, albo płaci całość i dostaje zwrot; poziom to 80-95% ceny, zależnie od województwa i naboru, a przy kursie droższym niż limit operatora (zwykle 5 000-7 000 zł) to ten limit decyduje o dopłacie. Warunkiem jest wpisanie szkolenia do BUR, bez tego dofinansowanie nie przysługuje.
 
 **Czy warto oddać pozyskanie kursantek na zewnątrz, skoro sama prowadzę marketing?**
-Warto rozważyć to w punkcie, w którym marketing własny sięga sufitu, a zapisy dalej skaczą. Model na wynik przerzuca ryzyko i koszt pozyskania na partnera - płacisz dopiero za zapisaną kursantkę - i zwalnia Twój czas na to, za co klientki płacą, czyli na szkolenie. Nie zastępuje Instagrama, tylko dokłada przewidywalny strumień.
+Warto rozważyć to w punkcie, w którym marketing własny sięga sufitu, a zapisy dalej skaczą. Zewnętrzne źródło zgłoszeń przerzuca ryzyko kampanii na partnera, a Ty płacisz za kontakty na warunkach znanych z góry. To zwalnia Twój czas na to, za co klientki płacą, czyli na szkolenie. Nie zastępuje Instagrama, tylko dokłada przewidywalny strumień.

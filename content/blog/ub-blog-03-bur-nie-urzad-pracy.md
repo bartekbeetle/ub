@@ -12,11 +12,12 @@ fraza_glowna: "dofinansowanie BUR dla osoby pracującej"
 filar: A
 rola: podtemat
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # BUR ≠ urząd pracy: dofinansowanie należy się też pracującym
 
-„Pracuję, więc dofinansowanie mi się nie należy" - to zdanie zatrzymuje przed kursem beauty więcej kobiet niż jakikolwiek wkład własny. Przez nie tysiące osób w ogóle nie sprawdza, czy kwalifikuje się do zwrotu 80-90% ceny szkolenia.
+„Pracuję, więc dofinansowanie mi się nie należy" - to zdanie zatrzymuje przed kursem beauty więcej kobiet niż jakikolwiek wkład własny. Przez nie tysiące osób w ogóle nie sprawdza, czy kwalifikuje się do dofinansowania, które sięga 80-95% ceny szkolenia, zależnie od województwa i naboru.
 
 Dofinansowanie z BUR nie jest zarezerwowane dla osób bez pracy. W większości regionalnych naborów mogą z niego korzystać kobiety na etacie, na własnej działalności, mamy wracające po urlopie wychowawczym i studentki. Poniżej rozkładamy, komu dokładnie przysługuje i na jakich zasadach - a także sytuacje, w których zwrotu nie otrzymasz, bo rzetelna informacja obejmuje obie strony.
 
@@ -26,7 +27,7 @@ Skąd się to bierze? Z pomieszania dwóch zupełnie różnych instytucji.
 
 Hasło „kurs z dofinansowania" większości osób kojarzy się z urzędem pracy - a tam faktycznie trzeba być zarejestrowaną jako bezrobotna, żeby dostać skierowanie na szkolenie. Urząd pracy finansuje szkolenia osobom, które pracy nie mają i jej szukają. Na tym jego rola się kończy.
 
-BUR działa według innych zasad i jest finansowany z innego źródła. Baza Usług Rozwojowych to platforma prowadzona przez PARP, przez którą płyną pieniądze z funduszy unijnych (głównie EFS+), rozdzielane regionalnie przez operatorów w każdym województwie. Te programy powstały po to, żeby podnosić kwalifikacje osób aktywnych zawodowo. Czyli między innymi Twoje - jeśli pracujesz.
+BUR działa według innych zasad i jest finansowany z innego źródła. Baza Usług Rozwojowych to platforma prowadzona przez PARP, przez którą płyną pieniądze z funduszy unijnych (głównie EFS+), rozdzielane regionalnie przez operatorów w każdym województwie. Programy regionalne dla osób dorosłych nie wymagają statusu bezrobotnej: kwalifikują się osoby pracujące, prowadzące firmę, uczące się i nieaktywne zawodowo - szczegółowe warunki (wiek, miejsce zamieszkania lub pracy) ustala regulamin naboru.
 
 Na tym rozróżnieniu opiera się cała sprawa. Duża część rynku szkoleniowego go nie komunikuje, bo hasło „szkolenia dla bezrobotnych" brzmi prościej w reklamie. Efekt: to uproszczenie odsiewa kobiety, które są dobrymi kandydatkami do dofinansowania - tylko o tym nie wiedzą.
 
@@ -42,7 +43,7 @@ Zasady różnią się między województwami i konkretnymi naborami, więc odpow
 
 **Studiujesz.** Studentki też się kwalifikują w części naborów, zwłaszcza te powyżej pewnego wieku albo łączące studia z pracą. Kurs beauty bywa dla studentki pierwszym realnym zawodem, który zaczyna zarabiać, zanim jeszcze skończy uczelnię.
 
-Wspólny mianownik tych grup to aktywność zawodowa - a nie status osoby bezrobotnej. Dokładnie takich uczestniczek szuka większość programów finansowanych z EFS+.
+Wspólny mianownik tych grup to jedno: żadna z nich nie musi mieć statusu osoby bezrobotnej, żeby się kwalifikować. Dokładnie takie uczestniczki - i kilka innych grup, zależnie od naboru - szuka większość programów finansowanych z EFS+.
 
 ### Case: pracująca kobieta zmienia branżę na beauty
 
@@ -58,14 +59,14 @@ Kursy zawodowe w Polsce finansuje się z trzech źródeł, z których każde dzi
 
 | Cecha | BUR (Baza Usług Rozwojowych) | Urząd pracy | KFS (Krajowy Fundusz Szkoleniowy) |
 |-------|------------------------------|-------------|-----------------------------------|
-| Dla kogo | Osoby aktywne zawodowo: etat, działalność, często mamy i studentki | Osoby bezrobotne zarejestrowane w PUP | Osoby zatrudnione i pracodawcy (w tym jednoosobowe firmy) |
+| Dla kogo | Osoby pracujące, prowadzące firmę, uczące się i nieaktywne zawodowo - warunki ustala regulamin naboru | Osoby bezrobotne zarejestrowane w PUP | Osoby zatrudnione na umowę o pracę, przez ich pracodawcę |
 | Trzeba być bezrobotną? | Nie | Tak | Nie |
-| Kto składa wniosek | Ty (przez operatora regionalnego) | Ty (przez urząd pracy) | Pracodawca (lub Ty, jeśli masz działalność) |
-| Poziom dofinansowania | Zwykle 80-90% | Zależnie od programu | Nawet 100% dla mikrofirm, 80% dla większych |
+| Kto składa wniosek | Ty (przez operatora regionalnego) | Ty (przez urząd pracy) | Pracodawca - firma zatrudniająca Cię na umowę o pracę |
+| Poziom dofinansowania | 80-95%, zależnie od województwa i naboru; zwykle też limit kwotowy 5-7 tys. zł | Zależnie od programu | 80% kosztów, dla mikrofirm 100% |
 | Skąd pieniądze | Fundusze unijne (EFS+), regionalnie | Fundusz Pracy | Fundusz Pracy (część na kształcenie) |
 | Typowa droga dla kursantki beauty | Główna ścieżka | Rzadziej | Gdy masz działalność lub przychylnego pracodawcę |
 
-Dla większości kobiet, które piszą do nas z pytaniem o zawód w beauty od zera, właściwą drogą jest BUR. KFS wchodzi w grę, kiedy prowadzisz własną firmę albo masz pracodawcę gotowego podpisać wniosek. Urząd pracy - tylko jeśli faktycznie jesteś bez pracy i zarejestrowana. Mit „tylko dla bezrobotnych" traktuje te trzy odrębne ścieżki jak jedną.
+Dla większości kobiet, które piszą do nas z pytaniem o zawód w beauty od zera, właściwą drogą jest BUR. KFS wchodzi w grę, kiedy masz pracodawcę gotowego podpisać wniosek za Ciebie - albo, jeśli sama zatrudniasz pracownicę, gdy to Ty jesteś tym pracodawcą. Urząd pracy - tylko jeśli faktycznie jesteś bez pracy i zarejestrowana. Mit „tylko dla bezrobotnych" traktuje te trzy odrębne ścieżki jak jedną.
 
 ## Kiedy faktycznie NIE dostaniesz dofinansowania (uczciwe wyjątki)
 
@@ -75,13 +76,13 @@ Dofinansowanie z BUR nie przysługuje w każdym przypadku. Poniżej cztery sytua
 
 **W Twoim województwie akurat nie ma otwartego naboru.** Nabory ruszają i zamykają się w cyklach, a pula pieniędzy bywa ograniczona. Zdarza się, że trafiasz w moment między naborami albo środki na dany kwartał już się rozeszły. To nie znaczy „nigdy" - to znaczy „nie teraz, sprawdź termin następnego".
 
-**Nie łapiesz się na kryteria konkretnego projektu.** Jeden operator kieruje program tylko do osób o niskich kwalifikacjach, inny do mieszkańców jednego powiatu, jeszcze inny wyłącznie do kobiet po 30. roku życia. Możesz być aktywna zawodowo i mimo to nie pasować do akurat tego naboru - ale pasować do innego. Dlatego jedno „nie" u jednego operatora nie zamyka tematu.
+**Nie łapiesz się na kryteria konkretnego projektu.** Jeden operator kieruje program tylko do osób o niskich kwalifikacjach, inny do mieszkańców jednego powiatu, jeszcze inny wyłącznie do kobiet po 30. roku życia. Możesz spełniać ogólne warunki i mimo to nie pasować do akurat tego naboru - ale pasować do innego. Dlatego jedno „nie" u jednego operatora nie zamyka tematu.
 
-**Przekroczyłaś limit pomocy albo już korzystałaś niedawno.** W niektórych programach jest limit korzystania z dofinansowania w danym okresie. Jeśli rok temu robiłaś kurs z BUR, drugi od ręki może się nie udać - choć często wystarczy odczekać do kolejnej puli.
+**Operator ogranicza liczbę usług na osobę w projekcie.** Część programów ustala, ile razy w danym okresie możesz skorzystać z dofinansowania - sprawdź to w regulaminie konkretnego naboru, zanim złożysz wniosek. Jeśli rok temu robiłaś kurs z BUR, drugi od ręki może się nie udać w tym samym naborze - choć często wystarczy odczekać do kolejnej puli albo zgłosić się do innego operatora.
 
 Dofinansowanie to system z zasadami, nie automatyczna zniżka dla każdego. Te zasady są jednak znacznie szersze, niż sugeruje mit o bezrobotnych - a najczęstszym powodem, dla którego kobieta nie otrzymuje zwrotu, nie jest to, że pracuje, tylko to, że w ogóle nie sprawdziła swojej sytuacji.
 
-Gdy już wiesz, że się kwalifikujesz, zostaje procedura — rozkładamy ją we wpisie [dofinansowanie na szkolenie krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku). Ile realnie zostaje do dopłaty, liczymy w tekście [kurs beauty za 0 zł](/blog/kurs-beauty-za-0-zl-kiedy-realne), a całą ścieżkę zawodową opisuje [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
+Gdy już wiesz, że się kwalifikujesz, zostaje procedura: rozkładamy ją we wpisie [dofinansowanie na szkolenie krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku). Ile realnie zostaje do dopłaty, liczymy w tekście [kurs beauty za 0 zł](/blog/kurs-beauty-za-0-zl-kiedy-realne), a całą ścieżkę zawodową opisuje [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
 
 ## Sprawdź swoją sytuację w 2 minuty
 
@@ -99,10 +100,10 @@ Jeśli się kwalifikujesz - otrzymujesz gotową ścieżkę i kontakt do trenerki
 Tak, w większości regionalnych naborów BUR osoby pracujące się kwalifikują. Etat Cię nie wyklucza - to jedno z najczęstszych nieporozumień. Warunki zależą od województwa i konkretnego naboru, dlatego trzeba sprawdzić Twoją sytuację indywidualnie.
 
 **Czy muszę być zarejestrowana w urzędzie pracy?**
-Nie. To urząd pracy wymaga statusu osoby bezrobotnej. BUR działa inaczej - jest kierowany głównie do osób aktywnych zawodowo. Mylenie tych dwóch instytucji to źródło całego mitu.
+Nie. To urząd pracy wymaga statusu osoby bezrobotnej. BUR działa inaczej: kwalifikują się osoby pracujące, prowadzące firmę, uczące się i nieaktywne zawodowo, na warunkach ustalonych w regulaminie naboru. Mylenie tych dwóch instytucji to źródło całego mitu.
 
 **Ile realnie dopłacę z własnej kieszeni?**
-Przy standardowym dofinansowaniu z BUR na poziomie 80-90% Twój wkład własny to zwykle 10-20% ceny kursu - czyli od kilkuset złotych. Zamiast 1800 zł za kurs rzęs płacisz w okolicach 200-360 zł. Pełne 100% (zero dopłaty) zdarza się głównie przez KFS dla zatrudnionych w mikrofirmach - to wyjątek, nie reguła.
+Dofinansowanie z BUR to 80-95% ceny, zależnie od województwa i naboru, a większość operatorów ma też limit kwotowy, zwykle 5-7 tys. zł na osobę - przy droższym kursie to on decyduje, ile dopłacisz. Zamiast 1800 zł za kurs rzęs płacisz w okolicach 90-360 zł, zależnie od operatora. Pełne 100% (zero dopłaty) zdarza się głównie przez KFS, gdy wniosek za Ciebie składa pracodawca - to wyjątek, nie reguła.
 
 **Czy jako mama na urlopie wychowawczym się kwalifikuję?**
 Bardzo często tak - mamy wracające na rynek pracy to grupa, którą wiele projektów wprost zachęca do udziału. Trzeba sprawdzić aktualny nabór w Twoim regionie, bo zasady się różnią, ale sam status mamy Cię nie wyklucza.

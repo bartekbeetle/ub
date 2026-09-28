@@ -12,11 +12,12 @@ fraza_glowna: "dofinansowanie na kurs rzęs"
 filar: A
 rola: podtemat
 reading_minutes: 8
+nadpisz_w_bazie: true
 ---
 
 # Dofinansowanie na kurs rzęs i brwi - realny koszt dla Ciebie
 
-Reklamy „kurs rzęs za 0 zł" wymagają sprostowania. W większości przypadków szkolenie nie kosztuje zera złotych - dofinansowanie z BUR pokrywa 80-90% ceny, a resztę dopłacasz sama. Ta reszta to jednak zwykle kilkaset złotych zamiast pełnej ceny kursu. Różnica jest na tyle duża, że opłaca się ją policzyć dokładnie, na konkretnych kwotach.
+Reklamy „kurs rzęs za 0 zł" wymagają sprostowania. W większości przypadków szkolenie nie kosztuje zera złotych - dofinansowanie z BUR pokrywa 80-95% ceny, zależnie od województwa i naboru, a resztę dopłacasz sama. Przy kursach rzęs i brwi ta reszta to zwykle kilkaset złotych zamiast pełnej ceny kursu. Różnica jest na tyle duża, że opłaca się ją policzyć dokładnie, na konkretnych kwotach.
 
 Ten artykuł pokazuje realne widełki cen kursów rzęs i brwi w 2026, wyliczenie „przed i po" dofinansowaniu oraz odpowiedzi na dwa pytania, które najczęściej zatrzymują kandydatki: od czego zacząć i czy dofinansowanie w ogóle Ci przysługuje.
 
@@ -24,42 +25,42 @@ Ten artykuł pokazuje realne widełki cen kursów rzęs i brwi w 2026, wyliczeni
 
 Punktem wyjścia jest pełna cena rynkowa, bez dofinansowania - od niej liczy się wszystko dalej.
 
-**Kurs stylizacji rzęs (metoda 1:1, podstawowy).** Zwykle 1200-2200 zł, zależnie od miasta, renomy trenerki i tego, czy w cenie masz startowy zestaw materiałów. Za tę kwotę uczysz się jednej metody, dostajesz certyfikat i wychodzisz z umiejętnością robienia klasycznego przedłużania.
+**Kurs stylizacji rzęs (metoda 1:1, podstawowy).** W Bazie Usług Rozwojowych zwykle 1800-2400 zł, zależnie od miasta, renomy trenerki i tego, czy w cenie masz startowy zestaw materiałów. Za tę kwotę uczysz się jednej metody, dostajesz certyfikat i wychodzisz z umiejętnością robienia klasycznego przedłużania.
 
-**Kurs objętościowy (metody 2D-6D, „rosyjski objętość").** Droższy, bo to wyższy poziom - 1800-3000 zł. Część trenerek sprzedaje go jako osobny stopień dla osób, które mają już opanowane 1:1.
+**Kurs objętościowy (metody 2D-6D, „rosyjski objętość").** Droższy, bo to wyższy poziom - w BUR 2600-3400 zł. Część trenerek sprzedaje go jako osobny stopień dla osób, które mają już opanowane 1:1.
 
-**Kurs stylizacji i laminacji brwi.** Najtańsze wejście z całej trójki - 800-1600 zł. Krótkie szkolenie, często jednodniowe albo dwudniowe, łatwo dołożyć je do rzęs.
+**Kurs stylizacji i laminacji brwi.** Najtańsze wejście z całej trójki - w BUR 1750-2200 zł. Krótkie szkolenie, często jednodniowe albo dwudniowe, łatwo dołożyć je do rzęs.
 
-**Pakiet rzęsy + brwi razem.** Trenerki często łączą oba szkolenia, bo w gabinecie to naturalny duet usług. Pakiet kosztuje zwykle 2000-3500 zł, ale w przeliczeniu na dwie umiejętności wychodzi taniej niż każdy kurs osobno.
+**Rozbudowany pakiet brwi (stylizacja, regulacja, henna, kilka technik naraz).** Szerszy zakres niż sama laminacja, dlatego drożej - w BUR 5000-6150 zł. W przeliczeniu na kilka umiejętności naraz wychodzi taniej niż osobne kursy tych samych technik.
 
-To są ceny rynkowe, które widzisz na stronach szkoleń. Na tym etapie wiele kobiet rezygnuje - 2500 zł za kurs, zanim jeszcze wiadomo, czy zawód w ogóle Ci odpowiada, to realna bariera. Ten rachunek zmienia dofinansowanie z BUR.
+To są ceny kursów wpisanych do Bazy Usług Rozwojowych. Na tym etapie wiele kobiet rezygnuje - nawet 2000-3000 zł za kurs, zanim jeszcze wiadomo, czy zawód w ogóle Ci odpowiada, to realna bariera. Ten rachunek zmienia dofinansowanie z BUR.
 
 ## Jak BUR obniża koszt - wyliczenie przed i po
 
-BUR (Baza Usług Rozwojowych) to platforma prowadzona przez PARP, przez którą płynie dofinansowanie z funduszy unijnych. Certyfikowana trenerka wpisuje swój kurs do bazy, a regionalny operator pokrywa większość ceny - standardowo 80-90%, zależnie od województwa i naboru. Ty dopłacasz resztę.
+BUR (Baza Usług Rozwojowych) to platforma prowadzona przez PARP, przez którą płynie dofinansowanie z funduszy unijnych. Certyfikowana trenerka wpisuje swój kurs do bazy, a regionalny operator pokrywa większość ceny - od 80% do 95%, zależnie od województwa i naboru (np. 80-90% w wielkopolskim, 95% w śląskim). Ty dopłacasz resztę, a większość operatorów ma też limit kwotowy, zwykle 5-7 tys. zł na osobę - przy droższym kursie to on decyduje, ile dopłacisz.
 
-Poniżej wyliczenie na konkretnych kwotach, przy dofinansowaniu na poziomie 85%.
+Poniżej wyliczenie na cenach kursów z Bazy Usług Rozwojowych, z jawnym regionem, procentem i limitem operatora.
 
-| Kurs | Cena pełna | Dofinansowanie 85% | Twój wkład własny |
-|------|-----------|--------------------|--------------------|
-| Laminacja brwi | 1200 zł | 1020 zł | **180 zł** |
-| Stylizacja rzęs 1:1 | 1800 zł | 1530 zł | **270 zł** |
-| Rzęsy objętościowe | 2600 zł | 2210 zł | **390 zł** |
-| Pakiet rzęsy + brwi | 3000 zł | 2550 zł | **450 zł** |
+| Kurs (BUR) | Cena | Województwo | Dofinansowanie | Limit | Twój wkład własny |
+|------|-----------|--------------|-----------------|-------|--------------------|
+| Laminacja brwi | 1750 zł | wielkopolskie | 80-90% | 5000 zł | **175-350 zł** |
+| Stylizacja rzęs 1:1 | 1800 zł | wielkopolskie | 80-90% | 5000 zł | **180-360 zł** |
+| Rzęsy objętościowe | 3200 zł | wielkopolskie | 80-90% | 5000 zł | **320-640 zł** |
+| Rozbudowany pakiet brwi | 6150 zł | śląskie | 95% | 5000 zł (limit) | **1150 zł** |
 
-Przykład ze środkowego wiersza: kurs rzęs za 1800 zł przy dofinansowaniu na poziomie 85% oznacza, że operator pokrywa 1530 zł, a Ty dokładasz 270 zł. Zamiast prawie dwóch tysięcy - koszt porównywalny z jedną dobrą aplikacją rzęs u stylistki. Po kursie ta kwota zwraca się na dwóch, trzech pierwszych klientkach.
+Przykład z tabeli: kurs rzęs 1:1 za 1800 zł w wielkopolskim (80-90%, limit 5000 zł) oznacza dopłatę 180-360 zł - koszt porównywalny z jedną dobrą aplikacją rzęs u stylistki. Przy rozbudowanym pakiecie brwi za 6150 zł w śląskim dofinansowanie zatrzymuje się na limicie 5000 zł, więc dopłata wynosi 1150 zł - wyższa niż przy tańszych kursach, bo tu liczy się limit, nie sam procent. Po kursie te kwoty zwracają się na kilku pierwszych klientkach.
 
-Sam mechanizm rozliczenia wymaga wyjaśnienia, bo na tym etapie najłatwiej się pogubić. W jednym modelu płacisz szkoleniu tylko swój wkład własny, a operator rozlicza resztę bezpośrednio z trenerką - nie wykładasz pełnej kwoty i nie czekasz na przelew. W innym modelu najpierw finansowana jest całość, a Twój udział jest minimalny. Który wariant Cię dotyczy, zależy od konkretnego naboru. Dlatego pierwsze pytanie przy zapisie brzmi: ile realnie zapłacę z własnej kieszeni i kiedy.
+Sam mechanizm rozliczenia wymaga wyjaśnienia, bo na tym etapie najłatwiej się pogubić. W jednym modelu płacisz szkoleniu tylko swój wkład własny, a operator rozlicza resztę bezpośrednio z trenerką - nie wykładasz pełnej kwoty i nie czekasz na przelew. W innym modelu płacisz całość z góry, a operator zwraca Ci Twoją część po zakończeniu kursu. Który wariant Cię dotyczy, zależy od konkretnego naboru. Dlatego pierwsze pytanie przy zapisie brzmi: ile realnie zapłacę z własnej kieszeni i kiedy.
 
-Skąd zatem reklamy z „0 zł"? Pełne 100% finansowania zdarza się naprawdę - najczęściej przez KFS dla osób zatrudnionych w mikrofirmach albo w wybranych projektach kierowanych do konkretnych grup. To realne przypadki, ale rzadkie i obwarowane warunkami. „Za darmo" należy traktować jak najlepszy możliwy scenariusz, nie jak regułę: zakładaj kilkaset złotych dopłaty, a jeśli wyjdzie zero - tym lepiej.
+Skąd zatem reklamy z „0 zł"? Pełne 100% finansowania zdarza się naprawdę - najczęściej przez KFS, gdy wniosek za Ciebie składa pracodawca (np. mikrofirma), albo w wybranych projektach kierowanych do konkretnych grup. To realne przypadki, ale rzadkie i obwarowane warunkami. „Za darmo" należy traktować jak najlepszy możliwy scenariusz, nie jak regułę: przy tańszych kursach zakładaj kilkaset złotych dopłaty, przy droższych - powyżej limitu operatora - nawet więcej, a jeśli wyjdzie zero, tym lepiej.
 
 ## Rzęsy, brwi czy PMU - od czego zacząć karierę
 
 Drugie pytanie to kolejność: który kurs zrobić najpierw. Rekomendacja jest jednoznaczna - jeśli dopiero wchodzisz do branży i nie masz pewności, że praca „na fotelu" Ci odpowiada, zacznij od brwi albo rzęs, nie od PMU.
 
-Powód jest praktyczny. **Brwi** to najtańsze wejście i najkrótsze szkolenie. Sprawdzasz, czy lubisz precyzyjną, drobną pracę przy twarzy klientki, prawie nie ryzykując budżetem. **Rzęsy** to trochę wyższy próg, ale za to klientka wraca regularnie co 3-4 tygodnie na uzupełnienie - czyli szybciej budujesz stały grafik i przewidywalny przychód. Jedna zadowolona klientka to kilkanaście wizyt w roku.
+Powód jest praktyczny. **Brwi** to najtańsze wejście i najkrótsze szkolenie. Sprawdzasz, czy lubisz precyzyjną, drobną pracę przy twarzy klientki, prawie nie ryzykując budżetem. **Rzęsy** to trochę wyższy próg, ale za to klientka wraca regularnie co 2-4 tygodnie na uzupełnienie - czyli szybciej budujesz stały grafik i przewidywalny przychód. Jedna zadowolona klientka to kilkanaście wizyt w roku.
 
-**PMU (makijaż permanentny)** to najbardziej wymagający i najwyżej wyceniany segment - linergistka bierze za brwi 500-900 zł. Pełne szkolenie od podstaw kosztuje jednak kilka tysięcy, wymaga więcej praktyki na modelkach i większej odpowiedzialności, bo pracujesz igłą w skórze. To dobry kierunek rozwoju, ale rzadko właściwy jako pierwszy kurs.
+**PMU (makijaż permanentny)** to najbardziej wymagający i jeden z najwyżej wycenianych segmentów - linergistka bierze za brwi 500-900 zł. Pełne szkolenie od podstaw kosztuje jednak kilka tysięcy, wymaga więcej praktyki na modelkach i większej odpowiedzialności, bo pracujesz igłą w skórze. To dobry kierunek rozwoju, ale rzadko właściwy jako pierwszy kurs.
 
 Rozsądna ścieżka dla większości kobiet wygląda tak: start od rzęs albo brwi za kilkaset złotych wkładu własnego, budowa pierwszej bazy klientek, pierwsze przychody w zawodzie. Po roku, kiedy decyzja o branży jest już sprawdzona w praktyce, PMU można sfinansować z drugiego dofinansowania. Każdy z tych kursów jest w BUR dostępny osobno.
 
@@ -69,18 +70,18 @@ Ile kosztuje ten drugi krok i jak wygląda przy nim dopłata, liczymy we wpisie 
 
 Najczęstsze błędne przekonanie w tym temacie brzmi: „pracuję, więc dofinansowanie mi się nie należy". To nieprawda - i właśnie przez nią wiele kobiet nawet nie sprawdza, czy się kwalifikuje.
 
-Dofinansowanie z BUR to nie urząd pracy. W urzędzie pracy faktycznie trzeba być zarejestrowaną jako bezrobotna, żeby dostać skierowanie na szkolenie. BUR działa według zupełnie innych zasad - te programy powstały po to, żeby podnosić kwalifikacje osób aktywnych zawodowo. Czyli między innymi Twoje.
+Dofinansowanie z BUR to nie urząd pracy. W urzędzie pracy faktycznie trzeba być zarejestrowaną jako bezrobotna, żeby dostać skierowanie na szkolenie. BUR działa według zupełnie innych zasad - programy regionalne dla osób dorosłych nie wymagają statusu bezrobotnej: kwalifikują się osoby pracujące, prowadzące firmę, uczące się i nieaktywne zawodowo, na warunkach z regulaminu naboru.
 
 W praktyce najczęściej kwalifikują się:
 
 - **Kobiety pracujące na etacie** - umowa o pracę Cię nie wyklucza, robisz kurs po godzinach i przyjmujesz pierwsze klientki obok pracy.
-- **Osoby na własnej działalności** - jedna z najlepiej obsługiwanych grup, wchodzi tu też KFS, który potrafi pokryć więcej.
+- **Osoby prowadzące własną działalność** - BUR obejmuje też przedsiębiorczynie wprost w wielu naborach. Jeśli dodatkowo zatrudniasz pracownicę, dochodzi też KFS, który dla mikrofirm potrafi pokryć koszt jej szkolenia w całości.
 - **Mamy wracające na rynek pracy** - grupa, którą wiele regionalnych projektów wprost zachęca do udziału, bo beauty daje elastyczność, jakiej mama z małym dzieckiem realnie potrzebuje.
 - **Studentki** - zwłaszcza łączące studia z pracą; kurs beauty bywa pierwszym zawodem, który zaczyna zarabiać przed dyplomem.
 
 Zasady różnią się między województwami i konkretnymi naborami - jeden operator kieruje program do mieszkanek jednego powiatu, inny do kobiet po 30. roku życia, jeszcze inny do osób planujących przekwalifikowanie. Dlatego rzetelna odpowiedź nie brzmi „każda dostanie" - warunki trzeba zweryfikować dla konkretnego naboru. Najczęstszym powodem, dla którego kobieta nie otrzymuje zwrotu, nie jest jednak to, że pracuje. Jest to, że w ogóle nie sprawdziła.
 
-Kto realnie łapie się na dofinansowanie — i dlaczego status osoby bezrobotnej nie jest do tego potrzebny — wyjaśniamy we wpisie [dofinansowanie BUR dla osób pracujących](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych). Samą procedurę wniosku rozkłada [krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku).
+Kto realnie łapie się na dofinansowanie, i dlaczego status osoby bezrobotnej nie jest do tego potrzebny, wyjaśniamy we wpisie [dofinansowanie BUR dla osób pracujących](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych). Samą procedurę wniosku rozkłada [krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku).
 
 ## Jak dobrać kurs i trenerkę w swoim mieście
 
@@ -88,7 +89,7 @@ Trzy rzeczy decydują o tym, czy dofinansowanie w ogóle zadziała - i czy kurs 
 
 Po pierwsze, **kurs musi być wpisany do BUR**. To warunek konieczny. Jeśli wybierzesz trenerkę spoza bazy, żaden operator nie zrefunduje Ci ani złotówki z tego programu. Kurs zrobisz, ale za pełną cenę. Zawsze sprawdzaj to przed zapisem, nie po.
 
-Po drugie, **trenerka w Twoim regionie**. Rzęsy i brwi to praca rąk - uczysz się na żywo, na modelkach, pod okiem osoby, która poprawia Ci chwyt i kąt aplikacji. Zdalnie tego nie opanujesz. Trenerka w Twoim mieście albo w rozsądnym zasięgu to nie wygoda, to warunek nauczenia się rzemiosła.
+Po drugie, **trenerka w Twoim regionie**. Rzęsy i brwi to praca rąk - uczysz się na żywo, na modelkach, pod okiem osoby, która poprawia Ci chwyt i kąt aplikacji. Zdalnie tego nie opanujesz. Trenerka w Twoim mieście albo w rozsądnym zasięgu jest warunkiem nauczenia się rzemiosła.
 
 Po trzecie, **praktyka na modelkach w cenie**. Dobry kurs rzęs to nie wykład - to godziny pracy na żywych rzęsach. Przed zapisem zadaj konkretne pytania: ile modelek obejmuje szkolenie, czy w cenie jest zestaw startowy, czy po kursie dostępne jest wsparcie przy pierwszych samodzielnych klientkach. Kurs bez praktyki na modelkach jest tańszy, ale nie przygotowuje do samodzielnej pracy.
 
@@ -107,13 +108,13 @@ Jeśli się kwalifikujesz - dostajesz kontakt do trenerki i wiesz, ile realnie d
 ## Najczęstsze pytania
 
 **Ile kosztuje kurs rzęs z dofinansowaniem?**
-Pełna cena kursu rzęs 1:1 to zwykle 1200-2200 zł. Przy dofinansowaniu z BUR na poziomie 80-90% Twój wkład własny to zazwyczaj 180-360 zł. Zamiast prawie dwóch tysięcy płacisz kilkaset złotych - to realna liczba, nie zero.
+Pełna cena kursu rzęs 1:1 w BUR to zwykle 1800-2400 zł. Przy dofinansowaniu 80-95%, zależnie od województwa i naboru, Twój wkład własny to zazwyczaj 90-480 zł. Zamiast pełnej ceny płacisz od stu do kilkuset złotych: realna liczba, nie zero.
 
 **Czy kurs brwi też jest objęty dofinansowaniem?**
-Tak. Stylizacja i laminacja brwi jest dostępna w BUR na tych samych zasadach co rzęsy. To najtańsze wejście z całej trójki - pełna cena 800-1600 zł, więc po dofinansowaniu dopłacasz zwykle 120-320 zł.
+Tak. Stylizacja i laminacja brwi jest dostępna w BUR na tych samych zasadach co rzęsy. To najtańsze wejście z całej trójki - pełna cena w BUR to 1750-2200 zł, więc po dofinansowaniu (80-90%) dopłacasz zwykle 175-440 zł.
 
 **Czy dostanę kurs rzęs całkowicie za darmo?**
-Najczęściej nie - standardowo dopłacasz 10-20% ceny. Pełne 100% zdarza się w wybranych naborach (m.in. KFS dla zatrudnionych w mikrofirmach), ale to wyjątek, nie reguła. Zakładaj kilkaset złotych dopłaty.
+Najczęściej nie - dopłacasz 5-20% ceny, bo dofinansowanie to 80-95%, zależnie od województwa i naboru (np. śląskie 95%). Pełne 100% zdarza się w wybranych naborach (KFS, gdy wniosek składa pracodawca), ale to wyjątek, nie reguła. Przy kursach do ok. 5000 zł zakładaj od stu do kilkuset złotych dopłaty; przy droższych o kwocie decyduje limit operatora.
 
 **Od czego zacząć - rzęsy, brwi czy PMU?**
 Jeśli dopiero wchodzisz, zacznij od brwi albo rzęs - tańsze wejście, krótsze szkolenie, szybki start. PMU to najwyższa stawka za zabieg, ale wymaga więcej praktyki i budżetu, więc lepiej sprawdza się jako drugi kurs, po zbudowaniu pierwszej bazy klientek.

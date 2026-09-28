@@ -2,7 +2,7 @@
 title: "Czy stylizacja paznokci się opłaca - rachunek na start"
 slug: "czy-ze-stylizacji-paznokci-mozna-zyc"
 category: "Kariera w beauty"
-excerpt: "Stylizacja paznokci to najczęściej wybierany kurs beauty w Polsce - niski próg wejścia, klientka wraca co 3-4 tygodnie. Rachunek miesięczny, koszt startu i uczciwa odpowiedź, dla kogo ten kierunek się nie opłaca."
+excerpt: "Stylizacja paznokci to jeden z najczęściej wybieranych kursów beauty w Polsce - niski próg wejścia, klientka wraca co 3-4 tygodnie. Rachunek miesięczny, koszt startu i uczciwa odpowiedź, dla kogo ten kierunek się nie opłaca."
 meta_description: "Czy stylizacja paznokci się opłaca - rachunek miesięczny, koszt startu i kursu z dofinansowaniem BUR oraz sytuacje, w których ten kierunek się nie sprawdza."
 metaTitle: "Czy stylizacja paznokci się opłaca - rachunek na start"
 metaDescription: "Czy stylizacja paznokci się opłaca - rachunek miesięczny, koszt startu i kursu z dofinansowaniem BUR oraz sytuacje, w których ten kierunek się nie sprawdza."
@@ -12,17 +12,18 @@ fraza_glowna: "czy stylizacja paznokci się opłaca"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Czy stylizacja paznokci się opłaca - rachunek na start
 
-Stylizacja paznokci to najczęściej wybierany kurs w polskim beauty i nie jest to przypadek. Próg wejścia jest tu najniższy ze wszystkich kategorii - kurs trwa krócej niż w innych kierunkach, kosztuje mniej, a pracę da się zacząć przy jednym stanowisku w domu, bez wynajmu lokalu. Do tego dochodzi mechanizm, który w innych usługach beauty działa słabiej: klientka po hybrydzie wraca regularnie, zwykle co 3-4 tygodnie, więc raz zdobyta baza sama wypełnia kalendarz.
+Stylizacja paznokci to jeden z najczęściej wybieranych kursów w polskim beauty i nie jest to przypadek. Próg wejścia jest tu najniższy ze wszystkich kategorii - kurs trwa krócej niż w innych kierunkach, kosztuje mniej, a pracę da się zacząć przy jednym stanowisku w domu, bez wynajmu lokalu. Do tego dochodzi mechanizm, który w innych usługach beauty działa słabiej: klientka po hybrydzie wraca regularnie, zwykle co 3-4 tygodnie, więc raz zdobyta baza sama wypełnia kalendarz.
 
 Pytanie, które pojawia się zaraz po tym entuzjazmie, brzmi: czy z tego faktycznie da się żyć, czy to zajęcie na kieszonkowe. Odpowiedź nie jest jedną liczbą, tylko rachunkiem, który da się rozpisać - z ceną zabiegu, liczbą klientek i tym, ile zostaje w kieszeni po materiałach i miejscu pracy. Poniżej ten rachunek na dwóch skalach: dorobienie po godzinach i pełny grafik, oraz uczciwa lista sytuacji, w których ten kierunek się nie opłaca.
 
-## Dlaczego stylizacja paznokci jest najczęściej wybieranym kursem w beauty
+## Dlaczego stylizacja paznokci jest jednym z najczęściej wybieranych kursów w beauty
 
-Trzy rzeczy odróżniają paznokcie od reszty branży. Pierwsza to cena i długość kursu - szkolenie podstawowe kosztuje zwykle 800-2500 zł, czyli mniej niż punkt wejścia do rzęs, brwi z laminacją czy makijażu permanentnego. Druga to miejsce pracy - stanowisko mieści się przy jednym biurku, więc pierwszy etap zawodu można przejść bez wynajmu lokalu i bez inwestycji w wyposażenie gabinetu.
+Trzy rzeczy odróżniają paznokcie od reszty branży. Pierwsza to cena i długość kursu - szkolenie podstawowe wpisane do BUR kosztuje zwykle 1800-4300 zł, czyli krócej trwa i wymaga mniej sprzętu niż wejście w makijaż permanentny. Druga to miejsce pracy - stanowisko mieści się przy jednym biurku, więc pierwszy etap zawodu można przejść bez wynajmu lokalu i bez inwestycji w wyposażenie gabinetu.
 
 Trzecia, najważniejsza dla zarobku w dłuższym okresie, to częstotliwość powrotu. Hybryda trzyma się 3-4 tygodnie, po czym płytka odrasta na tyle, że klientka wraca na kolejny zabieg. To odróżnia paznokcie od usług, po których klientka znika na miesiące - baza raz zbudowanych klientek sama generuje powtarzalne wizyty, zamiast wymagać ciągłego poszukiwania nowych osób. Pełne porównanie czterech głównych kierunków beauty, w tym paznokci na tle rzęs, brwi i PMU, rozkłada wpis [jaki kurs beauty wybrać](/blog/ktory-kurs-beauty-wybrac-paznokcie-rzesy-brwi-pmu).
 
@@ -32,10 +33,10 @@ Zarobek ze stylizacji paznokci sprowadza się do prostego mnożenia: cena za zab
 
 | Scenariusz pracy | Zabiegi tygodniowo | Zabiegi miesięcznie (orientacyjnie) | Przychód miesięczny brutto (orientacyjnie) |
 |---|---|---|---|
-| Po godzinach, kilka dni w tygodniu | 3 | ok. 12-13 | ok. 1000-1800 zł |
-| Pełny grafik, dom lub stanowisko | 15-20 | ok. 60-85 | ok. 5000-13000 zł |
+| Po godzinach, kilka dni w tygodniu | 3 | ok. 12-13 | ok. 960-1950 zł |
+| Pełny grafik, dom lub stanowisko | 15-20 | ok. 60-85 | ok. 4800-12750 zł |
 
-Przy 3 zabiegach tygodniowo, czyli nieco ponad 12 miesięcznie, przy cenie 80-150 zł za hybrydę wychodzi orientacyjnie 1000-1800 zł przychodu miesięcznie, zanim odliczysz materiał. Przy pełnym grafiku, 15-20 zabiegach tygodniowo, ta sama matematyka daje 5000-13000 zł przychodu brutto - rozstrzał tej wielkości wynika z różnicy cen między miastami i tego, ile klientek faktycznie zapełni kalendarz, a nie z niepewności samej metody liczenia.
+Przy 3 zabiegach tygodniowo, czyli 12-13 miesięcznie, przy cenie 80-150 zł za hybrydę wychodzi orientacyjnie 960-1950 zł przychodu miesięcznie, zanim odliczysz materiał. Przy pełnym grafiku, 15-20 zabiegach tygodniowo (60-85 miesięcznie), ta sama matematyka daje 4800-12750 zł przychodu brutto - rozstrzał tej wielkości wynika z różnicy cen między miastami i tego, ile klientek faktycznie zapełni kalendarz, a nie z niepewności samej metody liczenia.
 
 To przychód, nie dochód. W tej kwocie nie ma jeszcze odliczonego kosztu materiału - zwykle kilkanaście do dwudziestu kilku złotych na zabieg - ani wynajmu stanowiska, jeśli z niego korzystasz, ani składek i podatku, które płacisz przy prowadzeniu własnej działalności. Dopiero po odjęciu tych pozycji dostajesz liczbę, którą realnie odkładasz na koncie.
 
@@ -71,9 +72,9 @@ Ten kierunek opłaca się osobie, która akceptuje chudy start, traktuje pierwsz
 
 ## Koszt kursu z dofinansowaniem
 
-Kurs stylizacji paznokci kosztuje zwykle 800-2500 zł, zależnie od zakresu i tego, czy w cenie jest zestaw startowy. To główny wydatek wejściowy i on najczęściej zatrzymuje kobiety przed decyzją, zanim jeszcze policzą potencjalny zarobek.
+Kurs stylizacji paznokci wpisany do Bazy Usług Rozwojowych kosztuje zwykle 1800-4300 zł, zależnie od zakresu i tego, czy w cenie jest zestaw startowy. To główny wydatek wejściowy i on najczęściej zatrzymuje kobiety przed decyzją, zanim jeszcze policzą potencjalny zarobek.
 
-Kurs wpisany do Bazy Usług Rozwojowych (BUR) - rejestru prowadzonego przez PARP, rządową agencję rozliczającą fundusze unijne - można sfinansować w 80-90%. Przy kursie za 800 zł wkład własny wynosi orientacyjnie 80-160 zł, przy kursie za 2500 zł - orientacyjnie 250-500 zł. Dokładna kwota zależy od poziomu dofinansowania w danym naborze i województwie, więc te liczby traktuj jako rząd wielkości, nie jako gotową cenę.
+Kurs wpisany do Bazy Usług Rozwojowych (BUR) - rejestru prowadzonego przez PARP, rządową agencję rozliczającą fundusze unijne - można sfinansować w 80-95%, zależnie od województwa i naboru (np. 95% w śląskim, 80% w części pozostałych województw), do limitu kwotowego operatora - najczęściej 5-7 tys. zł na osobę. Przy kursie za 1800 zł wkład własny wynosi orientacyjnie 90-360 zł, przy kursie za 4300 zł - orientacyjnie 215-860 zł. Dokładna kwota zależy od poziomu dofinansowania w danym naborze i województwie, więc te liczby traktuj jako rząd wielkości, nie jako gotową cenę.
 
 Przy takim wkładzie własnym kurs zwraca się po dwóch, trzech pierwszych zabiegach, zamiast po kilkunastu przy pełnej cenie. Ważne, żeby nie mylić tego z urzędem pracy - dofinansowanie z BUR przysługuje też osobom pracującym, studentkom, mamom i przedsiębiorczyniom, nie tylko bezrobotnym. Zasady kwalifikacji rozkłada wpis [BUR to nie urząd pracy - dofinansowanie dla pracujących](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych), a pełną procedurę krok po kroku [jak dostać dofinansowanie na kurs beauty](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku).
 
@@ -99,7 +100,7 @@ Podstawowy sprzęt - lampa UV/LED, frezarka i pierwszy zestaw lakierów hybrydow
 Zależy od tego, czy masz miejsce na przyjmowanie klientek w domu i czy wolisz samodzielnie budować bazę, czy oddać część zarobku w zamian za gotowe miejsce pracy. Praca w domu daje wyższy udział w cenie zabiegu, salon na procent zdejmuje ryzyko finansowe na starcie.
 
 **Ile trzeba dopłacić do kursu z dofinansowaniem BUR?**
-Przy dofinansowaniu na poziomie 80-90% wkład własny wynosi zwykle kilkadziesiąt do kilkuset złotych, zależnie od pełnej ceny kursu i warunków naboru w Twoim województwie. Dokładną kwotę sprawdza się dla konkretnego kursu i konkretnego naboru.
+Przy dofinansowaniu na poziomie 80-95%, zależnie od województwa i naboru, wkład własny do kursu wpisanego do BUR (zwykle 1800-4300 zł) wynosi orientacyjnie 90-860 zł. Przy droższych kursach o dopłacie decyduje też limit kwotowy operatora. Dokładną kwotę sprawdza się dla konkretnego kursu i konkretnego naboru.
 
 **Czy stylizacja paznokci opłaca się przy pracy dorywczej, po godzinach?**
 Może być sensownym dodatkowym dochodem, jeśli akceptujesz, że przy kilku zabiegach tygodniowo przychód mieści się w granicach kilkuset do niecałych dwóch tysięcy złotych miesięcznie, zanim odliczysz materiał. To dobry sposób na sprawdzenie zawodu bez rezygnacji z obecnej pracy.

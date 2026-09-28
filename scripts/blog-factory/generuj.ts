@@ -30,6 +30,11 @@ const args = process.argv.slice(2);
 const dry = args.includes("--dry");
 const progIdx = args.indexOf("--prog");
 const prog = progIdx >= 0 ? Number(args[progIdx + 1]) : PROG_WOLUMENU;
+/** --nadpisz: dopisuje frontmatter `nadpisz_w_bazie: true`, żeby jednorazowa poprawka treści
+ *  weszła na produkcję samym deployem (--tylko-nowe w scripts/seed-blog.ts), bez ręcznego
+ *  seeda w terminalu Coolify. Zdejmij flagę w kolejnym uruchomieniu bez --nadpisz, inaczej
+ *  przyszłe edycje z panelu admina będą nadpisywane przy każdym starcie kontenera. */
+const nadpisz = args.includes("--nadpisz");
 
 /** Slugi zajęte przez wpisy pisane ręcznie — fabryka nie może ich nadpisać. */
 function zajeteSlugi(): Set<string> {
@@ -61,9 +66,9 @@ function czasCzytania(tekst: string): number {
 function akapitCenowy(k: Kategoria, l: Lokalizacja): string {
   if (l.tier === "metropolia") {
     return (
-      `${l.nazwa} należy do najdroższych rynków szkoleniowych w kraju, więc ceny kursów ${k.etykietaDopelniacz} układają się tu bliżej ` +
-      `górnej granicy widełek. Płacisz w tym za gęstszy kalendarz terminów i większy wybór akademii — przy szkoleniach ` +
-      `kilkudniowych to realna wygoda, bo łatwiej dopasować kurs do grafiku pracy.`
+      `${l.nazwa} jest jednym z droższych rynków szkoleniowych w kraju, więc ceny kursów ${k.etykietaDopelniacz} układają się tu bliżej ` +
+      `górnej granicy widełek. Płacisz w tym za gęstszy kalendarz terminów i większy wybór akademii, co przy szkoleniach ` +
+      `kilkudniowych bywa realną wygodą, bo łatwiej dopasować kurs do grafiku pracy.`
     );
   }
   if (l.tier === "duze") {
@@ -75,7 +80,7 @@ function akapitCenowy(k: Kategoria, l: Lokalizacja): string {
   return (
     `${l.nazwa} to mniejszy rynek, więc ceny kursów ${k.etykietaDopelniacz} bywają niższe niż w dużych miastach, ale terminów jest mniej ` +
     `i szybciej się zapełniają. Przy porównywaniu ofert warto zestawić kurs na miejscu z droższym szkoleniem w większym ` +
-    `mieście powiększonym o dojazd — bilans wychodzi różnie i zależy głównie od liczby dni zajęć.`
+    `mieście powiększonym o dojazd, a bilans wychodzi różnie i zależy głównie od liczby dni zajęć.`
   );
 }
 
@@ -106,12 +111,23 @@ function zbudujWpis(plan: Plan): { slug: string; plik: string; tresc: string } {
   const w = k.warianty[plan.wariant % k.warianty.length];
   const slug = `kurs-${k.slug}-${l.slug}`;
 
-  // Wkład własny: dofinansowanie w naborach mieści się zwykle w 80-90%, więc widełki
-  // liczymy od dolnej ceny przy 90% do górnej ceny przy 80%. Nigdy nie schodzi do zera.
-  const doplataOd = Math.round((k.cenaOd * 0.1) / 10) * 10;
-  const doplataDo = Math.round((k.cenaDo * 0.2) / 10) * 10;
+  // Wkład własny liczony wg kanonu: F1 (procent 80-95%, zależnie od województwa i naboru)
+  // ORAZ F2 (limit kwotowy operatora, zwykle 5-7 tys. zł na osobę na szkolenie) — powyżej
+  // tej kwoty o wysokości dofinansowania decyduje limit, nie procent. Najniższa możliwa
+  // dopłata liczy się od górnej granicy procentu (95%), najwyższa od dolnej (80%).
+  const PROCENT_MIN = 0.8;
+  const PROCENT_MAX = 0.95;
+  const LIMIT_OPERATORA = 6000; // środek typowych widełek 5 000-7 000 zł (kanon F2)
+  const dofinansowanieNajwyzsze = Math.min(k.cenaOd * PROCENT_MAX, LIMIT_OPERATORA);
+  const dofinansowanieNajnizsze = Math.min(k.cenaDo * PROCENT_MIN, LIMIT_OPERATORA);
+  const doplataOd = Math.max(10, Math.round((k.cenaOd - dofinansowanieNajwyzsze) / 10) * 10);
+  const doplataDo = Math.max(doplataOd, Math.round((k.cenaDo - dofinansowanieNajnizsze) / 10) * 10);
 
-  const title = `${k.nazwaKursu} ${l.nazwa} — cena i dofinansowanie`;
+  const poziom =
+    l.poziomDofinansowania ||
+    `Aktualny poziom dofinansowania i limit kwotowy ${l.wWojewodztwie} sprawdzisz w regulaminie naboru operatora regionalnego: nie podajemy tu liczby, której nie potwierdziliśmy u źródła.`;
+
+  const title = `${k.nazwaKursu} ${l.nazwa}: cena i dofinansowanie`;
   const metaDescription =
     `${k.nazwaKursu} ${l.wMiescie}: rynkowa cena ${zl(k.cenaOd)}-${zl(k.cenaDo)} zł, ` +
     `przy dofinansowaniu z BUR wkład własny zwykle ${zl(doplataOd)}-${zl(doplataDo)} zł. Program i zasady naboru.`;
@@ -119,7 +135,7 @@ function zbudujWpis(plan: Plan): { slug: string; plik: string; tresc: string } {
     `Ile kosztuje ${k.nazwaKursu.toLowerCase()} ${l.wMiescie}, co obejmuje program i jak wygląda ścieżka ` +
     `dofinansowania z Bazy Usług Rozwojowych ${l.wWojewodztwie}.`;
 
-  const body = `# ${k.nazwaKursu} ${l.wMiescie} — cena, program i dofinansowanie
+  const body = `# ${k.nazwaKursu} ${l.wMiescie}: cena, program i dofinansowanie
 
 ${w.lead}
 
@@ -131,7 +147,9 @@ Ceny szkoleń ${k.zEtykieta} mieszczą się zwykle w przedziale **${zl(k.cenaOd)
 
 ${akapitCenowy(k, l)}
 
-Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Operatorzy pokrywają najczęściej 80-90% ceny, co przy powyższych widełkach oznacza realną dopłatę rzędu **${zl(doplataOd)}-${zl(doplataDo)} zł**. Dokładny procent zależy od województwa, naboru i Twojej sytuacji zawodowej — dlatego kwotę zawsze potwierdza się przed podpisaniem umowy, nie po.
+Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Operatorzy pokrywają od 80% do 95% ceny, zależnie od województwa i naboru. Zależnie od operatora albo wpłacasz od razu tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płacisz całość i dostajesz zwrot po zakończeniu kursu. Przy powyższych widełkach cenowych realna dopłata wynosi zwykle **${zl(doplataOd)}-${zl(doplataDo)} zł**. ${k.limitUwaga}
+
+Dokładny procent, limit kwotowy i wariant rozliczenia zależą od operatora prowadzącego nabór w Twoim województwie, dlatego kwotę zawsze potwierdza się przed podpisaniem umowy z operatorem.
 
 Szczegółowe rozliczenie znajdziesz we wpisie [${k.hubTytul}](/blog/${k.hubSlug}).
 
@@ -151,13 +169,15 @@ ${w.sekcjaTresc}
 
 ## Dofinansowanie ${l.wWojewodztwie}
 
-Środki rozdziela **operator wyłoniony dla regionu**, a nie PARP centralnie. ${l.nazwa} leży ${l.wWojewodztwie}, więc obowiązuje Cię nabór prowadzony dla tego województwa — i to on wyznacza procent dofinansowania oraz terminy. Operatorzy zmieniają się wraz z kolejnymi naborami, część obsługuje wybrane podregiony, dlatego aktualny stan sprawdza się na [uslugirozwojowe.parp.gov.pl](https://uslugirozwojowe.parp.gov.pl), a nie w artykule sprzed pół roku.
+Środki rozdziela **operator wyłoniony dla regionu**, a nie PARP centralnie. ${l.nazwa} leży ${l.wWojewodztwie}, więc obowiązuje Cię nabór prowadzony dla tego województwa, i to on wyznacza procent dofinansowania oraz terminy. Operatorzy zmieniają się wraz z kolejnymi naborami, część obsługuje wybrane podregiony, dlatego aktualny stan sprawdza się na [uslugirozwojowe.parp.gov.pl](https://uslugirozwojowe.parp.gov.pl), a nie w artykule sprzed pół roku.
 
-Dwie zasady, które przesądzają o rozliczeniu: dofinansowanie obejmuje wyłącznie usługi **wpisane do Bazy**, a wniosek składa się **przed** szkoleniem, nie po. Całą procedurę rozkładamy w osobnym wpisie: [Dofinansowanie na szkolenie — krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku). Jeżeli zakładasz, że dotyczy to tylko osób bezrobotnych — [tak nie jest](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych).
+${poziom}
+
+Dwie zasady, które przesądzają o rozliczeniu: dofinansowanie obejmuje wyłącznie usługi **wpisane do Bazy**, a wniosek składa się **przed** szkoleniem, nie po. Całą procedurę rozkładamy w osobnym wpisie: [Dofinansowanie na szkolenie - krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku). Jeżeli zakładasz, że dotyczy to tylko osób bezrobotnych, [tak nie jest](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych).
 
 ## ${l.nazwa} i okolica
 
-Szkolenia ${l.wMiescie} wybierają też mieszkanki mniejszych miejscowości w zasięgu dojazdu — ${l.okolica.join(", ")}. Przy kursach trwających kilka dni pod rząd warto policzyć dojazd i ewentualny nocleg razem z ceną szkolenia, bo przy tańszych programach ta różnica potrafi zrównać koszt z droższym kursem bliżej domu.
+Szkolenia ${l.wMiescie} wybierają też mieszkanki mniejszych miejscowości w zasięgu dojazdu: ${l.okolica.join(", ")}. Przy kursach trwających kilka dni pod rząd warto policzyć dojazd i ewentualny nocleg razem z ceną szkolenia, bo przy tańszych programach ta różnica potrafi zrównać koszt z droższym kursem bliżej domu.
 
 Dofinansowanie przyznaje operator właściwy dla Twojego **miejsca zamieszkania**, nie dla miasta, w którym odbywa się szkolenie. Mieszkanie w innej miejscowości nie jest więc przeszkodą: szkolisz się ${l.wMiescie}, a środki rozliczasz w swoim regionie.
 
@@ -167,7 +187,7 @@ ${wybierzFaq(k, plan.wariant).map((f) => `**${f.pytanie}**\n\n${f.odpowiedz}`).j
 
 **Czy szkolenie ${l.wMiescie} można rozliczyć z dofinansowania?**
 
-Tak, o ile konkretna usługa jest wpisana do Bazy Usług Rozwojowych, a operator dla Twojego regionu prowadzi nabór. Obie rzeczy sprawdzamy przed zapisem — to element bezpłatnej konsultacji.
+Tak, o ile konkretna usługa jest wpisana do Bazy Usług Rozwojowych, a operator dla Twojego regionu prowadzi nabór. Obie rzeczy sprawdzamy przed zapisem: to element bezpłatnej konsultacji.
 
 ## Następny krok
 
@@ -191,7 +211,7 @@ wolumen_frazy: ${plan.wolumen}
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: ${plan.wariant}
----
+${nadpisz ? "nadpisz_w_bazie: true\n" : ""}---
 
 `;
 

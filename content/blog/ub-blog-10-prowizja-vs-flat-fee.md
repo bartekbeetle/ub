@@ -12,6 +12,7 @@ fraza_glowna: "pozyskiwanie kursantek prowizja alternatywa"
 filar: B
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Prowizja vs opłata za wynik: ile naprawdę kosztuje Cię pozyskanie kursantki
@@ -36,7 +37,7 @@ Różnica między tymi trzema nie sprowadza się do wysokości stawki. Sprowadza
 
 Prowizja brzmi najbezpieczniej ze wszystkich modeli, bo płacisz tylko, gdy zarabiasz. Rachunek psuje się przy dwóch rzeczach: przy cenie kursu i przy powtarzalności.
 
-Weźmy akademię PMU. Kurs podstawowy kosztuje 3500 zł. Prowizja 16% to 560 zł od jednego szkolenia. Sprzedajesz dziesięć kursów miesięcznie i oddajesz 5600 zł. W skali roku, przy tym samym tempie, robi się z tego blisko 67 tysięcy złotych prowizji. Za tę kwotę mogłabyś zatrudnić osobę do marketingu na cały etat.
+Weźmy akademię PMU. Kurs podstawowy kosztuje 3500 zł. Prowizja 16% (to stawka jednej z działających w Polsce platform beauty; inne biorą kilkanaście procent) to 560 zł od jednego szkolenia. Sprzedajesz dziesięć kursów miesięcznie i oddajesz 5600 zł. W skali roku, przy tym samym tempie, robi się z tego blisko 67 tysięcy złotych prowizji. Za tę kwotę mogłabyś zatrudnić osobę do marketingu na cały etat.
 
 Teraz podnieś cenę. Robisz kurs mistrzowski za 6000 zł, bo masz na niego renomę i portfolio. Prowizja od tej samej sprzedaży to już 960 zł. Model procentowy karze Cię dokładnie za to, co budujesz latami, czyli za wyższą cenę i mocniejszą markę. Im lepsza jesteś, tym więcej oddajesz od każdej transakcji, choć praca platformy przy droższym i tańszym kursie jest identyczna.
 
@@ -78,7 +79,7 @@ Zestawienie trzech modeli na jednym scenariuszu: akademia PMU, kurs 3500 zł, dz
 
 Liczby zależą od Twojej ceny, liczby zapisów i udziału stałych klientek. Podstaw własne, a proporcje się utrzymają: prowizja wygrywa tylko wtedy, gdy sprzedajesz mało, tanio i prawie bez powrotów.
 
-Zanim zdecydujesz o modelu, warto zobaczyć całą mapę kanałów: [jak pozyskać kursantki na szkolenia beauty](/blog/jak-pozyskac-kursantki-na-szkolenia-beauty). Co da się zrobić własnymi siłami, opisuje [marketing dla trenerki PMU](/blog/marketing-dla-trenerki-pmu), a warunek wejścia w dofinansowania — [jak wpisać szkolenie do BUR](/blog/jak-wpisac-szkolenie-do-bur).
+Zanim zdecydujesz o modelu, warto zobaczyć całą mapę kanałów: [jak pozyskać kursantki na szkolenia beauty](/blog/jak-pozyskac-kursantki-na-szkolenia-beauty). Co da się zrobić własnymi siłami, opisuje [marketing dla trenerki PMU](/blog/marketing-dla-trenerki-pmu), a warunek wejścia w dofinansowania opisuje [jak wpisać szkolenie do BUR](/blog/jak-wpisac-szkolenie-do-bur).
 
 ## Kiedy który model ma sens dla Twojej akademii
 
@@ -107,4 +108,4 @@ Nie. Za powroty, polecenia i osoby z Twojego własnego marketingu nie płacisz n
 Głównie na starcie, gdy nie masz jeszcze marki ani bazy stałych klientek, sprzedajesz niewiele i tanio, a najważniejszy jest zerowy koszt wejścia. Gdy ceny rosną i pojawiają się powroty, prowizja zaczyna zabierać coraz większą część marży, więc na dłuższą metę rzadko wygrywa z opłatą za wynik.
 
 **Czy muszę zrezygnować z własnego marketingu, jeśli korzystam z modelu za wynik?**
-Nie i nie warto. Najlepiej działa układ mieszany: własny marketing buduje Twoją markę i stałą bazę, a zewnętrzne źródło na wynik dokłada przewidywalny strumień nowych kursantek bez ryzyka i bez prowizji od Twoich klientek. Jedno uzupełnia drugie, nie zastępuje.
+Nie i nie warto. Najlepiej działa układ mieszany: własny marketing buduje Twoją markę i stałą bazę, a zewnętrzne źródło zgłoszeń dokłada przewidywalny strumień nowych kursantek bez prowizji od Twoich klientek. Jedno uzupełnia drugie, nie zastępuje.

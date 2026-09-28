@@ -12,6 +12,7 @@ fraza_glowna: "ile zarabia linergistka"
 filar: A
 rola: "podtemat"
 reading_minutes: 10
+nadpisz_w_bazie: true
 ---
 
 # Ile zarabia linergistka i stylistka beauty - uczciwy rachunek, zanim rzucisz obecną pracę
@@ -24,14 +25,14 @@ Poniżej znajdziesz rachunek bez obietnic i bez zbywania. Widełki rynkowe z war
 
 Najpierw rzecz, którą trzeba powiedzieć na wejściu: nie istnieje jedna liczba „zarobków w beauty". Kwota zależy od usługi, regionu, doświadczenia, liczby klientek i tego, czy pracujesz na własnym stanowisku, czy oddajesz procent salonowi. Dlatego poniższe widełki to punkt startowy do własnego wyliczenia, a nie obietnica wypłaty.
 
-Ceny pojedynczych usług na polskim rynku w 2026 układają się mniej więcej tak:
+Ceny pojedynczych usług na polskim rynku w 2026, orientacyjnie i zależnie od miasta i doświadczenia, układają się mniej więcej tak:
 
 | Usługa | Cena jednego zabiegu | Uwaga |
 |--------|----------------------|-------|
-| Makijaż permanentny (PMU) brwi, ust lub kresek | 400-900 zł | wyższe stawki w dużych miastach i przy uznanej linergistce |
-| Aplikacja rzęs (nowa stylizacja) | 130-280 zł | uzupełnienia co 2-4 tygodnie po 80-160 zł |
-| Manicure hybrydowy | 80-160 zł | zdobienia i przedłużanie podnoszą cenę |
-| Regulacja i laminacja brwi | 60-160 zł | często dosprzedawane do innej usługi |
+| Makijaż permanentny (PMU) brwi | 500-900 zł | wyższe stawki w dużych miastach i przy uznanej linergistce |
+| Aplikacja rzęs (nowa stylizacja) | 150-300 zł | uzupełnienia co 2-4 tygodnie, taniej niż nowy zestaw |
+| Manicure hybrydowy | 80-150 zł | zdobienia i przedłużanie podnoszą cenę |
+| Regulacja i laminacja brwi | 100-200 zł | często dosprzedawane do innej usługi |
 
 To ceny za usługę, nie zarobek miesięczny. Zarobek powstaje dopiero, gdy pomnożysz cenę przez liczbę klientek, które faktycznie obsłużysz, i odejmiesz koszty materiału oraz miejsca pracy. Do tego przejdziemy w następnej sekcji, bo to on decyduje, czy z tych cen robi się dodatkowe kilkaset złotych miesięcznie, czy pełnoprawny dochód.
 
@@ -41,7 +42,7 @@ Dla porządku: linergistka (osoba wykonująca makijaż permanentny) i stylistka 
 
 Cały zarobek w beauty sprowadza się do trzech dźwigni, które mnożą się przez siebie. Kto to rozumie, przestaje pytać „ile się zarabia" i zaczyna liczyć własny scenariusz.
 
-**Cena usługi.** Zależy od regionu, techniki i Twojej pozycji na rynku. Początkująca stylistka w mniejszym mieście weźmie za aplikację rzęs 130 zł, doświadczona w Warszawie z pełnym portfolio - 250 zł i więcej za tę samą usługę. Cenę podnosi się latami przez jakość prac i opinie, nie z dnia na dzień.
+**Cena usługi.** Zależy od regionu, techniki i Twojej pozycji na rynku. Początkująca stylistka w mniejszym mieście weźmie za aplikację rzęs 150 zł, doświadczona w Warszawie z pełnym portfolio - 280 zł i więcej za tę samą usługę. Cenę podnosi się latami przez jakość prac i opinie, nie z dnia na dzień.
 
 **Liczba klientek.** Tu leży największa różnica między „dorabiam" a „utrzymuję się z tego". Stylistka rzęs pracująca po godzinach obsłuży 2-3 klientki tygodniowo. Ta sama osoba na pełny etat we własnym gabinecie - kilkanaście. Jedna aplikacja rzęs trwa około 2 godzin, uzupełnienie krócej, więc grafik ma twardy sufit wynikający z czasu. Beauty to praca rozliczana godziną i parą rąk, nie skala software'u.
 
@@ -63,9 +64,9 @@ Realny obraz na pierwsze 90 dni: miesiąc pierwszy to kurs i modelki, miesiąc d
 
 Skoro pierwsze pieniądze przychodzą po kilku tygodniach, sensowne pytanie brzmi: ile trzeba włożyć, zanim zacznie się wyjmować.
 
-Kurs to główny koszt startu. Widełki zależą od kategorii: szkolenie z rzęs czy brwi to zwykle 1800-4000 zł, kurs PMU lub microbladingu to wydatek rzędu kilku tysięcy, kurs paznokci bywa najtańszym progiem wejścia. Do tego dochodzi startowy zestaw narzędzi i materiałów. To realna bariera - i to ona najczęściej zatrzymuje kobiety przed decyzją, zanim jeszcze policzą potencjalny zarobek.
+Kurs to główny koszt startu. Widełki zależą od kategorii: szkolenie z rzęs w BUR to zwykle 1800-3400 zł, laminacja brwi 1750-2200 zł (pakiety brwi więcej, 5000-6150 zł), kurs paznokci 1800-4300 zł, a kurs PMU lub microbladingu to zwykle 4000-7000 zł. Do tego dochodzi startowy zestaw narzędzi i materiałów. To realna bariera - i to ona najczęściej zatrzymuje kobiety przed decyzją, zanim jeszcze policzą potencjalny zarobek.
 
-W tym miejscu dofinansowanie zmienia rachunek. Kurs wpisany do Bazy Usług Rozwojowych (BUR) można sfinansować w 80-90%, więc z własnej kieszeni dopłacasz zwykle kilkaset złotych zamiast pełnych kilku tysięcy. Kurs rzęs za 1800 zł przy standardowym dofinansowaniu to wkład własny w okolicach 200-360 zł. To nie „za darmo" - dopłacasz konkretną, choć niewielką kwotę - ale różnica między kilkuset złotymi a pełną ceną decyduje o tym, po ilu klientkach kurs się zwróci.
+W tym miejscu dofinansowanie zmienia rachunek. Kurs wpisany do Bazy Usług Rozwojowych (BUR) można sfinansować w 80-95%, zależnie od województwa i naboru, więc z własnej kieszeni dopłacasz zwykle kilkaset złotych zamiast pełnych kilku tysięcy - przy droższych kursach o wysokości dopłaty decyduje limit kwotowy operatora, zwykle 5000-7000 zł. Kurs rzęs za 1800 zł przy dofinansowaniu 80-95% to wkład własny w okolicach 90-360 zł. Dopłacasz konkretną, choć niewielką kwotę, ale różnica między kilkuset złotymi a pełną ceną decyduje o tym, po ilu klientkach kurs się zwróci.
 
 Policz zwrot na liczbach. Przy pełnej cenie 1800 zł kurs rzęs zwraca się po kilkunastu zabiegach. Przy wkładzie własnym 300 zł zwraca się po dwóch, trzech pierwszych klientkach. Dofinansowanie nie zwiększa Twoich zarobków ani o złotówkę - skraca za to czas, po którym inwestycja w kurs przestaje być kosztem, a staje się zyskiem. Dla kogoś, kto zaczyna z ograniczonym budżetem, to często różnica między „spróbuję" a „nie stać mnie, żeby spróbować".
 
@@ -91,13 +92,13 @@ Rzetelny rachunek pokazuje obie strony. Beauty nie jest dobrym wyborem dla każd
 
 Zawód opłaca się tej osobie, która wchodzi w niego z otwartymi oczami: wie, że to praca z człowiekiem i higieną, akceptuje chudy start i traktuje kurs jak początek budowania bazy, a nie przełącznik do gotowej wypłaty. Dla takiej osoby matematyka - cena razy klientki razy powtarzalność - działa na jej korzyść z każdym kolejnym miesiącem.
 
-Jeśli te liczby przekonują Cię do zmiany zawodu, zacznij od wpisu [przebranżowienie na beauty po 30 i 40](/blog/przebranzowienie-na-beauty-po-30). Koszt wejścia do najlepiej płatnej specjalizacji rozliczamy w tekście [kurs PMU z dofinansowaniem](/blog/kurs-pmu-z-dofinansowaniem-ile-zaplacisz), a całą ścieżkę — [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
+Jeśli te liczby przekonują Cię do zmiany zawodu, zacznij od wpisu [przebranżowienie na beauty po 30 i 40](/blog/przebranzowienie-na-beauty-po-30). Koszt wejścia do najlepiej płatnej specjalizacji rozliczamy w tekście [kurs PMU z dofinansowaniem](/blog/kurs-pmu-z-dofinansowaniem-ile-zaplacisz), a całą ścieżkę opisuje [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
 
 ## Sprawdź, od czego zacząć
 
 Jeśli po tym rachunku myślisz „to ma sens, chcę spróbować", następny krok nie jest wielki. Nie musisz od razu rzucać obecnej pracy ani wykładać kilku tysięcy na kurs.
 
-Zacznij od sprawdzenia, na jaki kurs i z jakim dofinansowaniem możesz wejść w swoim województwie. Formularz zajmuje 2 minuty: odpowiadasz na kilka pytań o swoją sytuację i kierunek, który Cię interesuje, a my dopasowujemy Cię do akredytowanej trenerki i naboru, w którym możesz otrzymać zwrot części ceny kursu. W odpowiedzi zobaczysz realny koszt wejścia dla siebie, a nie widełki z internetu.
+Zacznij od sprawdzenia, na jaki kurs i z jakim dofinansowaniem możesz wejść w swoim województwie. Formularz zajmuje 2 minuty: odpowiadasz na kilka pytań o swoją sytuację i kierunek, który Cię interesuje, a my dopasowujemy Cię do akredytowanej trenerki i naboru, w którym możesz otrzymać dofinansowanie na kurs. W odpowiedzi zobaczysz realny koszt wejścia dla siebie, a nie widełki z internetu.
 
 [Sprawdź, na jaki kurs możesz zacząć na uniwersytetbeauty.pl](https://uniwersytetbeauty.pl)
 
@@ -115,7 +116,7 @@ Tak, ale nie od pierwszego miesiąca. Utrzymanie z beauty wymaga pełnego grafik
 Najniższy próg wejścia i najszybszy start ma zwykle kategoria paznokci - tańszy kurs i szybki pierwszy zabieg. Wyższą cenę jednostkową ma PMU, ale klientka wraca rzadziej. Więcej o kosztach poszczególnych kategorii znajdziesz w tekstach o [kursie rzęs i brwi](https://uniwersytetbeauty.pl/blog/kurs-rzes-brwi-z-dofinansowaniem-ile-doplacasz), [kursie paznokci](https://uniwersytetbeauty.pl/blog/kurs-paznokci-z-dofinansowaniem) i [kursie PMU](https://uniwersytetbeauty.pl/blog/kurs-pmu-z-dofinansowaniem-ile-zaplacisz).
 
 **Czy przekwalifikowanie na beauty się opłaca, jeśli mam już pracę?**
-Może się opłacać właśnie dlatego, że masz pracę. Kurs po godzinach i pierwsze klientki obok etatu pozwalają sprawdzić zawód bez ryzyka zostania bez dochodu. Dofinansowanie z BUR przysługuje też osobom pracującym, więc koszt wejścia zbijasz do kilkuset złotych. Dopiero gdy grafik się zapełni, decydujesz o przejściu na własną działalność.
+Może się opłacać właśnie dlatego, że masz pracę. Kurs po godzinach i pierwsze klientki obok etatu pozwalają sprawdzić zawód bez ryzyka zostania bez dochodu. Dofinansowanie z BUR przysługuje też osobom pracującym; przy tańszych kursach (rzęsy, paznokcie, laminacja) koszt wejścia zbijasz zwykle do kilkuset złotych, przy droższych (PMU, microblading) do jednego, dwóch tysięcy, zależnie od limitu operatora. Dopiero gdy grafik się zapełni, decydujesz o przejściu na własną działalność.
 
 **Czy dofinansowanie zwiększa moje zarobki?**
 Nie - dofinansowanie obniża koszt kursu, a nie podnosi stawek za zabieg. Skraca za to czas, po którym inwestycja w szkolenie się zwraca. Zamiast kilkunastu klientek na pokrycie pełnej ceny kursu, przy wkładzie własnym kilkuset złotych zwrot następuje po dwóch, trzech pierwszych wizytach.

@@ -12,6 +12,7 @@ fraza_glowna: "dofinansowane szkolenia beauty śląskie"
 filar: A
 rola: podtemat (geo)
 reading_minutes: 8
+nadpisz_w_bazie: true
 ---
 
 # Dofinansowane szkolenia beauty w Twoim regionie (śląskie, mazowieckie, małopolskie)
@@ -30,7 +31,7 @@ Po pierwsze, **kryteria naboru różnią się między województwami**. Jeden re
 
 Po drugie, **terminy się nie pokrywają**. Nabory ruszają i zamykają się w cyklach, niezależnie w każdym regionie. W śląskiem może akurat trwać otwarty nabór, podczas gdy w małopolskiem pula na dany kwartał jest już wyczerpana i kolejna pojawi się dopiero za jakiś czas. Jedna ogólnopolska reklama nie odda tej różnicy - dlatego tak łatwo trafić na nieaktualną informację.
 
-Po trzecie, **poziom dopłaty bywa różny**. Standardowo dofinansowanie z BUR pokrywa 80-90% ceny kursu, ale konkretny procent i limit kwotowy zależą od danego programu regionalnego. W praktyce to różnica między dopłatą 200 a 400 zł do tego samego szkolenia - w zależności od tego, po której stronie granicy województwa je robisz.
+Po trzecie, **poziom dopłaty bywa różny**. Potwierdzone przykłady: w śląskiem dofinansowanie sięga 95% (limit kwotowy 5000 zł na osobę), w mazowieckiem 76-96% (limit 6100-14 900 zł, zależnie od programu). Dla małopolskiego nie mamy potwierdzonego poziomu - trzeba go sprawdzić w regulaminie konkretnego operatora. W praktyce to realna różnica w dopłacie do tego samego szkolenia, w zależności od tego, po której stronie granicy województwa je robisz.
 
 Z tego powodu ten artykuł nie podaje konkretnych terminów w rodzaju „w śląskiem nabór trwa do 30 września" - taka informacja zdezaktualizowałaby się w ciągu tygodni, a rzetelne źródło nie publikuje dat, za które nie może ręczyć. Zamiast tego opisujemy mechanizm, a konkretny, aktualny nabór w Twoim regionie sprawdzisz przez formularz na końcu artykułu.
 
@@ -38,7 +39,7 @@ Z tego powodu ten artykuł nie podaje konkretnych terminów w rodzaju „w ślą
 
 Śląskie to jeden z najbardziej nasyconych regionów pod względem branży beauty. Duża gęstość zaludnienia i silny rynek usług kosmetycznych przekładają się na liczne salony w Katowicach, Gliwicach, Sosnowcu, Bytomiu czy Częstochowie. Dla Ciebie oznacza to dwie korzyści: szeroki wybór trenerek oraz duży rynek klientek po zdobyciu zawodu.
 
-Procedura wygląda następująco. Znajdujesz szkolenie wpisane do BUR - na przykład kurs PMU, stylizacji rzęs czy paznokci u trenerki z okolic Katowic. Sprawdzasz, czy w śląskiem trwa nabór, do którego się kwalifikujesz. Składasz wniosek u regionalnego operatora, przechodzisz kwalifikację i wnosisz wkład własny - zwykle kilkaset złotych zamiast pełnej ceny kursu.
+Procedura wygląda następująco. Znajdujesz szkolenie wpisane do BUR - na przykład kurs PMU, stylizacji rzęs czy paznokci u trenerki z okolic Katowic. Sprawdzasz, czy w śląskiem trwa nabór, do którego się kwalifikujesz. Składasz wniosek u regionalnego operatora, przechodzisz kwalifikację i wnosisz wkład własny. W śląskiem dofinansowanie sięga 95% ceny kursu (limit kwotowy 5000 zł na osobę) - jedno z najwyższych w kraju, więc dopłata w granicach limitu zwykle nie przekracza kilkuset złotych.
 
 Warto oddzielić dwie kwestie: lokalizację trenerki i Twoją przynależność regionalną. Dofinansowanie przypisane jest do Ciebie i Twojego województwa, nie do adresu sali szkoleniowej. Jeśli mieszkasz w śląskiem, a wybrana trenerka PMU prowadzi szkolenia tuż za granicą regionu, w wielu przypadkach nadal liczy się to, gdzie Ty kwalifikujesz się do programu. Szczegóły zależą od naboru - dlatego to jedno z pierwszych pytań do zadania na etapie zgłoszenia.
 
@@ -58,7 +59,7 @@ Zasada, która obowiązuje w każdym regionie: **nie musisz być bezrobotna, że
 
 Małopolskie to Kraków oraz silne ośrodki jak Tarnów, Nowy Sącz czy Oświęcim - region z dużym ruchem turystycznym, co dla branży beauty ma wymierne znaczenie: więcej klientek gotowych zapłacić za dobry zabieg, sezonowe szczyty i rynek, który nie kończy się na stałych mieszkankach.
 
-Ścieżka do dofinansowanego kursu wygląda tak samo jak w pozostałych regionach: kurs w BUR, kwalifikacja do naboru u małopolskiego operatora, wkład własny w okolicach kilkuset złotych. Dofinansowane kursy kosmetyczne w małopolskiem obejmują pełny przekrój - od tańszych szkoleń z brwi i rzęs, przez paznokcie, po pełne PMU.
+Ścieżka do dofinansowanego kursu wygląda tak samo jak w pozostałych regionach: kurs w BUR, kwalifikacja do naboru u małopolskiego operatora. Konkretny poziom dofinansowania i limit kwotowy w małopolskiem trzeba sprawdzić w regulaminie danego naboru - w odróżnieniu od śląskiego czy mazowieckiego nie mamy dla tego regionu potwierdzonej liczby. Dofinansowane kursy kosmetyczne w małopolskiem obejmują pełny przekrój - od tańszych szkoleń z brwi i rzęs, przez paznokcie, po pełne PMU.
 
 Praktyczna uwaga dla tego regionu: jeśli mieszkasz poza Krakowem, w mniejszej miejscowości, sprawdź dostępność trenerki blisko siebie, zanim zdecydujesz się dojeżdżać do stolicy Małopolski na każdy zjazd. Część kursów wymaga obecności na kilku spotkaniach z zabiegami praktycznymi na modelkach, a kilkanaście dojazdów do Krakowa może pochłonąć znaczną część oszczędności z dofinansowania. Doświadczona trenerka w Tarnowie czy Nowym Sączu bywa lepszym wyborem niż bardziej znane nazwisko dwie godziny drogi dalej.
 
@@ -73,13 +74,13 @@ Dwie rzeczy, na które zwróć uwagę przy wyborze trenerki - niezależnie od te
 - **Kurs musi być w BUR.** To warunek konieczny dofinansowania. Nawet najlepsza trenerka bez szkolenia wpisanego do Bazy nie zapewni Ci zwrotu z tego programu - zapłacisz pełną cenę.
 - **Trenerka powinna umieć pomóc z formalnościami.** Doświadczona linergistka czy stylistka, która regularnie przyjmuje kursantki z dofinansowaniem, przeprowadzi Cię przez wniosek sprawnie. To duża różnica względem samodzielnego przechodzenia przez procedurę po raz pierwszy.
 
-Dla największych miast rozpisujemy warunki osobno: [kurs makijażu permanentnego w Warszawie](/blog/kurs-makijaz-permanentny-warszawa), [kurs makijażu permanentnego w Krakowie](/blog/kurs-makijaz-permanentny-krakow), [kurs laminacji brwi i rzęs w Katowicach](/blog/kurs-laminacja-brwi-rzes-katowice) oraz [kurs stylizacji paznokci w Łodzi](/blog/kurs-stylizacja-paznokci-lodz). Zasady samego dofinansowania są wspólne dla całej Polski — opisuje je [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
+Dla największych miast rozpisujemy warunki osobno: [kurs makijażu permanentnego w Warszawie](/blog/kurs-makijaz-permanentny-warszawa), [kurs makijażu permanentnego w Krakowie](/blog/kurs-makijaz-permanentny-krakow), [kurs laminacji brwi i rzęs w Katowicach](/blog/kurs-laminacja-brwi-rzes-katowice) oraz [kurs stylizacji paznokci w Łodzi](/blog/kurs-stylizacja-paznokci-lodz). Zasady samego dofinansowania są wspólne dla całej Polski, opisuje je [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac).
 
 ## Sprawdź nabór w swoim województwie
 
 Następny logiczny krok po lekturze to sprawdzenie aktualnego naboru i dostępnej trenerki w Twoim regionie - nie przez godzinę czytania regulaminów operatorów, tylko przez krótki formularz.
 
-**Znajdź dofinansowaną trenerkę beauty w swoim województwie.** Odpowiadasz na kilka pytań - w jakim jesteś regionie, czy pracujesz, jaki kierunek Cię interesuje - a my dopasowujemy Cię do certyfikowanej trenerki i naboru, w którym możesz otrzymać zwrot 80-90% ceny. Sprawdzenie jest bezpłatne i do niczego Cię nie zobowiązuje.
+**Znajdź dofinansowaną trenerkę beauty w swoim województwie.** Odpowiadasz na kilka pytań - w jakim jesteś regionie, czy pracujesz, jaki kierunek Cię interesuje - a my dopasowujemy Cię do certyfikowanej trenerki i naboru, w którym możesz otrzymać dofinansowanie 80-95% ceny, zależnie od województwa i naboru. Sprawdzenie jest bezpłatne i do niczego Cię nie zobowiązuje.
 
 [Znajdź trenerkę w swoim województwie na uniwersytetbeauty.pl](https://uniwersytetbeauty.pl)
 
@@ -100,4 +101,4 @@ Dofinansowanie zwykle jest przypisane do Ciebie i Twojego regionu, nie do adresu
 Etat Cię nie wyklucza - to jedno z najczęstszych nieporozumień. Wiele naborów kieruje się właśnie do osób pracujących, które chcą się przekwalifikować. Na Mazowszu warto pamiętać, że Warszawa i okoliczne powiaty bywają traktowane inaczej niż reszta regionu, więc sprawdź swoją konkretną sytuację.
 
 **Ile realnie dopłacę do kursu w małopolskiem?**
-Przy standardowym dofinansowaniu z BUR na poziomie 80-90% Twój wkład własny to zwykle kilkaset złotych zamiast pełnej ceny - na przykład 200-360 zł przy kursie rzęs czy 500-1000 zł przy pełnym PMU. Dokładna kwota zależy od programu i naboru w regionie, dlatego pytanie „ile zapłacę z własnej kieszeni" zadaj na etapie zgłoszenia.
+Zależy od regionu, ceny kursu i limitu kwotowego operatora, nie tylko od procentu. Przykład: kurs rzęs za 1800 zł w wielkopolskiem (80-90%, limit 5000 zł) to dopłata 180-360 zł. Pełny kurs PMU za 10 000 zł w tym samym regionie i limicie to już dopłata 5000 zł, bo powyżej limitu każda złotówka jest Twoja. Dla małopolskiego nie mamy potwierdzonego poziomu dofinansowania - sprawdź go w regulaminie operatora na etapie zgłoszenia.

@@ -12,11 +12,12 @@ fraza_glowna: "jak zdobyć stałe klientki w beauty"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Stała klientka w beauty - dlaczego to Twój zarobek
 
-Najważniejsza rzecz w zawodzie beauty nie jest widoczna na zdjęciach efektów. Laminacja brwi, uzupełnienie rzęs czy nowy komplet paznokci to nie są usługi jednorazowe - to usługi cykliczne, do których zadowolona klientka wraca co kilka tygodni, często przez lata. Kto tego nie policzy na starcie, buduje biznes na fałszywym założeniu, że każdy miesiąc trzeba zaczynać od zera z nowymi osobami.
+Najważniejsza rzecz w zawodzie beauty nie jest widoczna na zdjęciach efektów. Laminacja brwi, uzupełnienie rzęs czy nowy komplet paznokci to usługi cykliczne - zadowolona klientka wraca do nich co kilka tygodni, często przez lata, zamiast zamykać sprawę jedną wizytą. Kto tego nie policzy na starcie, buduje biznes na fałszywym założeniu, że każdy miesiąc trzeba zaczynać od zera z nowymi osobami.
 
 Poniżej rachunek na liczbach: ile daje dziesięć stałych klientek w porównaniu z pięćdziesięcioma jednorazowymi, jak wyglądają cykle powrotu w poszczególnych kategoriach i czego dobry kurs uczy poza samą techniką, żeby ta powracalność w ogóle zaczęła działać.
 
@@ -77,7 +78,7 @@ Więcej o tym, jak realnie wygląda sam start i pierwsze tygodnie pracy, znajdzi
 
 Jeśli rachunek powracalności przekonuje Cię, że to zawód, w którym warto zbudować bazę stałych klientek, pierwszy krok to sprawdzenie, na jaki kurs możesz wejść z dofinansowaniem.
 
-Formularz zajmuje 2 minuty: odpowiadasz na kilka pytań o swoją sytuację i kierunek, który Cię interesuje, a dopasowanie prowadzi do akredytowanej trenerki i naboru, w którym możesz otrzymać zwrot części ceny kursu.
+Formularz zajmuje 2 minuty: odpowiadasz na kilka pytań o swoją sytuację i kierunek, który Cię interesuje, a dopasowanie prowadzi do akredytowanej trenerki i naboru, w którym możesz obniżyć koszt kursu dzięki dofinansowaniu z BUR.
 
 [Sprawdź, czy się kwalifikujesz](https://uniwersytetbeauty.pl)
 

@@ -2,55 +2,56 @@
 title: "Kurs paznokci z dofinansowaniem - ile dopłacasz"
 slug: "kurs-paznokci-z-dofinansowaniem"
 category: "Dofinansowania"
-excerpt: "Kurs stylizacji paznokci kosztuje zwykle od 800 do 2500 zł, w zależności od poziomu. Z dofinansowaniem BUR dopłacasz ułamek tej kwoty - najczęściej kilkaset złotych. Sprawdź realny koszt i kto się kwalifikuje."
-meta_description: "Kurs paznokci z dofinansowaniem BUR - realny koszt po zwrocie, widełki cen manicure hybrydowego, kto się kwalifikuje (nie tylko bezrobotne) i jak wybrać akredytowaną trenerkę."
+excerpt: "Kurs stylizacji paznokci wpisany do BUR kosztuje zwykle od 1800 do 4300 zł, w zależności od poziomu. Z dofinansowaniem dopłacasz ułamek tej kwoty - najczęściej kilkaset złotych. Sprawdź realny koszt i kto się kwalifikuje."
+meta_description: "Kurs paznokci z dofinansowaniem BUR - realny koszt po dofinansowaniu, widełki cen kursów wpisanych do Bazy Usług Rozwojowych, kto się kwalifikuje (nie tylko bezrobotne) i jak wybrać akredytowaną trenerkę."
 metaTitle: "Kurs paznokci z dofinansowaniem - ile dopłacasz"
-metaDescription: "Kurs paznokci z dofinansowaniem BUR: ile realnie dopłacasz po zwrocie, widełki cen manicure hybrydowego i kto się kwalifikuje - nie tylko bezrobotne."
+metaDescription: "Kurs paznokci z dofinansowaniem BUR: ile realnie dopłacasz, widełki cen kursów stylizacji paznokci w BUR i kto się kwalifikuje - nie tylko bezrobotne."
 data: 2026-07-19
 target: kursantka (B2C)
 fraza_glowna: "kurs paznokci z dofinansowaniem"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Kurs stylizacji paznokci z dofinansowaniem - realny koszt
 
 Manicure hybrydowy to najczęściej pierwszy zawód, o który pyta kobieta myśląca o wejściu w beauty. Powód jest prosty: próg wejścia jest tu niższy niż przy rzęsach, brwiach czy PMU, a pierwsze klientki można przyjmować szybciej. Zatrzymuje zwykle jedno - cena kursu i przekonanie, że dofinansowanie „i tak mi się nie należy".
 
-Obie te przeszkody są mniejsze, niż się wydaje. Poniżej realne widełki cen kursu paznokci w 2026 roku, wyliczenie „przed i po" dofinansowaniu z BUR oraz odpowiedź na pytanie, kto faktycznie może o ten zwrot wystąpić. Bez obietnic z sufitu - z warunkami, które trzeba znać.
+Obie te przeszkody są mniejsze, niż się wydaje. Poniżej realne widełki cen kursu paznokci w 2026 roku, wyliczenie „przed i po" dofinansowaniu z BUR oraz odpowiedź na pytanie, kto faktycznie może o to dofinansowanie wystąpić. Bez obietnic z sufitu - z warunkami, które trzeba znać.
 
 ## Ile kosztuje kurs paznokci i manicure hybrydowego w 2026
 
-Cena zależy przede wszystkim od poziomu szkolenia i tego, co wchodzi w pakiet. Rynek jest tu dość szeroki, więc widełki podajemy jako „od-do" z zaznaczeniem, od czego skacze cena.
+Cena zależy przede wszystkim od poziomu szkolenia i tego, co wchodzi w pakiet. Kursy komercyjne, bez wpisu do BUR, bywają tańsze, ale dofinansowania nie da się do nich dostać. Ponieważ ten tekst liczy dopłatę po dofinansowaniu, widełki poniżej to ceny kursów faktycznie wpisanych do Bazy Usług Rozwojowych: **1800-4300 zł**, zależnie od poziomu.
 
-**Kurs podstawowy (manicure hybrydowy od zera).** Zwykle od 800 do 1500 zł. Uczy przygotowania płytki, aplikacji hybrydy, prostego zdobienia i higieny stanowiska. To najczęstszy punkt startu dla osoby, która nigdy wcześniej nie pracowała przy paznokciach.
+**Kurs podstawowy (manicure hybrydowy od zera).** Znajdziesz go w dolnej części widełek. Uczy przygotowania płytki, aplikacji hybrydy, prostego zdobienia i higieny stanowiska. To najczęstszy punkt startu dla osoby, która nigdy wcześniej nie pracowała przy paznokciach.
 
-**Kurs rozszerzony (przedłużanie metodą żelową lub akrylową).** Zwykle od 1200 do 2200 zł. Tu dochodzi budowanie długości, praca z formami czy szablonami i korekta. Cena rośnie, bo materiałów zużywa się więcej, a praktyki na modelkach potrzeba dłuższej.
+**Kurs rozszerzony (przedłużanie metodą żelową lub akrylową).** Cena rośnie w stronę środka widełek. Tu dochodzi budowanie długości, praca z formami czy szablonami i korekta. Materiałów zużywa się więcej, a praktyki na modelkach potrzeba dłuższej.
 
-**Kurs zaawansowany albo pakiet kilku technik.** Potrafi sięgnąć 2500 zł i więcej, zwłaszcza gdy w cenie jest starter pack z produktami, materiały eksploatacyjne na start i wsparcie trenerki po zakończeniu.
+**Kurs zaawansowany albo pakiet kilku technik.** Mieści się w górnej części widełek, zwłaszcza gdy w cenie jest starter pack z produktami, materiały eksploatacyjne na start i wsparcie trenerki po zakończeniu.
 
 Na ostateczną kwotę wpływa też region, marka szkoły i to, ile modelek przewiduje program. Kurs, który wygląda tanio, ale daje jedną modelkę i garść teorii, w praktyce wychodzi drożej - bo i tak dokupisz praktykę gdzie indziej. Do jakości szkolenia wracamy niżej, bo to ona decyduje, czy zaczniesz zarabiać.
 
-Zapamiętaj rząd wielkości: **realny kurs paznokci to najczęściej wydatek od kilkuset do przeszło dwóch tysięcy złotych.** I właśnie tę kwotę obniża dofinansowanie.
+Zapamiętaj rząd wielkości: **kurs paznokci wpisany do BUR to najczęściej wydatek od 1800 do 4300 złotych.** I właśnie tę kwotę obniża dofinansowanie.
 
 ## Jak BUR obniża tę cenę - wyliczenie „przed i po"
 
-BUR, czyli Baza Usług Rozwojowych, to platforma prowadzona przez PARP, przez którą płyną pieniądze z funduszy unijnych (głównie EFS+) rozdzielane regionalnie przez operatorów w każdym województwie. W praktyce oznacza to zwrot najczęściej na poziomie 80-90% ceny kursu, jeśli szkolenie jest wpisane do bazy, a Ty łapiesz się na warunki naboru.
+BUR, czyli Baza Usług Rozwojowych, to platforma prowadzona przez PARP, przez którą płyną pieniądze z funduszy unijnych (głównie EFS+) rozdzielane regionalnie przez operatorów w każdym województwie. Poziom dofinansowania ustala operator regionalny w regulaminie naboru i wynosi od 80% do 95% ceny kursu, zależnie od województwa i naboru, jeśli szkolenie jest wpisane do bazy, a Ty łapiesz się na warunki naboru.
 
-Mechanizm rozliczenia zależy od operatora. W części regionów płacisz najpierw pełną cenę, a zwrot wchodzi po ukończeniu i rozliczeniu szkolenia. W innych operator reguluje większość kwoty bezpośrednio, a Ty pokrywasz tylko wkład własny. Trenerka albo operator powie Ci, który wariant obowiązuje w Twoim województwie, zanim się zapiszesz.
+Mechanizm rozliczenia zależy od operatora. Wariant A: wpłacasz tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią. Wariant B: płacisz całość, a zwrot dostajesz po ukończeniu i rozliczeniu szkolenia. Trenerka albo operator powie Ci, który wariant obowiązuje w Twoim województwie, zanim się zapiszesz.
 
-Zobaczmy, jak to wygląda na liczbach przy zwrocie 85%:
+Zobaczmy, jak to wygląda na liczbach dla kursów wpisanych do BUR:
 
-| Kurs paznokci | Cena pełna | Twój wkład własny (ok. 15%) |
-|---------------|-----------|-----------------------------|
-| Podstawowy | 1000 zł | około 150 zł |
-| Rozszerzony (przedłużanie) | 1800 zł | około 270 zł |
-| Zaawansowany / pakiet | 2400 zł | około 360 zł |
+| Kurs paznokci (BUR) | Cena | Procent (przykład) | Twoja dopłata |
+|---|---|---|---|
+| Podstawowy | 1800 zł | 80% (wielkopolskie) | ok. 360 zł |
+| Rozszerzony | 2800 zł | 90% (łódzkie) | ok. 280 zł |
+| Zaawansowany / pakiet | 4300 zł | 95% (śląskie) | ok. 215 zł |
 
-Przy dofinansowaniu 90% te kwoty spadają jeszcze niżej - do przedziału mniej więcej 100-240 zł wkładu własnego. Dokładny procent zależy od naboru i województwa, dlatego traktuj tabelę jako rząd wielkości, nie jako gwarancję co do złotówki.
+Większość operatorów ma też limit kwotowy na osobę, zwykle 5000-7000 zł, ale przy cenach kursów paznokci ten limit zwykle nie wchodzi w grę - o wysokości dopłaty decyduje procent. Dokładny procent i limit zależą od naboru i województwa, dlatego traktuj tabelę jako rząd wielkości, nie jako gwarancję co do złotówki.
 
-Jedno warto powiedzieć wprost, bo część reklam w tej niszy tego nie mówi: **standardowo z BUR nie wychodzi „0 zł".** Wkład własny kilkuset złotych to reguła. Pełne pokrycie zdarza się głównie przez KFS dla osób zatrudnionych w mikrofirmach albo w wybranych naborach dla określonych grup - to wyjątek, nie punkt wyjścia. Ale nawet z tą dopłatą płacisz ułamek pełnej ceny zamiast całości.
+Jedno warto powiedzieć wprost, bo część reklam w tej niszy tego nie mówi: **standardowo z BUR nie wychodzi „0 zł".** Wkład własny kilkuset złotych to reguła. Pełne pokrycie zdarza się głównie przez Krajowy Fundusz Szkoleniowy, ale to ścieżka pracodawcy: jeśli prowadzisz salon i zatrudniasz pracownicę na etat, możesz sfinansować jej kurs z KFS (80%, mikrofirma 100%). Osoba na własnej działalności bez pracowników z KFS nie skorzysta - to wyjątek, nie punkt wyjścia. Ale nawet z dopłatą po BUR płacisz ułamek pełnej ceny zamiast całości.
 
 ## Manicure jako pierwszy zawód w beauty - niski próg wejścia
 
@@ -68,16 +69,16 @@ Nie znaczy to, że manicure to łatwe pieniądze. To praca z klientem, z dłońm
 
 Tu pada najczęstszy mit tej branży: „dofinansowanie jest tylko dla bezrobotnych". Nieprawda, i to nieprawda, która kosztuje kobiety całe zawody.
 
-Mit bierze się z pomylenia dwóch różnych instytucji. Urząd pracy faktycznie wymaga statusu osoby bezrobotnej zarejestrowanej w PUP - tam bez tego nie dostaniesz skierowania na szkolenie. **BUR działa odwrotnie: został pomyślany dla osób aktywnych zawodowo.** To dwa osobne źródła pieniędzy i dwie osobne procedury, a mit „tylko dla bezrobotnych" wrzuca je do jednego worka.
+Mit bierze się z pomylenia dwóch różnych instytucji. Urząd pracy faktycznie wymaga statusu osoby bezrobotnej zarejestrowanej w PUP - tam bez tego nie dostaniesz skierowania na szkolenie. Programy regionalne BUR dla osób dorosłych nie wymagają statusu bezrobotnej: kwalifikują się osoby pracujące, prowadzące firmę, uczące się i nieaktywne zawodowo, a szczegółowe warunki (wiek, miejsce zamieszkania lub pracy) ustala regulamin naboru. To dwa osobne źródła pieniędzy i dwie osobne procedury, a mit „tylko dla bezrobotnych" wrzuca je do jednego worka.
 
 W praktyce do dofinansowania na kurs paznokci kwalifikują się najczęściej:
 
 - **kobiety na etacie**, które chcą się przekwalifikować albo dołożyć nowy zawód obok obecnej pracy,
-- **osoby na własnej działalności** - tu wchodzi też KFS, który potrafi pokryć nawet całość kosztów kształcenia,
+- **osoby prowadzące salon albo działalność** - jeśli zatrudniasz pracownicę na etat, jej kurs możesz osobno sfinansować z KFS (80%, mikrofirma 100%); jednoosobowa działalność bez pracowników korzysta z BUR na tych samych zasadach co osoba pracująca,
 - **mamy wracające na rynek pracy** po urlopie macierzyńskim czy wychowawczym, grupa, którą wiele regionalnych projektów wprost zachęca do udziału,
 - **studentki**, zwłaszcza łączące naukę z pracą, dla których manicure bywa pierwszym realnie zarabiającym zawodem.
 
-Wspólny mianownik to aktywność zawodowa, a nie brak pracy. Dokładnie takich uczestniczek szuka większość programów z EFS+. Pełne rozłożenie zasad, wraz z sytuacjami, w których zwrot NIE przysługuje, znajdziesz w tekście [BUR to nie urząd pracy - dofinansowanie dla pracujących](https://uniwersytetbeauty.pl/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych).
+Wspólny mianownik to szeroki krąg uprawnionych, nie status bezrobotnej - dokładne warunki ustala regulamin konkretnego naboru. Pełne rozłożenie zasad, wraz z sytuacjami, w których dofinansowanie NIE przysługuje, znajdziesz w tekście [BUR to nie urząd pracy - dofinansowanie dla pracujących](https://uniwersytetbeauty.pl/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych).
 
 Warunki różnią się między województwami i naborami, więc żadna ogólna reguła nie da wiążącej odpowiedzi „czy Ty się kwalifikujesz". Daje ją tylko sprawdzenie Twojej konkretnej sytuacji - do tego wracamy na końcu.
 
@@ -85,7 +86,7 @@ Warunki różnią się między województwami i naborami, więc żadna ogólna r
 
 Cena to nie pierwsze kryterium. Pierwszym jest to, czy po kursie realnie umiesz pracować na klientce - bo od tego zależy, czy zaczniesz zarabiać, czy dołożysz do kolejnego szkolenia „poprawkowego". Na co patrzeć:
 
-**Wpis do BUR to warunek konieczny dofinansowania.** Jeśli kurs nie jest wpisany do Bazy Usług Rozwojowych, żaden operator nie zrefunduje Ci ani złotówki z tego programu. Szkolenie zrobisz, ale za pełną cenę. Dlatego akredytacja BUR jest jednocześnie filtrem: trenerka, która przeszła przez wpis do bazy, spełniła określone wymogi formalne.
+**Wpis do BUR to warunek konieczny dofinansowania.** Jeśli kurs nie jest wpisany do Bazy Usług Rozwojowych, nie dostaniesz na niego żadnego dofinansowania z tego programu. Szkolenie zrobisz, ale za pełną cenę. Dlatego akredytacja BUR jest jednocześnie filtrem: trenerka, która przeszła przez wpis do bazy, spełniła określone wymogi formalne.
 
 **Liczba modelek i praktyki.** Paznokci uczysz się ręką, nie slajdem. Pytaj, ile modelek przewiduje program i ile godzin realnej pracy na dłoniach. Kurs oparty głównie na teorii to czerwona flaga.
 
@@ -103,7 +104,7 @@ Jeśli rozważasz też inne kierunki, porównaj koszty z wpisem [kurs rzęs i br
 
 Zasady zależą od województwa i aktualnego naboru, dlatego wiążącej odpowiedzi na pytanie „ile realnie dopłacę za kurs paznokci" nie da żadna tabela - da ją sprawdzenie Twojej sytuacji.
 
-**Sprawdź, czy kwalifikujesz się do dofinansowania na kurs paznokci.** Formularz zajmuje 2 minuty: odpowiadasz na kilka pytań - czy pracujesz, w jakim jesteś województwie, jaki kierunek Cię interesuje - a my dopasowujemy Ci akredytowaną trenerkę i nabór, w którym możesz otrzymać zwrot. Sprawdzenie jest bezpłatne i do niczego Cię nie zobowiązuje.
+**Sprawdź, czy kwalifikujesz się do dofinansowania na kurs paznokci.** Formularz zajmuje 2 minuty: odpowiadasz na kilka pytań - czy pracujesz, w jakim jesteś województwie, jaki kierunek Cię interesuje - a my dopasowujemy Ci akredytowaną trenerkę i nabór, w którym możesz otrzymać dofinansowanie. Sprawdzenie jest bezpłatne i do niczego Cię nie zobowiązuje.
 
 [Sprawdź dofinansowanie na kurs paznokci na uniwersytetbeauty.pl](https://uniwersytetbeauty.pl)
 
@@ -112,7 +113,7 @@ Jeśli się kwalifikujesz, dostajesz gotową ścieżkę i kontakt do trenerki, a
 ## Najczęstsze pytania
 
 **Ile realnie kosztuje kurs paznokci po dofinansowaniu?**
-Przy standardowym zwrocie z BUR na poziomie 80-90% wkład własny to zwykle kilkaset złotych. Przy kursie za 1800 zł dopłacasz najczęściej w okolicach 180-360 zł, zależnie od naboru i województwa. Pełne pokrycie (bez dopłaty) zdarza się głównie przez KFS dla osób zatrudnionych w mikrofirmach - to wyjątek, nie reguła.
+Przy dofinansowaniu z BUR na poziomie 80-95%, zależnie od województwa i naboru, wkład własny to zwykle kilkaset złotych. Przy kursie za 1800 zł dopłacasz najczęściej w okolicach 90-360 zł. Pełne pokrycie zdarza się głównie przez KFS, ale to ścieżka pracodawcy: mikrofirma zatrudniająca pracownicę na etat może pokryć nawet całość kosztów jej szkolenia; osoba na własnej działalności bez pracowników z KFS nie skorzysta.
 
 **Czy dostanę dofinansowanie na kurs paznokci, jeśli pracuję na etacie?**
 Tak, w większości regionalnych naborów BUR osoby pracujące się kwalifikują. Etat Cię nie wyklucza - to jedno z najczęstszych nieporozumień. Warunki zależą od województwa, dlatego trzeba sprawdzić Twoją sytuację indywidualnie.
@@ -121,7 +122,7 @@ Tak, w większości regionalnych naborów BUR osoby pracujące się kwalifikują
 Kurs podstawowy zwykle mieści się w jednym albo dwóch weekendach. Rozszerzony o przedłużanie trwa dłużej, bo praktyki na modelkach potrzeba więcej. Dokładny wymiar godzin podaje program konkretnej trenerki.
 
 **Czy każdy kurs paznokci łapie się na dofinansowanie?**
-Nie. Szkolenie musi być wpisane do Bazy Usług Rozwojowych przez akredytowaną trenerkę lub firmę. Kurs spoza BUR możesz zrobić, ale bez zwrotu z tego programu - dlatego wybór trenerki z bazy jest warunkiem koniecznym.
+Nie. Szkolenie musi być wpisane do Bazy Usług Rozwojowych przez akredytowaną trenerkę lub firmę. Kurs spoza BUR możesz zrobić, ale bez dofinansowania z tego programu - dlatego wybór trenerki z bazy jest warunkiem koniecznym.
 
 **Czy manicure to dobry pierwszy zawód w beauty?**
 Ma najniższy próg wejścia spośród popularnych usług: tańszy sprzęt na start, stały lokalny popyt i szybką powracalność klientek. Można zacząć obok etatu i sprawdzić, czy ten zawód jest dla Ciebie, zanim zrezygnujesz z pewnego dochodu. To praca z klientem i reżimem higieny, nie łatwe pieniądze, ale daje najszybszą informację zwrotną ze wszystkich kategorii.

@@ -2,7 +2,7 @@
 title: "Kurs PMU z dofinansowaniem - ile realnie zapłacisz"
 slug: "kurs-pmu-z-dofinansowaniem-ile-zaplacisz"
 category: "Dofinansowania"
-excerpt: "Pełny kurs makijażu permanentnego kosztuje 4-8 tys. zł. Z dofinansowaniem BUR/KFS realny wkład własny to kilkaset złotych. Sprawdź uczciwe widełki, kto się kwalifikuje i na co uważać przy wyborze szkolenia PMU."
+excerpt: "Pełny kurs makijażu permanentnego z BUR kosztuje zwykle 5,5-7 tys. zł (jedna technika) do ok. 10 tys. zł (pełny zakres). Realny wkład własny zależy od procentu i limitu kwotowego operatora - od kilkuset złotych do kilku tysięcy. Sprawdź uczciwe widełki, kto się kwalifikuje i na co uważać przy wyborze szkolenia PMU."
 meta_description: "Kurs makijażu permanentnego z dofinansowaniem BUR - ile realnie dopłacisz. Uczciwe widełki cenowe, kto się kwalifikuje (też pracujące), na co uważać przy wyborze."
 metaTitle: "Kurs PMU z dofinansowaniem - ile realnie zapłacisz"
 metaDescription: "Kurs makijażu permanentnego z dofinansowaniem BUR - ile realnie dopłacisz. Uczciwe widełki cenowe, kto się kwalifikuje (też pracujące), na co uważać."
@@ -12,6 +12,7 @@ fraza_glowna: "kurs makijażu permanentnego z dofinansowaniem"
 filar: A
 rola: podtemat
 reading_minutes: 10
+nadpisz_w_bazie: true
 ---
 
 # Kurs makijażu permanentnego z dofinansowaniem - ile naprawdę zapłacisz
@@ -22,7 +23,7 @@ Poniżej znajdziesz realne kwoty: skąd bierze się wysoka cena kursu PMU, jak d
 
 ## Ile kosztuje kurs PMU w 2026 i skąd tak wysoka cena
 
-Pełny kurs makijażu permanentnego od podstaw w 2026 roku kosztuje zwykle **4000-8000 zł**. Kursy jednej techniki - na przykład tylko pudrowe brwi albo tylko usta - bywają tańsze, w okolicach 2500-4000 zł. Rozbudowane szkolenia łączące kilka technik, z dłuższą praktyką i mentoringiem po kursie, potrafią przekroczyć 10 tysięcy.
+Pełny kurs makijażu permanentnego jednej techniki, wpisany do Bazy Usług Rozwojowych, kosztuje zwykle **5500-7000 zł** (rozrzut w BUR to 4150-12800 zł, zależnie od dostawcy). Rozbudowane szkolenia łączące kilka technik - brwi, usta, kreski, z dłuższą praktyką i mentoringiem po kursie - potrafią kosztować około **10 000 zł**.
 
 Na pierwszy rzut oka to duża kwota za kilka dni nauki. Ta cena ma jednak konkretne uzasadnienie.
 
@@ -34,32 +35,32 @@ Do tego dochodzi rachunek zwrotu. PMU jest najbardziej dochodowym zawodem w cał
 
 ## Jak dofinansowanie BUR i KFS zbija tę cenę - uczciwe widełki
 
-Przykład: kurs PMU za 5000 zł i realne scenariusze rozliczenia.
+Przykład: dwa kursy PMU z BUR i realne scenariusze rozliczenia, liczone z limitem kwotowym operatora, nie tylko procentem.
 
-Przy standardowym dofinansowaniu z **BUR (Baza Usług Rozwojowych)** na poziomie 80-90% operator pokrywa 4000-4500 zł, a Twój wkład własny wynosi **500-1000 zł**. Zamiast pięciu tysięcy płacisz kilkaset złotych. To jest prawdziwa liczba - nie zero, ale ułamek ceny rynkowej.
+Kurs za 6900 zł (świętokrzyskie, dofinansowanie 90%, limit kwotowy 6000 zł na osobę) - dofinansowanie wynosi 6000 zł, bo to limit decyduje, nie procent, a Twój wkład własny to **900 zł**. To jest prawdziwa liczba - nie zero, ale ułamek ceny rynkowej.
 
-Przy droższym szkoleniu za 7000 zł wkład własny przy 85% dofinansowania to około 1050 zł. Przy tańszym kursie jednej techniki za 3000 zł - w okolicach 300-450 zł. Wkład własny wynosi zwykle 10-20% ceny kursu i ta proporcja powtarza się w większości naborów.
+Przy droższym szkoleniu za 10 000 zł (wielkopolskie, 80-90%, limit 5000 zł) dofinansowanie zatrzymuje się na limicie: 5000 zł, a dopłata wynosi już **5000 zł** - bo każda złotówka ceny powyżej limitu jest Twoja. Dlatego przy kursach PMU od około 5500 zł w górę pierwsze pytanie do operatora nie brzmi „jaki procent", tylko „jaki macie limit kwotowy na osobę" - od niego, nie od procentu, zależy realna dopłata.
 
 Skąd zatem reklamy z „0 zł"? Z dwóch źródeł, które trzeba rozróżnić.
 
-Pełne 100% dofinansowania istnieje, ale w konkretnych ścieżkach. Najczęściej przez **KFS (Krajowy Fundusz Szkoleniowy)** - środki dla osób zatrudnionych i dla firm. Jeśli prowadzisz działalność (choćby jednoosobową) albo masz pracodawcę gotowego złożyć wniosek, KFS potrafi pokryć całość kosztów szkolenia dla mikroprzedsiębiorstwa. Zdarzają się też wybrane projekty EFS+ kierowane do szczególnych grup, w których dopłata jest zerowa. To realne przypadki, ale obwarowane warunkami - regułą dla większości kursantek nie są.
+Pełne 100% dofinansowania istnieje, ale w konkretnych ścieżkach. Najczęściej przez **KFS (Krajowy Fundusz Szkoleniowy)** - osobną ścieżkę dla pracodawców: wniosek składa firma zatrudniająca Cię na umowę o pracę, dofinansowanie sięga 80% kosztów, a dla mikrofirm 100%. Sama, jako osoba prywatna, z KFS nie skorzystasz - ale jeśli pracujesz w salonie na etacie, Twoja pracodawczyni może złożyć wniosek za Ciebie. Zdarzają się też wybrane projekty EFS+ kierowane do szczególnych grup, w których dopłata jest zerowa. To realne przypadki, ale obwarowane warunkami - regułą dla większości kursantek nie są.
 
 Drugie źródło haseł „za darmo" to nierzetelna reklama: najlepszy możliwy scenariusz pokazany jako standard, a informacja o dopłacie pojawia się dopiero w rozmowie. Dlatego pierwsze pytanie przy zapisie brzmi: „ile realnie zapłacę z własnej kieszeni i kiedy?". Uczciwa firma odpowie konkretną kwotą, nie sloganem.
 
-Znaczenie ma także mechanizm samego rozliczenia. W jednym modelu wpłacasz szkole tylko wkład własny, a operator rozlicza resztę bezpośrednio z firmą - nie wykładasz pełnej kwoty ze swojego konta. W innym (częściej przy KFS przez pracodawcę) całość jest finansowana z góry, a Twój udział to zero albo kwota symboliczna. Który wariant Cię dotyczy, zależy od naboru i operatora w Twoim województwie.
+Znaczenie ma także mechanizm samego rozliczenia, niezależnie od tego, ile wynosi dofinansowanie. W jednym modelu wpłacasz szkole tylko wkład własny, a operator rozlicza resztę bezpośrednio z firmą - nie wykładasz pełnej kwoty ze swojego konta. W drugim modelu płacisz całość z góry, a operator zwraca Ci Twoją część po zakończeniu kursu - przy KFS na 100% ten zwrot obejmuje całość. Który wariant Cię dotyczy, zależy od naboru i operatora w Twoim województwie.
 
-Rzetelne podsumowanie wygląda tak: dofinansowanie nie zamienia kursu PMU w prezent, tylko sprowadza go do wydatku rzędu kilkuset złotych - za zawód, który potrafi zwrócić się po kilku pierwszych klientkach. To mocniejszy argument niż jakiekolwiek zero w reklamie.
+Rzetelne podsumowanie wygląda tak: dofinansowanie nie zamienia kursu PMU w prezent. Przy tańszych kursach sprowadza go do wydatku kilkuset złotych, przy droższych, powyżej limitu operatora, dopłata może sięgać kilku tysięcy - wciąż mniej niż pełna cena, za zawód, który potrafi zwrócić się po kilku pierwszych klientkach. To mocniejszy argument niż jakiekolwiek zero w reklamie.
 
 ## Kto może dostać dofinansowanie na kurs PMU
 
 Najkosztowniejszy mit w tym temacie brzmi: „pracuję, więc dofinansowanie mi się nie należy". Jest nieprawdziwy - i przez to nieporozumienie wiele osób w ogóle nie sprawdza, czy się kwalifikuje.
 
-Pomyłka bierze się z mylenia dwóch różnych instytucji. Urząd pracy faktycznie wymaga rejestracji jako osoba bezrobotna - tam skierowanie na kurs otrzymuje się tylko bez etatu. Ale **BUR to nie urząd pracy**. To osobny mechanizm, finansowany z funduszy unijnych (głównie EFS+), rozdzielany regionalnie przez operatorów. Te programy powstały nie po to, żeby ratować bezrobotnych, tylko żeby podnosić kwalifikacje osób aktywnych zawodowo. Czyli między innymi Twoje - jeśli pracujesz.
+Pomyłka bierze się z mylenia dwóch różnych instytucji. Urząd pracy faktycznie wymaga rejestracji jako osoba bezrobotna - tam skierowanie na kurs otrzymuje się tylko bez etatu. Ale **BUR to nie urząd pracy**. To osobny mechanizm, finansowany z funduszy unijnych (głównie EFS+), rozdzielany regionalnie przez operatorów. Programy regionalne dla osób dorosłych nie wymagają statusu bezrobotnej: kwalifikują się osoby pracujące, prowadzące firmę, uczące się i nieaktywne zawodowo - szczegółowe warunki (wiek, miejsce zamieszkania lub pracy) ustala regulamin naboru.
 
 Kto w praktyce najczęściej kwalifikuje się do dofinansowania na PMU:
 
 - **Pracujesz na etacie.** Umowa o pracę niczego nie wyklucza. Duża część naborów BUR jest kierowana wprost do osób zatrudnionych, które chcą się przekwalifikować. Kurs robisz w weekendy, pierwsze modelki przyjmujesz obok pracy, a decyzję o przejściu na własny rachunek podejmujesz, gdy masz już klientki.
-- **Prowadzisz działalność.** Tu dochodzi KFS, który potrafi pokryć całość kosztów. Salon kosmetyczny albo brwiowy, który chce dołożyć PMU do oferty, to typowy przypadek tej ścieżki.
+- **Prowadzisz działalność gospodarczą.** BUR obejmuje też osoby prowadzące firmę - to jedna z grup, które regulaminy naborów uwzględniają wprost. Jeśli dodatkowo zatrudniasz pracownicę na etacie i to ją chcesz przeszkolić z PMU, dochodzi też KFS, który dla mikrofirm potrafi pokryć całość kosztu tamtej osoby.
 - **Jesteś mamą wracającą na rynek pracy.** Po urlopie macierzyńskim czy wychowawczym - wiele projektów traktuje tę grupę priorytetowo. PMU daje elastyczność, której mama z małym dzieckiem realnie potrzebuje: praca na własnych godzinach, jedna klientka dziennie, a stawka za zabieg to umożliwia.
 - **Studiujesz.** W części naborów studentki również się kwalifikują. PMU bywa pierwszym zawodem, który zaczyna zarabiać jeszcze przed dyplomem uczelni.
 
@@ -79,7 +80,7 @@ Dofinansowanie rozwiązuje problem ceny. Ale słabe szkolenie, po którym absolw
 
 **Wsparcie po kursie.** Najlepsze trenerki nie kończą kontaktu w dniu wręczenia dyplomu: odpowiadają na pytania przy pierwszych samodzielnych klientkach, czasem prowadzą grupę absolwentek. To często przesądza o różnicy między „ukończyłam kurs" a „pracuję w zawodzie".
 
-Jedna uwaga do tej listy: najtańszy kurs rzadko jest najlepszy, ale najdroższy też nie zawsze. Po dofinansowaniu cena przestaje być głównym kryterium - skoro wkład własny to kilkaset złotych, wybieraj po jakości praktyki i trenerce, nie po najniższej stawce.
+Jedna uwaga do tej listy: najtańszy kurs rzadko jest najlepszy, ale najdroższy też nie zawsze. Po dofinansowaniu cena przestaje być głównym kryterium - skoro wkład własny to ułamek pełnej ceny, wybieraj po jakości praktyki i trenerce, nie po najniższej stawce.
 
 ## Jak zapisać się na dofinansowany kurs PMU - 3 kroki
 
@@ -91,7 +92,7 @@ Droga od decyzji do pierwszego dnia szkolenia sprowadza się do trzech kroków.
 
 Dalej zostaje szkolenie, przepracowanie modelek i pierwsze płacące klientki.
 
-Jeżeli interesuje Cię wyłącznie metoda manualna, osobno rozliczamy [kurs microbladingu z dofinansowaniem](/blog/kurs-microblading-z-dofinansowaniem). Szerszy obraz — od wyboru zawodu po pierwsze klientki — daje wpis [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac), a kryteria oceny szkoły zebraliśmy w poradniku [jak wybrać trenerkę beauty](/blog/jak-wybrac-dobra-trenerke-beauty).
+Jeżeli interesuje Cię wyłącznie metoda manualna, osobno rozliczamy [kurs microbladingu z dofinansowaniem](/blog/kurs-microblading-z-dofinansowaniem). Szerszy obraz, od wyboru zawodu po pierwsze klientki, daje wpis [jak zdobyć zawód beauty z dofinansowaniem](/blog/zawod-beauty-z-dofinansowaniem-jak-zaczac), a kryteria oceny szkoły zebraliśmy w poradniku [jak wybrać trenerkę beauty](/blog/jak-wybrac-dobra-trenerke-beauty).
 
 ## Dobierzemy Ci trenerkę PMU z akredytacją BUR
 
@@ -101,15 +102,15 @@ Następny krok po lekturze jest jeden: sprawdzić własną sytuację pod aktualn
 
 [Znajdź trenerkę PMU na uniwersytetbeauty.pl](https://uniwersytetbeauty.pl)
 
-Jeśli się kwalifikujesz - dostajesz gotową ścieżkę i trenerkę, a zamiast kilku tysięcy złotych wpłacasz zwykle kilkaset. Jeśli w tym naborze nie - wiesz, na czym stoisz i kiedy sprawdzić ponownie, zamiast rezygnować z najbardziej dochodowego zawodu w beauty przez mit, że dofinansowanie przysługuje wyłącznie bezrobotnym.
+Jeśli się kwalifikujesz - dostajesz gotową ścieżkę i trenerkę, a zamiast pełnej ceny wpłacasz swój wkład własny: przy tańszych kursach kilkaset złotych, przy droższych tyle, ile wynika z limitu operatora. Jeśli w tym naborze nie - wiesz, na czym stoisz i kiedy sprawdzić ponownie, zamiast rezygnować z najbardziej dochodowego zawodu w beauty przez mit, że dofinansowanie przysługuje wyłącznie bezrobotnym.
 
 ## Najczęstsze pytania
 
 **Ile realnie zapłacę za kurs PMU z dofinansowaniem?**
-Przy standardowym dofinansowaniu z BUR na poziomie 80-90% Twój wkład własny to zwykle 10-20% ceny. Dla kursu za 5000 zł to około 500-1000 zł zamiast pełnej kwoty. Pełne 100% (zero dopłaty) zdarza się głównie przez KFS dla osób z działalnością lub zatrudnionych w mikrofirmach - to wyjątek, nie reguła.
+Zależy od ceny kursu i limitu kwotowego operatora, nie tylko od procentu. Dofinansowanie BUR to 80-95% ceny, zależnie od województwa i naboru, ale większość operatorów ma limit 5-7 tys. zł na osobę: przy kursie za 6900 zł i limicie 6000 zł dopłacisz około 900 zł, przy kursie za 10 000 zł i tym samym limicie dopłata wyniesie już 5000 zł. Pełne 100% (zero dopłaty) zdarza się głównie przez KFS, gdy wniosek za Ciebie składa pracodawca - to wyjątek, nie reguła.
 
 **Czy dostanę kurs PMU całkowicie za darmo?**
-Najczęściej nie. Standardowy wkład własny to kilkaset złotych. Reklamy „za 0 zł" pokazują albo wyjątkowe ścieżki (KFS, wybrane projekty EFS+), albo najlepszy scenariusz przedstawiony jako standard. Przy zapisie pytaj o konkretną kwotę wkładu własnego, nie o slogan.
+Najczęściej nie. Wkład własny wynosi zwykle kilkaset złotych przy tańszych kursach, a przy droższych - powyżej limitu operatora - nawet kilka tysięcy. Reklamy „za 0 zł" pokazują albo wyjątkowe ścieżki (KFS, wybrane projekty EFS+), albo najlepszy scenariusz przedstawiony jako standard. Przy zapisie pytaj o konkretną kwotę wkładu własnego, nie o slogan.
 
 **Czy dostanę dofinansowanie na PMU, jeśli pracuję na etacie?**
 Tak, w większości regionalnych naborów BUR osoby pracujące się kwalifikują. Etat Cię nie wyklucza - to jedno z najczęstszych nieporozumień. Warunki zależą od województwa, dlatego Twoją sytuację trzeba sprawdzić indywidualnie.

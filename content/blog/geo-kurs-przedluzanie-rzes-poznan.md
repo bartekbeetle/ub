@@ -1,11 +1,11 @@
 ---
-title: "Kurs przedłużania rzęs Poznań — cena i dofinansowanie"
+title: "Kurs przedłużania rzęs Poznań: cena i dofinansowanie"
 slug: "kurs-przedluzanie-rzes-poznan"
 category: "Poradniki"
 excerpt: "Ile kosztuje kurs przedłużania rzęs w Poznaniu, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie wielkopolskim."
-metaTitle: "Kurs przedłużania rzęs Poznań — cena i dofinansowanie"
-metaDescription: "Kurs przedłużania rzęs w Poznaniu: rynkowa cena 1200-2500 zł, przy dofinansowaniu z BUR wkład własny zwykle 120-500 zł. Program i zasady naboru."
-data: 2026-07-30
+metaTitle: "Kurs przedłużania rzęs Poznań: cena i dofinansowanie"
+metaDescription: "Kurs przedłużania rzęs w Poznaniu: rynkowa cena 1800-3400 zł, przy dofinansowaniu z BUR wkład własny zwykle 90-680 zł. Program i zasady naboru."
+data: 2026-09-28
 reading_minutes: 4
 target: kursantka (B2C)
 fraza_glowna: "kurs przedłużania rzęs poznań"
@@ -13,23 +13,26 @@ wolumen_frazy: 70
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: 3
+nadpisz_w_bazie: true
 ---
 
-# Kurs przedłużania rzęs w Poznaniu — cena, program i dofinansowanie
+# Kurs przedłużania rzęs w Poznaniu: cena, program i dofinansowanie
 
-Praca z klejem cyjanoakrylowym wymaga wentylacji i świadomości przeciwwskazań — to część zawodu, którą programy szkoleń traktują bardzo różnie.
+Praca z klejem cyjanoakrylowym wymaga wentylacji i świadomości przeciwwskazań, a to część zawodu, którą programy szkoleń traktują bardzo różnie.
 
 Poniżej rynkowe widełki cen, zakres programu i procedura dofinansowania obowiązująca w województwie wielkopolskim.
 
 ## Ile kosztuje kurs przedłużania rzęs w Poznaniu
 
-Ceny szkoleń z przedłużania rzęs mieszczą się zwykle w przedziale **1200-2500 zł** za program obejmujący 16-24 godzin zajęć. Rozpiętość bierze się z liczby dni praktycznych, liczby uczestniczek przypadających na trenerkę oraz tego, czy materiały wchodzą w cenę.
+Ceny szkoleń z przedłużania rzęs mieszczą się zwykle w przedziale **1800-3400 zł** za program obejmujący 16-24 godzin zajęć. Rozpiętość bierze się z liczby dni praktycznych, liczby uczestniczek przypadających na trenerkę oraz tego, czy materiały wchodzą w cenę.
 
 Stawki w Poznaniu mieszczą się w środku krajowych widełek. Wybór akademii jest wystarczający, żeby porównać co najmniej kilka programów, a różnice w cenie wynikają zwykle z liczby dni praktycznych, nie z samej lokalizacji.
 
-Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Operatorzy pokrywają najczęściej 80-90% ceny, co przy powyższych widełkach oznacza realną dopłatę rzędu **120-500 zł**. Dokładny procent zależy od województwa, naboru i Twojej sytuacji zawodowej — dlatego kwotę zawsze potwierdza się przed podpisaniem umowy, nie po.
+Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Operatorzy pokrywają od 80% do 95% ceny, zależnie od województwa i naboru. Zależnie od operatora albo wpłacasz od razu tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płacisz całość i dostajesz zwrot po zakończeniu kursu. Przy powyższych widełkach cenowych realna dopłata wynosi zwykle **90-680 zł**. Większość operatorów ma też limit kwotowy na osobę, zwykle 5-7 tysięcy złotych na szkolenie: przy tej cenie kursu limit nie wpływa na wysokość dopłaty.
 
-Szczegółowe rozliczenie znajdziesz we wpisie [Kurs rzęs i brwi z dofinansowaniem — ile dopłacasz](/blog/kurs-rzes-brwi-z-dofinansowaniem-ile-doplacasz).
+Dokładny procent, limit kwotowy i wariant rozliczenia zależą od operatora prowadzącego nabór w Twoim województwie, dlatego kwotę zawsze potwierdza się przed podpisaniem umowy z operatorem.
+
+Szczegółowe rozliczenie znajdziesz we wpisie [Kurs rzęs i brwi z dofinansowaniem: ile dopłacasz](/blog/kurs-rzes-brwi-z-dofinansowaniem-ile-doplacasz).
 
 ## Co obejmuje program
 
@@ -55,13 +58,15 @@ Zapytaj wprost, ile czasu kurs poświęca na reakcje alergiczne, wentylację sta
 
 ## Dofinansowanie w województwie wielkopolskim
 
-Środki rozdziela **operator wyłoniony dla regionu**, a nie PARP centralnie. Poznań leży w województwie wielkopolskim, więc obowiązuje Cię nabór prowadzony dla tego województwa — i to on wyznacza procent dofinansowania oraz terminy. Operatorzy zmieniają się wraz z kolejnymi naborami, część obsługuje wybrane podregiony, dlatego aktualny stan sprawdza się na [uslugirozwojowe.parp.gov.pl](https://uslugirozwojowe.parp.gov.pl), a nie w artykule sprzed pół roku.
+Środki rozdziela **operator wyłoniony dla regionu**, a nie PARP centralnie. Poznań leży w województwie wielkopolskim, więc obowiązuje Cię nabór prowadzony dla tego województwa, i to on wyznacza procent dofinansowania oraz terminy. Operatorzy zmieniają się wraz z kolejnymi naborami, część obsługuje wybrane podregiony, dlatego aktualny stan sprawdza się na [uslugirozwojowe.parp.gov.pl](https://uslugirozwojowe.parp.gov.pl), a nie w artykule sprzed pół roku.
 
-Dwie zasady, które przesądzają o rozliczeniu: dofinansowanie obejmuje wyłącznie usługi **wpisane do Bazy**, a wniosek składa się **przed** szkoleniem, nie po. Całą procedurę rozkładamy w osobnym wpisie: [Dofinansowanie na szkolenie — krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku). Jeżeli zakładasz, że dotyczy to tylko osób bezrobotnych — [tak nie jest](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych).
+Potwierdzone nabory dla osób dorosłych w województwie wielkopolskim sięgają od 80% do 90% ceny, z limitem kwotowym w przedziale 4 522-10 000 zł na osobę: dokładny poziom ustala regulamin konkretnego naboru.
+
+Dwie zasady, które przesądzają o rozliczeniu: dofinansowanie obejmuje wyłącznie usługi **wpisane do Bazy**, a wniosek składa się **przed** szkoleniem, nie po. Całą procedurę rozkładamy w osobnym wpisie: [Dofinansowanie na szkolenie - krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku). Jeżeli zakładasz, że dotyczy to tylko osób bezrobotnych, [tak nie jest](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych).
 
 ## Poznań i okolica
 
-Szkolenia w Poznaniu wybierają też mieszkanki mniejszych miejscowości w zasięgu dojazdu — Swarzędz, Luboń, Środa Wielkopolska, Oborniki. Przy kursach trwających kilka dni pod rząd warto policzyć dojazd i ewentualny nocleg razem z ceną szkolenia, bo przy tańszych programach ta różnica potrafi zrównać koszt z droższym kursem bliżej domu.
+Szkolenia w Poznaniu wybierają też mieszkanki mniejszych miejscowości w zasięgu dojazdu: Swarzędz, Luboń, Środa Wielkopolska, Oborniki. Przy kursach trwających kilka dni pod rząd warto policzyć dojazd i ewentualny nocleg razem z ceną szkolenia, bo przy tańszych programach ta różnica potrafi zrównać koszt z droższym kursem bliżej domu.
 
 Dofinansowanie przyznaje operator właściwy dla Twojego **miejsca zamieszkania**, nie dla miasta, w którym odbywa się szkolenie. Mieszkanie w innej miejscowości nie jest więc przeszkodą: szkolisz się w Poznaniu, a środki rozliczasz w swoim regionie.
 
@@ -73,7 +78,7 @@ Technicznie tak, ale pierwsze stylizacje trwają dwa razy dłużej niż docelowo
 
 **Czy przedłużanie rzęs niszczy rzęsy naturalne?**
 
-Przy poprawnej izolacji i dobranej wadze nie. Uszkodzenia biorą się ze sklejania kilku rzęs naturalnych i z przeciążenia — czyli z błędu wykonania, nie z samej metody.
+Przy poprawnej izolacji i dobranej wadze nie. Uszkodzenia biorą się ze sklejania kilku rzęs naturalnych i z przeciążenia, czyli z błędu wykonania, nie z samej metody.
 
 **Jaka jest różnica między metodą 1:1 a objętościową?**
 
@@ -81,7 +86,7 @@ W metodzie 1:1 na jedną rzęsę naturalną przypada jedna sztuczna. W objętoś
 
 **Czy szkolenie w Poznaniu można rozliczyć z dofinansowania?**
 
-Tak, o ile konkretna usługa jest wpisana do Bazy Usług Rozwojowych, a operator dla Twojego regionu prowadzi nabór. Obie rzeczy sprawdzamy przed zapisem — to element bezpłatnej konsultacji.
+Tak, o ile konkretna usługa jest wpisana do Bazy Usług Rozwojowych, a operator dla Twojego regionu prowadzi nabór. Obie rzeczy sprawdzamy przed zapisem: to element bezpłatnej konsultacji.
 
 ## Następny krok
 

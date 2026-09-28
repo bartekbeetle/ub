@@ -20,6 +20,11 @@ export type Lokalizacja = {
   okolica: string[];
   /** Poziom cen szkoleń w mieście. Realnie różnicuje treść — w metropolii stawki stoją przy górnej granicy widełek. */
   tier: "metropolia" | "duze" | "mniejsze";
+  /** Poziom dofinansowania POTWIERDZONY dla województwa (kanon F1/F2, gotowe zdanie do wstawienia
+   *  w sekcję "Dofinansowanie w województwie..."). Pusty string = nie mamy potwierdzonej liczby
+   *  dla tego województwa — generator wstawia wtedy zdanie odsyłające do regulaminu operatora,
+   *  zamiast zgadywać (zasada z kanonu §7: nie zmyślamy liczb bez źródła). */
+  poziomDofinansowania: string;
 };
 
 export const LOKALIZACJE: Lokalizacja[] = [
@@ -32,6 +37,8 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wWojewodztwie: "w województwie mazowieckim",
     okolica: ["Pruszków", "Piaseczno", "Legionowo", "Otwock", "Wołomin"],
     tier: "metropolia",
+    poziomDofinansowania:
+      "Potwierdzone nabory dla osób dorosłych w województwie mazowieckim sięgają od 76% do 96% ceny, z limitem kwotowym w przedziale 6 100-14 900 zł na osobę: dokładny poziom ustala regulamin konkretnego naboru.",
   },
   {
     slug: "krakow",
@@ -42,6 +49,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wWojewodztwie: "w województwie małopolskim",
     okolica: ["Wieliczka", "Skawina", "Niepołomice", "Wadowice"],
     tier: "metropolia",
+    poziomDofinansowania: "",
   },
   {
     slug: "wroclaw",
@@ -52,6 +60,8 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wWojewodztwie: "w województwie dolnośląskim",
     okolica: ["Oleśnica", "Oława", "Trzebnica", "Środa Śląska"],
     tier: "duze",
+    poziomDofinansowania:
+      "Potwierdzone nabory dla osób dorosłych w województwie dolnośląskim sięgają od 80% do 90% ceny; dokładny limit kwotowy na osobę ustala regulamin konkretnego naboru.",
   },
   {
     slug: "poznan",
@@ -62,6 +72,8 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wWojewodztwie: "w województwie wielkopolskim",
     okolica: ["Swarzędz", "Luboń", "Środa Wielkopolska", "Oborniki"],
     tier: "duze",
+    poziomDofinansowania:
+      "Potwierdzone nabory dla osób dorosłych w województwie wielkopolskim sięgają od 80% do 90% ceny, z limitem kwotowym w przedziale 4 522-10 000 zł na osobę: dokładny poziom ustala regulamin konkretnego naboru.",
   },
   {
     slug: "gdansk",
@@ -72,6 +84,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wWojewodztwie: "w województwie pomorskim",
     okolica: ["Gdynia", "Sopot", "Tczew", "Pruszcz Gdański"],
     tier: "duze",
+    poziomDofinansowania: "",
   },
   {
     slug: "lodz",
@@ -82,6 +95,8 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wWojewodztwie: "w województwie łódzkim",
     okolica: ["Pabianice", "Zgierz", "Aleksandrów Łódzki", "Konstantynów Łódzki"],
     tier: "duze",
+    poziomDofinansowania:
+      "Potwierdzone nabory dla osób dorosłych w województwie łódzkim sięgają do 93% ceny; dokładny limit kwotowy na osobę ustala regulamin konkretnego naboru.",
   },
   {
     slug: "lublin",
@@ -92,6 +107,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wWojewodztwie: "w województwie lubelskim",
     okolica: ["Świdnik", "Lubartów", "Puławy", "Kraśnik"],
     tier: "duze",
+    poziomDofinansowania: "",
   },
   {
     slug: "katowice",
@@ -102,6 +118,8 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wWojewodztwie: "w województwie śląskim",
     okolica: ["Sosnowiec", "Chorzów", "Tychy", "Gliwice", "Zabrze"],
     tier: "duze",
+    poziomDofinansowania:
+      "Potwierdzone nabory dla osób dorosłych w województwie śląskim obejmują 95% ceny, z limitem kwotowym 5 000 zł na osobę: to jeden z najkorzystniejszych poziomów w kraju.",
   },
   {
     slug: "szczecin",
@@ -112,6 +130,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wWojewodztwie: "w województwie zachodniopomorskim",
     okolica: ["Police", "Stargard", "Goleniów", "Gryfino"],
     tier: "duze",
+    poziomDofinansowania: "",
   },
   {
     slug: "gdynia",
@@ -122,6 +141,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wWojewodztwie: "w województwie pomorskim",
     okolica: ["Gdańsk", "Sopot", "Rumia", "Wejherowo"],
     tier: "duze",
+    poziomDofinansowania: "",
   },
   {
     slug: "opole",
@@ -132,6 +152,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wWojewodztwie: "w województwie opolskim",
     okolica: ["Kędzierzyn-Koźle", "Brzeg", "Krapkowice", "Strzelce Opolskie"],
     tier: "mniejsze",
+    poziomDofinansowania: "",
   },
   {
     slug: "legnica",
@@ -142,6 +163,8 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wWojewodztwie: "w województwie dolnośląskim",
     okolica: ["Lubin", "Głogów", "Jawor", "Chojnów"],
     tier: "mniejsze",
+    poziomDofinansowania:
+      "Potwierdzone nabory dla osób dorosłych w województwie dolnośląskim sięgają od 80% do 90% ceny; dokładny limit kwotowy na osobę ustala regulamin konkretnego naboru.",
   },
   {
     slug: "plock",
@@ -152,6 +175,8 @@ export const LOKALIZACJE: Lokalizacja[] = [
     wWojewodztwie: "w województwie mazowieckim",
     okolica: ["Gostynin", "Sierpc", "Płońsk", "Wyszogród"],
     tier: "mniejsze",
+    poziomDofinansowania:
+      "Potwierdzone nabory dla osób dorosłych w województwie mazowieckim sięgają od 76% do 96% ceny, z limitem kwotowym w przedziale 6 100-14 900 zł na osobę: dokładny poziom ustala regulamin konkretnego naboru.",
   },
 ];
 
