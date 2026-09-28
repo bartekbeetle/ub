@@ -12,7 +12,6 @@ fraza_glowna: "jak dodać usługę do BUR"
 filar: B
 rola: "podtemat"
 reading_minutes: 9
-nadpisz_w_bazie: true
 ---
 
 # Jak dodać szkolenie do Bazy Usług Rozwojowych krok po kroku

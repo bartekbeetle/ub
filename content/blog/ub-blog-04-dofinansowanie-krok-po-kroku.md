@@ -12,7 +12,6 @@ fraza_glowna: "jak dostać dofinansowanie na szkolenie BUR"
 filar: A
 rola: podtemat
 reading_minutes: 9
-nadpisz_w_bazie: true
 ---
 
 # Jak dostać dofinansowanie na kurs beauty krok po kroku

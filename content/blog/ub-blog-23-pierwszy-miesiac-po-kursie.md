@@ -12,7 +12,6 @@ fraza_glowna: "co po kursie stylizacji paznokci"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
-nadpisz_w_bazie: true
 ---
 
 # Co po kursie stylizacji paznokci - pierwszy miesiąc

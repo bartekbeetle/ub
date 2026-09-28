@@ -12,7 +12,6 @@ target: kursantka (B2C)
 fraza_glowna: "jak zdobyć zawód beauty z dofinansowaniem"
 filar: A
 rola: pillar
-nadpisz_w_bazie: true
 ---
 
 # Jak zdobyć zawód w beauty z dofinansowaniem

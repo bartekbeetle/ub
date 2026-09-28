@@ -12,7 +12,6 @@ fraza_glowna: "jak pozyskać kursantki na szkolenia"
 filar: B
 rola: "pillar"
 reading_minutes: 10
-nadpisz_w_bazie: true
 ---
 
 # Jak zapełnić grafik szkoleń: skąd brać kursantki w 2026

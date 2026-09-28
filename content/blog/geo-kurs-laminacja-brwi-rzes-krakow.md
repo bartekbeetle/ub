@@ -13,7 +13,6 @@ wolumen_frazy: 40
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: 1
-nadpisz_w_bazie: true
 ---
 
 # Kurs laminacji brwi i rzęs w Krakowie: cena, program i dofinansowanie

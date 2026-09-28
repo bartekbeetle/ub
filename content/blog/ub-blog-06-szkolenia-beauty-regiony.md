@@ -12,7 +12,6 @@ fraza_glowna: "dofinansowane szkolenia beauty śląskie"
 filar: A
 rola: podtemat (geo)
 reading_minutes: 8
-nadpisz_w_bazie: true
 ---
 
 # Dofinansowane szkolenia beauty w Twoim regionie (śląskie, mazowieckie, małopolskie)

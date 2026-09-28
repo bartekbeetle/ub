@@ -12,7 +12,6 @@ fraza_glowna: "jak zostać stylistką rzęs"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
-nadpisz_w_bazie: true
 ---
 
 # Jak zostać stylistką rzęs od zera - trzy kroki

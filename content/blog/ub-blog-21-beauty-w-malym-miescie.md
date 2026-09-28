@@ -12,7 +12,6 @@ fraza_glowna: "stylistka paznokci w małym mieście"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
-nadpisz_w_bazie: true
 ---
 
 # Zawód beauty w małym mieście - czy jest z czego żyć

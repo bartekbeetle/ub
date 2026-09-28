@@ -12,7 +12,6 @@ fraza_glowna: "jaki kurs beauty wybrać"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
-nadpisz_w_bazie: true
 ---
 
 # Jaki kurs beauty wybrać - paznokcie, rzęsy, brwi czy PMU

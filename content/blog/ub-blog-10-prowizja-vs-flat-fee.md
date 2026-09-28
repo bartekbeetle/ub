@@ -12,7 +12,6 @@ fraza_glowna: "pozyskiwanie kursantek prowizja alternatywa"
 filar: B
 rola: "podtemat"
 reading_minutes: 9
-nadpisz_w_bazie: true
 ---
 
 # Prowizja vs opłata za wynik: ile naprawdę kosztuje Cię pozyskanie kursantki

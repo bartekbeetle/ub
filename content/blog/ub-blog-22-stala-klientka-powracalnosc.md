@@ -12,7 +12,6 @@ fraza_glowna: "jak zdobyć stałe klientki w beauty"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
-nadpisz_w_bazie: true
 ---
 
 # Stała klientka w beauty - dlaczego to Twój zarobek

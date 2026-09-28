@@ -12,7 +12,6 @@ fraza_glowna: "kurs beauty za 0 zł"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
-nadpisz_w_bazie: true
 ---
 
 # Kurs beauty za 0 zł - kiedy naprawdę nic nie dopłacasz

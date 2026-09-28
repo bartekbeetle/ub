@@ -12,7 +12,6 @@ fraza_glowna: "kurs makijażu permanentnego z dofinansowaniem"
 filar: A
 rola: podtemat
 reading_minutes: 10
-nadpisz_w_bazie: true
 ---
 
 # Kurs makijażu permanentnego z dofinansowaniem - ile naprawdę zapłacisz
