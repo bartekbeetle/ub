@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { IconX } from "@/components/icons";
 import {
   CONSENT_ALL,
@@ -33,6 +34,14 @@ export function CookieConsent() {
   const [ready, setReady] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [draft, setDraft] = useState<ConsentPrefs>(CONSENT_NONE);
+  const pathname = usePathname();
+  // Na /aplikacja i /poradnik-wlasny-salon nie ma sticky CTA (patrz StickyConsultationCta),
+  // więc baner może siąść niżej — ALE na tych stronach ostatni w dokumencie jest przycisk
+  // formularza/zakupu, zwykle nisko w viewporcie. Zmierzone na 360×640 (krok 7 quizu):
+  // bottom-20 (odstęp myślany dla sticky CTA) zostawia go w większości odsłoniętym,
+  // bottom-4 chowa go pod banerem CAŁKOWICIE. Większy odstęp = baner niżej i mniej
+  // pokrywa dół ekranu, gdzie zwykle siedzi CTA formularza.
+  const potrzebujeWiekszegoOdstepu = pathname?.startsWith("/aplikacja") || pathname?.startsWith("/poradnik-wlasny-salon");
 
   useEffect(() => {
     setConsent(readConsent());
@@ -60,9 +69,9 @@ export function CookieConsent() {
       // bottom-20 na mobile, żeby nie zasłonić sticky CTA konsultacji (gdzie ten pasek istnieje —
       // na /aplikacja jest ukryty, patrz src/app/(public)/layout.tsx, więc tam ten odstęp jest niegroźnym
       // marginesem, nie zależnością).
-      className="fixed inset-x-0 bottom-20 z-50 px-3 md:bottom-4"
+      className={`fixed inset-x-0 z-50 px-3 md:bottom-4 ${potrzebujeWiekszegoOdstepu ? "bottom-32" : "bottom-20"}`}
     >
-      <div className="mx-auto max-h-[70vh] max-w-3xl overflow-y-auto rounded-xl border border-sand-200 bg-white p-4 shadow-lg md:p-6">
+      <div className="mx-auto max-h-[70dvh] max-w-3xl overflow-y-auto rounded-xl border border-sand-200 bg-white p-4 shadow-lg md:p-6">
         <div className="flex items-start justify-between gap-3">
           <p className="font-serif text-base font-semibold md:text-lg">Pliki cookies</p>
           {/* Zamknięcie = „Tylko niezbędne", NIGDY „Akceptuję wszystkie" — zamknięcie bez wyboru
@@ -140,7 +149,7 @@ export function CookieConsent() {
           <button
             type="button"
             onClick={() => setDetailsOpen(true)}
-            className="mt-2 text-xs font-semibold text-sand-700 underline underline-offset-2"
+            className="mt-2 inline-block py-2 text-xs font-semibold text-sand-700 underline underline-offset-2"
             aria-expanded={detailsOpen}
           >
             Ustawienia szczegółowe
