@@ -98,7 +98,7 @@ export default async function KursPage({ params }: { params: Params }) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 md:px-6">
       <JsonLd data={courseJsonLd(course, trainer?.name)} />
-      <TrackEvent event="ViewContent" params={{ content_name: course.title, content_category: course.category, value: course.price, currency: "PLN" }} />
+      <TrackEvent event="view_item" params={{ content_name: course.title, content_category: course.category, value: course.price, currency: "PLN" }} />
       <Breadcrumbs
         items={[
           { name: "Strona główna", url: "/" },

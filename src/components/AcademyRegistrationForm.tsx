@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { CATEGORIES, VOIVODESHIPS } from "@/lib/constants";
+import { readConsent } from "@/lib/consent";
+import { trackEvent } from "@/lib/tracking-events";
 
 type Field =
   | "name"
@@ -110,6 +112,11 @@ export function AcademyRegistrationForm() {
     }
 
     setState("sending");
+    // UUID PRZED wysyłką — deduplikacja Meta Pixel/CAPI (`SubmitApplication`). `adConsent` to
+    // zgoda z BANERA cookies (kubełek `marketing`), sprawdzana niezależnie od `contactConsent`
+    // (zgoda na kontakt telefoniczny/e-mail w sprawie WSPÓŁPRACY — inna podstawa, inny cel).
+    const eventId = crypto.randomUUID();
+    const adConsent = readConsent()?.marketing === true;
     try {
       const res = await fetch("/api/akademia/rejestracja", {
         method: "POST",
@@ -131,9 +138,15 @@ export function AcademyRegistrationForm() {
           termsAccepted: f.termsAccepted,
           contactConsent: f.contactConsent,
           fax: f.fax,
+          eventId,
+          adConsent,
         }),
       });
       if (res.ok) {
+        // Meta `SubmitApplication` + GA4 `sign_up` — ten sam `eventId`, który poszedł do API
+        // (serwer wysyła CAPI z tym samym ID, patrz `/api/akademia/rejestracja`). Bez Google
+        // Ads: rejestracja akademii B2B nie jest celem kampanii leadowej kursantek.
+        trackEvent("sign_up", { method: "akademia", content_name: "rejestracja-akademii" }, { eventId });
         setState("sent");
         return;
       }

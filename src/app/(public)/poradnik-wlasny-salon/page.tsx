@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
 import { TrackEvent } from "@/components/TrackEvent";
+import { CheckoutLink } from "@/components/CheckoutLink";
 import { IconCheck, IconFileText, IconShield, IconChevronDown } from "@/components/icons";
 import { CONTACT_EMAIL, SITE_NAME, SITE_URL } from "@/lib/constants";
 import { PORADNIK_SALON as P, PORADNIK_SALON_W_SPRZEDAZY as W_SPRZEDAZY } from "@/lib/produkty";
@@ -146,9 +147,14 @@ function PrzyciskZakupu({ className = "" }: { className?: string }) {
     );
   }
   return (
-    <a href={P.checkoutUrl} className={`btn-primary w-full ${className}`} rel="noopener">
+    <CheckoutLink
+      href={P.checkoutUrl}
+      contentName={P.tytul}
+      value={P.cena}
+      className={`btn-primary w-full ${className}`}
+    >
       Kupuję poradnik za {P.cena} zł
-    </a>
+    </CheckoutLink>
   );
 }
 
@@ -195,7 +201,7 @@ export default function PoradnikSalonPage() {
     <div className="mx-auto max-w-7xl px-4 py-10 md:px-6">
       {W_SPRZEDAZY && <JsonLd data={produktJsonLd} />}
       <TrackEvent
-        event="ViewContent"
+        event="view_item"
         params={{ content_name: P.tytul, content_type: "product", value: P.cena, currency: "PLN" }}
       />
       <Breadcrumbs

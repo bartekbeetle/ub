@@ -27,7 +27,7 @@ export default async function PoradnikDziekujemyPage({ searchParams }: { searchP
       {/* Zdarzenie osobne od `Lead` — pobranie poradnika to NIE jest lead sprzedażowy
           (brak zgody na przekazanie danych akademii). Mieszanie tych dwóch zdarzeń
           zafałszowałoby optymalizację kampanii i koszt pozyskania leada w Mecie. */}
-      <TrackEvent event="CompleteRegistration" params={{ content_name: "poradnik-bur" }} />
+      <TrackEvent event="lead_magnet" params={{ content_name: "poradnik-bur" }} />
 
       <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-money/10">
         <IconCheck width={28} height={28} className="text-money" />

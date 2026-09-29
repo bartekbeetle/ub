@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { trackEvent } from "@/lib/tracking-events";
 
 type Errors = Partial<Record<"name" | "email" | "message", string>>;
 
@@ -53,6 +54,7 @@ export function ContactForm({ type = "kontakt" }: { type?: "kontakt" | "konsulta
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      if (res.ok) trackEvent("contact", { content_name: type });
       setState(res.ok ? "sent" : "error");
     } catch {
       setState("error");
