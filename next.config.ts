@@ -9,14 +9,22 @@ const securityHeaders = [
       "default-src 'self'",
       // GA4 + Meta Pixel wymagają zewnętrznych skryptów; inline dla JSON-LD i init pixela.
       // 'unsafe-eval' TYLKO w dev — Next.js React Refresh (HMR) go wymaga; na prod CSP zostaje ostry.
-      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://connect.facebook.net`,
+      // 29.09.2026: domeny Google Ads dopisane wg oficjalnej listy Google
+      // (developers.google.com/tag-platform/security/guides/csp, sekcje „Google Analytics",
+      // „Google Ads", „Google Ads User Data"). Bez nich przeglądarka po cichu blokowała każdą
+      // konwersję Google Ads (googleadservices / google.com/ccm / doubleclick) — akcja
+      // „UB - Lead" w Ads miała stan „Nieaktywny" mimo poprawnej etykiety w kodzie.
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://www.googleadservices.com https://www.google.com https://connect.facebook.net`,
       "style-src 'self' 'unsafe-inline'",
-      // GA4 wysyła pingi też przez piksel-obrazek i przez googletagmanager.com.
-      "img-src 'self' data: blob: https://www.facebook.com https://*.google-analytics.com https://www.googletagmanager.com",
+      // GA4 i Google Ads wysyłają pingi też przez piksel-obrazek.
+      "img-src 'self' data: blob: https://www.facebook.com https://*.google-analytics.com https://www.googletagmanager.com https://www.googleadservices.com https://*.g.doubleclick.net https://pagead2.googlesyndication.com https://*.google.com https://*.google.pl",
       "font-src 'self' data:",
       // GA4 zbiera na region1/region.../analytics.google.com zależnie od regionu konta —
       // wąska lista dwóch hostów po cichu blokowała część wysyłek. Wildcard zamiast zgadywania.
-      "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.facebook.com",
+      "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.googleadservices.com https://*.g.doubleclick.net https://ad.doubleclick.net https://pagead2.googlesyndication.com https://*.google.com https://*.google.pl https://www.facebook.com https://connect.facebook.net",
+      // Tag Google osadza ramkę z googletagmanager.com (m.in. beacon danych użytkownika Ads).
+      // Bez frame-src spada na default-src 'self' i ramka jest blokowana.
+      "frame-src https://www.googletagmanager.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
