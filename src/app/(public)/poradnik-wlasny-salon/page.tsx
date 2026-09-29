@@ -324,12 +324,14 @@ export default function PoradnikSalonPage() {
         <h2 className="text-2xl font-bold md:text-3xl">Pytania przed zakupem</h2>
         <div className="mt-6 divide-y divide-sand-200 border-y border-sand-200">
           {FAQ.map((f) => (
-            <details key={f.q} className="group py-4">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-ink-soft [&::-webkit-details-marker]:hidden">
+            /* Padding na summary (cel dotykowy), nie na details — patrz ten sam komentarz
+               w src/app/(public)/page.tsx. Wizualny odstęp bez zmian. */
+            <details key={f.q} className="group">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold text-ink-soft [&::-webkit-details-marker]:hidden">
                 {f.q}
                 <IconChevronDown width={18} height={18} className="shrink-0 text-sand-700 transition-transform group-open:rotate-180" />
               </summary>
-              <p className="mt-3 text-muted">{f.a}</p>
+              <p className="mt-3 pb-4 text-muted">{f.a}</p>
             </details>
           ))}
         </div>

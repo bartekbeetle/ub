@@ -34,7 +34,11 @@ export function LeadFormModal({ courseId, category, voivodeship, buttonLabel = "
         className="m-auto w-[calc(100vw-2rem)] max-w-lg rounded-[16px] p-0 shadow-2xl backdrop:bg-ink-soft/50 backdrop:backdrop-blur-sm"
         aria-label="Formularz zgłoszeniowy"
       >
-        <div className="max-h-[85vh] overflow-y-auto p-6 md:p-8">
+        {/* dvh zamiast vh: na mobile (Safari, przeglądarka IG/FB) pasek adresu i dolne
+            menu potrafią zjeść nawet 15% wysokości ekranu bez przeliczenia vh — dvh
+            liczy realną, widoczną wysokość, więc przycisk wysyłki formularza zostaje
+            osiągalny przez scroll wewnątrz dialogu zamiast wypadać pod spód. */}
+        <div className="max-h-[85dvh] overflow-y-auto p-6 md:p-8">
           <div className="mb-5 flex items-start justify-between gap-4">
             <div>
               <h2 className="font-serif text-xl font-bold md:text-2xl">Aplikuj o dofinansowanie</h2>
@@ -42,11 +46,13 @@ export function LeadFormModal({ courseId, category, voivodeship, buttonLabel = "
                 Wypełnij formularz — sprawdzimy Twoje dofinansowanie i połączymy Cię z trenerką.
               </p>
             </div>
+            {/* h-11 w-11 (44px) zamiast h-10 w-10 (40px) — cel dotykowy poniżej progu 44px
+                na jedynym przycisku zamykającym formularz na telefonie. */}
             <button
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Zamknij formularz"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-muted hover:bg-sand-50"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-muted hover:bg-sand-50"
             >
               <IconX />
             </button>
