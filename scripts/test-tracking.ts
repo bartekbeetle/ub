@@ -4,11 +4,15 @@
  * 2) normalizację e-maila/telefonu i hash SHA-256 (`tracking-format.ts`, `meta-capi-core.ts`),
  * 3) budowę payloadu CAPI — brak PII w formie jawnej, brak pól wrażliwych, obecność `event_id`,
  * 4) decyzję „czy wysyłać CAPI" (`shouldSendCapi`) i „czy CAPI jest skonfigurowane" (`isCapiConfigured`),
- * 5) POPRAWKĘ BŁĘDU Z 22.09 (audyt paneli 29.09): `trackEvent` musi odpalić KAŻDY kanał
- *    niezależnie, nawet gdy fbq/gtag stają się gotowe w różnej kolejności i w różnym czasie —
- *    stary kod miał jedną wspólną flagę `done`, przez co kanał, który wstawał jako drugi,
- *    nigdy nie dostawał zdarzenia. To jest scenariusz, który wyprodukował „0 zdarzeń Lead
- *    w Mecie przy niezerowym GA4 generate_lead".
+ * 5) BŁĄD STRUKTURALNY znaleziony przy audycie paneli 29.09: `trackEvent` musi odpalić KAŻDY
+ *    kanał niezależnie, nawet gdy fbq/gtag stają się gotowe w różnej kolejności i w różnym
+ *    czasie — stary kod miał jedną wspólną flagę `done`, przez co kanał, który wstawał jako
+ *    drugi, nigdy nie dostawał zdarzenia. UWAGA: to jest realny błąd w kodzie (reprodukowany
+ *    niżej), ale test rozstrzygający na starym kodzie BEZ sztucznego opóźnienia (skrypty już
+ *    załadowane — warunki bliskie produkcyjnym) pokazał, że stary kod wysyłał Lead poprawnie.
+ *    Czyli ten race condition NIE jest potwierdzoną przyczyną „0 zdarzeń Lead w Mecie" na
+ *    produkcji — jest to niezależnie realne, teraz naprawione ryzyko. Pełny rozbiór:
+ *    `docs/zdarzenia-analityczne.md` §0.
  *
  * Użycie: npm run test:tracking
  */
@@ -173,8 +177,9 @@ function withFakeWindow<T>(run: (win: FakeWindow, calls: { fbq: unknown[][]; gta
 
 async function testGtagReadyFirst() {
   await withFakeWindow(async (win, calls) => {
-    // GA4/Ads (gtag) gotowe PRAWIE od razu; Meta (fbq) dopiero po 600ms — dokładnie ten wyścig,
-    // który w starym kodzie zjadał zdarzenie Lead w Mecie (widoczne w panelach jako 0 zdarzeń).
+    // GA4/Ads (gtag) gotowe PRAWIE od razu; Meta (fbq) dopiero po 600ms — sztuczny wyścig,
+    // na którym stary kod (jedna flaga `done`) by nie przeszedł. Nie jest to potwierdzone jako
+    // scenariusz z produkcji (patrz nagłówek pliku i docs/zdarzenia-analityczne.md §0).
     win.__ubAnalytics = { ga4: "G-TEST", pixel: null, adsId: "AW-TEST", adsLeadLabel: "LABEL" };
     win.gtag = (...args: unknown[]) => calls.gtag.push(args);
     setTimeout(() => {

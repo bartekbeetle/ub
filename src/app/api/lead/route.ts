@@ -75,7 +75,15 @@ export async function POST(req: Request) {
     action: "lead_utworzony",
     entityType: "lead",
     entityId: lead.id,
-    details: { source: data.source, category: data.category, voivodeship: data.voivodeship },
+    details: {
+      source: data.source,
+      category: data.category,
+      voivodeship: data.voivodeship,
+      // Do zmierzenia Hipotezy A (audyt 29.09: „nikt nie daje zgody marketingowej" jako
+      // konkurencyjne wyjaśnienie zera zdarzeń Lead w Mecie) — odsetek adConsent=true wśród
+      // REALNYCH leadów, z naszych własnych danych, bez zgadywania. Nieosobowe (sam boolean).
+      adConsent: data.adConsent,
+    },
   });
 
   // 🔴 22.09.2026: nowy lead NIE zakłada już zadania w kolejce researchu — kolejka usunięta

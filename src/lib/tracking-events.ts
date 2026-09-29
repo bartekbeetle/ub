@@ -3,20 +3,20 @@
  * `TrackEvent` (komponent) i wywoływana wprost z formularzy (`Quiz.tsx`, `AcademyRegistrationForm.tsx`)
  * tam, gdzie React-owy `<TrackEvent>` wymagałby zmiany JSX-a.
  *
- * 🔴 POPRAWKA BŁĘDU Z 22.09.2026 (audyt paneli 29.09): od uruchomienia nowego pikselu
- * (2307645766669921) w Meta Menedżerze zdarzeń widać PageView i pojedyncze Contact, ale
- * ZERO zdarzeń `Lead` — a GA4 `generate_lead` i tak dochodzi. Przyczyna leżała w starym
- * `TrackEvent.tsx`: jedna wspólna flaga `done` była ustawiana na `true`, gdy TYLKO JEDEN
- * z dwóch silników (fbq LUB gtag) był gotowy — który wygrał wyścig ładowania skryptów,
- * ten strzelał, drugi (zwykle wolniejszy `fbevents.js`) już nigdy nie dostawał szansy,
- * bo pętla `setInterval` kończyła się po pierwszym sukcesie. Efekt: gdy gtag ładował się
- * szybciej niż fbq (jak w naszej kolejności skryptów w `Analytics.tsx` — Pixel PRZED gtag,
- * ale to i tak wyścig sieciowy, nie kolejność w DOM), zdarzenie Lead wychodziło do GA4,
- * a Meta nie dostawało NIC — dokładnie taki obraz jak w panelach.
+ * 🔴 BŁĄD STRUKTURALNY ZNALEZIONY 29.09.2026 (audyt paneli: piksel 2307645766669921 miał
+ * PageView i pojedyncze Contact, ale ZERO zdarzeń `Lead`, mimo że GA4 `generate_lead` dochodzi):
+ * stary `TrackEvent.tsx` miał JEDNĄ wspólną flagę `done` na całe zdarzenie, ustawianą na `true`,
+ * gdy TYLKO JEDEN z dwóch silników (fbq LUB gtag) był gotowy — drugi silnik, jeśli doładował się
+ * PÓŹNIEJ, już nigdy nie dostawał szansy, bo pętla `setInterval` kończyła się po pierwszym sukcesie.
+ * To jest prawdziwy błąd (reprodukowany w `scripts/test-tracking.ts` na sztucznie opóźnionych
+ * fbq/gtag) — ALE test rozstrzygający na starym kodzie z w pełni załadowanymi skryptami (bez
+ * wyścigu, warunki bliskie produkcyjnym) pokazał, że stary kod WYSYŁAŁ Lead do obu platform
+ * poprawnie. Innymi słowy: ten race condition jest realnym, teraz naprawionym oknem awarii, ale
+ * NIE jest potwierdzoną przyczyną zera zdarzeń na produkcji — pełny rozbiór i otwarta Hipoteza A
+ * (zgoda marketingowa) w `docs/zdarzenia-analityczne.md` §0.
  *
  * Tu każdy kanał (Meta / GA4 / Google Ads) ma WŁASNY warunek gotowości i WŁASNĄ flagę
- * „wysłane" — jeden kanał nigdy nie blokuje ani nie podszywa się pod drugi. Test tego
- * dokładnego scenariusza (fbq gotowe później niż gtag i odwrotnie): `scripts/test-tracking.ts`.
+ * „wysłane" — jeden kanał nigdy nie blokuje ani nie podszywa się pod drugi.
  */
 
 import { normalizeEmail, toE164PL } from "./tracking-format";

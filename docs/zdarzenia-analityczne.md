@@ -15,43 +15,76 @@ Przy pierwszym audycie w panelach okazało się:
 - **Google Ads**: akcja konwersji „UB - Lead (formularz kwalifikacyjny)"
   (`AW-10793969605/Mq-qCK6jqPIcEMXP-5oo`) była **„Nieaktywna"** — nigdy nie zarejestrowała konwersji.
 
-**Przyczyna (potwierdzona — Hipoteza B, nie A):** stary `TrackEvent.tsx` miał JEDNĄ wspólną flagę
-`done` na całe zdarzenie. `fbq` (Meta) i `gtag` (GA4/Ads) ładują się asynchronicznie w
-nieprzewidywalnej kolejności (dwa niezależne zewnętrzne skrypty). Pętla odpytująca kończyła się,
-gdy TYLKO JEDEN z silników był gotowy — ten silnik strzelał, drugi (ten, który wygrał wyścig jako
-drugi) **nigdy nie dostawał szansy**, bo `done = true` blokowało kolejne próby. W praktyce gtag
-najwyraźniej ładował się/rejestrował konfigurację szybciej niż `fbevents.js`, więc GA4 dostawał
-zdarzenie, a Meta — nic.
+**Błąd strukturalny znaleziony w kodzie (realny, ale NIE potwierdzony jako przyczyna produkcyjna —
+patrz test rozstrzygający niżej):** stary `TrackEvent.tsx` miał JEDNĄ wspólną flagę `done` na całe
+zdarzenie. `fbq` (Meta) i `gtag` (GA4/Ads) ładują się asynchronicznie jako dwa niezależne zewnętrzne
+skrypty. Pętla odpytująca kończyła się, gdy TYLKO JEDEN z silników był gotowy — ten silnik strzelał,
+drugi (ten, który wstał jako drugi) **nigdy nie dostawał szansy**, bo `done = true` blokowało kolejne
+próby. To jest prawdziwy błąd — reprodukowany deterministycznie w `scripts/test-tracking.ts` na
+sztucznie opóźnionym `window.fbq`/`window.gtag` — ale **wyścig, który ujawnia, wymaga, żeby drugi
+silnik doładował się PO tym, jak pierwszy już zdążył wystrzelić zdarzenie**, czyli PO montowaniu
+`TrackEvent`/`LeadConversion`. W realnym przepływie (quiz 7 kroków trwający dziesiątki sekund,
+zgoda dana wcześniej) oba skrypty są praktycznie zawsze już załadowane, zanim ktokolwiek trafi na
+`/dziekujemy` — okno na wyścig jest bardzo wąskie.
 
-**Poprawka:** `trackEvent` w `src/lib/tracking-events.ts` ma teraz **trzy niezależne flagi**
-(`meta`/`ga4`/`ads`) i strzela do każdego kanału W CHWILI, gdy TEN kanał (jego skrypt + jego ID
-z `/api/analytics-config`) jest gotowy — nie czeka na pozostałe.
+**Test rozstrzygający (wykonany 29.09.2026):** stary kod (`git switch --detach 42999d6`, commit
+SPRZED tej gałęzi) na w pełni załadowanej stronie `/dziekujemy` (fbq i gtag gotowe, brak wyścigu)
+**WYSŁAŁ `ev=Lead` do Mety I `generate_lead` do Google Ads** — bez żadnej zmiany z tej gałęzi.
+Zobaczone w Network: `facebook.com/tr/?...&ev=Lead&cd[content_name]=formularz...` (status 200) oraz
+`google.com/ccm/collect?...&en=generate_lead...`. **Wniosek: Hipoteza B (race condition jako JEDYNA
+przyczyna) NIE POTWIERDZA SIĘ w warunkach zbliżonych do produkcyjnych.** Błąd race-condition jest
+realny i naprawiony jako **wzmocnienie (hardening)** — usuwa realne, choć rzadkie, okno awarii
+(np. bardzo szybkie wypełnienie krótkiego `LeadForm` z modala zaraz po wyrażeniu zgody, wolne łącze,
+CPU throttling na słabym telefonie) — ale nie jest to potwierdzona przyczyna zera zdarzeń Lead w
+Mecie na produkcji. **Hipoteza A (nikt nie daje zgody marketingowej) zostaje otwarta**, tak samo jak
+możliwość, że Meta coś filtruje/ogranicza po stronie zdarzenia (patrz akapit niżej — kategoria
+„med. estetyczna" w `CATEGORIES` może kwalifikować konto jako reklamodawcę zdrowie/wellness, co
+Meta czasem ogranicza; to sprawdza CEO w zakładce Diagnostyka Menedżera zdarzeń, poza zakresem tej
+gałęzi kodu).
 
-**Weryfikacja:**
+**Co NAPRAWDĘ jest zweryfikowane i naprawione (niezależnie od tego, która hipoteza wyjaśnia zero
+na produkcji):**
 1. `scripts/test-tracking.ts` — dwa scenariusze wyścigu symulowane na fałszywym `window`
    (gtag gotowe pierwsze / fbq gotowe pierwsze) + test deduplikacji. Stary kod NIE przeszedłby
-   żadnego z dwóch scenariuszy wyścigu.
-2. Ręcznie na dev (localhost:3011, zgoda na wszystko, ID testowe): quiz → `/dziekujemy`.
+   żadnego z dwóch scenariuszy wyścigu — to jest dowód na błąd w kodzie, nie na przyczynę w danych.
+2. Ręcznie na dev (localhost:3011, NOWY kod, zgoda na wszystko, ID testowe): quiz → `/dziekujemy`.
    Zobaczone w Network:
    - `facebook.com/tr/?...&ev=QuizStart&...` (status 200) — `trackCustom`, poprawnie NIE `track`.
    - `facebook.com/tr/?...&ev=Lead&...&cd[wojewodztwo]=slaskie&cd[kategoria]=PMU&cd[content_name]=quiz-kwalifikacyjny&...&eid=<eventId>` —
      `eid` to deduplikacja Meta (ten sam `eventId`, który idzie do CAPI).
    - `region1.google-analytics.com/g/collect?...&en=generate_lead&ep.lead_source=quiz&ep.wojewodztwo=slaskie&ep.kategoria=PMU`.
-   - `window.__ubFiredEvents` zawierał `lead:<id>:meta`, `lead:<id>:ga4`, `lead:<id>:ads` — wszystkie
-     trzy kanały faktycznie odpaliły z tego samego wywołania.
-   - Odświeżenie `/dziekujemy` (segment już skasowany z `sessionStorage`) → **zero** kolejnych
-     żądań `ev=Lead`/`generate_lead`. Poprawka podwójnego strzału na refresh (patrz §5) działa.
+   - `window.dataLayer` zawierał, w tej kolejności: `consent default` (wszystko denied) →
+     `consent update` (granted zgodnie ze zgodą) → `set user_data {email, phone_number: E.164}` →
+     `event conversion {send_to:"AW-.../<etykieta>", transaction_id:"<eventId>"}` — to jest
+     dowód NA POZIOMIE KODU, że wywołanie konwersji Ads i enhanced conversions dzieje się poprawnie
+     (nie zweryfikowano, czy prawdziwe konto Google Ads faktycznie ZAREJESTRUJE tę konwersję —
+     wymaga realnego `AW-`/etykiety i Tag Assistant, patrz §7).
+3. Zgoda TYLKO `analytics` (bez `marketing`): `window.fbq === undefined` (Pixel nigdy się nie
+   ładuje), `window.__ubAnalytics.pixel/adsId/adsLeadLabel === null`, `dataLayer` zawiera TYLKO
+   `config G-TESTTEST1` — żadnego wpisu `AW-`. Zero żądań do `connect.facebook.net`/`facebook.com`.
+   Kryterium akceptacji #2 zweryfikowane bezpośrednio.
+4. Odświeżenie `/dziekujemy` (segment już skasowany z `sessionStorage`) → **zero** kolejnych
+   żądań `ev=Lead`/`generate_lead` na NOWYM kodzie — a na STARYM kodzie (test rozstrzygający wyżej)
+   każde odświeżenie wysyłało kolejny `Lead` i konwersję Ads bezwarunkowo. To jest realna poprawka,
+   niezależna od tego, która hipoteza (A/B) wyjaśnia produkcyjne zero.
 
-**Nierozstrzygnięte — „Contact (5)" w Meta:** w całym kodzie (obecnym I sprzed tej gałęzi) `fbq`
-było wołane tylko dla `PageView`, i po tej pracy dodatkowo dla zdarzeń z mapy w `tracking-events.ts`.
-**Żadna wersja kodu nigdy nie wysyłała `fbq('track','Contact')` ani `trackCustom` o tej nazwie**
-przed tą gałęzią — `ContactForm.tsx` zaczyna to robić dopiero w tym PR-ze (patrz §1, zdarzenie
-`contact`). Te 5 zdarzeń w panelu MUSIAŁO powstać zanim ten kod istniał. Automatyczne zdarzenia
-Meta (Automatic Advanced Matching / Automatic Events) są w panelu wyłączone — jeśli to prawda,
-**źródło tych 5 zdarzeń jest niewyjaśnione**. Hipotezy do sprawdzenia przez CEO w panelu (poza
-zakresem tego zadania — brak dostępu do panelu Meta z tej gałęzi): (a) telefon w stopce
-(`tel:`) wyzwolił wbudowaną heurystykę Pixela, (b) inne wdrożenie Pixela na innej domenie/subdomenie
-współdzieli to samo ID, (c) ślad z etapu wdrażania/testów 22.09 sprzed tej korekty.
+**Nierozstrzygnięte — „Contact (5)" w Meta:** sprawdzone dwoma sposobami:
+- `git log --all -G "fbq\(.*Contact" --oneline` (CAŁA historia, wszystkie gałęzie, nie tylko ta) —
+  jedyny wynik to własny commit dokumentacji z tej gałęzi. Czyli **żadna wersja kodu w tym repo,
+  na żadnej gałęzi, nigdy nie wysyłała `fbq(...,'Contact',...)`** przed tą pracą — `ContactForm.tsx`
+  zaczyna to robić dopiero tutaj (patrz §1).
+- `grep -rl 2307645766669921 ~/Projects` (poza `node_modules`) — jedyne trafienia to pliki z tej
+  gałęzi (`tracking-events.ts`, ten dokument). **Żaden inny projekt na tej maszynie nie współdzieli
+  tego ID pikselu** — hipoteza „inne wdrożenie na innej domenie" nie ma potwierdzenia TUTAJ (ale to
+  sprawdza tylko lokalne repozytoria, nie wyklucza wdrożenia poza tym komputerem, np. wklejonego
+  ręcznie na inną stronę).
+
+Automatyczne zdarzenia Meta (Automatic Advanced Matching / Automatic Events) są w panelu wyłączone
+— jeśli to prawda, **źródło tych 5 zdarzeń „Contact" pozostaje niewyjaśnione**. Kandydaci do
+sprawdzenia przez CEO (poza zakresem tej gałęzi — brak dostępu do panelu Meta i do historii
+wdrożeń naffy): (a) integracja płatności naffy (sklep poszedł live 28.09) mogła wgrać własny
+snippet Pixela z tym samym ID, (b) wbudowana heurystyka Pixela na `tel:`/`mailto:` w stopce mimo
+wyłączonych „Automatic Events", (c) ślad z ręcznego testowania 22.09 w konsoli przeglądarki.
 
 ## 1. Mapa zdarzeń (stan faktyczny w kodzie)
 
@@ -166,27 +199,56 @@ wersją. Nadpisywalne przez `META_CAPI_API_VERSION`, gdyby CEO chciał wymusić 
 **Pewne (zweryfikowane testem albo w realnej przeglądarce):**
 - Mapa zdarzeń i budowa payloadu CAPI (`npm run test:tracking`, 50/50 testów OK).
 - Hash e-maila/telefonu — wektor niezależny od własnej implementacji (`shasum -a 256` w shellu).
-- Niezależność kanałów Meta/GA4/Ads (scenariusze wyścigu, symulowane i potwierdzone w realnym
-  Chrome na dev z prawdziwymi bibliotekami `fbq`/`gtag`).
-- Poprawka podwójnego strzału na `/dziekujemy` (zweryfikowana ręcznie).
+- Niezależność kanałów Meta/GA4/Ads na SZTUCZNYM wyścigu (symulacja w `scripts/test-tracking.ts`
+  + potwierdzenie w realnym Chrome, że NOWY kod poprawnie wysyła `QuizStart`/`Lead` do Mety
+  (z `eid`), do GA4 (`generate_lead` z `lead_source`, nie `content_name`) i do Ads
+  (`dataLayer`: `set user_data` → `event conversion` z `transaction_id`).
+- Kryterium akceptacji #2: zgoda tylko `analytics` → `fbq` nigdy się nie definiuje, `dataLayer`
+  bez żadnego wpisu `AW-`, zero żądań do domen Mety. Zweryfikowane bezpośrednio w przeglądarce.
+- Poprawka podwójnego strzału na `/dziekujemy`: na STARYM kodzie każde odświeżenie wysyłało
+  kolejny `Lead`/konwersję Ads; na NOWYM — zero. Zweryfikowane na obu wersjach kodu.
+- **Test rozstrzygający (`git switch --detach` na commit sprzed gałęzi, patrz §0): stary kod, na
+  w pełni załadowanej stronie (bez wyścigu), POPRAWNIE wysyłał `Lead` do Mety i Ads.** Czyli
+  race-condition w starym `TrackEvent.tsx` jest realnym błędem (reprodukowanym na sztucznie
+  opóźnionych skryptach), ale NIE jest potwierdzoną przyczyną zera na produkcji.
+- Zgodność z gałęzią `mobile/optymalizacja` (drugi deweloper): `git merge-tree --write-tree
+  analityka/zdarzenia mobile/optymalizacja` — **brak konfliktów**. Ta gałąź dziś dotyka
+  `LeadFormModal.tsx`, `CookieConsent.tsx`, `Navbar.tsx`, `StickyConsultationCta.tsx`,
+  `src/app/(public)/page.tsx` i FAQ w `poradnik-wlasny-salon/page.tsx` (padding pod cel dotykowy,
+  poza obszarem, który tu zmieniłem) — **NIE `Quiz.tsx` ani `LeadForm.tsx`** wbrew opisowi w
+  brief-ie (być może jeszcze nie doszła do tych plików w chwili pisania brief-u). Zmiany w tej
+  gałęzi na `Quiz.tsx`/`LeadForm.tsx` i tak zostały ograniczone do logiki poza JSX-em, więc
+  ryzyko konfliktu zostaje niskie nawet gdyby tamta gałąź dotarła tam później.
 - `npx tsc --noEmit`, `npm run test:tracking`, `npm run build` — zielone.
 
 **Hipoteza (logicznie wynika z kodu, nie zweryfikowana na produkcyjnym ruchu):**
-- To, że naprawiona niezależność kanałów faktycznie podniesie liczbę zdarzeń `Lead` w Meta i
-  aktywuje konwersję Google Ads na PRODUKCJI — zależy też od tego, ile realnych użytkowniczek
-  daje zgodę marketingową (Hipoteza A nie jest wykluczona jako WSPÓŁPRZYCZYNA, tylko jako JEDYNA
-  przyczyna: gdyby A było jedynym wyjaśnieniem, kod by tego nie poprawił, a błąd race-condition
-  w starym kodzie jest niezależnym, realnym faktem widocznym w diffie).
+- **Hipoteza A (nikt/mało kto daje zgodę marketingową) POZOSTAJE OTWARTA i jest dziś bardziej
+  prawdopodobnym wyjaśnieniem niż race-condition** — patrz test rozstrzygający wyżej. Do
+  zweryfikowania: odsetek `marketing:true` wśród realnych decyzji banera (dziś nie mierzony —
+  proponowana jedna linia w `logAudit` przy `lead_utworzony` z `adConsent`, żeby to liczyć
+  z własnych danych zamiast zgadywać, patrz commit z tej gałęzi).
+- Trzecia możliwość, niezależna od A i B: Meta może ograniczać/filtrować zdarzenia dla kont
+  zaklasyfikowanych jako zdrowie/wellness — kategoria „med. estetyczna" jest w `CATEGORIES`.
+  To sprawdza CEO w zakładce Diagnostyka Menedżera zdarzeń (ta sama karta, którą CEO miał otwartą
+  podczas tej sesji) — poza zasięgiem kodu.
+- Poprawiona niezależność kanałów i tak jest czystym usunięciem realnego ryzyka (LeadForm z modala
+  wypełniony bardzo szybko zaraz po zgodzie, wolne łącze, słaby telefon) — zostaje w kodzie
+  niezależnie od tego, która hipoteza wygra.
 
 **Niesprawdzone / poza zakresem tej pracy:**
-- Źródło 5 zdarzeń „Contact" w Meta sprzed tej gałęzi (patrz §0) — wymaga dostępu do panelu
-  Meta i historii wdrożeń, którego nie mam z tej gałęzi.
-- Realny wskaźnik zgody marketingowej wśród użytkowniczek UB (ile % faktycznie klika „Akceptuję
-  wszystkie" vs „Tylko niezbędne") — do sprawdzenia w Google Analytics/Meta po tygodniu ruchu.
+- Źródło 5 zdarzeń „Contact" w Meta sprzed tej gałęzi (patrz §0) — historia repo i pixel ID
+  sprawdzone lokalnie (obie ścieżki czyste), ale to nie obejmuje panelu Meta ani integracji
+  naffy, do których nie mam dostępu z tej gałęzi.
+- Realny wskaźnik zgody marketingowej wśród użytkowniczek UB — do sprawdzenia w Google
+  Analytics/Meta po tygodniu ruchu, albo z audytu `logAudit` po dodaniu `adConsent` (patrz wyżej).
 - Zachowanie na produkcyjnym Coolify (build w Dockerze, zmienne env wstrzykiwane w runtime) —
   przetestowane lokalnie (`npm run build` na tym samym Node 20-kompatybilnym kodzie), ale nie na
   faktycznym kontenerze.
 - Czy `allow_enhanced_conversions` trzeba dodatkowo ustawić w `gtag('config', adsId, …)` — kod
   wysyła `gtag('set','user_data',...)` zgodnie z aktualną dokumentacją Google (obsługiwane bez tej
   flagi w standardowym tagu strony), ale nie zweryfikowano tego w panelu Google Ads (wymaga
-  realnego konta z FID/kontem reklamowym).
+  realnego konta z FID/kontem reklamowym) — **do zrobienia przez CEO**: sprawdzić w ustawieniach
+  akcji konwersji `Mq-qCK6jqPIcEMXP-5oo`, czy enhanced conversions dla leadów jest włączone.
+- Czy prawdziwe konto Google Ads faktycznie zarejestruje konwersję wysłaną przez `dataLayer`
+  (kod wywołuje `gtag('event','conversion',...)` poprawnie — zweryfikowane; przyjęcie przez
+  serwery Google z realnym `AW-10793969605` nie było testowane, wymaga Tag Assistant po deployu).
