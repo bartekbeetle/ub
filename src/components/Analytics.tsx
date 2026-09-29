@@ -110,6 +110,27 @@ export function Analytics() {
     window.__ubAnalytics = allowedIds;
   }, [anyConsent, allowedIds]);
 
+  /**
+   * Consent Mode v2 (tryb PODSTAWOWY — świadomie NIE zaawansowany, patrz brief P1 29.09):
+   * skrypty i tak ładują się dopiero po zgodzie (gating wyżej), więc to `gtag('consent',...)`
+   * jest formalnym potwierdzeniem stanu, nie bramką samą w sobie — nie wysyłamy żadnych
+   * pingów bez zgody, bo do tego momentu `gtag` w ogóle nie istnieje.
+   *
+   * Runtime `update` jest tu osobno (nie tylko w inline-skrypcie niżej), bo `<Script id="gtag-config">`
+   * ma STAŁE `id` — Next.js nie wykonuje go ponownie, gdy `allowedIds` się zmieni (np. ktoś
+   * najpierw zaakceptował tylko analitykę, a chwilę później dołożył marketing). Bez tego efektu
+   * `ad_storage`/`ad_user_data` zostałyby trwale „denied" mimo późniejszej zgody.
+   */
+  useEffect(() => {
+    if (!anyConsent || typeof window.gtag !== "function") return;
+    window.gtag("consent", "update", {
+      analytics_storage: allowedIds.ga4 ? "granted" : "denied",
+      ad_storage: allowedIds.pixel || allowedIds.adsId ? "granted" : "denied",
+      ad_user_data: allowedIds.adsId ? "granted" : "denied",
+      ad_personalization: allowedIds.adsId ? "granted" : "denied",
+    });
+  }, [anyConsent, allowedIds]);
+
   if (!anyConsent) return null;
 
   // Jeden `gtag.js` obsługuje i GA4, i Google Ads — ładujemy go pod pierwszy DOZWOLONY ID.
@@ -135,6 +156,18 @@ fbq('track', 'PageView');`}
             {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 window.gtag = window.gtag || gtag;
+gtag('consent', 'default', {
+  analytics_storage: 'denied',
+  ad_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied'
+});
+gtag('consent', 'update', {
+  analytics_storage: ${allowedIds.ga4 ? "'granted'" : "'denied'"},
+  ad_storage: ${allowedIds.pixel || allowedIds.adsId ? "'granted'" : "'denied'"},
+  ad_user_data: ${allowedIds.adsId ? "'granted'" : "'denied'"},
+  ad_personalization: ${allowedIds.adsId ? "'granted'" : "'denied'"}
+});
 gtag('js', new Date());
 ${allowedIds.ga4 ? `gtag('config', '${allowedIds.ga4}', { anonymize_ip: true });` : ""}
 ${allowedIds.adsId ? `gtag('config', '${allowedIds.adsId}');` : ""}`}
