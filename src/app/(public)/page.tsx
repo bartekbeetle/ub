@@ -118,7 +118,7 @@ export default async function HomePage() {
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link href="/kursy" className="btn-primary !px-10 !py-4 !text-lg">
-              Uzyskaj Dofinansowanie
+              Jak uzyskać dofinansowanie?
             </Link>
             <Link href="/aplikacja" className="btn-outline !px-8 !py-3.5">
               Aplikuj o dofinansowanie
