@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { academyRegistrationSchema } from "@/lib/validators";
@@ -9,6 +9,8 @@ import { findMatchingProspect, freeTrainerSlug, logProspectActivity } from "@/li
 import { getSettings } from "@/lib/settings";
 import { sendOrQueueEmail, EMAIL_KIND } from "@/lib/email";
 import { CONSENT_VERSION, voivodeshipName } from "@/lib/constants";
+import { shouldSendCapi } from "@/lib/meta-capi-core";
+import { sendMetaCapiEvent, extractMetaClientSignals } from "@/lib/meta-capi";
 
 export const runtime = "nodejs";
 
@@ -293,6 +295,29 @@ export async function POST(req: Request) {
       `Korzystamy z niego, dobierając kursantki do akademii — im konkretniej opiszesz zakres, tym trafniej.\n\n` +
       `Pozdrawiamy,\nZespół Uniwersytet Beauty\nbiuro@uniwersytetbeauty.pl`,
   });
+
+  // Meta Conversions API — SubmitApplication. Ta sama reguła co w `/api/lead`: tylko ze zgodą
+  // marketingową z banera i tylko z `eventId` klienta (deduplikacja z `AcademyRegistrationForm.tsx`).
+  if (shouldSendCapi({ adConsent: d.adConsent, eventId: d.eventId })) {
+    const signals = extractMetaClientSignals(req);
+    after(() =>
+      sendMetaCapiEvent({
+        eventName: "SubmitApplication",
+        eventId: d.eventId!,
+        eventSourceUrl: signals.eventSourceUrl || "https://uniwersytetbeauty.pl/dla-akademii/rejestracja",
+        email: d.email,
+        phone: d.phone,
+        clientIp: ip !== "unknown" ? ip : undefined,
+        userAgent: signals.userAgent,
+        fbp: signals.fbp,
+        fbc: signals.fbc,
+        customData: {
+          ...(d.voivodeship ? { wojewodztwo: d.voivodeship } : {}),
+          content_name: "rejestracja-akademii",
+        },
+      }).catch((err) => console.error("[meta-capi] SubmitApplication — nieoczekiwany błąd:", err))
+    );
+  }
 
   return NextResponse.json({ ok: true, email }, { status: 201 });
 }

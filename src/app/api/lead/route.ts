@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { getDb, schema } from "@/db";
 import { leadSchema } from "@/lib/validators";
 import { rateLimit, getClientIp } from "@/lib/ratelimit";
@@ -6,6 +6,8 @@ import { distributeLead } from "@/lib/matching";
 import { sendLeadConfirmation } from "@/lib/lead-events";
 import { logAudit } from "@/lib/audit";
 import { CONSENT_VERSION } from "@/lib/constants";
+import { shouldSendCapi } from "@/lib/meta-capi-core";
+import { sendMetaCapiEvent, extractMetaClientSignals } from "@/lib/meta-capi";
 
 export const runtime = "nodejs";
 
@@ -94,6 +96,33 @@ export async function POST(req: Request) {
     await distributeLead(lead);
   } catch (err) {
     console.error("[lead] Błąd dystrybucji:", err);
+  }
+
+  // Meta Conversions API — TYLKO gdy klient przekazał zgodę marketingową z banera cookies
+  // I własny `eventId` (deduplikacja z pikselem przeglądarkowym, patrz `LeadConversion.tsx`).
+  // `after()` (Next 15) gwarantuje, że to poleci PO wysłaniu odpowiedzi — kryterium akceptacji #5:
+  // awaria albo wolność Grafu nie mogą zmienić czasu odpowiedzi `/api/lead`.
+  if (shouldSendCapi({ adConsent: data.adConsent, eventId: data.eventId })) {
+    const signals = extractMetaClientSignals(req);
+    after(() =>
+      sendMetaCapiEvent({
+        eventName: "Lead",
+        eventId: data.eventId!,
+        eventSourceUrl: signals.eventSourceUrl || "https://uniwersytetbeauty.pl/aplikacja",
+        email: data.email,
+        phone: data.phone,
+        clientIp: ip !== "unknown" ? ip : undefined,
+        userAgent: signals.userAgent,
+        fbp: signals.fbp,
+        fbc: signals.fbc,
+        // WHITELIST — świadomie bez `employmentStatus`, kodu pocztowego i innych pól wrażliwych.
+        customData: {
+          ...(data.voivodeship ? { wojewodztwo: data.voivodeship } : {}),
+          ...(data.category ? { kategoria: data.category } : {}),
+          content_name: data.source === "quiz" ? "quiz-kwalifikacyjny" : "formularz",
+        },
+      }).catch((err) => console.error("[meta-capi] Lead — nieoczekiwany błąd:", err))
+    );
   }
 
   return NextResponse.json({ ok: true, id: lead.id });

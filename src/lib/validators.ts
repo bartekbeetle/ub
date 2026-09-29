@@ -72,6 +72,17 @@ export const leadSchema = z.object({
   utmCampaign: z.string().max(160).optional().or(z.literal("")),
   // honeypot — bot wypełnia, człowiek nie; handler zwraca cichy "sukces" bez zapisu
   website: z.string().max(300).optional().or(z.literal("")),
+  // === Analityka (P1, 29.09.2026) ===
+  /** UUID wygenerowany W PRZEGLĄDARCE przed wysyłką — deduplikacja Meta Pixel/CAPI i Google Ads.
+   * Serwer NIGDY nie generuje własnego w zastępstwie (patrz `shouldSendCapi` w `meta-capi-core.ts`):
+   * brak `eventId` = po prostu brak CAPI dla tego zgłoszenia, nie nowe ID. */
+  eventId: z.string().uuid().optional(),
+  /**
+   * Zgoda z BANERA COOKIES (kubełek `marketing`, `readConsent().marketing`) — NIE mylić z polem
+   * `marketingConsent` wyżej, które jest zgodą na newsletter e-mailowy (inna podstawa prawna,
+   * inny cel). Ta flaga gate'uje WYŁĄCZNIE, czy wolno wysłać zdarzenie do Meta Conversions API.
+   */
+  adConsent: z.boolean().optional().default(false),
 });
 
 export const submissionSchema = z.object({
@@ -182,6 +193,9 @@ export const academyRegistrationSchema = z.object({
   }),
   // honeypot — patrz `/api/lead`: bot wypełnia, człowiek nie widzi
   fax: z.string().max(200).optional().or(z.literal("")),
+  // === Analityka (P1, 29.09.2026) — patrz komentarz w `leadSchema` powyżej ===
+  eventId: z.string().uuid().optional(),
+  adConsent: z.boolean().optional().default(false),
 });
 
 export const trainerSchema = z.object({
