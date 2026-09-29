@@ -19,7 +19,11 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-sand-100 bg-cream/95 backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:h-20 md:px-6" aria-label="Główna nawigacja">
-        <Link href="/" className="font-serif text-lg font-bold tracking-[3px] text-ink-soft md:text-xl" aria-label="Uniwersytet Beauty — strona główna">
+        <Link
+          href="/"
+          className="inline-flex min-h-[44px] items-center font-serif text-lg font-bold tracking-[3px] text-ink-soft md:text-xl"
+          aria-label="Uniwersytet Beauty — strona główna"
+        >
           UNIWERSYTET <span className="text-sand-700">BEAUTY</span>
         </Link>
 
