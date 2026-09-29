@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { CATEGORIES, EMPLOYMENT_STATUSES, VOIVODESHIPS } from "@/lib/constants";
 import { LEAD_SEGMENT_KEY } from "@/components/LeadConversion";
 import { getUtm } from "@/lib/utm";
+import { readConsent } from "@/lib/consent";
 
 type Props = {
   courseId?: number;
@@ -74,6 +75,11 @@ export function LeadForm({ courseId, defaultCategory, defaultVoivodeship, source
     }
 
     setSubmitting(true);
+    // UUID PRZED wysyłką — deduplikacja Meta Pixel/CAPI i Google Ads (patrz `LeadConversion.tsx`
+    // i `docs/zdarzenia-analityczne.md`). `adConsent` to zgoda z BANERA cookies (kubełek
+    // `marketing`), NIE pole `marketingConsent` niżej (to newsletter — inna zgoda, inny cel).
+    const eventId = crypto.randomUUID();
+    const adConsent = readConsent()?.marketing === true;
     const payload = {
       name: String(fd.get("name") ?? "").trim(),
       phone: String(fd.get("phone") ?? "").trim(),
@@ -88,6 +94,8 @@ export function LeadForm({ courseId, defaultCategory, defaultVoivodeship, source
       website: String(fd.get("website") ?? ""), // honeypot
       courseId: courseId ?? null,
       source,
+      eventId,
+      adConsent,
       ...utm,
     };
     try {
@@ -110,7 +118,14 @@ export function LeadForm({ courseId, defaultCategory, defaultVoivodeship, source
       try {
         sessionStorage.setItem(
           LEAD_SEGMENT_KEY,
-          JSON.stringify({ voivodeship: payload.voivodeship, category: payload.category })
+          JSON.stringify({
+            voivodeship: payload.voivodeship,
+            category: payload.category,
+            eventId,
+            // E-mail/telefon TYLKO gdy jest zgoda marketingowa z banera — służą wyłącznie
+            // Google Ads enhanced conversions na /dziekujemy i są kasowane zaraz po odczycie.
+            ...(adConsent ? { email: payload.email, phone: payload.phone } : {}),
+          })
         );
       } catch {
         /* brak storage = konwersja bez segmentacji, ale nadal się liczy */

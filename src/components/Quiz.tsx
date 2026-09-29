@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { CATEGORIES, VOIVODESHIPS } from "@/lib/constants";
 import { LEAD_SEGMENT_KEY } from "@/components/LeadConversion";
 import { getUtm } from "@/lib/utm";
+import { readConsent } from "@/lib/consent";
+import { trackEvent } from "@/lib/tracking-events";
 
 type Props = {
   /** Numeryczne ID kursu, jeśli quiz wszedł z karty konkretnego szkolenia (`?kurs=<slug>`). */
@@ -274,7 +276,28 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
     }).catch(() => {});
   }
 
+  /**
+   * QuizStart (Meta `trackCustom` + GA4 `quiz_start`) — odpalane na PIERWSZĄ realną odpowiedź,
+   * nie na zamontowanie komponentu. Bez zmian w JSX (drugi deweloper pracuje równolegle nad
+   * mobilnym layoutem tych samych plików — brief P1 29.09): haczyk siedzi w `set()`, przez które
+   * przechodzi każda odpowiedź. Flaga w `sessionStorage` (klucz powiązany z `ub_quiz_session`)
+   * pilnuje "raz na sesję quizu", nie "raz na zamontowanie" — odświeżenie w trakcie wypełniania
+   * nie ma dublować zdarzenia.
+   */
+  function markQuizStarted() {
+    if (typeof window === "undefined" || !sessionKey.current) return;
+    const flagKey = `ub_quiz_start_fired:${sessionKey.current}`;
+    try {
+      if (sessionStorage.getItem(flagKey)) return;
+      sessionStorage.setItem(flagKey, "1");
+    } catch {
+      /* brak storage — i tak nie mamy jak dedupować, lecimy dalej best-effort */
+    }
+    trackEvent("quiz_start", { content_name: "quiz-kwalifikacyjny" });
+  }
+
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
+    if (key !== "website") markQuizStarted(); // honeypot nie liczy się jako "odpowiedź"
     setForm((f) => ({ ...f, [key]: value }));
     if (errors[key]) setErrors((e) => ({ ...e, [key]: undefined }));
   }
@@ -380,6 +403,12 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
 
     const travelOption = TRAVEL_OPTIONS.find((t) => String(t.km) === form.travelKm);
 
+    // UUID PRZED wysyłką — deduplikacja Meta Pixel/CAPI i Google Ads (patrz `LeadConversion.tsx`).
+    // `adConsent` to zgoda z BANERA cookies (kubełek `marketing`) — inna zgoda niż formularzowe
+    // `form.marketingConsent` (newsletter), którego wartość leci niżej bez zmian.
+    const eventId = crypto.randomUUID();
+    const adConsent = readConsent()?.marketing === true;
+
     const payload = {
       name: form.name.trim(),
       phone: form.phone.trim(),
@@ -398,6 +427,8 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       website: form.website, // honeypot
       courseId: courseId ?? null,
       source: "quiz" as const,
+      eventId,
+      adConsent,
       ...getUtm(),
     };
 
@@ -417,7 +448,14 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
       try {
         sessionStorage.setItem(
           LEAD_SEGMENT_KEY,
-          JSON.stringify({ voivodeship: payload.voivodeship, category: payload.category, source: "quiz" })
+          JSON.stringify({
+            voivodeship: payload.voivodeship,
+            category: payload.category,
+            source: "quiz",
+            eventId,
+            // Tylko ze zgodą marketingową — patrz komentarz w `LeadForm.tsx` i `LeadConversion.tsx`.
+            ...(adConsent ? { email: payload.email, phone: payload.phone } : {}),
+          })
         );
       } catch {
         /* brak storage = konwersja bez segmentacji, ale nadal się liczy */
