@@ -12,7 +12,6 @@ fraza_glowna: "dofinansowanie BUR dla osoby pracującej"
 filar: A
 rola: podtemat
 reading_minutes: 9
-nadpisz_w_bazie: true
 ---
 
 # BUR ≠ urząd pracy: dofinansowanie należy się też pracującym

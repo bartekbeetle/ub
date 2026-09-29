@@ -12,7 +12,6 @@ fraza_glowna: "ile zarabia linergistka"
 filar: A
 rola: "podtemat"
 reading_minutes: 10
-nadpisz_w_bazie: true
 ---
 
 # Ile zarabia linergistka i stylistka beauty - uczciwy rachunek, zanim rzucisz obecną pracę

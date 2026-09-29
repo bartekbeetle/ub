@@ -12,7 +12,6 @@ fraza_glowna: "kurs paznokci z dofinansowaniem"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
-nadpisz_w_bazie: true
 ---
 
 # Kurs stylizacji paznokci z dofinansowaniem - realny koszt

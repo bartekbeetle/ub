@@ -13,7 +13,6 @@ wolumen_frazy: 70
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: 3
-nadpisz_w_bazie: true
 ---
 
 # Kurs przedłużania rzęs w Poznaniu: cena, program i dofinansowanie

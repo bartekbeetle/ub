@@ -12,7 +12,6 @@ fraza_glowna: "przebranżowienie na beauty od czego zacząć"
 filar: A
 rola: "podtemat"
 reading_minutes: 10
-nadpisz_w_bazie: true
 ---
 
 # Przebranżowienie na beauty po 30 i 40 - od czego zacząć

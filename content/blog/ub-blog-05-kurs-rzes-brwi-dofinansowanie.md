@@ -12,7 +12,6 @@ fraza_glowna: "dofinansowanie na kurs rzęs"
 filar: A
 rola: podtemat
 reading_minutes: 8
-nadpisz_w_bazie: true
 ---
 
 # Dofinansowanie na kurs rzęs i brwi - realny koszt dla Ciebie

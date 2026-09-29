@@ -12,7 +12,6 @@ fraza_glowna: "czy stylizacja paznokci się opłaca"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
-nadpisz_w_bazie: true
 ---
 
 # Czy stylizacja paznokci się opłaca - rachunek na start

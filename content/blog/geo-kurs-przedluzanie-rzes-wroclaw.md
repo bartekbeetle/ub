@@ -13,7 +13,6 @@ wolumen_frazy: 110
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: 0
-nadpisz_w_bazie: true
 ---
 
 # Kurs przedłużania rzęs we Wrocławiu: cena, program i dofinansowanie

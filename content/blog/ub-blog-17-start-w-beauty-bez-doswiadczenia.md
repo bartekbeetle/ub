@@ -12,7 +12,6 @@ fraza_glowna: "jak zacząć pracę w beauty bez doświadczenia"
 filar: A
 rola: "podtemat"
 reading_minutes: 10
-nadpisz_w_bazie: true
 ---
 
 # Jak zacząć w beauty bez doświadczenia - dwie ścieżki wejścia

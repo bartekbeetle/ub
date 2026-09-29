@@ -13,7 +13,6 @@ wolumen_frazy: 30
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: 4
-nadpisz_w_bazie: true
 ---
 
 # Kurs stylizacji paznokci w Płocku: cena, program i dofinansowanie

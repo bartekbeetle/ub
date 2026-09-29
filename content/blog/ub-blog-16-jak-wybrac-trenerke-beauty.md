@@ -12,7 +12,6 @@ fraza_glowna: "jak wybrać kurs beauty"
 filar: A
 rola: "podtemat"
 reading_minutes: 10
-nadpisz_w_bazie: true
 ---
 
 # Jak wybrać dobrą trenerkę i akademię beauty

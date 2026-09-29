@@ -13,7 +13,6 @@ wolumen_frazy: 50
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: 1
-nadpisz_w_bazie: true
 ---
 
 # Kurs makijażu permanentnego we Wrocławiu: cena, program i dofinansowanie

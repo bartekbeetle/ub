@@ -12,7 +12,6 @@ fraza_glowna: "kurs microblading z dofinansowaniem"
 filar: A
 rola: "podtemat"
 reading_minutes: 10
-nadpisz_w_bazie: true
 ---
 
 # Kurs microbladingu z dofinansowaniem - ile naprawdę kosztuje

@@ -13,7 +13,6 @@ wolumen_frazy: 90
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: 2
-nadpisz_w_bazie: true
 ---
 
 # Kurs przedłużania rzęs w Krakowie: cena, program i dofinansowanie

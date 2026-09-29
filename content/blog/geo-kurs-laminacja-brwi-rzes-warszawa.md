@@ -13,7 +13,6 @@ wolumen_frazy: 50
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: 0
-nadpisz_w_bazie: true
 ---
 
 # Kurs laminacji brwi i rzęs w Warszawie: cena, program i dofinansowanie

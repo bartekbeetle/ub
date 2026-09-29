@@ -13,7 +13,6 @@ wolumen_frazy: 40
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: 5
-nadpisz_w_bazie: true
 ---
 
 # Kurs przedłużania rzęs w Gdańsku: cena, program i dofinansowanie

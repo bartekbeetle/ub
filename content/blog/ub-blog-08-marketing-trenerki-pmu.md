@@ -12,7 +12,6 @@ fraza_glowna: "marketing dla trenerki makijażu permanentnego"
 filar: B
 rola: "podtemat"
 reading_minutes: 9
-nadpisz_w_bazie: true
 ---
 
 # Marketing dla trenerki makijażu permanentnego: co działa, a co zjada czas
