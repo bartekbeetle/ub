@@ -196,8 +196,13 @@ export default async function HomePage() {
           </h2>
           <div className="mt-10 divide-y divide-sand-200 border-y border-sand-200">
             {FAQ.map(({ question, answer }) => (
-              <details key={question} className="group py-5">
-                <summary className="flex cursor-pointer items-center justify-between gap-4 font-serif text-lg font-semibold marker:content-['']">
+              /* Padding NA summary, nie na details: details samo nie jest klikalne, więc
+                 wcześniejszy `py-5` na details dawał ~28px wysokości realnego celu dotykowego
+                 (sama linia tekstu) zamiast ~68px. Wizualny odstęp między pytaniami zostaje
+                 identyczny — przeniesiony z details (przed+po) na summary (przed) + pb na
+                 odpowiedzi (po), bez zmiany layoutu. */
+              <details key={question} className="group">
+                <summary className="flex cursor-pointer items-center justify-between gap-4 py-5 font-serif text-lg font-semibold marker:content-['']">
                   <h3 className="font-serif text-lg font-semibold">{question}</h3>
                   <span
                     aria-hidden
@@ -206,7 +211,7 @@ export default async function HomePage() {
                     +
                   </span>
                 </summary>
-                <p className="mt-3 leading-relaxed text-muted">{answer}</p>
+                <p className="mt-3 pb-5 leading-relaxed text-muted">{answer}</p>
               </details>
             ))}
           </div>
