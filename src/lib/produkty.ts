@@ -16,7 +16,7 @@ export const PORADNIK_SALON = {
   /** Cena brutto w zł; musi być identyczna jak w naffy. Sprzedawca zwolniony z VAT. */
   cena: 28,
   strony: 36,
-  checkoutUrl: "",
+  checkoutUrl: "https://naffy.io/uniwersytetbeauty/poradnik-wlasny-salon",
 } as const;
 
 export const PORADNIK_SALON_W_SPRZEDAZY = PORADNIK_SALON.checkoutUrl.length > 0;
