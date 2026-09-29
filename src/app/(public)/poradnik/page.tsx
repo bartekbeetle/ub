@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PoradnikForm } from "@/components/PoradnikForm";
 import { IconCheck } from "@/components/icons";
@@ -98,6 +99,17 @@ export default function PoradnikPage() {
             próg oraz własny limit kwotowy. Dlatego poradnik ma osobne wydanie dla każdego
             z tych województw — wybierzesz swoje w formularzu obok.
           </p>
+
+          {/* Płatny poradnik dla kobiet po kursie — naturalny następny krok po tym darmowym. */}
+          <div className="mt-10 rounded-[12px] border border-sand-200 bg-white p-5">
+            <p className="text-sm font-semibold uppercase tracking-wider text-sand-700">Masz już kurs za sobą?</p>
+            <p className="mt-2 text-ink">
+              <Link href="/poradnik-wlasny-salon" className="font-semibold underline hover:text-sand-700">
+                Własny salon beauty. Od otwarcia do pełnego grafiku
+              </Link>{" "}
+              to płatny poradnik (PDF, 36 stron) o formalnościach, sanepidzie, klientkach z Google i cenach.
+            </p>
+          </div>
 
           <p className="mt-8 text-sm text-muted">
             Dofinansowanie pokrywa {SUBSIDY_RANGE} ceny kursu — {SUBSIDY_CONDITION}.

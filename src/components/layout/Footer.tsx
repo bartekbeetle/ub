@@ -34,6 +34,7 @@ export function Footer() {
             <li><Link href="/dofinansowania" className={FOOTER_LINK}>Dofinansowania</Link></li>
             <li><Link href="/blog" className={FOOTER_LINK}>Baza wiedzy</Link></li>
             <li><Link href="/o-nas" className={FOOTER_LINK}>O nas</Link></li>
+            <li><Link href="/poradnik-wlasny-salon" className={FOOTER_LINK}>Poradnik: własny salon beauty</Link></li>
             <li><Link href="/aplikacja" className={FOOTER_LINK}>Aplikuj o dofinansowanie</Link></li>
             {/* Jedyne wejście do ścieżki B2B widoczne z każdej strony — akademie trafiają
                 tu z rozmowy telefonicznej („wejdź na stronę, w stopce jest Dla akademii”). */}
