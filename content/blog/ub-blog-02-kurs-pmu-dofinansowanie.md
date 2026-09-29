@@ -12,6 +12,7 @@ fraza_glowna: "kurs makijażu permanentnego z dofinansowaniem"
 filar: A
 rola: podtemat
 reading_minutes: 10
+nadpisz_w_bazie: true
 ---
 
 # Kurs makijażu permanentnego z dofinansowaniem - ile naprawdę zapłacisz
@@ -36,9 +37,9 @@ Do tego dochodzi rachunek zwrotu. PMU jest najbardziej dochodowym zawodem w cał
 
 Przykład: dwa kursy PMU z BUR i realne scenariusze rozliczenia, liczone z limitem kwotowym operatora, nie tylko procentem.
 
-Kurs za 6900 zł (świętokrzyskie, dofinansowanie 90%, limit kwotowy 6000 zł na osobę) - dofinansowanie wynosi 6000 zł, bo to limit decyduje, nie procent, a Twój wkład własny to **900 zł**. To jest prawdziwa liczba - nie zero, ale ułamek ceny rynkowej.
+Kurs za 6900 zł (śląskie, dofinansowanie 95%, limit kwotowy 5000 zł na osobę) - dofinansowanie wynosi 5000 zł, bo to limit decyduje, nie procent, a Twój wkład własny to **1900 zł**. To jest prawdziwa liczba - nie zero, ale ułamek ceny rynkowej.
 
-Przy droższym szkoleniu za 10 000 zł (wielkopolskie, 80-90%, limit 5000 zł) dofinansowanie zatrzymuje się na limicie: 5000 zł, a dopłata wynosi już **5000 zł** - bo każda złotówka ceny powyżej limitu jest Twoja. Dlatego przy kursach PMU od około 5500 zł w górę pierwsze pytanie do operatora nie brzmi „jaki procent", tylko „jaki macie limit kwotowy na osobę" - od niego, nie od procentu, zależy realna dopłata.
+Przy droższym szkoleniu za 10 000 zł (śląskie, 95%, limit 5000 zł) dofinansowanie zatrzymuje się na limicie: 5000 zł, a dopłata wynosi już **5000 zł** - bo każda złotówka ceny powyżej limitu jest Twoja. Dlatego przy kursach PMU od około 5300 zł w górę pierwsze pytanie do operatora nie brzmi „jaki procent", tylko „jaki macie limit kwotowy na osobę" - od niego, nie od procentu, zależy realna dopłata.
 
 Skąd zatem reklamy z „0 zł"? Z dwóch źródeł, które trzeba rozróżnić.
 
@@ -106,7 +107,7 @@ Jeśli się kwalifikujesz - dostajesz gotową ścieżkę i trenerkę, a zamiast 
 ## Najczęstsze pytania
 
 **Ile realnie zapłacę za kurs PMU z dofinansowaniem?**
-Zależy od ceny kursu i limitu kwotowego operatora, nie tylko od procentu. Dofinansowanie BUR to 80-95% ceny, zależnie od województwa i naboru, ale większość operatorów ma limit 5-7 tys. zł na osobę: przy kursie za 6900 zł i limicie 6000 zł dopłacisz około 900 zł, przy kursie za 10 000 zł i tym samym limicie dopłata wyniesie już 5000 zł. Pełne 100% (zero dopłaty) zdarza się głównie przez KFS, gdy wniosek za Ciebie składa pracodawca - to wyjątek, nie reguła.
+Zależy od ceny kursu i limitu kwotowego operatora, nie tylko od procentu. Dofinansowanie BUR sięga nawet do 95% ceny, zależnie od województwa i naboru, ale większość operatorów ma limit 5-7 tys. zł na osobę: przy kursie za 6900 zł i limicie 5000 zł dopłacisz około 1900 zł, przy kursie za 10 000 zł i tym samym limicie dopłata wyniesie już 5000 zł. Pełne 100% (zero dopłaty) zdarza się głównie przez KFS, gdy wniosek za Ciebie składa pracodawca - to wyjątek, nie reguła.
 
 **Czy dostanę kurs PMU całkowicie za darmo?**
 Najczęściej nie. Wkład własny wynosi zwykle kilkaset złotych przy tańszych kursach, a przy droższych - powyżej limitu operatora - nawet kilka tysięcy. Reklamy „za 0 zł" pokazują albo wyjątkowe ścieżki (KFS, wybrane projekty EFS+), albo najlepszy scenariusz przedstawiony jako standard. Przy zapisie pytaj o konkretną kwotę wkładu własnego, nie o slogan.

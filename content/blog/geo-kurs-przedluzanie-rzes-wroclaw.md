@@ -5,7 +5,7 @@ category: "Poradniki"
 excerpt: "Ile kosztuje kurs przedłużania rzęs we Wrocławiu, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie dolnośląskim."
 metaTitle: "Kurs przedłużania rzęs Wrocław: cena i dofinansowanie"
 metaDescription: "Kurs przedłużania rzęs we Wrocławiu: rynkowa cena 1800-3400 zł, przy dofinansowaniu z BUR wkład własny zwykle 90-680 zł. Program i zasady naboru."
-data: 2026-09-28
+data: 2026-09-29
 reading_minutes: 4
 target: kursantka (B2C)
 fraza_glowna: "kurs przedłużania rzęs wrocław"
@@ -13,6 +13,7 @@ wolumen_frazy: 110
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: 0
+nadpisz_w_bazie: true
 ---
 
 # Kurs przedłużania rzęs we Wrocławiu: cena, program i dofinansowanie
@@ -27,7 +28,7 @@ Ceny szkoleń z przedłużania rzęs mieszczą się zwykle w przedziale **1800-3
 
 Stawki we Wrocławiu mieszczą się w środku krajowych widełek. Wybór akademii jest wystarczający, żeby porównać co najmniej kilka programów, a różnice w cenie wynikają zwykle z liczby dni praktycznych, nie z samej lokalizacji.
 
-Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Operatorzy pokrywają od 80% do 95% ceny, zależnie od województwa i naboru. Zależnie od operatora albo wpłacasz od razu tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płacisz całość i dostajesz zwrot po zakończeniu kursu. Przy powyższych widełkach cenowych realna dopłata wynosi zwykle **90-680 zł**. Większość operatorów ma też limit kwotowy na osobę, zwykle 5-7 tysięcy złotych na szkolenie: przy tej cenie kursu limit nie wpływa na wysokość dopłaty.
+Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Dofinansowanie pokrywa nawet do 95% ceny, zależnie od województwa i naboru. Zależnie od operatora albo wpłacasz od razu tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płacisz całość i dostajesz zwrot po zakończeniu kursu. Przy powyższych widełkach cenowych realna dopłata wynosi zwykle **90-680 zł**. Większość operatorów ma też limit kwotowy na osobę, zwykle 5-7 tysięcy złotych na szkolenie: przy tej cenie kursu limit nie wpływa na wysokość dopłaty.
 
 Dokładny procent, limit kwotowy i wariant rozliczenia zależą od operatora prowadzącego nabór w Twoim województwie, dlatego kwotę zawsze potwierdza się przed podpisaniem umowy z operatorem.
 
@@ -59,7 +60,7 @@ Początkująca stylistka robi pełną stylizację w trzy, czasem cztery godziny.
 
 Środki rozdziela **operator wyłoniony dla regionu**, a nie PARP centralnie. Wrocław leży w województwie dolnośląskim, więc obowiązuje Cię nabór prowadzony dla tego województwa, i to on wyznacza procent dofinansowania oraz terminy. Operatorzy zmieniają się wraz z kolejnymi naborami, część obsługuje wybrane podregiony, dlatego aktualny stan sprawdza się na [uslugirozwojowe.parp.gov.pl](https://uslugirozwojowe.parp.gov.pl), a nie w artykule sprzed pół roku.
 
-Potwierdzone nabory dla osób dorosłych w województwie dolnośląskim sięgają od 80% do 90% ceny; dokładny limit kwotowy na osobę ustala regulamin konkretnego naboru.
+Poziom dofinansowania i limit kwotowy na osobę w województwie dolnośląskim ustala regulamin konkretnego naboru operatora regionalnego.
 
 Dwie zasady, które przesądzają o rozliczeniu: dofinansowanie obejmuje wyłącznie usługi **wpisane do Bazy**, a wniosek składa się **przed** szkoleniem, nie po. Całą procedurę rozkładamy w osobnym wpisie: [Dofinansowanie na szkolenie - krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku). Jeżeli zakładasz, że dotyczy to tylko osób bezrobotnych, [tak nie jest](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych).
 

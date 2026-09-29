@@ -12,6 +12,7 @@ fraza_glowna: "jak zacząć pracę w beauty bez doświadczenia"
 filar: A
 rola: "podtemat"
 reading_minutes: 10
+nadpisz_w_bazie: true
 ---
 
 # Jak zacząć w beauty bez doświadczenia - dwie ścieżki wejścia
@@ -78,7 +79,7 @@ Osobom, które są bliżej trzydziestki i dalej, całą oś czasu pierwszych 90 
 
 Kurs jest głównym kosztem wejścia i to on zatrzymuje większość kobiet przed decyzją. Widełki zależą od kategorii i dotyczą kursu wpisanego do BUR, nie oferty komercyjnej: szkolenie z rzęs to zwykle 1800-3400 zł, sama laminacja brwi 1750-2200 zł, kurs paznokci 1800-4300 zł, kurs makijażu permanentnego albo microbladingu 5500-7000 zł za jedną technikę.
 
-W tym miejscu wchodzi dofinansowanie. Szkolenie wpisane do Bazy Usług Rozwojowych - rejestru prowadzonego przez PARP, rządową agencję rozliczającą fundusze unijne - można sfinansować w 80-95% ceny, zależnie od województwa i naboru; większość operatorów ma też limit kwotowy, najczęściej 5-7 tys. zł na osobę, który przy droższych kursach decyduje o wysokości dopłaty bardziej niż sam procent. Przy kursie rzęs za 1800 zł wpisanym do BUR wkład własny wynosi orientacyjnie 90-360 zł. To nie jest szkolenie bez opłaty, dopłacasz konkretną kwotę - ale różnica między kilkuset złotymi a pełną ceną decyduje o tym, po ilu klientkach kurs się zwróci.
+W tym miejscu wchodzi dofinansowanie. Szkolenie wpisane do Bazy Usług Rozwojowych - rejestru prowadzonego przez PARP, rządową agencję rozliczającą fundusze unijne - można sfinansować nawet w 95% ceny, zależnie od województwa i naboru; większość operatorów ma też limit kwotowy, najczęściej 5-7 tys. zł na osobę, który przy droższych kursach decyduje o wysokości dopłaty bardziej niż sam procent. Przy kursie rzęs za 1800 zł wpisanym do BUR w regionie z najwyższym poziomem (śląskie, 95%) wkład własny wynosi orientacyjnie 90 zł, w regionach z niższym poziomem więcej. To nie jest szkolenie bez opłaty, dopłacasz konkretną kwotę - ale różnica między kilkuset złotymi a pełną ceną decyduje o tym, po ilu klientkach kurs się zwróci.
 
 Dwie rzeczy, o których trzeba wiedzieć, zanim policzysz to na własnym przykładzie:
 
@@ -126,4 +127,4 @@ Zależy od tempa, w jakim zapełniasz grafik po godzinach. Kurs to kwestia dni l
 Nie. Typowa kolejność to praca w salonie albo wynajem stanowiska na kilka dni w tygodniu, a własna firma dopiero wtedy, gdy klientki wracają regularnie. Rejestracja działalności na starcie oznacza stałe koszty, zanim pojawią się stałe wpływy.
 
 **Ile realnie dopłacę do kursu z dofinansowaniem?**
-Przy dofinansowaniu na poziomie 80-95%, zależnie od województwa i naboru, wkład własny to zwykle kilkadziesiąt do kilkuset złotych - przy kursie rzęs za 1800 zł to orientacyjnie 90-360 zł. Przy droższym kursie o dopłacie decyduje też limit kwotowy operatora, zwykle 5-7 tys. zł na osobę. Konkretna kwota zależy od ceny kursu, województwa i warunków naboru, w którym składasz wniosek.
+Przy dofinansowaniu sięgającym nawet do 95%, zależnie od województwa i naboru, wkład własny to zwykle kilkadziesiąt do kilkuset złotych - przy kursie rzęs za 1800 zł w regionie z najwyższym poziomem (śląskie, 95%) to orientacyjnie 90 zł, w innych regionach więcej. Przy droższym kursie o dopłacie decyduje też limit kwotowy operatora, zwykle 5-7 tys. zł na osobę. Konkretna kwota zależy od ceny kursu, województwa i warunków naboru, w którym składasz wniosek.

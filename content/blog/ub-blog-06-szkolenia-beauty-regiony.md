@@ -12,6 +12,7 @@ fraza_glowna: "dofinansowane szkolenia beauty śląskie"
 filar: A
 rola: podtemat (geo)
 reading_minutes: 8
+nadpisz_w_bazie: true
 ---
 
 # Dofinansowane szkolenia beauty w Twoim regionie (śląskie, mazowieckie, małopolskie)
@@ -30,7 +31,7 @@ Po pierwsze, **kryteria naboru różnią się między województwami**. Jeden re
 
 Po drugie, **terminy się nie pokrywają**. Nabory ruszają i zamykają się w cyklach, niezależnie w każdym regionie. W śląskiem może akurat trwać otwarty nabór, podczas gdy w małopolskiem pula na dany kwartał jest już wyczerpana i kolejna pojawi się dopiero za jakiś czas. Jedna ogólnopolska reklama nie odda tej różnicy - dlatego tak łatwo trafić na nieaktualną informację.
 
-Po trzecie, **poziom dopłaty bywa różny**. Potwierdzone przykłady: w śląskiem dofinansowanie sięga 95% (limit kwotowy 5000 zł na osobę), w mazowieckiem 76-96% (limit 6100-14 900 zł, zależnie od programu). Dla małopolskiego nie mamy potwierdzonego poziomu - trzeba go sprawdzić w regulaminie konkretnego operatora. W praktyce to realna różnica w dopłacie do tego samego szkolenia, w zależności od tego, po której stronie granicy województwa je robisz.
+Po trzecie, **poziom dopłaty bywa różny**. Potwierdzone przykłady: w śląskiem dofinansowanie sięga 95% (limit kwotowy 5000 zł na osobę), w mazowieckiem nawet 95% (limit 6100-14 900 zł, zależnie od programu). Dla małopolskiego nie mamy potwierdzonego poziomu - trzeba go sprawdzić w regulaminie konkretnego operatora. W praktyce to realna różnica w dopłacie do tego samego szkolenia, w zależności od tego, po której stronie granicy województwa je robisz.
 
 Z tego powodu ten artykuł nie podaje konkretnych terminów w rodzaju „w śląskiem nabór trwa do 30 września" - taka informacja zdezaktualizowałaby się w ciągu tygodni, a rzetelne źródło nie publikuje dat, za które nie może ręczyć. Zamiast tego opisujemy mechanizm, a konkretny, aktualny nabór w Twoim regionie sprawdzisz przez formularz na końcu artykułu.
 
@@ -79,7 +80,7 @@ Dla największych miast rozpisujemy warunki osobno: [kurs makijażu permanentneg
 
 Następny logiczny krok po lekturze to sprawdzenie aktualnego naboru i dostępnej trenerki w Twoim regionie - nie przez godzinę czytania regulaminów operatorów, tylko przez krótki formularz.
 
-**Znajdź dofinansowaną trenerkę beauty w swoim województwie.** Odpowiadasz na kilka pytań - w jakim jesteś regionie, czy pracujesz, jaki kierunek Cię interesuje - a my dopasowujemy Cię do certyfikowanej trenerki i naboru, w którym możesz otrzymać dofinansowanie 80-95% ceny, zależnie od województwa i naboru. Sprawdzenie jest bezpłatne i do niczego Cię nie zobowiązuje.
+**Znajdź dofinansowaną trenerkę beauty w swoim województwie.** Odpowiadasz na kilka pytań - w jakim jesteś regionie, czy pracujesz, jaki kierunek Cię interesuje - a my dopasowujemy Cię do certyfikowanej trenerki i naboru, w którym możesz otrzymać dofinansowanie nawet do 95% ceny, zależnie od województwa i naboru. Sprawdzenie jest bezpłatne i do niczego Cię nie zobowiązuje.
 
 [Znajdź trenerkę w swoim województwie na uniwersytetbeauty.pl](https://uniwersytetbeauty.pl)
 
@@ -100,4 +101,4 @@ Dofinansowanie zwykle jest przypisane do Ciebie i Twojego regionu, nie do adresu
 Etat Cię nie wyklucza - to jedno z najczęstszych nieporozumień. Wiele naborów kieruje się właśnie do osób pracujących, które chcą się przekwalifikować. Na Mazowszu warto pamiętać, że Warszawa i okoliczne powiaty bywają traktowane inaczej niż reszta regionu, więc sprawdź swoją konkretną sytuację.
 
 **Ile realnie dopłacę do kursu w małopolskiem?**
-Zależy od regionu, ceny kursu i limitu kwotowego operatora, nie tylko od procentu. Przykład: kurs rzęs za 1800 zł w wielkopolskiem (80-90%, limit 5000 zł) to dopłata 180-360 zł. Pełny kurs PMU za 10 000 zł w tym samym regionie i limicie to już dopłata 5000 zł, bo powyżej limitu każda złotówka jest Twoja. Dla małopolskiego nie mamy potwierdzonego poziomu dofinansowania - sprawdź go w regulaminie operatora na etapie zgłoszenia.
+Zależy od regionu, ceny kursu i limitu kwotowego operatora, nie tylko od procentu. Przykład: kurs rzęs za 1800 zł w śląskim (95%, limit 5000 zł) to dopłata 90 zł. Pełny kurs PMU za 10 000 zł w tym samym regionie i limicie to już dopłata 5000 zł, bo powyżej limitu każda złotówka jest Twoja. Dla małopolskiego nie mamy potwierdzonego poziomu dofinansowania - sprawdź go w regulaminie operatora na etapie zgłoszenia.

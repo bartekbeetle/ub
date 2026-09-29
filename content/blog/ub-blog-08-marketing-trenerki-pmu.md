@@ -12,6 +12,7 @@ fraza_glowna: "marketing dla trenerki makijażu permanentnego"
 filar: B
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Marketing dla trenerki makijażu permanentnego: co działa, a co zjada czas
@@ -86,7 +87,7 @@ Ma sens, gdy prowadzi do konkretnej ścieżki zapisu, jest nastawiona na zebrani
 Odpowiadaj w treściach na realne obawy kursantki: czy się nauczy, czy zarobi, czy dostanie uwagę, czy dopłaci sensowną kwotę. Pokazuj ścieżkę i historie absolwentek, nie tylko efekt pracy. Zasięg bez zapytań o kurs to sygnał, że materiał pracuje pod statystyki, nie pod sprzedaż.
 
 **Czy dofinansowanie pomaga sprzedać drogi kurs PMU?**
-Tak, bo cena jest tu najwyższą barierą. Zależnie od operatora kursantka wpłaca tylko wkład własny, a resztę operator rozlicza z akademią, albo płaci całość i dostaje zwrot; poziom to 80-95% ceny, zależnie od województwa i naboru, a przy kursie droższym niż limit operatora (zwykle 5 000-7 000 zł) to ten limit decyduje o dopłacie. Warunkiem jest wpisanie szkolenia do BUR, bez tego dofinansowanie nie przysługuje.
+Tak, bo cena jest tu najwyższą barierą. Zależnie od operatora kursantka wpłaca tylko wkład własny, a resztę operator rozlicza z akademią, albo płaci całość i dostaje zwrot; poziom sięga nawet do 95% ceny, zależnie od województwa i naboru, a przy kursie droższym niż limit operatora (zwykle 5 000-7 000 zł) to ten limit decyduje o dopłacie. Warunkiem jest wpisanie szkolenia do BUR, bez tego dofinansowanie nie przysługuje.
 
 **Czy warto oddać pozyskanie kursantek na zewnątrz, skoro sama prowadzę marketing?**
 Warto rozważyć to w punkcie, w którym marketing własny sięga sufitu, a zapisy dalej skaczą. Zewnętrzne źródło zgłoszeń przerzuca ryzyko kampanii na partnera, a Ty płacisz za kontakty na warunkach znanych z góry. To zwalnia Twój czas na to, za co klientki płacą, czyli na szkolenie. Nie zastępuje Instagrama, tylko dokłada przewidywalny strumień.

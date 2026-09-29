@@ -5,7 +5,7 @@ category: "Poradniki"
 excerpt: "Ile kosztuje kurs laminacji brwi i rzęs w Katowicach, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie śląskim."
 metaTitle: "Kurs laminacji brwi i rzęs Katowice: cena i dofinansowanie"
 metaDescription: "Kurs laminacji brwi i rzęs w Katowicach: rynkowa cena 1750-2200 zł, przy dofinansowaniu z BUR wkład własny zwykle 90-440 zł. Program i zasady naboru."
-data: 2026-09-28
+data: 2026-09-29
 reading_minutes: 4
 target: kursantka (B2C)
 fraza_glowna: "kurs laminacji brwi i rzęs katowice"
@@ -13,6 +13,7 @@ wolumen_frazy: 20
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: 4
+nadpisz_w_bazie: true
 ---
 
 # Kurs laminacji brwi i rzęs w Katowicach: cena, program i dofinansowanie
@@ -27,7 +28,7 @@ Ceny szkoleń z laminacji brwi i rzęs mieszczą się zwykle w przedziale **1750
 
 Stawki w Katowicach mieszczą się w środku krajowych widełek. Wybór akademii jest wystarczający, żeby porównać co najmniej kilka programów, a różnice w cenie wynikają zwykle z liczby dni praktycznych, nie z samej lokalizacji.
 
-Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Operatorzy pokrywają od 80% do 95% ceny, zależnie od województwa i naboru. Zależnie od operatora albo wpłacasz od razu tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płacisz całość i dostajesz zwrot po zakończeniu kursu. Przy powyższych widełkach cenowych realna dopłata wynosi zwykle **90-440 zł**. Większość operatorów ma też limit kwotowy na osobę, zwykle 5-7 tysięcy złotych na szkolenie: przy tej cenie kursu limit zostaje daleko niewykorzystany.
+Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Dofinansowanie pokrywa nawet do 95% ceny, zależnie od województwa i naboru. Zależnie od operatora albo wpłacasz od razu tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płacisz całość i dostajesz zwrot po zakończeniu kursu. Przy powyższych widełkach cenowych realna dopłata wynosi zwykle **90-440 zł**. Większość operatorów ma też limit kwotowy na osobę, zwykle 5-7 tysięcy złotych na szkolenie: przy tej cenie kursu limit zostaje daleko niewykorzystany.
 
 Dokładny procent, limit kwotowy i wariant rozliczenia zależą od operatora prowadzącego nabór w Twoim województwie, dlatego kwotę zawsze potwierdza się przed podpisaniem umowy z operatorem.
 
@@ -59,7 +60,7 @@ Lifting podnosi rzęsy od nasady, laminacja dokłada odżywienie i pracę na str
 
 Środki rozdziela **operator wyłoniony dla regionu**, a nie PARP centralnie. Katowice leży w województwie śląskim, więc obowiązuje Cię nabór prowadzony dla tego województwa, i to on wyznacza procent dofinansowania oraz terminy. Operatorzy zmieniają się wraz z kolejnymi naborami, część obsługuje wybrane podregiony, dlatego aktualny stan sprawdza się na [uslugirozwojowe.parp.gov.pl](https://uslugirozwojowe.parp.gov.pl), a nie w artykule sprzed pół roku.
 
-Potwierdzone nabory dla osób dorosłych w województwie śląskim obejmują 95% ceny, z limitem kwotowym 5 000 zł na osobę: to jeden z najkorzystniejszych poziomów w kraju.
+Potwierdzone nabory dla osób dorosłych w województwie śląskim obejmują nawet 95% ceny, z limitem kwotowym 5 000 zł na osobę: to jeden z najkorzystniejszych poziomów w kraju.
 
 Dwie zasady, które przesądzają o rozliczeniu: dofinansowanie obejmuje wyłącznie usługi **wpisane do Bazy**, a wniosek składa się **przed** szkoleniem, nie po. Całą procedurę rozkładamy w osobnym wpisie: [Dofinansowanie na szkolenie - krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku). Jeżeli zakładasz, że dotyczy to tylko osób bezrobotnych, [tak nie jest](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych).
 

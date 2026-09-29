@@ -5,7 +5,7 @@ category: "Poradniki"
 excerpt: "Ile kosztuje kurs przedłużania rzęs w Krakowie, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie małopolskim."
 metaTitle: "Kurs przedłużania rzęs Kraków: cena i dofinansowanie"
 metaDescription: "Kurs przedłużania rzęs w Krakowie: rynkowa cena 1800-3400 zł, przy dofinansowaniu z BUR wkład własny zwykle 90-680 zł. Program i zasady naboru."
-data: 2026-09-28
+data: 2026-09-29
 reading_minutes: 4
 target: kursantka (B2C)
 fraza_glowna: "kurs przedłużania rzęs kraków"
@@ -13,6 +13,7 @@ wolumen_frazy: 90
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: 2
+nadpisz_w_bazie: true
 ---
 
 # Kurs przedłużania rzęs w Krakowie: cena, program i dofinansowanie
@@ -27,7 +28,7 @@ Ceny szkoleń z przedłużania rzęs mieszczą się zwykle w przedziale **1800-3
 
 Kraków jest jednym z droższych rynków szkoleniowych w kraju, więc ceny kursów przedłużania rzęs układają się tu bliżej górnej granicy widełek. Płacisz w tym za gęstszy kalendarz terminów i większy wybór akademii, co przy szkoleniach kilkudniowych bywa realną wygodą, bo łatwiej dopasować kurs do grafiku pracy.
 
-Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Operatorzy pokrywają od 80% do 95% ceny, zależnie od województwa i naboru. Zależnie od operatora albo wpłacasz od razu tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płacisz całość i dostajesz zwrot po zakończeniu kursu. Przy powyższych widełkach cenowych realna dopłata wynosi zwykle **90-680 zł**. Większość operatorów ma też limit kwotowy na osobę, zwykle 5-7 tysięcy złotych na szkolenie: przy tej cenie kursu limit nie wpływa na wysokość dopłaty.
+Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Dofinansowanie pokrywa nawet do 95% ceny, zależnie od województwa i naboru. Zależnie od operatora albo wpłacasz od razu tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płacisz całość i dostajesz zwrot po zakończeniu kursu. Przy powyższych widełkach cenowych realna dopłata wynosi zwykle **90-680 zł**. Większość operatorów ma też limit kwotowy na osobę, zwykle 5-7 tysięcy złotych na szkolenie: przy tej cenie kursu limit nie wpływa na wysokość dopłaty.
 
 Dokładny procent, limit kwotowy i wariant rozliczenia zależą od operatora prowadzącego nabór w Twoim województwie, dlatego kwotę zawsze potwierdza się przed podpisaniem umowy z operatorem.
 

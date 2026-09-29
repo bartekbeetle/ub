@@ -8,7 +8,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { TrackEvent } from "@/components/TrackEvent";
 import { courseJsonLd, courseMetaDescription, pageTitle } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
-import { voivodeshipName, SITE_NAME } from "@/lib/constants";
+import { voivodeshipName, SITE_NAME, SUBSIDY_RANGE } from "@/lib/constants";
 import { IconPin, IconClock, IconCheck, IconCalendar } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { course, trainer } = row;
   // Tytuł budowany kaskadowo: pełny → bez miasta → bez sufiksu o dofinansowaniu.
   // Bez tego tytuły kursów dochodziły do 91 znaków i Google ucinał je w połowie frazy.
-  const subsidy = ` z dofinansowaniem do ${course.subsidyPercent}%`;
+  const subsidy = ` z dofinansowaniem ${SUBSIDY_RANGE}`;
   const candidates = [
     `${course.title}${course.city ? ` ${course.city}` : ""}${subsidy}`,
     `${course.title}${subsidy}`,
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
  * Wcześniej akapity leciały surowo przez `<p>{p}</p>`, więc na stronie kursu wyświetlały się
  * dosłownie gwiazdki („**Jak wygląda kurs**"). Złapane w QA 13.09 przed startem kampanii.
  *
- * Świadomie NIE wciągam tu biblioteki markdown: opisy są nasze i mają dokładnie te dwa wzorce,
+ * Świadomie NIE wciągam tu biblioteki markdown: opisy są nasze i mają dokładnie trzy wzorce (akapit, **śródtytuł**, lista z „- ”),
  * a mniej zależności na ścieżce strony docelowej reklam to mniej rzeczy, które mogą paść.
  * Tekst trafia do Reacta jako zwykłe dzieci elementów, więc nie ma `dangerouslySetInnerHTML`.
  */
@@ -74,6 +74,17 @@ function renderOpis(opis: string) {
 
   return opis.split("\n\n").map((akapit, i) => {
     const t = akapit.trim();
+    const linie = t.split("\n").map((l) => l.trim());
+    if (linie.every((l) => l.startsWith("- "))) {
+      return (
+        <ul key={i} className="list-disc space-y-1.5 pl-5">
+          {linie.map((l, j) => {
+            const czesci = l.slice(2).split(/\*\*(.+?)\*\*/g);
+            return <li key={j}>{czesci.map((c, k) => (k % 2 === 1 ? <strong key={k}>{c}</strong> : c))}</li>;
+          })}
+        </ul>
+      );
+    }
     const srodtytul = t.match(/^\*\*(.+)\*\*$/);
     if (srodtytul) {
       return (
@@ -111,7 +122,7 @@ export default async function KursPage({ params }: { params: Params }) {
         <span className="badge-tag">{course.category}</span>
         <span className="badge-tag">{course.level}</span>
         <span className="badge-tag">{course.mode}</span>
-        <span className="badge-money">Dofinansowanie {course.subsidyPercent}%</span>
+        <span className="badge-money">Dofinansowanie {SUBSIDY_RANGE}</span>
       </div>
 
       <h1 className="mt-4 max-w-3xl text-3xl font-bold leading-tight md:text-4xl">{course.title}</h1>
@@ -122,9 +133,13 @@ export default async function KursPage({ params }: { params: Params }) {
             <IconPin width={16} height={16} /> {course.city}, {voivodeshipName(course.voivodeship)}
           </span>
         )}
-        <span className="inline-flex items-center gap-1.5">
-          <IconClock width={16} height={16} /> {course.durationHours} godzin
-        </span>
+        {/* Czas trwania tylko przy kursie konkretnej trenerki. Kursy ogólne (bez trainerId) to opis
+            kategorii, a liczba godzin zależy od akademii, którą dobieramy — wpisana liczba byłaby zmyślona. */}
+        {course.trainerId && (
+          <span className="inline-flex items-center gap-1.5">
+            <IconClock width={16} height={16} /> {course.durationHours} godzin
+          </span>
+        )}
       </div>
 
       <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_380px]">
@@ -195,7 +210,7 @@ export default async function KursPage({ params }: { params: Params }) {
         <aside>
           <div className="card space-y-5 p-6 lg:sticky lg:top-24">
             <div>
-              <p className="badge-money !text-sm">Dofinansowanie do {course.subsidyPercent}%</p>
+              <p className="badge-money !text-sm">Dofinansowanie {SUBSIDY_RANGE}</p>
               <p className="mt-2 text-lg font-semibold text-ink-soft">
                 Sprawdź, ile zapłacisz po dofinansowaniu
               </p>

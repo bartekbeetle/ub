@@ -16,6 +16,7 @@
     "db:seed-core": "tsx scripts/seed-core.ts",
     "db:seed-weronika": "tsx scripts/seed-weronika.ts",
     "db:opisy-wk": "tsx scripts/opisy-wk.ts",
+    "db:opisy-kursow": "tsx scripts/opisy-kursow.ts",
     "db:seed-trainer-users": "tsx scripts/seed-trainer-users.ts",
     "db:seed-prospects": "tsx scripts/seed-prospects.ts",
     "admin:reset-password": "tsx scripts/reset-admin-password.ts",

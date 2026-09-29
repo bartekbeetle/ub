@@ -12,6 +12,7 @@ fraza_glowna: "jak wybrać kurs beauty"
 filar: A
 rola: "podtemat"
 reading_minutes: 10
+nadpisz_w_bazie: true
 ---
 
 # Jak wybrać dobrą trenerkę i akademię beauty
@@ -70,7 +71,7 @@ Wpis kursu do Bazy Usług Rozwojowych robi dwie rzeczy jednocześnie, i o obu wa
 
 Po pierwsze, jest filtrem jakości. Żeby trenerka albo akademia mogła wpisać szkolenie do BUR, musi przejść formalną weryfikację prowadzoną w ramach systemu nadzorowanego przez PARP - spełnić wymogi dotyczące programu, kadry i sposobu prowadzenia usługi. To nie gwarancja, że kurs jest wybitny, ale to sito, przez które nie przechodzi przypadkowa oferta z ogłoszenia. Akredytacja odsiewa część słabych szkoleń, zanim w ogóle na nie trafisz.
 
-Po drugie, jest warunkiem koniecznym dofinansowania. Dofinansowanie 80-95% ceny z BUR (zależnie od województwa i naboru) przysługuje wyłącznie na kursy wpisane do bazy. Jeśli wybierzesz trenerkę spoza BUR, kurs zrobisz - ale za pełną cenę, bez dofinansowania z tego programu. Akredytacja to brama, przez którą kilka tysięcy złotych zamienia się w wydatek, który przy tańszych kursach to kilkaset złotych, a przy droższych zależy od limitu kwotowego operatora.
+Po drugie, jest warunkiem koniecznym dofinansowania. Dofinansowanie sięgające nawet do 95% ceny z BUR (zależnie od województwa i naboru) przysługuje wyłącznie na kursy wpisane do bazy. Jeśli wybierzesz trenerkę spoza BUR, kurs zrobisz - ale za pełną cenę, bez dofinansowania z tego programu. Akredytacja to brama, przez którą kilka tysięcy złotych zamienia się w wydatek, który przy tańszych kursach to kilkaset złotych, a przy droższych zależy od limitu kwotowego operatora.
 
 Te dwie funkcje spinają się w jedną praktyczną zasadę: zaczynając od trenerek z akredytacją BUR, jednym ruchem zawężasz wybór do zweryfikowanych szkoleń i do tych, na które dostaniesz dofinansowanie. Sprawdzisz to sama - baza jest publiczna, dostępna na uslugirozwojowe.parp.gov.pl. Wpisujesz nazwę kursu albo trenerki i widzisz, czy szkolenie tam figuruje.
 
@@ -111,7 +112,7 @@ Na jakość szkolenia, nie na samą cenę. Sprawdź liczbę modelek i godzin pra
 Nie, cena sama w sobie nic nie gwarantuje. Zdarzają się drogie kursy z minimalną praktyką i tanie z solidnym programem. Zamiast patrzeć na kwotę, sprawdź, co konkretnie dostajesz: ile praktyki, jak duża grupa, jakie efekty osiągają absolwentki. Dobra jakość zwraca się szybciej niż niska cena.
 
 **Po co sprawdzać akredytację BUR przy wyborze trenerki?**
-Bo działa jak podwójny filtr. Wpis do Bazy Usług Rozwojowych oznacza, że kurs przeszedł formalną weryfikację w systemie nadzorowanym przez PARP, a jednocześnie to warunek dofinansowania - 80-95% ceny (zależnie od województwa i naboru) przysługuje wyłącznie na kursy z bazy. Zaczynając od akredytowanych trenerek, zawężasz wybór do zweryfikowanych i dofinansowanych szkoleń naraz.
+Bo działa jak podwójny filtr. Wpis do Bazy Usług Rozwojowych oznacza, że kurs przeszedł formalną weryfikację w systemie nadzorowanym przez PARP, a jednocześnie to warunek dofinansowania - nawet do 95% ceny (zależnie od województwa i naboru) przysługuje wyłącznie na kursy z bazy. Zaczynając od akredytowanych trenerek, zawężasz wybór do zweryfikowanych i dofinansowanych szkoleń naraz.
 
 **Jak rozpoznać słaby kurs beauty?**
 Po kilku sygnałach: przewaga teorii nad praktyką, brak ćwiczeń na modelkach, brak realnego portfolio prac absolwentek, presja „ostatnie miejsca" i sztuczna pilność, cena mocno poniżej rynku bez wyjaśnienia. Jedna czerwona flaga to powód, żeby dopytać. Kilka naraz to powód, żeby szukać dalej.

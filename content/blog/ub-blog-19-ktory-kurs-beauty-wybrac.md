@@ -12,6 +12,7 @@ fraza_glowna: "jaki kurs beauty wybrać"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Jaki kurs beauty wybrać - paznokcie, rzęsy, brwi czy PMU
@@ -63,7 +64,7 @@ Makijaż permanentny bywa kierunkiem docelowym, a nie pierwszym kursem. Wyższa 
 
 ## Dofinansowanie przy każdym z czterech kierunków
 
-Każdy z czterech kierunków można sfinansować z Bazy Usług Rozwojowych (BUR) - rejestru prowadzonego przez PARP, rządową agencję rozliczającą fundusze unijne - pod warunkiem że konkretny kurs jest w tym rejestrze wpisany. Dofinansowanie pokrywa zwykle 80-95% ceny, zależnie od województwa i naboru, ale operatorzy mają też limit kwotowy na osobę - najczęściej 5-7 tys. zł. Przy tańszych kursach (paznokcie, rzęsy, brwi) ten limit rzadko gra rolę, więc dopłacasz rzeczywiście ułamek ceny.
+Każdy z czterech kierunków można sfinansować z Bazy Usług Rozwojowych (BUR) - rejestru prowadzonego przez PARP, rządową agencję rozliczającą fundusze unijne - pod warunkiem że konkretny kurs jest w tym rejestrze wpisany. Dofinansowanie pokrywa nawet do 95% ceny, zależnie od województwa i naboru, ale operatorzy mają też limit kwotowy na osobę - najczęściej 5-7 tys. zł. Przy tańszych kursach (paznokcie, rzęsy, brwi) ten limit rzadko gra rolę, więc dopłacasz rzeczywiście ułamek ceny.
 
 Przy droższych kursach proporcja się nie utrzymuje - decyduje limit, nie procent. Przy kursie paznokci za 2200 zł w województwie śląskim (95% dofinansowania, limit 5000 zł) wkład własny wynosi orientacyjnie 110 zł. Przy kursie PMU za 10 000 zł, gdy limit operatora to 5000 zł, dopłata sięga 5000 zł - połowy ceny kursu, mimo tego samego formalnie wysokiego procentu dofinansowania. Dokładna kwota zależy od poziomu dofinansowania i limitu w danym naborze i województwie, dlatego realną kwotę sprawdza się dla konkretnego kursu, nie liczy z widełek w internecie.
 

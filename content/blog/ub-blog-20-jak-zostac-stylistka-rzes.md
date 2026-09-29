@@ -12,6 +12,7 @@ fraza_glowna: "jak zostać stylistką rzęs"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Jak zostać stylistką rzęs od zera - trzy kroki
@@ -54,7 +55,7 @@ Uczciwa oś czasu wygląda inaczej niż w reklamach kursów. Miesiąc pierwszy t
 
 Nie każdy tydzień w tym okresie wygląda tak samo - bywają tygodnie z kilkoma zapisami i tygodnie z jednym albo żadnym, zwłaszcza zanim baza stałych klientek urośnie na tyle, żeby wypełniać kalendarz samodzielnie. To normalna część budowania zawodu, nie sygnał, że coś idzie źle. Traktowanie chudszych tygodni jako powodu do rezygnacji jest częstszym błędem niż zbyt wolne tempo nauki.
 
-Kurs stylizacji rzęs wpisany do Bazy Usług Rozwojowych kosztuje zwykle 1800-3400 zł, zależnie od zakresu metod i tego, czy w cenie jest startowy zestaw materiałów. Wpisany do BUR - rejestru prowadzonego przez PARP, rządową agencję rozliczającą fundusze unijne - można sfinansować w 80-95%, zależnie od województwa i naboru, do limitu kwotowego operatora (najczęściej 5-7 tys. zł na osobę - przy tej cenie kursu rzadko gra rolę). Wkład własny wynosi orientacyjnie 90-680 zł zamiast pełnej kwoty. Przy takim wkładzie kurs zwraca się po dwóch, trzech pierwszych stylizacjach, licząc po cenie zabiegu 150-300 zł. Pełny koszt i zasady dofinansowania rozkłada wpis [kurs rzęs i brwi z dofinansowaniem](/blog/kurs-rzes-brwi-z-dofinansowaniem-ile-doplacasz), a widełki zarobków na tle innych specjalizacji beauty - wpis [ile zarabia linergistka i stylistka beauty](/blog/ile-zarabia-linergistka-stylistka-beauty).
+Kurs stylizacji rzęs wpisany do Bazy Usług Rozwojowych kosztuje zwykle 1800-3400 zł, zależnie od zakresu metod i tego, czy w cenie jest startowy zestaw materiałów. Wpisany do BUR - rejestru prowadzonego przez PARP, rządową agencję rozliczającą fundusze unijne - można sfinansować nawet w 95%, zależnie od województwa i naboru, do limitu kwotowego operatora (najczęściej 5-7 tys. zł na osobę - przy tej cenie kursu rzadko gra rolę). Wkład własny wynosi orientacyjnie od 90 zł (śląskie, 95%) do kilkuset złotych w regionach z niższym poziomem, zamiast pełnej kwoty. Przy takim wkładzie kurs zwraca się po dwóch, trzech pierwszych stylizacjach, licząc po cenie zabiegu 150-300 zł. Pełny koszt i zasady dofinansowania rozkłada wpis [kurs rzęs i brwi z dofinansowaniem](/blog/kurs-rzes-brwi-z-dofinansowaniem-ile-doplacasz), a widełki zarobków na tle innych specjalizacji beauty - wpis [ile zarabia linergistka i stylistka beauty](/blog/ile-zarabia-linergistka-stylistka-beauty).
 
 ## Sprawdź, od czego zacząć
 
@@ -79,4 +80,4 @@ Najczęściej z najbliższego kręgu - znajome, rodzina, koleżanki z pracy, kt�
 Zależy od tempa, w jakim zapełniasz kalendarz uzupełnieniami i poleceniami. Pierwsze płatne klientki pojawiają się zwykle w drugim miesiącu, a pełny grafik, w którym stałe uzupełnienia wypełniają większość terminów, buduje się przez wiele miesięcy regularnej pracy, nie w pierwszym kwartale.
 
 **Ile realnie zapłacę za kurs rzęs z dofinansowaniem BUR?**
-Przy dofinansowaniu na poziomie 80-95%, zależnie od województwa i naboru, wkład własny do kursu wpisanego do BUR (1800-3400 zł) wynosi orientacyjnie 90-680 zł. Dokładną kwotę sprawdza się dla konkretnego kursu i konkretnej trenerki.
+Przy dofinansowaniu sięgającym nawet do 95%, zależnie od województwa i naboru, wkład własny do kursu wpisanego do BUR (1800-3400 zł) wynosi orientacyjnie od 90 zł (śląskie, 95%) do kilkuset złotych w regionach z niższym poziomem. Dokładną kwotę sprawdza się dla konkretnego kursu i konkretnej trenerki.

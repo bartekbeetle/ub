@@ -12,6 +12,7 @@ fraza_glowna: "ile zarabia linergistka"
 filar: A
 rola: "podtemat"
 reading_minutes: 10
+nadpisz_w_bazie: true
 ---
 
 # Ile zarabia linergistka i stylistka beauty - uczciwy rachunek, zanim rzucisz obecną pracę
@@ -65,7 +66,7 @@ Skoro pierwsze pieniądze przychodzą po kilku tygodniach, sensowne pytanie brzm
 
 Kurs to główny koszt startu. Widełki zależą od kategorii: szkolenie z rzęs w BUR to zwykle 1800-3400 zł, laminacja brwi 1750-2200 zł (pakiety brwi więcej, 5000-6150 zł), kurs paznokci 1800-4300 zł, a kurs PMU lub microbladingu to zwykle 4000-7000 zł. Do tego dochodzi startowy zestaw narzędzi i materiałów. To realna bariera - i to ona najczęściej zatrzymuje kobiety przed decyzją, zanim jeszcze policzą potencjalny zarobek.
 
-W tym miejscu dofinansowanie zmienia rachunek. Kurs wpisany do Bazy Usług Rozwojowych (BUR) można sfinansować w 80-95%, zależnie od województwa i naboru, więc z własnej kieszeni dopłacasz zwykle kilkaset złotych zamiast pełnych kilku tysięcy - przy droższych kursach o wysokości dopłaty decyduje limit kwotowy operatora, zwykle 5000-7000 zł. Kurs rzęs za 1800 zł przy dofinansowaniu 80-95% to wkład własny w okolicach 90-360 zł. Dopłacasz konkretną, choć niewielką kwotę, ale różnica między kilkuset złotymi a pełną ceną decyduje o tym, po ilu klientkach kurs się zwróci.
+W tym miejscu dofinansowanie zmienia rachunek. Kurs wpisany do Bazy Usług Rozwojowych (BUR) można sfinansować nawet w 95%, zależnie od województwa i naboru, więc z własnej kieszeni dopłacasz zwykle kilkaset złotych zamiast pełnych kilku tysięcy - przy droższych kursach o wysokości dopłaty decyduje limit kwotowy operatora, zwykle 5000-7000 zł. Kurs rzęs za 1800 zł przy dofinansowaniu na poziomie 95% (śląskie) to wkład własny w okolicach 90 zł, w regionach z niższym poziomem dopłata jest wyższa. Dopłacasz konkretną, choć niewielką kwotę, ale różnica między kilkuset złotymi a pełną ceną decyduje o tym, po ilu klientkach kurs się zwróci.
 
 Policz zwrot na liczbach. Przy pełnej cenie 1800 zł kurs rzęs zwraca się po kilkunastu zabiegach. Przy wkładzie własnym 300 zł zwraca się po dwóch, trzech pierwszych klientkach. Dofinansowanie nie zwiększa Twoich zarobków ani o złotówkę - skraca za to czas, po którym inwestycja w kurs przestaje być kosztem, a staje się zyskiem. Dla kogoś, kto zaczyna z ograniczonym budżetem, to często różnica między „spróbuję" a „nie stać mnie, żeby spróbować".
 

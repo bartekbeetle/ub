@@ -139,7 +139,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
         <h2 className="text-base font-bold text-ink">Maile do kursantki</h2>
         <p className="mt-1 text-sm text-slate-600">
           Wiadomości transakcyjne — wysyłane automatycznie. Obowiązuje guardrail ceny:
-          nigdy „kurs za 0 zł", zawsze „do 90%, zależnie od województwa i naboru".
+          nigdy „kurs za 0 zł", zawsze „nawet do 95%, zależnie od województwa i naboru".
         </p>
       </div>
 

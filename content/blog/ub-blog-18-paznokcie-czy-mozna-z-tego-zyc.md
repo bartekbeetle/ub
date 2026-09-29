@@ -12,6 +12,7 @@ fraza_glowna: "czy stylizacja paznokci się opłaca"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Czy stylizacja paznokci się opłaca - rachunek na start
@@ -73,7 +74,7 @@ Ten kierunek opłaca się osobie, która akceptuje chudy start, traktuje pierwsz
 
 Kurs stylizacji paznokci wpisany do Bazy Usług Rozwojowych kosztuje zwykle 1800-4300 zł, zależnie od zakresu i tego, czy w cenie jest zestaw startowy. To główny wydatek wejściowy i on najczęściej zatrzymuje kobiety przed decyzją, zanim jeszcze policzą potencjalny zarobek.
 
-Kurs wpisany do Bazy Usług Rozwojowych (BUR) - rejestru prowadzonego przez PARP, rządową agencję rozliczającą fundusze unijne - można sfinansować w 80-95%, zależnie od województwa i naboru (np. 95% w śląskim, 80% w części pozostałych województw), do limitu kwotowego operatora - najczęściej 5-7 tys. zł na osobę. Przy kursie za 1800 zł wkład własny wynosi orientacyjnie 90-360 zł, przy kursie za 4300 zł - orientacyjnie 215-860 zł. Dokładna kwota zależy od poziomu dofinansowania w danym naborze i województwie, więc te liczby traktuj jako rząd wielkości, nie jako gotową cenę.
+Kurs wpisany do Bazy Usług Rozwojowych (BUR) - rejestru prowadzonego przez PARP, rządową agencję rozliczającą fundusze unijne - można sfinansować nawet w 95%, zależnie od województwa i naboru (np. 95% w śląskim; w pozostałych województwach poziom ustala operator w regulaminie naboru), do limitu kwotowego operatora - najczęściej 5-7 tys. zł na osobę. Przy kursie za 1800 zł wkład własny wynosi orientacyjnie 90 zł, przy kursie za 4300 zł - orientacyjnie 215 zł (śląskie, 95%); w regionach z niższym poziomem obie kwoty będą wyższe. Dokładna kwota zależy od poziomu dofinansowania w danym naborze i województwie, więc te liczby traktuj jako rząd wielkości, nie jako gotową cenę.
 
 Przy takim wkładzie własnym kurs zwraca się po dwóch, trzech pierwszych zabiegach, zamiast po kilkunastu przy pełnej cenie. Ważne, żeby nie mylić tego z urzędem pracy - dofinansowanie z BUR przysługuje też osobom pracującym, studentkom, mamom i przedsiębiorczyniom, nie tylko bezrobotnym. Zasady kwalifikacji rozkłada wpis [BUR to nie urząd pracy - dofinansowanie dla pracujących](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych), a pełną procedurę krok po kroku [jak dostać dofinansowanie na kurs beauty](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku).
 
@@ -99,7 +100,7 @@ Podstawowy sprzęt - lampa UV/LED, frezarka i pierwszy zestaw lakierów hybrydow
 Zależy od tego, czy masz miejsce na przyjmowanie klientek w domu i czy wolisz samodzielnie budować bazę, czy oddać część zarobku w zamian za gotowe miejsce pracy. Praca w domu daje wyższy udział w cenie zabiegu, salon na procent zdejmuje ryzyko finansowe na starcie.
 
 **Ile trzeba dopłacić do kursu z dofinansowaniem BUR?**
-Przy dofinansowaniu na poziomie 80-95%, zależnie od województwa i naboru, wkład własny do kursu wpisanego do BUR (zwykle 1800-4300 zł) wynosi orientacyjnie 90-860 zł. Przy droższych kursach o dopłacie decyduje też limit kwotowy operatora. Dokładną kwotę sprawdza się dla konkretnego kursu i konkretnego naboru.
+Przy dofinansowaniu sięgającym nawet do 95%, zależnie od województwa i naboru, wkład własny do kursu wpisanego do BUR (zwykle 1800-4300 zł) wynosi orientacyjnie od 90 zł (śląskie, 95%) do kilkuset złotych w regionach z niższym poziomem. Przy droższych kursach o dopłacie decyduje też limit kwotowy operatora. Dokładną kwotę sprawdza się dla konkretnego kursu i konkretnego naboru.
 
 **Czy stylizacja paznokci opłaca się przy pracy dorywczej, po godzinach?**
 Może być sensownym dodatkowym dochodem, jeśli akceptujesz, że przy kilku zabiegach tygodniowo przychód mieści się w granicach kilkuset do niecałych dwóch tysięcy złotych miesięcznie, zanim odliczysz materiał. To dobry sposób na sprawdzenie zawodu bez rezygnacji z obecnej pracy.

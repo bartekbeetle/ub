@@ -12,11 +12,12 @@ fraza_glowna: "jak dostać dofinansowanie na szkolenie BUR"
 filar: A
 rola: podtemat
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Jak dostać dofinansowanie na kurs beauty krok po kroku
 
-Kurs rzęs czy PMU można zrobić z dofinansowaniem 80-95% ceny (zależnie od województwa i naboru) i nie trzeba być bezrobotną, żeby z tego skorzystać. Zostaje pytanie, na którym zatrzymuje się większość kobiet: co konkretnie zrobić, żeby to dofinansowanie otrzymać.
+Kurs rzęs czy PMU można zrobić z dofinansowaniem sięgającym nawet do 95% ceny (zależnie od województwa i naboru) i nie trzeba być bezrobotną, żeby z tego skorzystać. Zostaje pytanie, na którym zatrzymuje się większość kobiet: co konkretnie zrobić, żeby to dofinansowanie otrzymać.
 
 Poniżej cała procedura rozłożona na kroki - napisana z myślą o osobie, która pierwszy raz styka się ze słowem „operator" i nie wie, czy to firma, człowiek, czy strona internetowa. Dowiesz się, co przygotować zawczasu, gdzie złożyć zgłoszenie, ile realnie czeka się na decyzję i przez jakie błędy wnioski przepadają. Na końcu: co robisz sama, a co zdejmuje z Ciebie trenerka albo platforma.
 

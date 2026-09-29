@@ -5,7 +5,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { SubsidyCalculator } from "@/components/SubsidyCalculator";
 import { faqJsonLd } from "@/lib/seo";
 import { IconCheck, IconChevronDown } from "@/components/icons";
-import { SITE_NAME, SUBSIDY_RANGE, SUBSIDY_CONDITION, SUBSIDY_MAX_PERCENT } from "@/lib/constants";
+import { SITE_NAME, SUBSIDY_RANGE, SUBSIDY_CONDITION } from "@/lib/constants";
 
 // Strona nie dotyka bazy — bez force-dynamic prerenderuje się przy buildzie i leci z cache.
 
@@ -30,7 +30,7 @@ const PROGRAMS = [
     name: "Baza Usług Rozwojowych (BUR)",
     // Pigułka wizualna zostaje krótka (miejsce na kartę); pełny zakres i warunek
     // pojawiają się zaraz niżej w liście wymagań — jedno źródło prawdy, dwa formaty.
-    percent: `do ${SUBSIDY_MAX_PERCENT}%`,
+    percent: SUBSIDY_RANGE,
     description:
       "Największy program dofinansowań szkoleń w Polsce, finansowany z Funduszy Europejskich. Nie musisz być bezrobotna!",
     requirements: [
@@ -54,7 +54,7 @@ const PROGRAMS = [
   },
   {
     name: "Krajowy Fundusz Szkoleniowy (KFS)",
-    percent: "80-100%",
+    percent: "do 100%",
     description:
       "Dofinansowanie kształcenia pracowników — wniosek składa Twój pracodawca.",
     requirements: [

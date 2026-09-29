@@ -12,6 +12,7 @@ fraza_glowna: "jak dodać usługę do BUR"
 filar: B
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Jak dodać szkolenie do Bazy Usług Rozwojowych krok po kroku
@@ -22,7 +23,7 @@ Wpis do BUR to procedura, nie formalność do odklikania w pięć minut. Ma kilk
 
 ## Po co trenerce akredytacja w BUR
 
-Baza Usług Rozwojowych to platforma prowadzona przez PARP, przez którą płyną środki z funduszy unijnych na szkolenia. Kursantka wybiera usługę z bazy, a zależnie od operatora wpłaca tylko wkład własny (resztę operator rozlicza bezpośrednio z akademią) albo płaci całość i dostaje zwrot. Poziom dofinansowania to 80-95% ceny, zależnie od województwa i naboru, a przy droższych kursach o wysokości dopłaty decyduje limit kwotowy operatora, zwykle 5 000-7 000 zł na osobę. Cały ten mechanizm działa wyłącznie dla usług, które w BUR figurują. Twoje szkolenie spoza bazy kursantka może kupić, ale za pełną cenę i bez żadnego dofinansowania.
+Baza Usług Rozwojowych to platforma prowadzona przez PARP, przez którą płyną środki z funduszy unijnych na szkolenia. Kursantka wybiera usługę z bazy, a zależnie od operatora wpłaca tylko wkład własny (resztę operator rozlicza bezpośrednio z akademią) albo płaci całość i dostaje zwrot. Poziom dofinansowania sięga nawet do 95% ceny, zależnie od województwa i naboru, a przy droższych kursach o wysokości dopłaty decyduje limit kwotowy operatora, zwykle 5 000-7 000 zł na osobę. Cały ten mechanizm działa wyłącznie dla usług, które w BUR figurują. Twoje szkolenie spoza bazy kursantka może kupić, ale za pełną cenę i bez żadnego dofinansowania.
 
 To zmienia Twoją pozycję negocjacyjną. Akademia bez akredytacji konkuruje ceną i musi tłumaczyć, dlaczego kurs kosztuje kilka tysięcy. Akademia z akredytacją konkuruje dostępnością pieniędzy, których kursantka nie znała. Dofinansowanie przestaje być czymś, co obiecuje konkurencja z reklamy, a staje się czymś, co realnie oferujesz.
 
@@ -80,7 +81,7 @@ Wpis do Bazy sam z siebie nie zapełnia terminów - co robić dalej, zbieramy we
 
 ## Masz akredytację. Jak teraz przyciągnąć kursantki
 
-Akredytacja w BUR odblokowuje dostęp do dofinansowania, ale sama nie wypełnia grafiku. Widoczność w bazie działa dla kursantek, które już świadomie w niej szukają. Reszta, a jest jej sporo, wciąż nie wie, że kurs z jej marzeń da się sfinansować w 80-95%, zależnie od województwa i naboru. Do nich trzeba dotrzeć aktywnie: przez treści, które tłumaczą mechanizm dofinansowania, przez reklamę kierowaną na właściwą grupę, przez konkretny przekaz „nie musisz być bezrobotna, żeby dostać dofinansowanie".
+Akredytacja w BUR odblokowuje dostęp do dofinansowania, ale sama nie wypełnia grafiku. Widoczność w bazie działa dla kursantek, które już świadomie w niej szukają. Reszta, a jest jej sporo, wciąż nie wie, że kurs z jej marzeń da się sfinansować nawet w 95%, zależnie od województwa i naboru. Do nich trzeba dotrzeć aktywnie: przez treści, które tłumaczą mechanizm dofinansowania, przez reklamę kierowaną na właściwą grupę, przez konkretny przekaz „nie musisz być bezrobotna, żeby dostać dofinansowanie".
 
 To osobny temat i osobna robota, którą rozkładamy w tekście [Jak zapełnić grafik szkoleń: skąd brać kursantki](https://uniwersytetbeauty.pl/blog/jak-pozyskac-kursantki-na-szkolenia-beauty). Akredytacja jest warunkiem, nie zakończeniem. Domyka się dopiero wtedy, gdy zaczyna do Ciebie płynąć strumień zgłoszeń.
 

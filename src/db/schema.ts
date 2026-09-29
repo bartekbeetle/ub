@@ -768,7 +768,7 @@ export const settings = pgTable("settings", {
    * aż do telefonu z akademii (albo w ogóle, gdy akademii w jej regionie nie mieliśmy).
    *
    * ⚠️ Guardrail ceny (voice.md): NIGDY „kurs za 0 zł". Dofinansowanie zawsze z warunkiem
-   * („do 90%, zależnie od województwa i naboru"), bo nabory i progi realnie się różnią.
+   * („nawet do 95%, zależnie od województwa i naboru"), bo nabory i progi realnie się różnią.
    * To jest mail TRANSAKCYJNY (obsługa zgłoszenia), nie marketingowy — nie wymaga zgody
    * marketingowej i nie wolno mu sprzedawać niczego dodatkowego.
    */
@@ -776,7 +776,7 @@ export const settings = pgTable("settings", {
     .notNull()
     .default("Mamy Twoje zgłoszenie — {{kategoria}}"),
   confirmEmailTemplate: text("confirm_email_template").notNull().default(
-    "Dzień dobry {{imie_wolacz}},\n\npotwierdzamy, że otrzymaliśmy Twoje zgłoszenie na szkolenie z zakresu: {{kategoria}} ({{wojewodztwo}}).\n\nCo dzieje się dalej:\n\n1. Dobieramy akademię w Twoim regionie, która prowadzi ten kurs i ma wpis do Bazy Usług Rozwojowych.\n2. Osoba z akademii kontaktuje się z Tobą telefonicznie — zwykle w ciągu 1-2 dni roboczych.\n3. Podczas rozmowy ustalacie termin, zakres szkolenia i to, jakie dofinansowanie możesz uzyskać.\n\nO dofinansowaniu: wsparcie z Bazy Usług Rozwojowych sięga 90% ceny szkolenia, a jego wysokość zależy od województwa, aktualnego naboru i Twojej sytuacji zawodowej. Dokładną kwotę poznasz po weryfikacji — akademia przeprowadzi Cię przez formalności.\n\nJeśli zgłoszenie było pomyłką albo chcesz wycofać zgodę na kontakt, po prostu odpisz na tę wiadomość.\n\nPozdrawiamy,\nZespół Uniwersytet Beauty\nbiuro@uniwersytetbeauty.pl · uniwersytetbeauty.pl"
+    "Dzień dobry {{imie_wolacz}},\n\npotwierdzamy, że otrzymaliśmy Twoje zgłoszenie na szkolenie z zakresu: {{kategoria}} ({{wojewodztwo}}).\n\nCo dzieje się dalej:\n\n1. Dobieramy akademię w Twoim regionie, która prowadzi ten kurs i ma wpis do Bazy Usług Rozwojowych.\n2. Osoba z akademii kontaktuje się z Tobą telefonicznie — zwykle w ciągu 1-2 dni roboczych.\n3. Podczas rozmowy ustalacie termin, zakres szkolenia i to, jakie dofinansowanie możesz uzyskać.\n\nO dofinansowaniu: wsparcie z Bazy Usług Rozwojowych sięga nawet 95% ceny szkolenia, a jego wysokość zależy od województwa, aktualnego naboru i Twojej sytuacji zawodowej. Dokładną kwotę poznasz po weryfikacji — akademia przeprowadzi Cię przez formalności.\n\nJeśli zgłoszenie było pomyłką albo chcesz wycofać zgodę na kontakt, po prostu odpisz na tę wiadomość.\n\nPozdrawiamy,\nZespół Uniwersytet Beauty\nbiuro@uniwersytetbeauty.pl · uniwersytetbeauty.pl"
   ),
 
   /**

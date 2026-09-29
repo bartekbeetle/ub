@@ -12,11 +12,12 @@ fraza_glowna: "dofinansowanie na kurs rzęs"
 filar: A
 rola: podtemat
 reading_minutes: 8
+nadpisz_w_bazie: true
 ---
 
 # Dofinansowanie na kurs rzęs i brwi - realny koszt dla Ciebie
 
-Reklamy „kurs rzęs za 0 zł" wymagają sprostowania. W większości przypadków szkolenie nie kosztuje zera złotych - dofinansowanie z BUR pokrywa 80-95% ceny, zależnie od województwa i naboru, a resztę dopłacasz sama. Przy kursach rzęs i brwi ta reszta to zwykle kilkaset złotych zamiast pełnej ceny kursu. Różnica jest na tyle duża, że opłaca się ją policzyć dokładnie, na konkretnych kwotach.
+Reklamy „kurs rzęs za 0 zł" wymagają sprostowania. W większości przypadków szkolenie nie kosztuje zera złotych - dofinansowanie z BUR pokrywa nawet do 95% ceny, zależnie od województwa i naboru, a resztę dopłacasz sama. Przy kursach rzęs i brwi ta reszta to zwykle kilkaset złotych zamiast pełnej ceny kursu. Różnica jest na tyle duża, że opłaca się ją policzyć dokładnie, na konkretnych kwotach.
 
 Ten artykuł pokazuje realne widełki cen kursów rzęs i brwi w 2026, wyliczenie „przed i po" dofinansowaniu oraz odpowiedzi na dwa pytania, które najczęściej zatrzymują kandydatki: od czego zacząć i czy dofinansowanie w ogóle Ci przysługuje.
 
@@ -36,18 +37,18 @@ To są ceny kursów wpisanych do Bazy Usług Rozwojowych. Na tym etapie wiele ko
 
 ## Jak BUR obniża koszt - wyliczenie przed i po
 
-BUR (Baza Usług Rozwojowych) to platforma prowadzona przez PARP, przez którą płynie dofinansowanie z funduszy unijnych. Certyfikowana trenerka wpisuje swój kurs do bazy, a regionalny operator pokrywa większość ceny - od 80% do 95%, zależnie od województwa i naboru (np. 80-90% w wielkopolskim, 95% w śląskim). Ty dopłacasz resztę, a większość operatorów ma też limit kwotowy, zwykle 5-7 tys. zł na osobę - przy droższym kursie to on decyduje, ile dopłacisz.
+BUR (Baza Usług Rozwojowych) to platforma prowadzona przez PARP, przez którą płynie dofinansowanie z funduszy unijnych. Certyfikowana trenerka wpisuje swój kurs do bazy, a regionalny operator pokrywa większość ceny - nawet do 95%, zależnie od województwa i naboru (np. 95% w śląskim; dokładny poziom w pozostałych regionach ustala operator w regulaminie naboru). Ty dopłacasz resztę, a większość operatorów ma też limit kwotowy, zwykle 5-7 tys. zł na osobę - przy droższym kursie to on decyduje, ile dopłacisz.
 
 Poniżej wyliczenie na cenach kursów z Bazy Usług Rozwojowych, z jawnym regionem, procentem i limitem operatora.
 
 | Kurs (BUR) | Cena | Województwo | Dofinansowanie | Limit | Twój wkład własny |
 |------|-----------|--------------|-----------------|-------|--------------------|
-| Laminacja brwi | 1750 zł | wielkopolskie | 80-90% | 5000 zł | **175-350 zł** |
-| Stylizacja rzęs 1:1 | 1800 zł | wielkopolskie | 80-90% | 5000 zł | **180-360 zł** |
-| Rzęsy objętościowe | 3200 zł | wielkopolskie | 80-90% | 5000 zł | **320-640 zł** |
+| Laminacja brwi | 1750 zł | śląskie | 95% | 5000 zł | **ok. 88 zł** |
+| Stylizacja rzęs 1:1 | 1800 zł | śląskie | 95% | 5000 zł | **90 zł** |
+| Rzęsy objętościowe | 3200 zł | śląskie | 95% | 5000 zł | **160 zł** |
 | Rozbudowany pakiet brwi | 6150 zł | śląskie | 95% | 5000 zł (limit) | **1150 zł** |
 
-Przykład z tabeli: kurs rzęs 1:1 za 1800 zł w wielkopolskim (80-90%, limit 5000 zł) oznacza dopłatę 180-360 zł - koszt porównywalny z jedną dobrą aplikacją rzęs u stylistki. Przy rozbudowanym pakiecie brwi za 6150 zł w śląskim dofinansowanie zatrzymuje się na limicie 5000 zł, więc dopłata wynosi 1150 zł - wyższa niż przy tańszych kursach, bo tu liczy się limit, nie sam procent. Po kursie te kwoty zwracają się na kilku pierwszych klientkach.
+Przykład z tabeli: kurs rzęs 1:1 za 1800 zł w śląskim (95%, limit 5000 zł) oznacza dopłatę 90 zł - koszt niższy niż jedna dobra aplikacja rzęs u stylistki. Przy rozbudowanym pakiecie brwi za 6150 zł w tym samym regionie dofinansowanie zatrzymuje się na limicie 5000 zł, więc dopłata wynosi 1150 zł - wyższa niż przy tańszych kursach, bo tu liczy się limit, nie sam procent. Po kursie te kwoty zwracają się na kilku pierwszych klientkach.
 
 Sam mechanizm rozliczenia wymaga wyjaśnienia, bo na tym etapie najłatwiej się pogubić. W jednym modelu płacisz szkoleniu tylko swój wkład własny, a operator rozlicza resztę bezpośrednio z trenerką - nie wykładasz pełnej kwoty i nie czekasz na przelew. W innym modelu płacisz całość z góry, a operator zwraca Ci Twoją część po zakończeniu kursu. Który wariant Cię dotyczy, zależy od konkretnego naboru. Dlatego pierwsze pytanie przy zapisie brzmi: ile realnie zapłacę z własnej kieszeni i kiedy.
 
@@ -107,13 +108,13 @@ Jeśli się kwalifikujesz - dostajesz kontakt do trenerki i wiesz, ile realnie d
 ## Najczęstsze pytania
 
 **Ile kosztuje kurs rzęs z dofinansowaniem?**
-Pełna cena kursu rzęs 1:1 w BUR to zwykle 1800-2400 zł. Przy dofinansowaniu 80-95%, zależnie od województwa i naboru, Twój wkład własny to zazwyczaj 90-480 zł. Zamiast pełnej ceny płacisz od stu do kilkuset złotych: realna liczba, nie zero.
+Pełna cena kursu rzęs 1:1 w BUR to zwykle 1800-2400 zł. Przy dofinansowaniu sięgającym nawet do 95%, zależnie od województwa i naboru, Twój wkład własny to zwykle kilkadziesiąt do kilkuset złotych - w województwie z najwyższym poziomem (śląskie, 95%) to około 90-120 zł, w regionach z niższym poziomem więcej. Zamiast pełnej ceny płacisz od kilkudziesięciu do kilkuset złotych: realna liczba, nie zero.
 
 **Czy kurs brwi też jest objęty dofinansowaniem?**
-Tak. Stylizacja i laminacja brwi jest dostępna w BUR na tych samych zasadach co rzęsy. To najtańsze wejście z całej trójki - pełna cena w BUR to 1750-2200 zł, więc po dofinansowaniu (80-90%) dopłacasz zwykle 175-440 zł.
+Tak. Stylizacja i laminacja brwi jest dostępna w BUR na tych samych zasadach co rzęsy. To najtańsze wejście z całej trójki - pełna cena w BUR to 1750-2200 zł, więc po dofinansowaniu sięgającym nawet do 95% dopłacasz zwykle kilkadziesiąt do kilkuset złotych, zależnie od regionu i naboru (w śląskim, przy 95%, to około 88-110 zł).
 
 **Czy dostanę kurs rzęs całkowicie za darmo?**
-Najczęściej nie - dopłacasz 5-20% ceny, bo dofinansowanie to 80-95%, zależnie od województwa i naboru (np. śląskie 95%). Pełne 100% zdarza się w wybranych naborach (KFS, gdy wniosek składa pracodawca), ale to wyjątek, nie reguła. Przy kursach do ok. 5000 zł zakładaj od stu do kilkuset złotych dopłaty; przy droższych o kwocie decyduje limit operatora.
+Najczęściej nie - dopłacasz niewielką część ceny, bo dofinansowanie sięga nawet do 95%, zależnie od województwa i naboru (np. śląskie 95%). Pełne 100% zdarza się w wybranych naborach (KFS, gdy wniosek składa pracodawca), ale to wyjątek, nie reguła. Przy kursach do ok. 5000 zł zakładaj od kilkudziesięciu do kilkuset złotych dopłaty; przy droższych o kwocie decyduje limit operatora.
 
 **Od czego zacząć - rzęsy, brwi czy PMU?**
 Jeśli dopiero wchodzisz, zacznij od brwi albo rzęs - tańsze wejście, krótsze szkolenie, szybki start. PMU to najwyższa stawka za zabieg, ale wymaga więcej praktyki i budżetu, więc lepiej sprawdza się jako drugi kurs, po zbudowaniu pierwszej bazy klientek.

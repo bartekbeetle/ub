@@ -12,6 +12,7 @@ fraza_glowna: "przebranżowienie na beauty od czego zacząć"
 filar: A
 rola: "podtemat"
 reading_minutes: 10
+nadpisz_w_bazie: true
 ---
 
 # Przebranżowienie na beauty po 30 i 40 - od czego zacząć
@@ -60,7 +61,7 @@ Nie musisz decydować dziś na całe życie. Wiele osób zaczyna od jednej kateg
 
 Drugi hamulec po „za późno" brzmi „nie mam odłożone". To realna bariera, bo kurs wpisany do BUR to wydatek rzędu 1800-3400 zł za rzęsy, 1750-2200 zł za laminację brwi i 4000-7000 zł za PMU lub microblading, plus startowy zestaw narzędzi. Dla kogoś, kto zmienia zawód właśnie dlatego, że w obecnym nie odkłada, kilka tysięcy z góry potrafi zamknąć temat, zanim się zacznie.
 
-Tyle że pełną cenę kursu płaci się rzadko. Kursy wpisane do Bazy Usług Rozwojowych (BUR) finansowane są w 80-95%, zależnie od województwa i naboru, więc z własnej kieszeni dopłacasz zwykle kilkaset złotych zamiast kilku tysięcy - przy droższych kursach o wysokości dopłaty decyduje limit kwotowy operatora, zwykle 5000-7000 zł. Kurs rzęs za 1800 zł przy dofinansowaniu 80-95% to wkład własny w okolicach 90-360 zł. Dopłacasz konkretną kwotę, ale kilkaset złotych to wydatek, który da się udźwignąć obok bieżących kosztów życia, w przeciwieństwie do pełnej ceny.
+Tyle że pełną cenę kursu płaci się rzadko. Kursy wpisane do Bazy Usług Rozwojowych (BUR) finansowane są nawet w 95%, zależnie od województwa i naboru, więc z własnej kieszeni dopłacasz zwykle kilkaset złotych zamiast kilku tysięcy - przy droższych kursach o wysokości dopłaty decyduje limit kwotowy operatora, zwykle 5000-7000 zł. Kurs rzęs za 1800 zł przy dofinansowaniu na poziomie 95% (śląskie) to wkład własny w okolicach 90 zł, w regionach z niższym poziomem dopłata jest wyższa. Dopłacasz konkretną kwotę, ale kilkaset złotych to wydatek, który da się udźwignąć obok bieżących kosztów życia, w przeciwieństwie do pełnej ceny.
 
 Tu pada najważniejsze zdanie tego tekstu, bo obala mit, który wyklucza większość kandydatek: dofinansowanie z BUR to nie urząd pracy. Nie musisz być bezrobotna, żeby je dostać. Programy regionalne dla osób dorosłych nie wymagają statusu bezrobotnej: kwalifikują się osoby pracujące, prowadzące firmę, uczące się i nieaktywne zawodowo, a szczegółowe warunki (wiek, miejsce zamieszkania lub pracy) ustala regulamin naboru. Właśnie kobieta 30 albo 40 plus, która pracuje i chce się przekwalifikować, jest typową uczestniczką tych naborów, a nie wyjątkiem od reguły.
 
@@ -96,7 +97,7 @@ Sprawdzenie jest bezpłatne i do niczego nie zobowiązuje. W odpowiedzi zobaczys
 Nie. Techniki wyrabia się przez praktykę na modelkach niezależnie od wieku, a doświadczenie życiowe i umiejętność rozmowy z klientką - które przychodzą z latami - są w tym zawodzie przewagą. Klientki często wybierają osobę opanowaną i doświadczoną życiowo, zwłaszcza przy zabiegach na dłużej, jak makijaż permanentny.
 
 **Nie mam oszczędności na kurs, czy dam radę zacząć?**
-Kurs wpisany do BUR finansowany jest w 80-95%, zależnie od województwa i naboru, więc dopłacasz zwykle kilkaset złotych przy tańszych kursach (rzęsy, brwi, paznokcie) i do jednego, dwóch tysięcy przy droższych (PMU, microblading), gdzie o dopłacie decyduje limit operatora. Dofinansowanie należy się też osobom pracującym, nie tylko bezrobotnym. Zasady zależą od województwa, dlatego warto sprawdzić swoją sytuację, zanim uznasz, że Cię na to nie stać.
+Kurs wpisany do BUR finansowany jest nawet w 95%, zależnie od województwa i naboru, więc dopłacasz zwykle kilkaset złotych przy tańszych kursach (rzęsy, brwi, paznokcie) i do jednego, dwóch tysięcy przy droższych (PMU, microblading), gdzie o dopłacie decyduje limit operatora. Dofinansowanie należy się też osobom pracującym, nie tylko bezrobotnym. Zasady zależą od województwa, dlatego warto sprawdzić swoją sytuację, zanim uznasz, że Cię na to nie stać.
 
 **Od której kategorii najlepiej zacząć przy zmianie zawodu?**
 Najniższy próg wejścia i najszybszy pierwszy zabieg ma zwykle kategoria paznokci - dobra, żeby przy małym ryzyku sprawdzić, czy zawód Ci leży. Rzęsy i brwi to średni próg i wysoka powtarzalność wizyt, PMU to wyższa stawka za zabieg przy rzadszych wizytach. Wybór zależy od budżetu, czasu i tego, jaka praca Ci odpowiada.

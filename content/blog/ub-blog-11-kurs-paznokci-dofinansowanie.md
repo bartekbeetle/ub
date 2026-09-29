@@ -12,6 +12,7 @@ fraza_glowna: "kurs paznokci z dofinansowaniem"
 filar: A
 rola: "podtemat"
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # Kurs stylizacji paznokci z dofinansowaniem - realny koszt
@@ -36,7 +37,7 @@ Zapamiętaj rząd wielkości: **kurs paznokci wpisany do BUR to najczęściej wy
 
 ## Jak BUR obniża tę cenę - wyliczenie „przed i po"
 
-BUR, czyli Baza Usług Rozwojowych, to platforma prowadzona przez PARP, przez którą płyną pieniądze z funduszy unijnych (głównie EFS+) rozdzielane regionalnie przez operatorów w każdym województwie. Poziom dofinansowania ustala operator regionalny w regulaminie naboru i wynosi od 80% do 95% ceny kursu, zależnie od województwa i naboru, jeśli szkolenie jest wpisane do bazy, a Ty łapiesz się na warunki naboru.
+BUR, czyli Baza Usług Rozwojowych, to platforma prowadzona przez PARP, przez którą płyną pieniądze z funduszy unijnych (głównie EFS+) rozdzielane regionalnie przez operatorów w każdym województwie. Poziom dofinansowania ustala operator regionalny w regulaminie naboru i sięga nawet do 95% ceny kursu, zależnie od województwa i naboru, jeśli szkolenie jest wpisane do bazy, a Ty łapiesz się na warunki naboru.
 
 Mechanizm rozliczenia zależy od operatora. Wariant A: wpłacasz tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią. Wariant B: płacisz całość, a zwrot dostajesz po ukończeniu i rozliczeniu szkolenia. Trenerka albo operator powie Ci, który wariant obowiązuje w Twoim województwie, zanim się zapiszesz.
 
@@ -44,8 +45,8 @@ Zobaczmy, jak to wygląda na liczbach dla kursów wpisanych do BUR:
 
 | Kurs paznokci (BUR) | Cena | Procent (przykład) | Twoja dopłata |
 |---|---|---|---|
-| Podstawowy | 1800 zł | 80% (wielkopolskie) | ok. 360 zł |
-| Rozszerzony | 2800 zł | 90% (łódzkie) | ok. 280 zł |
+| Podstawowy | 1800 zł | 95% (śląskie) | ok. 90 zł |
+| Rozszerzony | 2800 zł | 95% (śląskie) | ok. 140 zł |
 | Zaawansowany / pakiet | 4300 zł | 95% (śląskie) | ok. 215 zł |
 
 Większość operatorów ma też limit kwotowy na osobę, zwykle 5000-7000 zł, ale przy cenach kursów paznokci ten limit zwykle nie wchodzi w grę - o wysokości dopłaty decyduje procent. Dokładny procent i limit zależą od naboru i województwa, dlatego traktuj tabelę jako rząd wielkości, nie jako gwarancję co do złotówki.
@@ -112,7 +113,7 @@ Jeśli się kwalifikujesz, dostajesz gotową ścieżkę i kontakt do trenerki, a
 ## Najczęstsze pytania
 
 **Ile realnie kosztuje kurs paznokci po dofinansowaniu?**
-Przy dofinansowaniu z BUR na poziomie 80-95%, zależnie od województwa i naboru, wkład własny to zwykle kilkaset złotych. Przy kursie za 1800 zł dopłacasz najczęściej w okolicach 90-360 zł. Pełne pokrycie zdarza się głównie przez KFS, ale to ścieżka pracodawcy: mikrofirma zatrudniająca pracownicę na etat może pokryć nawet całość kosztów jej szkolenia; osoba na własnej działalności bez pracowników z KFS nie skorzysta.
+Przy dofinansowaniu z BUR sięgającym nawet do 95%, zależnie od województwa i naboru, wkład własny to zwykle kilkadziesiąt do kilkuset złotych - przy kursie za 1800 zł w regionie z najwyższym poziomem (śląskie, 95%) to około 90 zł, w innych regionach więcej. Pełne pokrycie zdarza się głównie przez KFS, ale to ścieżka pracodawcy: mikrofirma zatrudniająca pracownicę na etat może pokryć nawet całość kosztów jej szkolenia; osoba na własnej działalności bez pracowników z KFS nie skorzysta.
 
 **Czy dostanę dofinansowanie na kurs paznokci, jeśli pracuję na etacie?**
 Tak, w większości regionalnych naborów BUR osoby pracujące się kwalifikują. Etat Cię nie wyklucza - to jedno z najczęstszych nieporozumień. Warunki zależą od województwa, dlatego trzeba sprawdzić Twoją sytuację indywidualnie.

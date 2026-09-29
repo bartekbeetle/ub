@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL, OPERATOR, ORG_DESCRIPTION, SITE_NAME, SITE_URL, SOCIAL_URLS } from "./constants";
+import { CONTACT_EMAIL, OPERATOR, ORG_DESCRIPTION, SITE_NAME, SITE_URL, SOCIAL_URLS, SUBSIDY_RANGE } from "./constants";
 import type { Course, Trainer, BlogPost } from "@/db/schema";
 
 /** Stały identyfikator encji organizacji — pozwala spinać wszystkie schematy w jeden graf. */
@@ -52,7 +52,7 @@ export function courseMetaDescription(course: Course, _trainerName?: string | nu
   // Miasto po przecinku, nie „w {miasto}" — nazwy miast wymagałyby odmiany
   // przez przypadki („w Katowicach", nie „w Katowice"), a tego z bazy nie wyliczymy.
   const base = [
-    `${course.title}${course.city ? `, ${course.city}` : ""} — dofinansowanie do ${course.subsidyPercent}% z BUR.`,
+    `${course.title}${course.city ? `, ${course.city}` : ""} — dofinansowanie ${SUBSIDY_RANGE} z BUR.`,
     `Sprawdź swoje dofinansowanie w bezpłatnym formularzu.`,
     `${course.durationHours} h praktyki.`,
   ].join(" ");

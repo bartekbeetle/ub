@@ -70,7 +70,7 @@ export const SOCIAL_URLS = (process.env.NEXT_PUBLIC_SOCIAL_URLS || "")
  * Zakres ustawiony 13.09.2026 pod start kampanii i ZWERYFIKOWANY u źródła (PARP):
  *  - górna granica: mazowiecki Projekt 3 daje „od 92,2% do 96,2%", łódzkie „do 93%"
  *    → komunikujemy 95%, czyli MNIEJ niż udokumentowane maksimum. Bezpieczna strona.
- *  - dolna granica: łódzkie 50% dla dużych przedsiębiorstw i pracodawców spoza biznesu.
+ *  - dolnej granicy NIE komunikujemy (29.09.2026) — tylko sufit „nawet do 95%".
  * Pełny rozbiór z tabelą źródeł:
  * `Zasoby/research/2026-09-13-poziomy-dofinansowania-bur-weryfikacja.md`
  *
@@ -79,10 +79,14 @@ export const SOCIAL_URLS = (process.env.NEXT_PUBLIC_SOCIAL_URLS || "")
  * (wielkopolskie: 5 000 zł na uczestnika). Przy kursie za 8 000 zł realne dofinansowanie
  * wyniesie tam 62%, nie 95% — i bez warunku byłby to zarzut wprowadzenia w błąd.
  */
-export const SUBSIDY_MIN_PERCENT = 50;
 export const SUBSIDY_MAX_PERCENT = 95;
-/** „od 50% do nawet 95%" — gotowa fraza do treści. */
-export const SUBSIDY_RANGE = `od ${SUBSIDY_MIN_PERCENT}% do nawet ${SUBSIDY_MAX_PERCENT}%`;
+/**
+ * „nawet do 95%" — JEDYNA dopuszczalna fraza o poziomie dofinansowania (decyzja Bartka
+ * 29.09.2026: w całym przekazie UB „nawet do 95%", żadnych widełek typu „od 50% do 95%").
+ * Nie wracaj do widełek. Zdania o konkretnym województwie piszemy bez procentu
+ * (wielkopolskie i dolnośląskie kończą się na 90%), górną granicę daje śląskie 95%.
+ */
+export const SUBSIDY_RANGE = `nawet do ${SUBSIDY_MAX_PERCENT}%`;
 /** Warunek, który MUSI towarzyszyć każdej liczbie — guardrail przeciw „0 zł" i obietnicy bez pokrycia. */
 export const SUBSIDY_CONDITION = "zależnie od województwa, naboru i Twojego statusu zawodowego";
 

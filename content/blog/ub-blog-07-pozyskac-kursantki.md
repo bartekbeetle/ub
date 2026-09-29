@@ -12,6 +12,7 @@ fraza_glowna: "jak pozyskać kursantki na szkolenia"
 filar: B
 rola: "pillar"
 reading_minutes: 10
+nadpisz_w_bazie: true
 ---
 
 # Jak zapełnić grafik szkoleń: skąd brać kursantki w 2026
@@ -54,7 +55,7 @@ Przy zewnętrznym źródle płacisz za zakwalifikowane zgłoszenia, które do Ci
 
 Największym pojedynczym hamulcem przy zapisie na kurs beauty jest cena. Szkolenie PMU w Bazie Usług Rozwojowych kosztuje zwykle 5 500-7 000 zł za jedną technikę, kurs rzęs 1 800-3 400 zł. Dla dużej części zainteresowanych to kwota, przy której decyzja się zatrzymuje - niezależnie od tego, jak dobre jest szkolenie.
 
-Dofinansowanie z BUR rozbraja ten hamulec. Baza Usług Rozwojowych to platforma prowadzona przez PARP, przez którą płyną fundusze unijne rozdzielane regionalnie przez operatorów. Zależnie od operatora kursantka wpłaca tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płaci całość i dostaje zwrot. Poziom dofinansowania to 80-95% ceny szkolenia, zależnie od województwa i naboru, a większość operatorów ma też limit kwotowy na osobę, zwykle 5 000-7 000 zł; przy kursie droższym niż ten limit to on, nie procent, decyduje o dopłacie. Przy szkoleniach do około 5 000 zł dopłata to zwykle kilkaset złotych.
+Dofinansowanie z BUR rozbraja ten hamulec. Baza Usług Rozwojowych to platforma prowadzona przez PARP, przez którą płyną fundusze unijne rozdzielane regionalnie przez operatorów. Zależnie od operatora kursantka wpłaca tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płaci całość i dostaje zwrot. Poziom dofinansowania sięga nawet do 95% ceny szkolenia, zależnie od województwa i naboru, a większość operatorów ma też limit kwotowy na osobę, zwykle 5 000-7 000 zł; przy kursie droższym niż ten limit to on, nie procent, decyduje o dopłacie. Przy szkoleniach do około 5 000 zł dopłata to zwykle kilkaset złotych.
 
 Dla Ciebie jako trenerki oznacza to jedno: kurs, który wcześniej był poza zasięgiem części odbiorczyń, nagle mieści się w ich budżecie. Ten sam produkt, inna dostępna cena, znacznie szersza grupa gotowa się zapisać. Warunkiem jest wpisanie szkolenia do BUR - bez tego kursantka nie dostanie żadnego dofinansowania. Jak przejść przez rejestrację podmiotu i kartę usługi, opisujemy krok po kroku w poradniku [jak wpisać szkolenie do BUR](https://uniwersytetbeauty.pl/blog/jak-wpisac-szkolenie-do-bur).
 
@@ -98,7 +99,7 @@ Nie ma jednego. Polecenia konwertują najlepiej, ale nie skalują się na zawoł
 Zależy od kanału i tego, czy liczysz też swój czas. Przy reklamie własnej na koszt składa się budżet mediowy plus Twoje godziny na kwalifikację i domykanie - łatwo wychodzi kilkaset złotych i kilka godzin za jedną kursantkę. Przy zewnętrznym źródle płacisz ustaloną z góry stawkę za przekazane zgłoszenie i nie dokładasz własnych godzin na kwalifikację.
 
 **Czy dofinansowanie realnie pomaga sprzedać szkolenie?**
-Tak, bo rozbraja główny hamulec, czyli cenę. Z dofinansowaniem BUR kursantka dopłaca, zależnie od operatora, tylko wkład własny albo płaci całość i dostaje zwrot; poziom to 80-95% ceny, zależnie od województwa i naboru, a przy droższych kursach o dopłacie decyduje limit kwotowy operatora, zwykle 5 000-7 000 zł. Przy tańszych szkoleniach dopłata to zwykle kilkaset złotych. Warunek to wpisanie szkolenia do BUR, bez tego dofinansowanie nie przysługuje.
+Tak, bo rozbraja główny hamulec, czyli cenę. Z dofinansowaniem BUR kursantka dopłaca, zależnie od operatora, tylko wkład własny albo płaci całość i dostaje zwrot; poziom sięga nawet do 95% ceny, zależnie od województwa i naboru, a przy droższych kursach o dopłacie decyduje limit kwotowy operatora, zwykle 5 000-7 000 zł. Przy tańszych szkoleniach dopłata to zwykle kilkaset złotych. Warunek to wpisanie szkolenia do BUR, bez tego dofinansowanie nie przysługuje.
 
 **Czy muszę mieć wpis do BUR, żeby korzystać z takiego modelu?**
 Żeby kursantka dostała dofinansowanie - tak, szkolenie musi być w Bazie Usług Rozwojowych. Jeśli akredytacji jeszcze nie masz, warto zacząć procedurę, bo to ona odblokowuje grupę kursantek szukających dofinansowania. Proces wpisu opisujemy osobno w poradniku dla trenerek.

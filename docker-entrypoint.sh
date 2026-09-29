@@ -43,6 +43,11 @@ npm run db:seed-blog-nowe || echo "⚠ [entrypoint] seed nowych wpisów bloga ni
 echo "→ [entrypoint] Kursy ogólne (insert-only)..."
 npm run db:seed-kursy-ogolne || echo "⚠ [entrypoint] seed kursów ogólnych nie przeszedł. Startuję serwer mimo to."
 
+# Poprawki opisów kursów — zapis TYLKO gdy w obrazie leży flaga content/kursy/opisy-kursow.nadpisz
+# (zdejmowana w commicie po wdrożeniu, żeby restart nie kasował edycji z panelu). NIEfatalny.
+echo "→ [entrypoint] Opisy kursów (tylko z flagą)..."
+npm run db:opisy-kursow -- --tylko-z-flaga || echo "⚠ [entrypoint] aktualizacja opisów kursów nie przeszła. Startuję serwer mimo to."
+
 echo "→ [entrypoint] Prospekty CRM trenerek (insert-only)..."
 npm run db:seed-prospects || echo "⚠ [entrypoint] seed prospektów nie przeszedł. Startuję serwer mimo to."
 

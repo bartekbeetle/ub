@@ -38,7 +38,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     okolica: ["Pruszków", "Piaseczno", "Legionowo", "Otwock", "Wołomin"],
     tier: "metropolia",
     poziomDofinansowania:
-      "Potwierdzone nabory dla osób dorosłych w województwie mazowieckim sięgają od 76% do 96% ceny, z limitem kwotowym w przedziale 6 100-14 900 zł na osobę: dokładny poziom ustala regulamin konkretnego naboru.",
+      "Potwierdzone nabory dla osób dorosłych w województwie mazowieckim sięgają nawet 95% ceny, z limitem kwotowym w przedziale 6 100-14 900 zł na osobę: dokładny poziom ustala regulamin konkretnego naboru.",
   },
   {
     slug: "krakow",
@@ -61,7 +61,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     okolica: ["Oleśnica", "Oława", "Trzebnica", "Środa Śląska"],
     tier: "duze",
     poziomDofinansowania:
-      "Potwierdzone nabory dla osób dorosłych w województwie dolnośląskim sięgają od 80% do 90% ceny; dokładny limit kwotowy na osobę ustala regulamin konkretnego naboru.",
+      "Poziom dofinansowania i limit kwotowy na osobę w województwie dolnośląskim ustala regulamin konkretnego naboru operatora regionalnego.",
   },
   {
     slug: "poznan",
@@ -73,7 +73,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     okolica: ["Swarzędz", "Luboń", "Środa Wielkopolska", "Oborniki"],
     tier: "duze",
     poziomDofinansowania:
-      "Potwierdzone nabory dla osób dorosłych w województwie wielkopolskim sięgają od 80% do 90% ceny, z limitem kwotowym w przedziale 4 522-10 000 zł na osobę: dokładny poziom ustala regulamin konkretnego naboru.",
+      "Operatorzy w województwie wielkopolskim stosują limit kwotowy w przedziale 4 522-10 000 zł na osobę; poziom dofinansowania ustala regulamin konkretnego naboru.",
   },
   {
     slug: "gdansk",
@@ -96,7 +96,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     okolica: ["Pabianice", "Zgierz", "Aleksandrów Łódzki", "Konstantynów Łódzki"],
     tier: "duze",
     poziomDofinansowania:
-      "Potwierdzone nabory dla osób dorosłych w województwie łódzkim sięgają do 93% ceny; dokładny limit kwotowy na osobę ustala regulamin konkretnego naboru.",
+      "Poziom dofinansowania i limit kwotowy na osobę w województwie łódzkim ustala regulamin konkretnego naboru operatora regionalnego.",
   },
   {
     slug: "lublin",
@@ -119,7 +119,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     okolica: ["Sosnowiec", "Chorzów", "Tychy", "Gliwice", "Zabrze"],
     tier: "duze",
     poziomDofinansowania:
-      "Potwierdzone nabory dla osób dorosłych w województwie śląskim obejmują 95% ceny, z limitem kwotowym 5 000 zł na osobę: to jeden z najkorzystniejszych poziomów w kraju.",
+      "Potwierdzone nabory dla osób dorosłych w województwie śląskim obejmują nawet 95% ceny, z limitem kwotowym 5 000 zł na osobę: to jeden z najkorzystniejszych poziomów w kraju.",
   },
   {
     slug: "szczecin",
@@ -164,7 +164,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     okolica: ["Lubin", "Głogów", "Jawor", "Chojnów"],
     tier: "mniejsze",
     poziomDofinansowania:
-      "Potwierdzone nabory dla osób dorosłych w województwie dolnośląskim sięgają od 80% do 90% ceny; dokładny limit kwotowy na osobę ustala regulamin konkretnego naboru.",
+      "Poziom dofinansowania i limit kwotowy na osobę w województwie dolnośląskim ustala regulamin konkretnego naboru operatora regionalnego.",
   },
   {
     slug: "plock",
@@ -176,7 +176,7 @@ export const LOKALIZACJE: Lokalizacja[] = [
     okolica: ["Gostynin", "Sierpc", "Płońsk", "Wyszogród"],
     tier: "mniejsze",
     poziomDofinansowania:
-      "Potwierdzone nabory dla osób dorosłych w województwie mazowieckim sięgają od 76% do 96% ceny, z limitem kwotowym w przedziale 6 100-14 900 zł na osobę: dokładny poziom ustala regulamin konkretnego naboru.",
+      "Potwierdzone nabory dla osób dorosłych w województwie mazowieckim sięgają nawet 95% ceny, z limitem kwotowym w przedziale 6 100-14 900 zł na osobę: dokładny poziom ustala regulamin konkretnego naboru.",
   },
 ];
 

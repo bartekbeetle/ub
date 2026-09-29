@@ -111,7 +111,8 @@ function zbudujWpis(plan: Plan): { slug: string; plik: string; tresc: string } {
   const w = k.warianty[plan.wariant % k.warianty.length];
   const slug = `kurs-${k.slug}-${l.slug}`;
 
-  // Wkład własny liczony wg kanonu: F1 (procent 80-95%, zależnie od województwa i naboru)
+  // Wkład własny liczony wg kanonu: F1 (w treści zawsze „nawet do 95%", bez widełek procentowych;
+  // do rachunku dopłaty przyjmujemy realny rozrzut operatorów 80-95%)
   // ORAZ F2 (limit kwotowy operatora, zwykle 5-7 tys. zł na osobę na szkolenie) — powyżej
   // tej kwoty o wysokości dofinansowania decyduje limit, nie procent. Najniższa możliwa
   // dopłata liczy się od górnej granicy procentu (95%), najwyższa od dolnej (80%).
@@ -147,7 +148,7 @@ Ceny szkoleń ${k.zEtykieta} mieszczą się zwykle w przedziale **${zl(k.cenaOd)
 
 ${akapitCenowy(k, l)}
 
-Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Operatorzy pokrywają od 80% do 95% ceny, zależnie od województwa i naboru. Zależnie od operatora albo wpłacasz od razu tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płacisz całość i dostajesz zwrot po zakończeniu kursu. Przy powyższych widełkach cenowych realna dopłata wynosi zwykle **${zl(doplataOd)}-${zl(doplataDo)} zł**. ${k.limitUwaga}
+Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Dofinansowanie pokrywa nawet do 95% ceny, zależnie od województwa i naboru. Zależnie od operatora albo wpłacasz od razu tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płacisz całość i dostajesz zwrot po zakończeniu kursu. Przy powyższych widełkach cenowych realna dopłata wynosi zwykle **${zl(doplataOd)}-${zl(doplataDo)} zł**. ${k.limitUwaga}
 
 Dokładny procent, limit kwotowy i wariant rozliczenia zależą od operatora prowadzącego nabór w Twoim województwie, dlatego kwotę zawsze potwierdza się przed podpisaniem umowy z operatorem.
 

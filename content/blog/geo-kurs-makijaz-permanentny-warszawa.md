@@ -5,7 +5,7 @@ category: "Poradniki"
 excerpt: "Ile kosztuje kurs makijażu permanentnego w Warszawie, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie mazowieckim."
 metaTitle: "Kurs makijażu permanentnego Warszawa: cena i dofinansowanie"
 metaDescription: "Kurs makijażu permanentnego w Warszawie: rynkowa cena 5500-7000 zł, przy dofinansowaniu z BUR wkład własny zwykle 280-1400 zł. Program i zasady naboru."
-data: 2026-09-28
+data: 2026-09-29
 reading_minutes: 4
 target: kursantka (B2C)
 fraza_glowna: "szkolenie makijaż permanentny warszawa"
@@ -13,6 +13,7 @@ wolumen_frazy: 90
 zrodlo_frazy: openseo-2026-07-28
 generator: blog-factory
 wariant: 0
+nadpisz_w_bazie: true
 ---
 
 # Kurs makijażu permanentnego w Warszawie: cena, program i dofinansowanie
@@ -27,7 +28,7 @@ Ceny szkoleń z makijażu permanentnego mieszczą się zwykle w przedziale **550
 
 Warszawa jest jednym z droższych rynków szkoleniowych w kraju, więc ceny kursów makijażu permanentnego układają się tu bliżej górnej granicy widełek. Płacisz w tym za gęstszy kalendarz terminów i większy wybór akademii, co przy szkoleniach kilkudniowych bywa realną wygodą, bo łatwiej dopasować kurs do grafiku pracy.
 
-Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Operatorzy pokrywają od 80% do 95% ceny, zależnie od województwa i naboru. Zależnie od operatora albo wpłacasz od razu tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płacisz całość i dostajesz zwrot po zakończeniu kursu. Przy powyższych widełkach cenowych realna dopłata wynosi zwykle **280-1400 zł**. Tu limit kwotowy waży więcej niż sam procent: większość operatorów ustala go na 5-7 tysięcy złotych na osobę, a przy cenie zbliżonej do górnej granicy widełek to on decyduje o dopłacie, nie procent dofinansowania. Przy pełnym pakiecie trzech technik (brwi, usta, kreska), który kosztuje zwykle około 10 000 zł, limit wyczerpuje się szybciej, a dopłata może sięgnąć kilku tysięcy złotych.
+Przy szkoleniu rozliczanym z dofinansowania płacisz **wkład własny**, nie pełną kwotę. Dofinansowanie pokrywa nawet do 95% ceny, zależnie od województwa i naboru. Zależnie od operatora albo wpłacasz od razu tylko wkład własny, a resztę operator rozlicza bezpośrednio z akademią, albo płacisz całość i dostajesz zwrot po zakończeniu kursu. Przy powyższych widełkach cenowych realna dopłata wynosi zwykle **280-1400 zł**. Tu limit kwotowy waży więcej niż sam procent: większość operatorów ustala go na 5-7 tysięcy złotych na osobę, a przy cenie zbliżonej do górnej granicy widełek to on decyduje o dopłacie, nie procent dofinansowania. Przy pełnym pakiecie trzech technik (brwi, usta, kreska), który kosztuje zwykle około 10 000 zł, limit wyczerpuje się szybciej, a dopłata może sięgnąć kilku tysięcy złotych.
 
 Dokładny procent, limit kwotowy i wariant rozliczenia zależą od operatora prowadzącego nabór w Twoim województwie, dlatego kwotę zawsze potwierdza się przed podpisaniem umowy z operatorem.
 
@@ -60,7 +61,7 @@ Przy rynkowej cenie zabiegu brwi zwrot kosztu szkolenia następuje orientacyjnie
 
 Środki rozdziela **operator wyłoniony dla regionu**, a nie PARP centralnie. Warszawa leży w województwie mazowieckim, więc obowiązuje Cię nabór prowadzony dla tego województwa, i to on wyznacza procent dofinansowania oraz terminy. Operatorzy zmieniają się wraz z kolejnymi naborami, część obsługuje wybrane podregiony, dlatego aktualny stan sprawdza się na [uslugirozwojowe.parp.gov.pl](https://uslugirozwojowe.parp.gov.pl), a nie w artykule sprzed pół roku.
 
-Potwierdzone nabory dla osób dorosłych w województwie mazowieckim sięgają od 76% do 96% ceny, z limitem kwotowym w przedziale 6 100-14 900 zł na osobę: dokładny poziom ustala regulamin konkretnego naboru.
+Potwierdzone nabory dla osób dorosłych w województwie mazowieckim sięgają nawet 95% ceny, z limitem kwotowym w przedziale 6 100-14 900 zł na osobę: dokładny poziom ustala regulamin konkretnego naboru.
 
 Dwie zasady, które przesądzają o rozliczeniu: dofinansowanie obejmuje wyłącznie usługi **wpisane do Bazy**, a wniosek składa się **przed** szkoleniem, nie po. Całą procedurę rozkładamy w osobnym wpisie: [Dofinansowanie na szkolenie - krok po kroku](/blog/jak-dostac-dofinansowanie-na-kurs-beauty-krok-po-kroku). Jeżeli zakładasz, że dotyczy to tylko osób bezrobotnych, [tak nie jest](/blog/bur-nie-urzad-pracy-dofinansowanie-dla-pracujacych).
 

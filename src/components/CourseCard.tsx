@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Course, Trainer } from "@/db/schema";
 import { IconPin, IconClock } from "./icons";
+import { SUBSIDY_RANGE } from "@/lib/constants";
 
 /**
  * `trainer` zostaje w sygnaturze (wywołania w listingach go przekazują), ale NIE renderujemy
@@ -23,7 +24,7 @@ export function CourseCard({ course }: { course: Course; trainer?: Trainer | nul
           />
         )}
         <div className="absolute left-3 top-3 flex flex-wrap gap-2">
-          <span className="badge-money bg-money text-white">Dofinansowanie do {course.subsidyPercent}%</span>
+          <span className="badge-money bg-money text-white">Dofinansowanie {SUBSIDY_RANGE}</span>
           <span className="badge-tag bg-white/90">{course.category}</span>
         </div>
       </Link>
@@ -41,9 +42,12 @@ export function CourseCard({ course }: { course: Course; trainer?: Trainer | nul
               <IconPin width={15} height={15} /> {course.city}
             </span>
           )}
-          <span className="inline-flex items-center gap-1">
-            <IconClock width={15} height={15} /> {course.durationHours} godz.
-          </span>
+          {/* Godziny tylko przy kursie konkretnej trenerki — przy kursie ogólnym zależą od akademii. */}
+          {course.trainerId && (
+            <span className="inline-flex items-center gap-1">
+              <IconClock width={15} height={15} /> {course.durationHours} godz.
+            </span>
+          )}
         </div>
 
         <Link href={`/aplikacja?kurs=${course.slug}`} className="btn-primary mt-auto w-full !py-2.5 !text-sm">

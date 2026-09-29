@@ -12,11 +12,12 @@ fraza_glowna: "dofinansowanie BUR dla osoby pracującej"
 filar: A
 rola: podtemat
 reading_minutes: 9
+nadpisz_w_bazie: true
 ---
 
 # BUR ≠ urząd pracy: dofinansowanie należy się też pracującym
 
-„Pracuję, więc dofinansowanie mi się nie należy" - to zdanie zatrzymuje przed kursem beauty więcej kobiet niż jakikolwiek wkład własny. Przez nie tysiące osób w ogóle nie sprawdza, czy kwalifikuje się do dofinansowania, które sięga 80-95% ceny szkolenia, zależnie od województwa i naboru.
+„Pracuję, więc dofinansowanie mi się nie należy" - to zdanie zatrzymuje przed kursem beauty więcej kobiet niż jakikolwiek wkład własny. Przez nie tysiące osób w ogóle nie sprawdza, czy kwalifikuje się do dofinansowania, które sięga nawet do 95% ceny szkolenia, zależnie od województwa i naboru.
 
 Dofinansowanie z BUR nie jest zarezerwowane dla osób bez pracy. W większości regionalnych naborów mogą z niego korzystać kobiety na etacie, na własnej działalności, mamy wracające po urlopie wychowawczym i studentki. Poniżej rozkładamy, komu dokładnie przysługuje i na jakich zasadach - a także sytuacje, w których zwrotu nie otrzymasz, bo rzetelna informacja obejmuje obie strony.
 
@@ -61,7 +62,7 @@ Kursy zawodowe w Polsce finansuje się z trzech źródeł, z których każde dzi
 | Dla kogo | Osoby pracujące, prowadzące firmę, uczące się i nieaktywne zawodowo - warunki ustala regulamin naboru | Osoby bezrobotne zarejestrowane w PUP | Osoby zatrudnione na umowę o pracę, przez ich pracodawcę |
 | Trzeba być bezrobotną? | Nie | Tak | Nie |
 | Kto składa wniosek | Ty (przez operatora regionalnego) | Ty (przez urząd pracy) | Pracodawca - firma zatrudniająca Cię na umowę o pracę |
-| Poziom dofinansowania | 80-95%, zależnie od województwa i naboru; zwykle też limit kwotowy 5-7 tys. zł | Zależnie od programu | 80% kosztów, dla mikrofirm 100% |
+| Poziom dofinansowania | Nawet do 95%, zależnie od województwa i naboru; zwykle też limit kwotowy 5-7 tys. zł | Zależnie od programu | 80% kosztów, dla mikrofirm 100% |
 | Skąd pieniądze | Fundusze unijne (EFS+), regionalnie | Fundusz Pracy | Fundusz Pracy (część na kształcenie) |
 | Typowa droga dla kursantki beauty | Główna ścieżka | Rzadziej | Gdy masz działalność lub przychylnego pracodawcę |
 
@@ -102,7 +103,7 @@ Tak, w większości regionalnych naborów BUR osoby pracujące się kwalifikują
 Nie. To urząd pracy wymaga statusu osoby bezrobotnej. BUR działa inaczej: kwalifikują się osoby pracujące, prowadzące firmę, uczące się i nieaktywne zawodowo, na warunkach ustalonych w regulaminie naboru. Mylenie tych dwóch instytucji to źródło całego mitu.
 
 **Ile realnie dopłacę z własnej kieszeni?**
-Dofinansowanie z BUR to 80-95% ceny, zależnie od województwa i naboru, a większość operatorów ma też limit kwotowy, zwykle 5-7 tys. zł na osobę - przy droższym kursie to on decyduje, ile dopłacisz. Zamiast 1800 zł za kurs rzęs płacisz w okolicach 90-360 zł, zależnie od operatora. Pełne 100% (zero dopłaty) zdarza się głównie przez KFS, gdy wniosek za Ciebie składa pracodawca - to wyjątek, nie reguła.
+Dofinansowanie z BUR sięga nawet do 95% ceny, zależnie od województwa i naboru, a większość operatorów ma też limit kwotowy, zwykle 5-7 tys. zł na osobę - przy droższym kursie to on decyduje, ile dopłacisz. Zamiast 1800 zł za kurs rzęs dopłacasz zwykle kilkaset złotych, a przy najwyższym poziomie dofinansowania (śląskie, 95%) nawet około 90 zł. Pełne 100% (zero dopłaty) zdarza się głównie przez KFS, gdy wniosek za Ciebie składa pracodawca - to wyjątek, nie reguła.
 
 **Czy jako mama na urlopie wychowawczym się kwalifikuję?**
 Bardzo często tak - mamy wracające na rynek pracy to grupa, którą wiele projektów wprost zachęca do udziału. Trzeba sprawdzić aktualny nabór w Twoim regionie, bo zasady się różnią, ale sam status mamy Cię nie wyklucza.

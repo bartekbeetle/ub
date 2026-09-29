@@ -59,7 +59,7 @@ export async function GET() {
 
 ## Kursy
 
-${courses.map((c) => `- [${c.title}](${SITE_URL}/kurs/${c.slug}): kategoria ${c.category}${c.city ? `, ${c.city}` : ""}, dofinansowanie do ${c.subsidyPercent}%.`).join("\n") || "- (katalog w budowie)"}
+${courses.map((c) => `- [${c.title}](${SITE_URL}/kurs/${c.slug}): kategoria ${c.category}${c.city ? `, ${c.city}` : ""}, dofinansowanie ${SUBSIDY_RANGE}.`).join("\n") || "- (katalog w budowie)"}
 
 ## Artykuły
 

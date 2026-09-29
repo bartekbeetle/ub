@@ -3,7 +3,7 @@ title: "Kurs microbladingu z dofinansowaniem - ile zapłacisz"
 slug: "kurs-microblading-z-dofinansowaniem"
 category: "Dofinansowania"
 excerpt: "Kurs microbladingu wpisany do BUR kosztuje zwykle 4000-7000 zł. Z dofinansowaniem dopłacasz ułamek tej kwoty, a przy droższych kursach o dopłacie decyduje limit operatora. Wyjaśniamy różnicę między microbladingiem manualnym a PMU maszynowym i pokazujemy, kto się kwalifikuje."
-meta_description: "Kurs microbladingu z dofinansowaniem BUR - realny koszt po dofinansowaniu (80-95%, zależnie od województwa i naboru), różnica między microbladingiem manualnym a PMU maszynowym i kto się kwalifikuje. Nie musisz być bezrobotna."
+meta_description: "Kurs microbladingu z dofinansowaniem BUR - realny koszt po dofinansowaniu (nawet do 95%, zależnie od województwa i naboru), różnica między microbladingiem manualnym a PMU maszynowym i kto się kwalifikuje. Nie musisz być bezrobotna."
 metaTitle: "Kurs microbladingu z dofinansowaniem - ile zapłacisz"
 metaDescription: "Kurs microbladingu z dofinansowaniem BUR: realny koszt po dofinansowaniu, różnica między microbladingiem manualnym a PMU maszynowym i kto się kwalifikuje."
 data: 2026-07-19
@@ -12,6 +12,7 @@ fraza_glowna: "kurs microblading z dofinansowaniem"
 filar: A
 rola: "podtemat"
 reading_minutes: 10
+nadpisz_w_bazie: true
 ---
 
 # Kurs microbladingu z dofinansowaniem - ile naprawdę kosztuje
@@ -44,15 +45,15 @@ Na cenę wpływa też, czy kurs jest wyłącznie microbladingowy, czy łączony 
 
 ## Jak dofinansowanie BUR zbija koszt - wyliczenie „przed i po"
 
-BUR, czyli Baza Usług Rozwojowych, to platforma prowadzona przez PARP, przez którą płyną pieniądze z funduszy unijnych (głównie EFS+), rozdzielane regionalnie przez operatorów w każdym województwie. Jeśli kurs microbladingu jest wpisany do tej bazy, a Ty łapiesz się na warunki naboru, poziom dofinansowania to 80-95% ceny, zależnie od województwa i naboru.
+BUR, czyli Baza Usług Rozwojowych, to platforma prowadzona przez PARP, przez którą płyną pieniądze z funduszy unijnych (głównie EFS+), rozdzielane regionalnie przez operatorów w każdym województwie. Jeśli kurs microbladingu jest wpisany do tej bazy, a Ty łapiesz się na warunki naboru, poziom dofinansowania sięga nawet do 95% ceny, zależnie od województwa i naboru.
 
 Przy droższym kursie w grę wchodzi jeszcze jeden czynnik: limit kwotowy, jaki operator ma na osobę. Zobaczmy liczby dla kursów wpisanych do BUR:
 
 | Kurs microbladingu (BUR) | Cena | Procent (przykład) | Limit operatora (przykład) | Twoja dopłata |
 |---|---|---|---|---|
-| Podstawowy | 4000 zł | 85% (mazowieckie) | 6100 zł - nie wiąże | 600 zł |
-| Rozszerzony | 5500 zł | 90% (wielkopolskie) | 4522 zł - wiąże | 978 zł |
-| Pakiet z elementami PMU | 7000 zł | 85% (śląskie) | 5000 zł - wiąże | 2000 zł |
+| Podstawowy | 4000 zł | 95% (śląskie) | 5000 zł - nie wiąże | 200 zł |
+| Rozszerzony | 5500 zł | 95% (śląskie) | 5000 zł - wiąże | 500 zł |
+| Pakiet z elementami PMU | 7000 zł | 95% (śląskie) | 5000 zł - wiąże | 2000 zł |
 
 Przy tańszych kursach z tej kategorii dopłata bywa niska, kilkaset złotych - odbijasz ją często na kilku pierwszych zabiegach, bo pojedynczy microblading brwi kosztuje klientkę zazwyczaj kilkaset złotych. Przy droższych kursach i niższym limicie operatora dopłata rośnie do jednego, dwóch tysięcy złotych - wtedy to limit, nie procent, decyduje o kwocie.
 
@@ -113,7 +114,7 @@ Jeśli się kwalifikujesz, dostajesz gotową ścieżkę i kontakt do trenerki, a
 Microblading to metoda manualna - pigment wprowadza się ręcznym narzędziem, rysując pojedyncze kreski imitujące włoski. Efekt jest bardzo naturalny, ale trzyma się krócej (zwykle rok do dwóch) i sprawdza głównie na skórze suchej i normalnej. PMU maszynowe używa urządzenia z napędem, trzyma się dłużej, działa na większej liczbie typów skóry i obejmuje szerszy zakres usług. To dwie różne techniki i ścieżki kariery.
 
 **Ile realnie kosztuje kurs microbladingu po dofinansowaniu?**
-Przy dofinansowaniu z BUR na poziomie 80-95%, zależnie od województwa i naboru, wkład własny to kilkaset złotych przy tańszych kursach (ok. 4000 zł) i do dwóch tysięcy przy droższych (6000-7000 zł), gdzie o dopłacie decyduje limit operatora, zwykle 5000-7000 zł. Pełne pokrycie daje głównie KFS, ale to ścieżka pracodawcy: mikrofirma może pokryć kurs zatrudnionej pracownicy w całości, JDG bez pracowników z KFS nie skorzysta.
+Przy dofinansowaniu z BUR sięgającym nawet do 95%, zależnie od województwa i naboru, wkład własny to kilkaset złotych przy tańszych kursach (ok. 4000 zł) i do dwóch tysięcy przy droższych (6000-7000 zł), gdzie o dopłacie decyduje limit operatora, zwykle 5000-7000 zł. Pełne pokrycie daje głównie KFS, ale to ścieżka pracodawcy: mikrofirma może pokryć kurs zatrudnionej pracownicy w całości, JDG bez pracowników z KFS nie skorzysta.
 
 **Czy dostanę dofinansowanie na kurs microbladingu, jeśli pracuję?**
 Tak, w większości regionalnych naborów BUR osoby pracujące się kwalifikują. Etat ani własna działalność Cię nie wykluczają - przeciwnie, to grupy, do których te programy są kierowane. Warunki zależą od województwa, dlatego trzeba sprawdzić Twoją sytuację indywidualnie.
