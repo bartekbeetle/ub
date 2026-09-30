@@ -9,7 +9,7 @@ import { CONTACT_EMAIL, SITE_NAME, SITE_URL } from "@/lib/constants";
 import { PORADNIK_SALON as P, PORADNIK_SALON_W_SPRZEDAZY as W_SPRZEDAZY } from "@/lib/produkty";
 
 const URL_STRONY = `/${P.slug}`;
-const TYTUL = `${P.tytul}. ${P.podtytul} — poradnik PDF`;
+const TYTUL = `${P.tytul} — poradnik PDF`;
 const OPIS =
   "Poradnik dla kobiet, które otwierają salon albo gabinet beauty lub chcą rozwinąć istniejący: formalności i sanepid, ulgi w ZUS, kasa fiskalna, Profil Firmy w Google, opinie zgodne z zasadami, ceny i nowe usługi. Stan prawny: wrzesień 2026.";
 

@@ -5,7 +5,7 @@ import { PoradnikForm } from "@/components/PoradnikForm";
 import { IconCheck } from "@/components/icons";
 import { SITE_NAME, SUBSIDY_RANGE, SUBSIDY_CONDITION } from "@/lib/constants";
 
-const TYTUL = "Bezpłatny poradnik: jak zacząć w beauty i sprawdzić swoje dofinansowanie";
+const TYTUL = "Bezpłatny poradnik: start w beauty i dofinansowanie";
 const OPIS =
   "Ekspercki poradnik dla kobiet, które myślą o pierwszym kursie beauty: jak naprawdę wygląda szkolenie, jak wejść do branży i na czym polegają dofinansowania z BUR. Osobne wydania dla śląskiego i wielkopolskiego.";
 
