@@ -65,6 +65,11 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         </h1>
         <div className="flex items-center gap-3">
           <LeadStatusSelect leadId={lead.id} current={lead.status} />
+          {!lead.anonymizedAt && (
+            <Link href={`/admin/skrzynka/nowa?lead=${lead.id}`} className="btn-outline !px-4 !py-2 !text-sm">
+              Napisz maila
+            </Link>
+          )}
           {!lead.anonymizedAt && <AnonymizeButton leadId={lead.id} />}
         </div>
       </div>

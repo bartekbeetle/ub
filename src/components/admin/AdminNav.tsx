@@ -28,6 +28,9 @@ const GROUPS: { label: string | null; items: Item[] }[] = [
       // Mailing stoi w lejku B2C, a nie w „Serwisie": to jest kontakt z kursantkami,
       // a nie ustawienie techniczne. Obok lejka widać, do ilu z nich wolno w ogóle pisać.
       { href: "/admin/mailing", label: "Mailing" },
+      // Skrzynka `biuro@` (01.10.2026): tu wracają odpowiedzi kursantek na maile automatyczne.
+      // Stoi w lejku B2C z tego samego powodu co Mailing — to rozmowa z kursantką.
+      { href: "/admin/skrzynka", label: "Skrzynka" },
     ],
   },
   {

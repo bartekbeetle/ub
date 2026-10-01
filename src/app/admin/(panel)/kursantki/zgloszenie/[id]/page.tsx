@@ -41,7 +41,12 @@ export default async function KonwersjaZgloszeniaPage({ params }: { params: Prom
           <dt className="text-muted">Wpłynęło</dt>
           <dd>{formatDateTime(submission.createdAt)}</dd>
           <dt className="text-muted">E-mail</dt>
-          <dd>{submission.email}</dd>
+          <dd>
+            {submission.email}{" "}
+            <Link href={`/admin/skrzynka/nowa?zgloszenie=${submission.id}`} className="link-inline ml-2 text-xs">
+              Odpisz mailem
+            </Link>
+          </dd>
           <dt className="text-muted">Telefon</dt>
           <dd>{submission.phone ?? "— brak —"}</dd>
           <dt className="text-muted">Wiadomość</dt>

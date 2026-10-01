@@ -38,7 +38,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ["@electric-sql/pglite", "pg", "nodemailer", "bcryptjs"],
+  serverExternalPackages: ["@electric-sql/pglite", "pg", "nodemailer", "bcryptjs", "imapflow", "mailparser"],
   // Nie zdradzaj frameworka/wersji w nagłówku `x-powered-by` — ułatwia dobór exploita pod Next.
   poweredByHeader: false,
   // Standalone: produkuje samowystarczalny `.next/standalone/server.js` (plain node),
