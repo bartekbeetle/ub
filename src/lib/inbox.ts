@@ -55,7 +55,7 @@ export function inboxConfigured(): boolean {
 }
 
 function client(): ImapFlow {
-  return new ImapFlow({
+  const c = new ImapFlow({
     host: process.env.INBOX_IMAP_HOST || DEFAULT_IMAP_HOST,
     port: Number(process.env.INBOX_IMAP_PORT || 993),
     secure: true,
@@ -66,6 +66,10 @@ function client(): ImapFlow {
     greetingTimeout: 10_000,
     socketTimeout: 30_000,
   });
+  // 🔴 Bez nasłuchu `error` zerwanie gniazda/timeout to uncaught exception — a panel i publiczna
+  // strona żyją w jednym procesie Nexta, więc czkawka serwera LH kładłaby cały serwis.
+  c.on("error", (err) => console.error("[inbox] IMAP:", err));
+  return c;
 }
 
 async function withClient<T>(fn: (c: ImapFlow) => Promise<T>): Promise<T> {
@@ -78,13 +82,23 @@ async function withClient<T>(fn: (c: ImapFlow) => Promise<T>): Promise<T> {
   }
 }
 
-/** Ścieżka folderu „Wysłane" — po fladze special-use, a gdy serwer jej nie ma, po nazwie. */
-async function sentPath(c: ImapFlow): Promise<string | null> {
+/**
+ * Ścieżka folderu „Wysłane" — po fladze special-use, a gdy serwer jej nie ma, po nazwie.
+ * `create: true` zakłada folder, jeśli go brak: skrzynka nigdy nie otwierana w webmailu
+ * (stan `biuro@` na 01.10) nie ma „Wysłanych", a bez nich kopie odpowiedzi znikałyby po cichu.
+ */
+async function sentPath(c: ImapFlow, create = false): Promise<string | null> {
   const list = await c.list();
   const bySpecial = list.find((m) => m.specialUse === "\\Sent");
   if (bySpecial) return bySpecial.path;
   const byName = list.find((m) => /^(inbox[./])?(sent|wys[lł]ane|sent items|sent messages)$/i.test(m.path));
-  return byName?.path ?? null;
+  if (byName) return byName.path;
+  if (!create) return null;
+  // Prefiks przestrzeni nazw (na serwerach Dovecot/Courier zwykle „INBOX.").
+  const ns = c.namespace;
+  const path = `${ns?.prefix ?? ""}Sent`;
+  await c.mailboxCreate(path);
+  return path;
 }
 
 async function folderPath(c: ImapFlow, folder: InboxFolder): Promise<string | null> {
@@ -186,22 +200,26 @@ export async function sendFromInbox(params: {
   });
 
   const address = inboxAddress();
-  const mail = {
+  // Wiadomość składamy RAZ: ten sam surowy MIME idzie do adresatki i do „Wysłanych".
+  // Osobne `sendMail` + `MailComposer` nadawałyby dwa różne Message-ID i kopia nie
+  // zgadzałaby się z tym, co realnie dostała kursantka (wątki, odpowiedzi na odpowiedź).
+  const raw = await new MailComposer({
     from: { name: "Uniwersytet Beauty", address },
     to: params.to,
     subject: params.subject,
     text: params.text,
     inReplyTo: params.inReplyTo ?? undefined,
     references: params.references?.length ? params.references : undefined,
-  };
-  await transport.sendMail(mail);
+  })
+    .compile()
+    .build();
+  await transport.sendMail({ envelope: { from: address, to: [params.to] }, raw });
 
   // Kopia w „Wysłanych" i flaga \Answered — po to, żeby człowiek czytający skrzynkę
   // w programie pocztowym widział, że ktoś już odpisał. Błąd tutaj nie cofa wysyłki.
   try {
-    const raw = await new MailComposer(mail).compile().build();
     await withClient(async (c) => {
-      const sent = await sentPath(c);
+      const sent = await sentPath(c, true);
       if (sent) await c.append(sent, raw, ["\\Seen"]);
       if (params.answeredUid) {
         const lock = await c.getMailboxLock("INBOX");

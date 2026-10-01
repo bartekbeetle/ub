@@ -26,7 +26,7 @@ export default async function SkrzynkaPage({ params }: { params: Promise<{ folde
         <div className="card mt-6 border border-amber-300 bg-amber-50 p-5 text-sm text-amber-900">
           <strong>Skrzynka nie jest podpięta.</strong> W zmiennych środowiskowych brakuje{" "}
           <code>INBOX_USER</code> i <code>INBOX_PASS</code> (konto <code>biuro@uniwersytetbeauty.pl</code> w LH).
-          Po ich ustawieniu potrzebny jest redeploy.
+          Po ich ustawieniu aplikacja wymaga restartu w Coolify.
         </div>
       </div>
     );
