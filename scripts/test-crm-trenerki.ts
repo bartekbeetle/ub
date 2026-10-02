@@ -323,6 +323,29 @@ async function main() {
     check("admin: zmiana billingStatus zapisana w audycie płatności", await adminAuditCnt("zmiana_statusu_platnosci"), 2);
   }
 
+  // TRZECIA ścieżka: zbiorcze „zapisana" z karty leada (admin) — przez rdzeń, raz na przydział
+  {
+    const adm = (await db.insert(schema.users).values({ email: "admin2@example.com", passwordHash: "x", role: "admin" }).returning())[0];
+    const tP = await mkTrainer("Akademia Pi");
+    const tR = await mkTrainer("Akademia Ro");
+    const LB = await lead({ name: "Beata Zbiorcza", email: "beata@example.com", phone: "504 444 555" });
+    const aP = await assign(LB.id, tP.id);
+    const aR = await assign(LB.id, tR.id);
+    // trasa wymaga sesji Next; testujemy dokładnie wywołanie, które wykonuje w pętli po przydziałach:
+    for (const a of [aP, aR]) await updateAssignmentStatusAsAdmin({ user: adm as never, assignmentId: a.id, change: { status: "zapisana" } });
+    for (const a of [aP, aR]) await updateAssignmentStatusAsAdmin({ user: adm as never, assignmentId: a.id, change: { status: "zapisana" } }); // powtórka (drugie kliknięcie)
+    const rows = await db.select().from(schema.leadAssignments).where(eq(schema.leadAssignments.leadId, LB.id));
+    check("zbiorcze: każdy przydział naliczony raz (500 + 500)", rows.map((r) => r.amount).sort(), [500, 500]);
+    const q = (await db.select({ k: schema.emailQueue.kind }).from(schema.emailQueue)).map((r) => r.k);
+    check("zbiorcze: dwa powiadomienia wewnętrzne, po jednym na przydział", [q.filter((k) => k === `wewnetrzne_zapis:${aP.id}`).length, q.filter((k) => k === `wewnetrzne_zapis:${aR.id}`).length], [1, 1]);
+    const leadRoute = readFileSync("src/app/api/admin/leads/[id]/route.ts", "utf8");
+    check("straż: trasa admin/leads/[id] nie nalicza sama i nie woła onLeadSigned", /amount|billingModel|onLeadSigned|\.rate/.test(leadRoute), false);
+    check("straż: trasa admin/leads/[id] idzie przez updateAssignmentStatusAsAdmin", leadRoute.includes("updateAssignmentStatusAsAdmin"), true);
+    // żadna trasa API/strona poza rdzeniem nie ustawia amount ani nie woła onLeadSigned
+    const offenders = walk("src").filter((f) => !/src\/lib\/(assignment-status-core|assignment-status|lead-events)\.ts$/.test(f)).filter((f) => /onLeadSigned\(/.test(readFileSync(f, "utf8")));
+    check("straż: onLeadSigned wołany tylko ze wspólnej ścieżki", offenders, []);
+  }
+
   // straż strukturalna: trasa admina i trasa mobilna idą przez wspólny rdzeń, bez własnej kopii naliczania
   {
     const adminRoute = readFileSync("src/app/api/admin/assignments/[id]/route.ts", "utf8");
