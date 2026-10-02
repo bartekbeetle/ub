@@ -54,7 +54,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   const zgloszenie = zrodloweZgloszenia[0];
 
   const assignedIds = new Set(assignments.map((a) => a.trainer.id));
-  const options = activeTrainers.filter((t) => !assignedIds.has(t.id));
+  // Do komponentu klienckiego idzie tylko to, czego potrzebuje; stawki nie wyciekają do payloadu RSC.
+  const options = activeTrainers.filter((t) => !assignedIds.has(t.id)).map((t) => (showBilling ? t : { ...t, rate: 0 }));
 
   return (
     <div className="max-w-5xl">

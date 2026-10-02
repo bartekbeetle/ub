@@ -13,6 +13,7 @@ export default async function EdycjaTrenerkiPage({ params }: { params: Promise<{
   const { id } = await params;
   const trainerId = Number(id);
   if (!Number.isInteger(trainerId)) notFound();
+  const canEditBilling = isSuperadminRole((await getSessionUser())?.role);
   const db = await getDb();
   const [trainer] = await db.select().from(schema.trainers).where(eq(schema.trainers.id, trainerId)).limit(1);
   if (!trainer) notFound();
@@ -70,7 +71,12 @@ export default async function EdycjaTrenerkiPage({ params }: { params: Promise<{
       </div>
 
       <div className="card mt-6 p-6">
-        <TrainerForm trainer={trainer} canEditBilling={isSuperadminRole((await getSessionUser())?.role)} />
+        <TrainerForm
+          // Admin dostaje kopię bez warunków finansowych: props klienckie trafiają do payloadu RSC,
+          // więc samo ukrycie pól w formularzu nie wystarczy.
+          trainer={canEditBilling ? trainer : { ...trainer, rate: 0 }}
+          canEditBilling={canEditBilling}
+        />
       </div>
     </div>
   );

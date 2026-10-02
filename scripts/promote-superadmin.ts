@@ -76,7 +76,7 @@ async function main() {
     entityId: target.id,
     details: { email: target.email, via: "scripts/promote-superadmin.ts" },
   });
-  console.log(`✓ ${target.email}: admin → superadmin. Zaloguj się ponownie, żeby zobaczyć Zespół, Rozliczenia i Ustawienia.`);
+  console.log(`✓ ${target.email}: admin → superadmin. Odśwież panel: pojawią się Zespół, Rozliczenia i Ustawienia (rola jest czytana z bazy przy każdym żądaniu).`);
   await close();
 }
 

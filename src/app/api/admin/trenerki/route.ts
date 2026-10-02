@@ -14,7 +14,9 @@ export async function GET() {
   const user = await requireAdmin();
   if (!user) return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
   const db = await getDb();
-  return NextResponse.json(await db.select().from(schema.trainers).orderBy(desc(schema.trainers.createdAt)));
+  const all = await db.select().from(schema.trainers).orderBy(desc(schema.trainers.createdAt));
+  // Stawki i model rozliczenia widzi tylko superadmin.
+  return NextResponse.json(isSuperadminRole(user.role) ? all : all.map(({ rate: _r, billingModel: _b, ...rest }) => rest));
 }
 
 export async function POST(req: Request) {
