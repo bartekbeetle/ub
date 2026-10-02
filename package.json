@@ -30,7 +30,8 @@
     "test:wypisanie": "tsx scripts/test-wypisanie.ts",
     "test:tracking": "tsx scripts/test-tracking.ts",
     "test:superadmin": "tsx scripts/test-superadmin.ts",
-    "test:porzucone": "tsx scripts/test-mailer-porzucone.ts"
+    "test:porzucone": "tsx scripts/test-mailer-porzucone.ts",
+    "test:crm": "tsx scripts/test-crm-trenerki.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.3.0",

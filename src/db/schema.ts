@@ -496,9 +496,119 @@ export const leadAssignments = pgTable(
     billingStatus: billingStatusEnum("billing_status").notNull().default("do_zafakturowania"),
     amount: integer("amount_pln").notNull().default(0), // naliczona kwota PLN
     assignedBy: varchar("assigned_by", { length: 60 }).notNull().default("system"),
+    /**
+     * CRM TRENERKI (panel): podetap WEWNĄTRZ statusu „skontaktowany" — kontakt_podjety /
+     * rozmowa_umowiona / wniosek_bur. Status przydziału zostaje JEDYNYM źródłem prawdy o
+     * etapie (i o naliczeniu); to pole tylko go doprecyzowuje, więc nie może się rozjechać
+     * ze statusem ustawianym z aplikacji mobilnej albo przez admina. Etap widoczny w CRM
+     * liczy `crmStageOf` w `@/lib/crm-core`. Varchar, nie enum — enumu w Postgresie nie da się odchudzić.
+     */
+    crmSubstage: varchar("crm_substage", { length: 30 }),
+    /** CRM TRENERKI: kiedy trenerka zaplanowała kolejny kontakt z tą kursantką. Per przydział, nigdy per lead. */
+    nextContactAt: timestamp("next_contact_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index("assign_lead_idx").on(t.leadId), index("assign_trainer_idx").on(t.trainerId)]
+  (t) => [
+    index("assign_lead_idx").on(t.leadId),
+    index("assign_trainer_idx").on(t.trainerId),
+    index("assign_trainer_next_idx").on(t.trainerId, t.nextContactAt),
+  ]
+);
+
+// ===== CRM TRENEREK — DANE TRENERKI O JEJ KURSANTKACH =====
+//
+// 🔴 IZOLACJA (RODO): każda z poniższych tabel jest kluczowana PRZYDZIAŁEM (lead × trenerka),
+// nigdy leadem. Ta sama kobieta może trafić do 2–3 trenerek (multi-sell), a notatki, etap,
+// przypomnienia i korespondencja jednej nie mogą być widoczne dla drugiej ani zdradzać, że
+// ktokolwiek inny dostał to zgłoszenie. `trainer_id` jest zdenormalizowane celowo: każde
+// zapytanie filtruje po OBU kolumnach (assignment_id + trainer_id), więc pomyłka w jednym
+// miejscu nie otwiera cudzych danych.
+
+/** Notatka trenerki o kursantce (z czasem). */
+export const crmNotes = pgTable(
+  "crm_notes",
+  {
+    id: serial("id").primaryKey(),
+    assignmentId: integer("assignment_id")
+      .notNull()
+      .references(() => leadAssignments.id, { onDelete: "cascade" }),
+    trainerId: integer("trainer_id")
+      .notNull()
+      .references(() => trainers.id, { onDelete: "cascade" }),
+    body: text("body").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("crm_notes_assignment_idx").on(t.assignmentId)]
+);
+
+/** Zdarzenia osi czasu poza wiadomościami i notatkami: zmiana etapu, ustawienie przypomnienia. */
+export const crmEvents = pgTable(
+  "crm_events",
+  {
+    id: serial("id").primaryKey(),
+    assignmentId: integer("assignment_id")
+      .notNull()
+      .references(() => leadAssignments.id, { onDelete: "cascade" }),
+    trainerId: integer("trainer_id")
+      .notNull()
+      .references(() => trainers.id, { onDelete: "cascade" }),
+    /** `etap` | `przypomnienie` */
+    kind: varchar("kind", { length: 30 }).notNull(),
+    summary: text("summary").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("crm_events_assignment_idx").on(t.assignmentId)]
+);
+
+/**
+ * Wiadomości 1:1 trenerka → kursantka (e-mail i SMS). Historia komunikacji.
+ * `status` to varchar: `w_kolejce` | `wyslany` | `blad` | `dry-run` (SMS bez tokenu dostawcy).
+ */
+export const crmMessages = pgTable(
+  "crm_messages",
+  {
+    id: serial("id").primaryKey(),
+    assignmentId: integer("assignment_id")
+      .notNull()
+      .references(() => leadAssignments.id, { onDelete: "cascade" }),
+    trainerId: integer("trainer_id")
+      .notNull()
+      .references(() => trainers.id, { onDelete: "cascade" }),
+    channel: varchar("channel", { length: 10 }).notNull(), // email | sms
+    toAddress: varchar("to_address", { length: 255 }).notNull(),
+    subject: text("subject"),
+    body: text("body").notNull(),
+    status: varchar("status", { length: 20 }).notNull(),
+    provider: varchar("provider", { length: 20 }), // smtp | smsapi | dryrun
+    providerId: varchar("provider_id", { length: 80 }),
+    error: text("error"),
+    segments: integer("segments"),
+    emailQueueId: integer("email_queue_id").references(() => emailQueue.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("crm_messages_assignment_idx").on(t.assignmentId),
+    // limit dzienny liczymy po (trenerka, czas)
+    index("crm_messages_trainer_created_idx").on(t.trainerId, t.createdAt),
+  ]
+);
+
+/** Szablony wiadomości trenerki ({imie}, {kurs}). Własność trenerki, nie przydziału. */
+export const crmTemplates = pgTable(
+  "crm_templates",
+  {
+    id: serial("id").primaryKey(),
+    trainerId: integer("trainer_id")
+      .notNull()
+      .references(() => trainers.id, { onDelete: "cascade" }),
+    channel: varchar("channel", { length: 10 }).notNull().default("email"), // email | sms
+    name: varchar("name", { length: 120 }).notNull(),
+    subject: text("subject"),
+    body: text("body").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("crm_templates_trainer_idx").on(t.trainerId)]
 );
 
 // ===== CRM TRENEREK — PIPELINE B2B =====
@@ -897,6 +1007,14 @@ export const emailQueue = pgTable(
      * blokowałby kolejkę w nieskończonej pętli ponawiania.
      */
     attempts: integer("attempts").notNull().default(0),
+    /**
+     * Nadawca i adres zwrotny NADPISUJĄCE domyślne (SMTP_FROM / SMTP_REPLY_TO). Używa tego CRM
+     * trenerki (From: „Akademia przez Uniwersytet Beauty", Reply-To: konto trenerki). Muszą
+     * leżeć w kolejce, a nie tylko w wywołaniu: przy braku SMTP mail czeka i wychodzi dopiero
+     * z `flushEmailQueue` — bez tych kolumn odpowiedź kursantki trafiałaby do `biuro@`.
+     */
+    fromName: varchar("from_name", { length: 200 }),
+    replyTo: varchar("reply_to", { length: 255 }),
     sentAt: timestamp("sent_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
@@ -1090,6 +1208,10 @@ export type LeadAssignment = typeof leadAssignments.$inferSelect;
 export type Review = typeof reviews.$inferSelect;
 export type Submission = typeof submissions.$inferSelect;
 export type QuizSession = typeof quizSessions.$inferSelect;
+export type CrmNote = typeof crmNotes.$inferSelect;
+export type CrmEvent = typeof crmEvents.$inferSelect;
+export type CrmMessage = typeof crmMessages.$inferSelect;
+export type CrmTemplate = typeof crmTemplates.$inferSelect;
 export type AbandonedReminder = typeof abandonedReminders.$inferSelect;
 export type Settings = typeof settings.$inferSelect;
 export type Prospect = typeof prospects.$inferSelect;
