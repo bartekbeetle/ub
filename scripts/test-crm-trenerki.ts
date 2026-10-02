@@ -394,7 +394,10 @@ async function main() {
   const anonMail = await crm.crmSendEmail(uA, aAL.id, "a", "b");
   const anonSms = await crm.crmSendSms(uA, aAL.id, "a");
   check("zanonimizowany lead: e-mail i SMS = 409", [anonMail.ok === false && anonMail.status, anonSms.ok === false && anonSms.status], [409, 409]);
+  const queuedBefore = (await db.select().from(schema.emailQueue).where(and(eq(schema.emailQueue.leadId, L.id), eq(schema.emailQueue.kind, "trenerka_crm")))).length;
   await core.purgeCrmForLead(db, L.id);
+  check("RODO: przed purge w kolejce leżały maile trenerek do tego leada", queuedBefore > 0, true);
+  check("RODO: po purge zero maili trenerek (trenerka_crm) tego leada w email_queue", (await db.select().from(schema.emailQueue).where(and(eq(schema.emailQueue.leadId, L.id), eq(schema.emailQueue.kind, "trenerka_crm")))).length, 0);
   const left = {
     msgs: (await db.select().from(schema.crmMessages).where(eq(schema.crmMessages.assignmentId, aAL.id))).length + (await db.select().from(schema.crmMessages).where(eq(schema.crmMessages.assignmentId, aBL.id))).length,
     notes: (await db.select().from(schema.crmNotes).where(eq(schema.crmNotes.assignmentId, aAL.id))).length,

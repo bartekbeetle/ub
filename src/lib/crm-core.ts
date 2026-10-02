@@ -680,7 +680,21 @@ export async function purgeCrmForLead(db: AnyDb, leadId: number): Promise<void> 
     await db.select({ id: schema.leadAssignments.id }).from(schema.leadAssignments).where(eq(schema.leadAssignments.leadId, leadId))
   ).map((r) => r.id);
   if (ids.length === 0) return;
+  // Każdy e-mail CRM leży też w `email_queue` (prawdziwy adres + treść trenerki). Przy braku SMTP
+  // czeka tam i wyszedłby przy najbliższym flushu mimo anonimizacji, więc kasujemy go razem z wpisem w CRM.
+  const queueIds = (
+    await db
+      .select({ q: schema.crmMessages.emailQueueId })
+      .from(schema.crmMessages)
+      .where(inArray(schema.crmMessages.assignmentId, ids))
+  )
+    .map((r) => r.q)
+    .filter((q): q is number => q !== null);
   await db.delete(schema.crmMessages).where(inArray(schema.crmMessages.assignmentId, ids));
+  if (queueIds.length > 0) await db.delete(schema.emailQueue).where(inArray(schema.emailQueue.id, queueIds));
+  await db
+    .delete(schema.emailQueue)
+    .where(and(eq(schema.emailQueue.leadId, leadId), eq(schema.emailQueue.kind, "trenerka_crm")));
   await db.delete(schema.crmNotes).where(inArray(schema.crmNotes.assignmentId, ids));
   await db.delete(schema.crmEvents).where(inArray(schema.crmEvents.assignmentId, ids));
   await db
