@@ -65,7 +65,7 @@ async function main() {
   const core = await import("../src/lib/crm-core");
   const crm = await import("../src/lib/crm");
   const stages = await import("../src/lib/crm-stages");
-  const { updateTrainerAssignmentStatus } = await import("../src/lib/assignment-status");
+  const { updateTrainerAssignmentStatus, updateAssignmentStatusAsAdmin } = await import("../src/lib/assignment-status");
   const { getSmsProvider, isSmsLive } = await import("../src/lib/sms");
   const { normalizePlPhone, smsLength } = await import("../src/lib/sms/phone");
   const { SmsapiProvider } = await import("../src/lib/sms/smsapi");
@@ -224,7 +224,7 @@ async function main() {
   check("status leada zeskalowany do zapisana (jak w panelu/telefonie)", leadAfter.status, "zapisana");
   const kinds = async () => (await db.select({ k: schema.emailQueue.kind }).from(schema.emailQueue)).map((r) => r.k).sort();
   const k1 = await kinds();
-  check("maile zapisu: 1x do kursantki, 1x wewnętrzny", [k1.filter((k) => k === "kursantka_zapis").length, k1.filter((k) => k === "wewnetrzne_zapis").length], [1, 1]);
+  check("maile zapisu: 1x do kursantki, 1x wewnętrzny", [k1.filter((k) => k === "kursantka_zapis").length, k1.filter((k) => k.startsWith("wewnetrzne_zapis")).length], [1, 1]);
   const billingAudit = (await db.select().from(schema.auditLog).where(eq(schema.auditLog.action, "zmiana_statusu"))).length;
   check("audit_log: jedno przejście na zapisana", billingAudit, 1);
 
@@ -245,6 +245,92 @@ async function main() {
   await updateTrainerAssignmentStatus({ user: uB, trainerId: tB.id, assignmentId: aBL.id, input: { status: "zapisana" } });
   check("status zapisana z telefonu -> CRM pokazuje zapisana (bez zapisu w CRM)", (await core.getCrmDetail(db, tB.id, aBL.id))?.stage, "zapisana");
   check("multi-sell: B też naliczone 500 niezależnie od A", (await db.select().from(schema.leadAssignments).where(eq(schema.leadAssignments.id, aBL.id)))[0].amount, 500);
+
+  // multi-sell: dwie akademie zapisały tę samą kursantkę -> DWA powiadomienia dla biura (po przydziale),
+  // ale kursantka dostaje jedno potwierdzenie (dedupe per lead).
+  {
+    const q = await db.select({ k: schema.emailQueue.kind, subj: schema.emailQueue.subject }).from(schema.emailQueue);
+    const internal = q.filter((r) => r.k.startsWith("wewnetrzne_zapis")).map((r) => r.k).sort();
+    check("multi-sell: dwa powiadomienia wewnętrzne, po jednym na przydział", internal, [`wewnetrzne_zapis:${aAL.id}`, `wewnetrzne_zapis:${aBL.id}`].sort());
+    check("multi-sell: kursantka dostała jedno potwierdzenie zapisu", q.filter((r) => r.k === "kursantka_zapis").length, 1);
+    check("multi-sell: temat powiadomienia niesie nazwę akademii", q.some((r) => r.k === `wewnetrzne_zapis:${aBL.id}` && r.subj.includes("Akademia Beta")), true);
+  }
+
+  // Trenerka (telefon/panel/CRM) nie wychodzi z „zapisana" — ta sama zasada co w CRM (409), kwota zostaje
+  {
+    const r = await updateTrainerAssignmentStatus({ user: uB, trainerId: tB.id, assignmentId: aBL.id, input: { status: "skontaktowany" } });
+    check("telefon/panel: wyjście z zapisanej = 409", r.ok === false && r.status, 409);
+    const row = (await db.select().from(schema.leadAssignments).where(eq(schema.leadAssignments.id, aBL.id)))[0];
+    check("telefon/panel: po 409 status i kwota bez zmian", [row.status, row.amount], ["zapisana", 500]);
+  }
+
+  // ADMIN przez wspólny rdzeń
+  {
+    const adm = (await db.insert(schema.users).values({ email: "admin@example.com", passwordHash: "x", role: "admin" }).returning())[0];
+    const sup = (await db.insert(schema.users).values({ email: "super@example.com", passwordHash: "x", role: "superadmin" }).returning())[0];
+    // osobne akademie, żeby nie zaśmiecać list/filtrów CRM A i B w dalszych sekcjach
+    const tX = await mkTrainer("Akademia Xi");
+    const tY = await mkTrainer("Akademia Ypsylon");
+    const L2 = await lead({ name: "Dorota Admin", email: "dorota@example.com", phone: "502 222 333" });
+    const aA2 = await assign(L2.id, tX.id);
+    const aB2 = await assign(L2.id, tY.id);
+    const cnt = async (action: string, entity?: string) =>
+      (await db.select().from(schema.auditLog).where(eq(schema.auditLog.action, action))).filter((r) => !entity || r.entityType === entity).length;
+    const adminAuditCnt = async (action: string) => (await db.select().from(schema.adminAuditLog).where(eq(schema.adminAuditLog.action, action))).length;
+    const qk = async () => (await db.select({ k: schema.emailQueue.kind }).from(schema.emailQueue)).map((r) => r.k);
+    const before = { z: await cnt("zmiana_statusu", "lead") };
+
+    const r1 = await updateAssignmentStatusAsAdmin({ user: adm as never, assignmentId: aA2.id, change: { status: "zapisana" } });
+    const rowA2 = () => db.select().from(schema.leadAssignments).where(eq(schema.leadAssignments.id, aA2.id)).then((x) => x[0]);
+    check("admin: zapisana przez rdzeń -> ok, kwota ze stawki trenerki", [r1.ok, (await rowA2()).amount], [true, 500]);
+    check("admin: lead eskalowany do zapisana", (await db.select().from(schema.leads).where(eq(schema.leads.id, L2.id)))[0].status, "zapisana");
+    check("admin: audit_log lead (jeden wpis) + admin_audit_log", [(await cnt("zmiana_statusu", "lead")) - before.z, await adminAuditCnt("zmiana_statusu_przydzialu")], [1, 1]);
+    check("admin: jedno powiadomienie wewnętrzne dla przydziału", (await qk()).filter((k) => k === `wewnetrzne_zapis:${aA2.id}`).length, 1);
+
+    const r2 = await updateAssignmentStatusAsAdmin({ user: adm as never, assignmentId: aA2.id, change: { status: "zapisana" } });
+    check("admin: powtórka zapisana nic nie dubluje (kwota, audit, maile)", [r2.ok, (await rowA2()).amount, (await cnt("zmiana_statusu", "lead")) - before.z, (await qk()).filter((k) => k === `wewnetrzne_zapis:${aA2.id}`).length], [true, 500, 1, 1]);
+
+    // multi-sell po stronie admina: druga akademia -> drugie powiadomienie
+    await updateAssignmentStatusAsAdmin({ user: adm as never, assignmentId: aB2.id, change: { status: "zapisana" } });
+    check("admin multi-sell: drugie powiadomienie wewnętrzne", (await qk()).filter((k) => k.startsWith("wewnetrzne_zapis:") && k.endsWith(`:${aB2.id}`)).length, 1);
+
+    // zwykły admin nie cofa zapisu
+    const u1 = await updateAssignmentStatusAsAdmin({ user: adm as never, assignmentId: aA2.id, change: { status: "skontaktowany" } });
+    check("admin (nie super): cofnięcie zapisana = 403", u1.ok === false && u1.status, 403);
+    check("admin (nie super): po odmowie status i kwota bez zmian", [(await rowA2()).status, (await rowA2()).amount], ["zapisana", 500]);
+
+    // superadmin cofa: kwota 0, audit, lead zostaje zapisana bo B2 też zapisana
+    const u2 = await updateAssignmentStatusAsAdmin({ user: sup as never, assignmentId: aA2.id, change: { status: "skontaktowany" } });
+    check("superadmin: cofnięcie ok, status skontaktowany, kwota wyzerowana", [u2.ok, (await rowA2()).status, (await rowA2()).amount], [true, "skontaktowany", 0]);
+    check("superadmin: cofnięcie zalogowane w audit_log i admin_audit_log", [await cnt("cofniecie_zapisu", "assignment"), await adminAuditCnt("cofniecie_zapisu")], [1, 1]);
+    check("superadmin: lead nadal zapisana (druga akademia zapisana)", (await db.select().from(schema.leads).where(eq(schema.leads.id, L2.id)))[0].status, "zapisana");
+    // ponowny zapis po cofnięciu nalicza od nowa i powiadamia tylko raz (ten sam przydział = ten sam klucz)
+    await updateAssignmentStatusAsAdmin({ user: sup as never, assignmentId: aA2.id, change: { status: "zapisana" } });
+    check("po ponownym zapisie: kwota 500, nadal jedno powiadomienie dla przydziału", [(await rowA2()).amount, (await qk()).filter((k) => k === `wewnetrzne_zapis:${aA2.id}`).length], [500, 1]);
+
+    // jedyna zapisana akademia: cofnięcie cofa też status leada; zafakturowane blokuje
+    const L3 = await lead({ name: "Ewa Jedna", email: "ewa@example.com", phone: "503 333 444" });
+    const aA3 = await assign(L3.id, tX.id);
+    await updateAssignmentStatusAsAdmin({ user: sup as never, assignmentId: aA3.id, change: { status: "zapisana" } });
+    await updateAssignmentStatusAsAdmin({ user: sup as never, assignmentId: aA3.id, change: { billingStatus: "zafakturowane" } });
+    const u3 = await updateAssignmentStatusAsAdmin({ user: sup as never, assignmentId: aA3.id, change: { status: "przydzielony" } });
+    check("superadmin: cofnięcie zafakturowanej należności = 409", u3.ok === false && u3.status, 409);
+    await updateAssignmentStatusAsAdmin({ user: sup as never, assignmentId: aA3.id, change: { billingStatus: "do_zafakturowania" } });
+    const u4 = await updateAssignmentStatusAsAdmin({ user: sup as never, assignmentId: aA3.id, change: { status: "przydzielony" } });
+    const rowA3 = (await db.select().from(schema.leadAssignments).where(eq(schema.leadAssignments.id, aA3.id)))[0];
+    check("superadmin: po cofnięciu płatności cofnięcie zapisu ok, kwota 0", [u4.ok, rowA3.status, rowA3.amount], [true, "przydzielony", 0]);
+    check("superadmin: jedyna zapisana akademia -> status leada wraca", (await db.select().from(schema.leads).where(eq(schema.leads.id, L3.id)))[0].status, "przydzielony");
+    check("admin: zmiana billingStatus zapisana w audycie płatności", await adminAuditCnt("zmiana_statusu_platnosci"), 2);
+  }
+
+  // straż strukturalna: trasa admina i trasa mobilna idą przez wspólny rdzeń, bez własnej kopii naliczania
+  {
+    const adminRoute = readFileSync("src/app/api/admin/assignments/[id]/route.ts", "utf8");
+    check("straż: trasa admin/assignments nie nalicza sama (kwota, leads.status, onLeadSigned)", /\.amount|schema\.leads|onLeadSigned|billingModel/.test(adminRoute), false);
+    check("straż: trasa admin/assignments woła wspólny rdzeń", adminRoute.includes("updateAssignmentStatusAsAdmin"), true);
+    const mobile = readFileSync("src/app/api/mobile/leady/[id]/route.ts", "utf8");
+    check("straż: trasa mobilna idzie przez updateTrainerAssignmentStatus", mobile.includes("updateTrainerAssignmentStatus"), true);
+  }
 
   // Bramka onboardingu
   const gate = await crm.crmChangeStage(uC, aCL.id, { stage: "kontakt_podjety" });

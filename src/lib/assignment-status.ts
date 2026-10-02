@@ -3,10 +3,14 @@ import { getDb } from "@/db";
 import { onLeadSigned } from "@/lib/lead-events";
 import {
   assignmentStatusSchema,
+  changeAssignmentStatusCore,
   updateTrainerAssignmentStatusCore,
+  type StatusChange,
   type AssignmentStatusInput,
   type AssignmentStatusResult,
 } from "@/lib/assignment-status-core";
+import { logAdminAction } from "@/lib/audit";
+import { isSuperadminRole } from "@/lib/roles";
 import type { User } from "@/db/schema";
 
 /**
@@ -31,4 +35,30 @@ export async function updateTrainerAssignmentStatus(params: {
   return updateTrainerAssignmentStatusCore(db, params, {
     onSigned: (p) => onLeadSigned(p),
   });
+}
+
+/**
+ * Wejście ADMINA (`PATCH /api/admin/assignments/[id]`) — ten sam rdzeń, inny zakres:
+ * dowolny przydział, bez bramki onboardingu, audyt przez `logAdminAction` (audit_log + admin_audit_log).
+ * Cofnięcie „zapisana" tylko dla superadmina; zmianę `billingStatus` pilnuje trasa (stripBilling/403).
+ */
+export async function updateAssignmentStatusAsAdmin(params: {
+  user: User;
+  assignmentId: number;
+  change: StatusChange;
+}): Promise<AssignmentStatusResult> {
+  const db = await getDb();
+  return changeAssignmentStatusCore(
+    db,
+    {
+      user: params.user,
+      assignmentId: params.assignmentId,
+      scope: { kind: "admin", canUndoSigned: isSuperadminRole(params.user.role) },
+      change: params.change,
+    },
+    {
+      onSigned: (p) => onLeadSigned(p),
+      audit: (p) => logAdminAction(params.user, p),
+    }
+  );
 }

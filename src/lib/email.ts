@@ -29,6 +29,17 @@ export const EMAIL_KIND = {
 
 export type EmailKind = (typeof EMAIL_KIND)[keyof typeof EMAIL_KIND];
 
+/**
+ * Klucz idempotencji z dopiskiem przydziału (`wewnetrzne_zapis:123`). Dedupe po samym leadzie
+ * gubił multi-sell: druga akademia zapisująca tę samą kursantkę nie wywoływała powiadomienia
+ * dla biura. `email_queue.kind` to varchar(40), więc dopisek mieści się bez migracji.
+ */
+export type EmailKey = EmailKind | `${EmailKind}:${number}`;
+
+export function assignmentEmailKey(kind: EmailKind, assignmentId: number): EmailKey {
+  return `${kind}:${assignmentId}`;
+}
+
 /** Po tylu nieudanych próbach worker przestaje ponawiać i zostawia maila jako „blad". */
 export const MAX_EMAIL_ATTEMPTS = 5;
 
@@ -44,7 +55,7 @@ function smtpConfigured(): boolean {
  * gratulacje tyle razy, ile osób kliknie — a przy rozliczeniu 500 zł klikają obie strony.
  * Maile ze statusem „blad" nie blokują: skoro nie wyszły, wolno spróbować ponownie.
  */
-async function alreadyQueued(leadId: number, kind: EmailKind): Promise<boolean> {
+async function alreadyQueued(leadId: number, kind: EmailKey): Promise<boolean> {
   const db = await getDb();
   const rows = await db
     .select({ id: schema.emailQueue.id })
@@ -158,7 +169,7 @@ export async function sendOrQueueEmail(params: {
   subject: string;
   body: string;
   leadId?: number | null;
-  kind?: EmailKind;
+  kind?: EmailKey;
   /** Dodatkowe nagłówki (np. `List-Unsubscribe`). Zapisywane w kolejce, żeby przetrwały ponowienie. */
   headers?: Record<string, string>;
   /**
