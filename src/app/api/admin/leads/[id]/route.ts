@@ -3,7 +3,7 @@ import { eq, and, ne } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { logAdminAction, actorLabel } from "@/lib/audit";
-import { onLeadSigned } from "@/lib/lead-events";
+import { updateAssignmentStatusAsAdmin } from "@/lib/assignment-status";
 import { leadStatusUpdateSchema } from "@/lib/validators";
 import { z } from "zod";
 
@@ -45,8 +45,6 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
   if (!lead) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
 
   const data = parsed.data;
-  // Patrz `@/lib/lead-events` — maile wysyłamy raz, po zapisaniu zmian.
-  let signedLeadId: number | null = null;
   const update: Partial<typeof schema.leads.$inferInsert> = {};
   if ("notes" in data && data.notes !== undefined) update.notes = data.notes;
 
@@ -54,23 +52,18 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
     update.status = data.status;
     if (data.status === "odrzucony") update.rejectionReason = data.rejectionReason || null;
 
-    // status "zapisana" -> naliczenie kwot dla przydziałów per-zapis
+    // status "zapisana" -> każdy nieodrzucony przydział idzie przez WSPÓLNY rdzeń
+    // (`@/lib/assignment-status-core`): naliczenie, audyt i powiadomienie biura raz na przydział.
+    // Ta trasa nie ma własnej kopii naliczania — nie może się rozjechać z panelem i telefonem.
+    // Zwykły admin może oznaczyć zapis, ale nie cofnąć (rdzeń: 403); pól rozliczeniowych tu nie ma.
     if (data.status === "zapisana") {
       const assignments = await db
-        .select({ assignment: schema.leadAssignments, trainer: schema.trainers })
+        .select({ id: schema.leadAssignments.id })
         .from(schema.leadAssignments)
-        .innerJoin(schema.trainers, eq(schema.leadAssignments.trainerId, schema.trainers.id))
         .where(and(eq(schema.leadAssignments.leadId, leadId), ne(schema.leadAssignments.status, "odrzucony")));
-      for (const { assignment, trainer } of assignments) {
-        await db
-          .update(schema.leadAssignments)
-          .set({
-            status: "zapisana",
-            amount: trainer.billingModel === "per_zapis" ? trainer.rate : assignment.amount,
-          })
-          .where(eq(schema.leadAssignments.id, assignment.id));
+      for (const a of assignments) {
+        await updateAssignmentStatusAsAdmin({ user, assignmentId: a.id, change: { status: "zapisana" } });
       }
-      signedLeadId = leadId;
     }
 
     await logAdminAction(user, { action: "zmiana_statusu",
@@ -83,10 +76,6 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
   }
 
   const [updated] = await db.update(schema.leads).set(update).where(eq(schema.leads.id, leadId)).returning();
-
-  if (signedLeadId !== null) {
-    await onLeadSigned({ leadId: signedLeadId, actor: actorLabel(user) });
-  }
 
   return NextResponse.json(updated);
 }
