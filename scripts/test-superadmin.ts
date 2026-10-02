@@ -30,6 +30,7 @@ import {
   canAccessAdminPath,
   canSignIn,
   isSuperadminOnlyPath,
+  stripBilling,
 } from "../src/lib/roles";
 import { applyTeamAction, countActiveSuperadmins, createAdminUser, listTeam } from "../src/lib/team";
 import { AUDIT_PAGE_SIZE, readAdminAudit, writeAdminAudit } from "../src/lib/admin-audit-core";
@@ -175,6 +176,17 @@ async function main() {
   check("najnowsze na górze", p1.rows[0].entry.action, "seria_54");
   const byActor = await readAdminAudit(hdb, { actorUserId: fresh.id });
   check("filtr po koncie", [byActor.total, byActor.rows.every((r) => r.entry.actorUserId === fresh.id)], [55, true]);
+
+  // 6b. Odpowiedzi API bez pól rozliczeniowych dla zwykłego admina
+  const przydzial = { id: 1, leadId: 2, status: "przydzielony", amount: 500, billingStatus: "do_zafakturowania" };
+  check("stripBilling: admin nie dostaje amount/billingStatus", stripBilling(przydzial, "admin"), { id: 1, leadId: 2, status: "przydzielony" });
+  check("stripBilling: superadmin dostaje komplet", stripBilling(przydzial, "superadmin"), przydzial);
+  check("stripBilling: trenerka bez stawki", stripBilling({ id: 3, name: "X", rate: 100, billingModel: "per_lead" }, "admin"), { id: 3, name: "X" });
+  check("stripBilling: brak roli = bez pól", Object.keys(stripBilling(przydzial, null)).includes("amount"), false);
+  check("straż: każda odpowiedź admina z .returning() przydziału/trenerki przechodzi przez stripBilling",
+    ["src/app/api/admin/leads/[id]/assign/route.ts", "src/app/api/admin/assignments/[id]/route.ts", "src/app/api/admin/trenerki/route.ts", "src/app/api/admin/trenerki/[id]/route.ts", "src/app/api/admin/prospekty/[id]/awansuj/route.ts"]
+      .filter((f) => !readFileSync(f, "utf8").includes("stripBilling(")),
+    []);
 
   // 7. Straż strukturalna
   const src = walk("src");

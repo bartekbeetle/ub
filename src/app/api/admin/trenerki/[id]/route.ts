@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { isSuperadminRole } from "@/lib/roles";
+import { isSuperadminRole, stripBilling } from "@/lib/roles";
 import { logAdminAction } from "@/lib/audit";
 import { trainerSchema, zodErrorMessage } from "@/lib/validators";
 import { revalidateTag } from "next/cache";
@@ -45,7 +45,7 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
   if (!updated) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
   await logAdminAction(user, { action: "trenerka_edytowana", entityType: "trainer", entityId: trainerId, details: { fields: Object.keys(d) } });
   revalidateTag(CACHE_TAGS.courses);
-  return NextResponse.json(updated);
+  return NextResponse.json(stripBilling(updated, user.role));
 }
 
 export async function DELETE(_req: Request, { params }: { params: Params }) {

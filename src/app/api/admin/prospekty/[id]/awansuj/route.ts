@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/auth";
 import { logAdminAction } from "@/lib/audit";
 import { freeTrainerSlug, logProspectActivity } from "@/lib/prospects";
 import { CATEGORIES } from "@/lib/constants";
+import { stripBilling } from "@/lib/roles";
 
 export const runtime = "nodejs";
 
@@ -84,5 +85,5 @@ export async function POST(_req: Request, { params }: { params: Params }) {
     details: { trainerId: trainer.id, slug },
   });
 
-  return NextResponse.json({ prospect: updated, trainer }, { status: 201 });
+  return NextResponse.json({ prospect: updated, trainer: stripBilling(trainer, user.role) }, { status: 201 });
 }

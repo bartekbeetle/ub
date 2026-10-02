@@ -3,6 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { logAdminAction, actorLabel } from "@/lib/audit";
+import { stripBilling } from "@/lib/roles";
 import { getSettings } from "@/lib/settings";
 import { sendOrQueueEmail, renderTemplate } from "@/lib/email";
 import { voivodeshipName } from "@/lib/constants";
@@ -88,7 +89,7 @@ export async function POST(req: Request, { params }: { params: Params }) {
     details: { trainerId: trainer.id, trainerName: trainer.name },
   });
 
-  return NextResponse.json(assignment);
+  return NextResponse.json(stripBilling(assignment, user.role));
 }
 
 /** Usunięcie przydziału. */

@@ -12,6 +12,24 @@ export function isAdminRole(role: string | null | undefined): boolean {
   return role === "admin" || role === "superadmin";
 }
 
+/** Pola rozliczeniowe (przydziały: `amount`, `billingStatus`; trenerki: `rate`, `billingModel`). */
+const BILLING_FIELDS = ["amount", "billingStatus", "rate", "billingModel"] as const;
+
+/**
+ * Zwraca kopię obiektu BEZ pól rozliczeniowych, gdy rola to nie superadmin.
+ * Używaj w KAŻDEJ odpowiedzi `/api/admin/*`, która oddaje wiersz `lead_assignments` albo `trainers`
+ * (np. wynik `.returning()`), bo zwykły admin nie ma widzieć stawek ani kwot.
+ */
+export function stripBilling<T extends Record<string, unknown>>(
+  row: T,
+  role: string | null | undefined
+): T | Omit<T, (typeof BILLING_FIELDS)[number]> {
+  if (isSuperadminRole(role)) return row;
+  const copy: Record<string, unknown> = { ...row };
+  for (const f of BILLING_FIELDS) delete copy[f];
+  return copy as Omit<T, (typeof BILLING_FIELDS)[number]>;
+}
+
 /** Właściciel: rozliczenia, ustawienia, zarządzanie zespołem i dziennik zmian. */
 export function isSuperadminRole(role: string | null | undefined): boolean {
   return role === "superadmin";
