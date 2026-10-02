@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { timingSafeEqual } from "crypto";
-import { flushEmailQueue } from "@/lib/email";
+import { flushEmailQueue, isSmtpConfigured } from "@/lib/email";
+import { runAbandonedMailer } from "@/lib/abandoned-mailer";
 
 export const runtime = "nodejs";
 // Kolejka ma być opróżniana na żądanie, nigdy z cache'u odpowiedzi.
@@ -40,6 +41,20 @@ export async function GET(req: Request) {
   const maxAgeDays = rawAge === null ? undefined : Number(rawAge) === 0 ? null : Number(rawAge);
   const limit = Number(url.searchParams.get("limit") || 50);
 
+  // Najpierw dokładamy przypomnienia „dokończ aplikację" do kolejki, potem opróżniamy kolejkę —
+  // jedno wywołanie crona robi oba. Błąd mailera nie może zatrzymać wysyłki reszty kolejki.
+  // Bez SMTP NIE rezerwujemy adresów: jedno przypomnienie na adres „na zawsze" nie może się
+  // spalić w kolejce, która nie wyjdzie, a po konfiguracji SMTP okno 7 dni zdążyłoby minąć.
+  let porzucone: Awaited<ReturnType<typeof runAbandonedMailer>> | { error: string } | { skipped: string };
+  try {
+    porzucone = isSmtpConfigured()
+      ? await runAbandonedMailer()
+      : { skipped: "SMTP nieskonfigurowane — przypomnienia nie są kolejkowane" };
+  } catch (e) {
+    console.error("[cron] porzucone:", e);
+    porzucone = { error: "mailer porzuconych zgłosił błąd — szczegóły w logach" };
+  }
+
   const result =
     maxAgeDays === undefined ? await flushEmailQueue(limit) : await flushEmailQueue(limit, maxAgeDays);
 
@@ -47,8 +62,9 @@ export async function GET(req: Request) {
     return NextResponse.json({
       ok: false,
       reason: "SMTP nieskonfigurowane (SMTP_HOST / SMTP_USER / SMTP_PASS) — kolejka nietknięta.",
+      porzucone,
     });
   }
 
-  return NextResponse.json({ ok: true, ...result });
+  return NextResponse.json({ ok: true, ...result, porzucone });
 }

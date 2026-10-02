@@ -8,6 +8,7 @@ import { LeadStatusSelect } from "@/components/admin/LeadStatusSelect";
 import { SubmissionToggle } from "@/components/admin/SubmissionToggle";
 import { DeleteRecordButton } from "@/components/admin/DeleteRecordButton";
 import { formatDateTime, maskEmail, maskPhone } from "@/lib/utils";
+import { reminderStatusByEmail, normalizeEmail, type ReminderInfo } from "@/lib/abandoned-core";
 import {
   CATEGORIES,
   LEAD_SOURCES,
@@ -205,6 +206,12 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
       : Promise.resolve([] as QuizSession[]),
     policzLejek(db),
   ]);
+
+  // Stan przypomnienia „dokończ aplikację" (rejestr kluczowany adresem, nie sesją).
+  const przypomnienia = await reminderStatusByEmail(
+    db,
+    porzuconeRows.map((p) => p.email ?? "").filter(Boolean)
+  );
 
   const assignedBy = new Map<number, string[]>();
   for (const a of assignments) {
@@ -405,7 +412,11 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
               ) : row.kind === "submission" ? (
                 <WierszZgloszenia key={`z-${row.id}`} submission={row.submission} />
               ) : (
-                <WierszPorzuconej key={`p-${row.id}`} sesja={row.sesja} />
+                <WierszPorzuconej
+                  key={`p-${row.id}`}
+                  sesja={row.sesja}
+                  przypomnienie={row.sesja.email ? przypomnienia.get(normalizeEmail(row.sesja.email)) : undefined}
+                />
               )
             )}
             {rows.length === 0 && (
@@ -430,7 +441,7 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
  * dała się czytać w pionie. W miejsce statusu wchodzi krok, na którym odpadła,
  * a w miejsce przydziału — podstawa prawna kontaktu.
  */
-function WierszPorzuconej({ sesja }: { sesja: QuizSession }) {
+function WierszPorzuconej({ sesja, przypomnienie }: { sesja: QuizSession; przypomnienie?: ReminderInfo }) {
   const krok = KROKI_APLIKACJI[sesja.maxStepReached - 1] ?? `krok ${sesja.maxStepReached}`;
   const mozeMail = Boolean(sesja.contactConsentAt && sesja.email);
 
@@ -486,6 +497,7 @@ function WierszPorzuconej({ sesja }: { sesja: QuizSession }) {
                 + oferty i nabory
               </span>
             )}
+            <StanPrzypomnienia info={przypomnienie} />
           </div>
         ) : sesja.marketingConsentAt && sesja.email ? (
           <span className="rounded bg-amber-100 px-2 py-0.5 text-amber-800">tylko oferty</span>
@@ -494,6 +506,32 @@ function WierszPorzuconej({ sesja }: { sesja: QuizSession }) {
         )}
       </td>
     </tr>
+  );
+}
+
+/** Czy mail „dokończ aplikację" do tego adresu jest w kolejce, wyszedł, czy w ogóle go nie było. */
+function StanPrzypomnienia({ info }: { info?: ReminderInfo }) {
+  if (!info) {
+    return <span className="block text-[11px] text-muted">przypomnienie: jeszcze nie</span>;
+  }
+  if (info.status === "wyslany") {
+    return (
+      <span className="block w-fit rounded bg-sky-100 px-2 py-0.5 text-[11px] text-sky-800">
+        przypomnienie wysłane {formatDateTime(info.sentAt ?? info.createdAt)}
+      </span>
+    );
+  }
+  if (info.status === "blad") {
+    return (
+      <span className="block w-fit rounded bg-red-100 px-2 py-0.5 text-[11px] text-red-700">
+        przypomnienie: błąd wysyłki ({formatDateTime(info.createdAt)})
+      </span>
+    );
+  }
+  return (
+    <span className="block w-fit rounded bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">
+      przypomnienie w kolejce od {formatDateTime(info.createdAt)}
+    </span>
   );
 }
 

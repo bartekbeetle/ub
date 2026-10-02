@@ -906,6 +906,32 @@ export const emailQueue = pgTable(
   ]
 );
 
+// ===== PRZYPOMNIENIA „DOKOŃCZ APLIKACJĘ" =====
+
+/**
+ * Rejestr przypomnień o porzuconej aplikacji. **Jeden wiersz = jedno przypomnienie na adres, na zawsze.**
+ *
+ * `email` ma indeks UNIQUE (znormalizowany adres) — to jest twarda gwarancja „max jedno
+ * przypomnienie na adres", niezależna od logiki w kodzie i od wyścigu dwóch równoległych
+ * uruchomień crona (drugie `INSERT ... ON CONFLICT DO NOTHING` nic nie wstawi).
+ *
+ * `resumeToken` jest losowy i nieodgadywalny — w linku „dokończ aplikację" nie ma ani adresu,
+ * ani numeru sesji. `emailQueueId` pozwala panelowi pokazać prawdziwy stan doręczenia
+ * (w kolejce / wysłany / błąd) zamiast zgadywać.
+ */
+export const abandonedReminders = pgTable(
+  "abandoned_reminders",
+  {
+    id: serial("id").primaryKey(),
+    email: varchar("email", { length: 255 }).notNull().unique(),
+    quizSessionId: integer("quiz_session_id").references(() => quizSessions.id, { onDelete: "set null" }),
+    resumeToken: varchar("resume_token", { length: 64 }).notNull().unique(),
+    emailQueueId: integer("email_queue_id").references(() => emailQueue.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("abandoned_reminders_session_idx").on(t.quizSessionId)]
+);
+
 // ===== MAILING (propozycje szkoleń do kursantek) =====
 
 /**
@@ -1064,6 +1090,7 @@ export type LeadAssignment = typeof leadAssignments.$inferSelect;
 export type Review = typeof reviews.$inferSelect;
 export type Submission = typeof submissions.$inferSelect;
 export type QuizSession = typeof quizSessions.$inferSelect;
+export type AbandonedReminder = typeof abandonedReminders.$inferSelect;
 export type Settings = typeof settings.$inferSelect;
 export type Prospect = typeof prospects.$inferSelect;
 export type ProspectActivity = typeof prospectActivities.$inferSelect;
