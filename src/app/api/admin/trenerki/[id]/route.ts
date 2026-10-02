@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { isSuperadminRole } from "@/lib/roles";
+import { logAdminAction } from "@/lib/audit";
 import { trainerSchema, zodErrorMessage } from "@/lib/validators";
 import { revalidateTag } from "next/cache";
 import { CACHE_TAGS } from "@/lib/public-cache";
@@ -19,7 +20,11 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
   if (!Number.isInteger(trainerId)) {
     return NextResponse.json({ error: "Nieprawidłowe ID." }, { status: 400 });
   }
-  const parsed = trainerSchema.partial().safeParse(await req.json().catch(() => null));
+  const body = await req.json().catch(() => null);
+  if (!isSuperadminRole(user.role) && body && typeof body === "object" && ("billingModel" in body || "rate" in body)) {
+    return NextResponse.json({ error: "Stawkę i model rozliczenia zmienia tylko superadmin." }, { status: 403 });
+  }
+  const parsed = trainerSchema.partial().safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: zodErrorMessage(parsed.error) }, { status: 400 });
   }
@@ -38,7 +43,7 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
     .where(eq(schema.trainers.id, trainerId))
     .returning();
   if (!updated) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
-  await logAudit({ actor: actorLabel(user), action: "trenerka_edytowana", entityType: "trainer", entityId: trainerId });
+  await logAdminAction(user, { action: "trenerka_edytowana", entityType: "trainer", entityId: trainerId, details: { fields: Object.keys(d) } });
   revalidateTag(CACHE_TAGS.courses);
   return NextResponse.json(updated);
 }
@@ -57,7 +62,7 @@ export async function DELETE(_req: Request, { params }: { params: Params }) {
     .where(eq(schema.trainers.id, trainerId))
     .returning();
   if (!updated) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
-  await logAudit({ actor: actorLabel(user), action: "trenerka_dezaktywowana", entityType: "trainer", entityId: trainerId });
+  await logAdminAction(user, { action: "trenerka_dezaktywowana", entityType: "trainer", entityId: trainerId });
   revalidateTag(CACHE_TAGS.courses);
   return NextResponse.json({ ok: true });
 }

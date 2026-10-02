@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 import { freeTrainerSlug, logProspectActivity } from "@/lib/prospects";
 import { CATEGORIES } from "@/lib/constants";
 
@@ -78,9 +78,7 @@ export async function POST(_req: Request, { params }: { params: Params }) {
     content: `Awans do katalogu: utworzono profil trenerki #${trainer.id} (${slug}) — ukryty, bez auto-przydziału leadów.`,
     createdBy: user.email,
   });
-  await logAudit({
-    actor: actorLabel(user),
-    action: "prospekt_awansowany",
+  await logAdminAction(user, { action: "prospekt_awansowany",
     entityType: "prospect",
     entityId: prospectId,
     details: { trainerId: trainer.id, slug },

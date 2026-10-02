@@ -4,7 +4,7 @@ import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { submissionConversionSchema, zodErrorMessage } from "@/lib/validators";
 import { CONSENT_VERSION, SUBMISSION_TYPE_TO_LEAD_SOURCE } from "@/lib/constants";
-import { actorLabel, logAudit } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 import { distributeLead } from "@/lib/matching";
 
 export const runtime = "nodejs";
@@ -89,10 +89,7 @@ export async function POST(req: Request, { params }: { params: Params }) {
     .set({ convertedToLeadId: lead.id, convertedAt: consentAt, isHandled: true })
     .where(eq(schema.submissions.id, submissionId));
 
-  const actor = actorLabel(user);
-  await logAudit({
-    actor,
-    action: "lead_utworzony_z_zgloszenia",
+  await logAdminAction(user, { action: "lead_utworzony_z_zgloszenia",
     entityType: "lead",
     entityId: lead.id,
     details: {
@@ -106,9 +103,7 @@ export async function POST(req: Request, { params }: { params: Params }) {
       consentVersion: CONSENT_VERSION,
     },
   });
-  await logAudit({
-    actor,
-    action: "zgloszenie_przekonwertowane",
+  await logAdminAction(user, { action: "zgloszenie_przekonwertowane",
     entityType: "submission",
     entityId: submissionId,
     details: { leadId: lead.id },

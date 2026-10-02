@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { desc } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 import { prospectSchema } from "@/lib/validators";
 import { zodErrorMessage } from "@/lib/validators";
 import { prospectValuesFromPayload, logProspectActivity } from "@/lib/prospects";
@@ -41,9 +41,7 @@ export async function POST(req: Request) {
     content: `Prospekt utworzony ze statusem „${PROSPECT_STATUS_LABELS[created.status] ?? created.status}".`,
     createdBy: user.email,
   });
-  await logAudit({
-    actor: actorLabel(user),
-    action: "prospekt_utworzony",
+  await logAdminAction(user, { action: "prospekt_utworzony",
     entityType: "prospect",
     entityId: created.id,
     details: { name: created.name, status: created.status, burSegment: created.burSegment },

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { and, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction, actorLabel } from "@/lib/audit";
 import { getSettings } from "@/lib/settings";
 import { sendOrQueueEmail, renderTemplate } from "@/lib/email";
 import { voivodeshipName } from "@/lib/constants";
@@ -82,9 +82,7 @@ export async function POST(req: Request, { params }: { params: Params }) {
     });
   }
 
-  await logAudit({
-    actor: actorLabel(user),
-    action: "lead_przydzielony_recznie",
+  await logAdminAction(user, { action: "lead_przydzielony_recznie",
     entityType: "lead",
     entityId: leadId,
     details: { trainerId: trainer.id, trainerName: trainer.name },
@@ -112,9 +110,7 @@ export async function DELETE(req: Request, { params }: { params: Params }) {
     .returning();
   if (!deleted[0]) return NextResponse.json({ error: "Nie znaleziono przydziału." }, { status: 404 });
 
-  await logAudit({
-    actor: actorLabel(user),
-    action: "przydzial_usuniety",
+  await logAdminAction(user, { action: "przydzial_usuniety",
     entityType: "lead",
     entityId: leadId,
     details: { trainerId },

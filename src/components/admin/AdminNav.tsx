@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type Item = { href: string; label: string; exact?: boolean };
+type Item = { href: string; label: string; exact?: boolean; superadminOnly?: boolean };
 
 /**
  * Panel obsługuje DWA rozłączne lejki i nawigacja ma to pokazywać na pierwszy rzut oka:
@@ -24,7 +24,7 @@ const GROUPS: { label: string | null; items: Item[] }[] = [
       // (porzucona aplikacja to ten sam człowiek o krok wcześniej). Rozbicie tego na
       // zakładki ukrywało jedyne, co się liczy: w którym miejscu ucieka pieniądz.
       { href: "/admin/kursantki", label: "Kursantki — lejek" },
-      { href: "/admin/rozliczenia", label: "Rozliczenia" },
+      { href: "/admin/rozliczenia", label: "Rozliczenia", superadminOnly: true },
       // Mailing stoi w lejku B2C, a nie w „Serwisie": to jest kontakt z kursantkami,
       // a nie ustawienie techniczne. Obok lejka widać, do ilu z nich wolno w ogóle pisać.
       { href: "/admin/mailing", label: "Mailing" },
@@ -45,7 +45,8 @@ const GROUPS: { label: string | null; items: Item[] }[] = [
     label: "Serwis",
     items: [
       { href: "/admin/blog", label: "Blog" },
-      { href: "/admin/ustawienia", label: "Ustawienia" },
+      { href: "/admin/ustawienia", label: "Ustawienia", superadminOnly: true },
+      { href: "/admin/zespol", label: "Zespół", superadminOnly: true },
     ],
   },
 ];
@@ -57,11 +58,17 @@ function isActive(pathname: string, item: Item): boolean {
   return pathname === item.href || pathname.startsWith(item.href + "/");
 }
 
-export function AdminNav() {
+/**
+ * `isSuperadmin` tylko ukrywa pozycje — to wygoda, nie zabezpieczenie. Dostęp do tych tras
+ * egzekwuje layout (przekierowanie), same strony i API (patrz `src/lib/roles.ts`).
+ */
+export function AdminNav({ isSuperadmin = false }: { isSuperadmin?: boolean }) {
   const pathname = usePathname();
   return (
     <nav aria-label="Nawigacja panelu" className="space-y-5">
-      {GROUPS.map((group, gi) => (
+      {GROUPS.map((group) => ({ ...group, items: group.items.filter((i) => isSuperadmin || !i.superadminOnly) }))
+        .filter((group) => group.items.length > 0)
+        .map((group, gi) => (
         <div key={group.label ?? `grupa-${gi}`}>
           {group.label && (
             <p className="px-4 pb-1.5 text-[11px] font-bold uppercase tracking-[1.5px] text-sand-300/70">

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
+import { logAdminAction } from "@/lib/audit";
 import { prospectActivitySchema, zodErrorMessage } from "@/lib/validators";
 import { PROSPECT_CONTACT_ACTIVITY_TYPES } from "@/lib/prospects";
 
@@ -46,6 +47,13 @@ export async function POST(req: Request, { params }: { params: Params }) {
     .update(schema.prospects)
     .set({ updatedAt: now, ...(isContact ? { lastContactAt: now } : {}) })
     .where(eq(schema.prospects.id, prospectId));
+
+  await logAdminAction(user, {
+    action: "prospekt_aktywnosc",
+    entityType: "prospect",
+    entityId: prospectId,
+    details: { type: parsed.data.type },
+  });
 
   return NextResponse.json(created, { status: 201 });
 }

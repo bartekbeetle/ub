@@ -9,7 +9,7 @@
 // Po zalogowaniu aplikacja i tak wymusi ustawienie własnego hasła (mustChangePassword).
 import "dotenv/config";
 import bcrypt from "bcryptjs";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 async function getDb() {
   const url = process.env.DATABASE_URL;
@@ -42,7 +42,10 @@ async function main() {
 
   // Domyślnie bierzemy pierwszego admina w bazie — ADMIN_EMAIL tylko gdy chcesz wskazać konkretne konto.
   const wantedEmail = process.env.ADMIN_EMAIL?.toLowerCase();
-  const admins = await db.select().from(users).where(eq(users.role, "admin"));
+  // Superadmin też jest „adminem" do resetu — i ma pierwszeństwo, gdy nie wskazano ADMIN_EMAIL.
+  const admins = (await db.select().from(users).where(inArray(users.role, ["admin", "superadmin"]))).sort(
+    (a, b) => Number(b.role === "superadmin") - Number(a.role === "superadmin"),
+  );
   if (admins.length === 0) {
     throw new Error("W bazie nie ma żadnego admina — odpal najpierw `npm run db:seed-core`.");
   }

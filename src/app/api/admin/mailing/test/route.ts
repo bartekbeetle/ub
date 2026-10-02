@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
+import { logAdminAction } from "@/lib/audit";
 import { zodErrorMessage } from "@/lib/validators";
 import { isSmtpConfigured, sendMarketingEmail } from "@/lib/email";
 import { recipientVars } from "@/lib/mailing";
@@ -62,6 +63,12 @@ export async function POST(req: Request) {
       { status: 409 }
     );
   }
+
+  await logAdminAction(user, {
+    action: "mailing_test",
+    entityType: "mailing",
+    details: { to: parsed.data.to, sent: res.sent },
+  });
 
   return NextResponse.json({
     ok: res.sent,

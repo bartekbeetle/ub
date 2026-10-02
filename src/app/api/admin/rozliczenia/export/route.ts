@@ -1,15 +1,15 @@
 import { desc, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
-import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { requireSuperadmin } from "@/lib/auth";
+import { logAdminAction } from "@/lib/audit";
 import { toCsv, formatDateTime } from "@/lib/utils";
 import { BILLING_STATUS_LABELS } from "@/lib/constants";
 
 export const runtime = "nodejs";
 
 export async function GET() {
-  const user = await requireAdmin();
-  if (!user) return Response.json({ error: "Brak autoryzacji." }, { status: 401 });
+  const user = await requireSuperadmin();
+  if (!user) return Response.json({ error: "Brak uprawnień." }, { status: 403 });
 
   const db = await getDb();
   const rows = await db
@@ -33,7 +33,7 @@ export async function GET() {
     ]),
   ]);
 
-  await logAudit({ actor: actorLabel(user), action: "eksport_csv", entityType: "rozliczenia", details: { count: rows.length } });
+  await logAdminAction(user, { action: "eksport_csv", entityType: "rozliczenia", details: { count: rows.length } });
 
   return new Response(csv, {
     headers: {

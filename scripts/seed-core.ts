@@ -3,7 +3,7 @@
 // Dane demo (trenerki, kursy, opinie) żyją w scripts/seed.ts i są TYLKO do dev.
 import "dotenv/config";
 import bcrypt from "bcryptjs";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 async function getDb() {
   const url = process.env.DATABASE_URL;
@@ -36,8 +36,14 @@ async function main() {
     console.log("✓ Ustawienia (id=1) utworzone");
   }
 
-  // Admin: tylko jeśli nie istnieje żaden użytkownik z rolą admin
-  const admins = await db.select({ id: users.id }).from(users).where(eq(users.role, "admin")).limit(1);
+  // Admin: tylko jeśli nie istnieje żaden użytkownik z rolą admin ANI superadmin.
+  // Sprawdzenie samego „admin" po awansie właściciela na superadmina zakładałoby przy
+  // każdym starcie kontenera NOWE konto z ADMIN_EMAIL i hasłem startowym z env.
+  const admins = await db
+    .select({ id: users.id })
+    .from(users)
+    .where(inArray(users.role, ["admin", "superadmin"]))
+    .limit(1);
   if (admins.length > 0) {
     console.log("Seed-core: admin już istnieje — nic do zrobienia.");
     await close();

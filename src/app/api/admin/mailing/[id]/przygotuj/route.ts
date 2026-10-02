@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 import { prepareCampaign, campaignStats } from "@/lib/mailing";
 
 export const runtime = "nodejs";
@@ -17,9 +17,7 @@ export async function POST(_req: Request, { params }: { params: Params }) {
 
   try {
     const result = await prepareCampaign(id);
-    await logAudit({
-      actor: actorLabel(user),
-      action: "mailing_lista_zamrozona",
+    await logAdminAction(user, { action: "mailing_lista_zamrozona",
       entityType: "mailing_campaign",
       entityId: id,
       details: { odbiorcy: result.recipients },

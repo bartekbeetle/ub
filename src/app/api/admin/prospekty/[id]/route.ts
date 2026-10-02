@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 import { prospectPatchSchema, prospectQuickActionSchema, zodErrorMessage } from "@/lib/validators";
 import { addWarsawDays, prospectValuesFromPayload, logProspectActivity } from "@/lib/prospects";
 import { formatDate } from "@/lib/utils";
@@ -87,9 +87,7 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
       content: activityContent,
       createdBy: user.email,
     });
-    await logAudit({
-      actor: actorLabel(user),
-      action: `prospekt_szybka_akcja_${parsedAction.data.quickAction}`,
+    await logAdminAction(user, { action: `prospekt_szybka_akcja_${parsedAction.data.quickAction}`,
       entityType: "prospect",
       entityId: prospectId,
       details: { nextActionAt },
@@ -139,17 +137,13 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
       }`,
       createdBy: user.email,
     });
-    await logAudit({
-      actor: actorLabel(user),
-      action: "prospekt_zmiana_statusu",
+    await logAdminAction(user, { action: "prospekt_zmiana_statusu",
       entityType: "prospect",
       entityId: prospectId,
       details: { from: prospect.status, to: values.status },
     });
   } else {
-    await logAudit({
-      actor: actorLabel(user),
-      action: "prospekt_edytowany",
+    await logAdminAction(user, { action: "prospekt_edytowany",
       entityType: "prospect",
       entityId: prospectId,
       details: { pola: Object.keys(values) },

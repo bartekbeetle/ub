@@ -6,7 +6,11 @@ import type { Trainer } from "@/db/schema";
 import { CATEGORIES, VOIVODESHIPS } from "@/lib/constants";
 import { slugify } from "@/lib/utils";
 
-export function TrainerForm({ trainer }: { trainer?: Trainer }) {
+/**
+ * `canEditBilling` = tylko superadmin. Admin operacyjny nie widzi modelu rozliczenia ani stawki
+ * i formularz nie wysyła tych pól; serwer i tak odrzuca ich zmianę (403) w trasach API.
+ */
+export function TrainerForm({ trainer, canEditBilling = false }: { trainer?: Trainer; canEditBilling?: boolean }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -39,8 +43,12 @@ export function TrainerForm({ trainer }: { trainer?: Trainer }) {
       facebook: String(fd.get("facebook") ?? ""),
       website: String(fd.get("website") ?? ""),
       studentsCount: Number(fd.get("studentsCount") ?? 0),
-      billingModel: String(fd.get("billingModel")) as "per_lead" | "per_zapis",
-      rate: Number(fd.get("rate") ?? 500),
+      ...(canEditBilling
+        ? {
+            billingModel: String(fd.get("billingModel")) as "per_lead" | "per_zapis",
+            rate: Number(fd.get("rate") ?? 500),
+          }
+        : {}),
       leadLimitMonthly: Number(fd.get("leadLimitMonthly") ?? 50),
       autoAssign: fd.get("autoAssign") === "on",
       isActive: fd.get("isActive") === "on",
@@ -198,6 +206,7 @@ export function TrainerForm({ trainer }: { trainer?: Trainer }) {
       <fieldset className="card !shadow-none border border-sand-200 p-5">
         <legend className="label px-2">Rozliczenia</legend>
         <div className="grid gap-4 sm:grid-cols-3">
+          {canEditBilling && (
           <div>
             <label className="label" htmlFor="t-model">Model rozliczenia</label>
             <select id="t-model" name="billingModel" defaultValue={trainer?.billingModel ?? "per_zapis"} className="input">
@@ -205,10 +214,13 @@ export function TrainerForm({ trainer }: { trainer?: Trainer }) {
               <option value="per_zapis">Opłata za zapis</option>
             </select>
           </div>
+          )}
+          {canEditBilling && (
           <div>
             <label className="label" htmlFor="t-rate">Stawka (PLN)</label>
             <input id="t-rate" name="rate" type="number" min={0} defaultValue={trainer?.rate ?? 500} className="input" />
           </div>
+          )}
           <div>
             <label className="label" htmlFor="t-limit">Limit leadów / mies.</label>
             <input id="t-limit" name="leadLimitMonthly" type="number" min={0} defaultValue={trainer?.leadLimitMonthly ?? 50} className="input" />

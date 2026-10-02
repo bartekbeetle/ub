@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { asc, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 import { mailingCampaignSchema, zodErrorMessage } from "@/lib/validators";
 import { campaignStats } from "@/lib/mailing";
 import { isSmtpConfigured } from "@/lib/email";
@@ -79,9 +79,7 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
     .where(eq(schema.mailingCampaigns.id, id))
     .returning();
 
-  await logAudit({
-    actor: actorLabel(user),
-    action: "mailing_kampania_zmieniona",
+  await logAdminAction(user, { action: "mailing_kampania_zmieniona",
     entityType: "mailing_campaign",
     entityId: id,
     details: parsed.data,
@@ -108,9 +106,7 @@ export async function DELETE(_req: Request, { params }: { params: Params }) {
   const db = await getDb();
   // Odbiorcy lecą kaskadą (FK ON DELETE CASCADE).
   await db.delete(schema.mailingCampaigns).where(eq(schema.mailingCampaigns.id, id));
-  await logAudit({
-    actor: actorLabel(user),
-    action: "mailing_kampania_usunieta",
+  await logAdminAction(user, { action: "mailing_kampania_usunieta",
     entityType: "mailing_campaign",
     entityId: id,
   });

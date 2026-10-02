@@ -1,10 +1,12 @@
 import "server-only";
 import { createHash, randomBytes } from "crypto";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { eq, lt } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { getDb, schema } from "@/db";
 import type { User } from "@/db/schema";
+import { isAdminRole, isSuperadminRole, canSignIn } from "@/lib/roles";
 
 const SESSION_COOKIE = "ub_session";
 export const SESSION_TTL_MS = 1000 * 60 * 60 * 8; // 8h
@@ -88,7 +90,7 @@ export async function getSessionUser(): Promise<User | null> {
     .limit(1);
   const row = rows[0];
   if (!row) return null;
-  if (row.session.expiresAt < new Date() || !row.user.isActive) return null;
+  if (row.session.expiresAt < new Date() || !canSignIn(row.user)) return null;
   return row.user;
 }
 
@@ -104,11 +106,39 @@ export async function getSessionUser(): Promise<User | null> {
  */
 type GuardOpts = { allowPasswordChange?: boolean };
 
-/** Guard dla API admina — zwraca usera albo null (handler zwraca 401). */
+/**
+ * Guard dla API admina — zwraca usera albo null (handler zwraca 401).
+ * Przepuszcza admina I superadmina (`isAdminRole`) — superadmin ma wszystko, co admin.
+ */
 export async function requireAdmin(opts?: GuardOpts): Promise<User | null> {
   const user = await getSessionUser();
-  if (!user || user.role !== "admin") return null;
+  if (!user || !isAdminRole(user.role)) return null;
   if (user.mustChangePassword && !opts?.allowPasswordChange) return null;
+  return user;
+}
+
+/**
+ * Guard dla tras tylko-dla-właściciela (rozliczenia, ustawienia, zespół, dziennik).
+ * Zwraca usera albo null; handler odpowiada 403 przy zwykłym adminie (patrz `forbidIfNotSuperadmin`),
+ * żeby UI mógł odróżnić „brak sesji" od „brak uprawnień".
+ */
+export async function requireSuperadmin(opts?: GuardOpts): Promise<User | null> {
+  const user = await requireAdmin(opts);
+  if (!user || !isSuperadminRole(user.role)) return null;
+  return user;
+}
+
+/**
+ * Bramka dla STRON (Server Components) tylko-dla-superadmina. Ma być pierwszą linią strony,
+ * PRZED jakimkolwiek zapytaniem do bazy: layout i strona renderują się równolegle, więc samo
+ * przekierowanie w layoucie nie zatrzymałoby strony przed pobraniem danych (ten sam wzorzec
+ * co bramka hasła — przekierowanie, nie podmiana widoku).
+ */
+export async function requireSuperadminPage(): Promise<User> {
+  const user = await getSessionUser();
+  if (!user || !isAdminRole(user.role)) redirect("/admin/login");
+  if (!isSuperadminRole(user.role)) redirect("/admin");
+  if (user.mustChangePassword) redirect("/admin/haslo");
   return user;
 }
 

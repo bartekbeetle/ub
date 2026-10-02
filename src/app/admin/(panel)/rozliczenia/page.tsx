@@ -1,5 +1,6 @@
 import { and, desc, eq, gte, lt } from "drizzle-orm";
 import { getDb, schema } from "@/db";
+import { requireSuperadminPage } from "@/lib/auth";
 import { BillingStatusSelect } from "@/components/admin/AssignmentStatusSelect";
 import { formatPln, formatDateTime } from "@/lib/utils";
 import { BILLING_STATUS_LABELS } from "@/lib/constants";
@@ -9,6 +10,7 @@ export const dynamic = "force-dynamic";
 type Search = Promise<{ [key: string]: string | string[] | undefined }>;
 
 export default async function RozliczeniaPage({ searchParams }: { searchParams: Search }) {
+  await requireSuperadminPage(); // PRZED jakimkolwiek zapytaniem — rozliczenia tylko dla superadmina
   const sp = await searchParams;
   const now = new Date();
   const monthParam = typeof sp.miesiac === "string" && /^\d{4}-\d{2}$/.test(sp.miesiac)

@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { desc } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { isSuperadminRole } from "@/lib/roles";
+import { logAdminAction } from "@/lib/audit";
 import { trainerSchema } from "@/lib/validators";
 import { revalidateTag } from "next/cache";
 import { CACHE_TAGS } from "@/lib/public-cache";
@@ -19,7 +20,12 @@ export async function GET() {
 export async function POST(req: Request) {
   const user = await requireAdmin();
   if (!user) return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
-  const parsed = trainerSchema.safeParse(await req.json().catch(() => null));
+  const body = await req.json().catch(() => null);
+  // Model rozliczenia i stawka to warunki finansowe — ustawia je tylko superadmin.
+  if (!isSuperadminRole(user.role) && body && typeof body === "object" && ("billingModel" in body || "rate" in body)) {
+    return NextResponse.json({ error: "Stawkę i model rozliczenia ustawia tylko superadmin." }, { status: 403 });
+  }
+  const parsed = trainerSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.errors[0]?.message ?? "Nieprawidłowe dane." }, { status: 400 });
   }
@@ -42,7 +48,7 @@ export async function POST(req: Request) {
         website: d.website || null,
       })
       .returning();
-    await logAudit({ actor: actorLabel(user), action: "trenerka_utworzona", entityType: "trainer", entityId: created.id });
+    await logAdminAction(user, { action: "trenerka_utworzona", entityType: "trainer", entityId: created.id });
     revalidateTag(CACHE_TAGS.courses);
     return NextResponse.json(created, { status: 201 });
   } catch {

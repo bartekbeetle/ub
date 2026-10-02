@@ -374,3 +374,15 @@ export const mailingCampaignSchema = z.object({
   body: z.string().trim().min(20, "Treść jest za krótka").max(50000),
   segment: mailingSegmentSchema.default({}),
 });
+
+/** Zespół administracji (/admin/zespol) — tworzenie konta admina z hasłem tymczasowym. */
+export const teamCreateSchema = z.object({
+  email: z.string().trim().email("Podaj poprawny adres e-mail.").max(255),
+  // Puste = serwer wygeneruje losowe hasło i pokaże je raz na ekranie.
+  password: z.string().max(200).optional().or(z.literal("")),
+});
+
+export const teamActionSchema = z.object({
+  action: z.enum(["disable", "enable", "revoke", "reset_password"]),
+  password: z.string().max(200).optional().or(z.literal("")),
+});

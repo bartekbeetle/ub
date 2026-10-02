@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq, and, ne } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction, actorLabel } from "@/lib/audit";
 import { onLeadSigned } from "@/lib/lead-events";
 import { leadStatusUpdateSchema } from "@/lib/validators";
 import { z } from "zod";
@@ -73,15 +73,13 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
       signedLeadId = leadId;
     }
 
-    await logAudit({
-      actor: actorLabel(user),
-      action: "zmiana_statusu",
+    await logAdminAction(user, { action: "zmiana_statusu",
       entityType: "lead",
       entityId: leadId,
       details: { from: lead.status, to: data.status, ...(data.status === "odrzucony" ? { reason: data.rejectionReason } : {}) },
     });
   } else if ("notes" in data) {
-    await logAudit({ actor: actorLabel(user), action: "notatka", entityType: "lead", entityId: leadId });
+    await logAdminAction(user, { action: "notatka", entityType: "lead", entityId: leadId });
   }
 
   const [updated] = await db.update(schema.leads).set(update).where(eq(schema.leads.id, leadId)).returning();
@@ -118,9 +116,7 @@ export async function DELETE(_req: Request, { params }: { params: Params }) {
   if (!lead) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
 
   // Ślad idzie do audytu ZANIM wiersz zniknie.
-  await logAudit({
-    actor: actorLabel(user),
-    action: "usuniecie_leada",
+  await logAdminAction(user, { action: "usuniecie_leada",
     entityType: "lead",
     entityId: leadId,
     details: {

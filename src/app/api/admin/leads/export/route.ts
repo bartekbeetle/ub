@@ -1,7 +1,7 @@
 import { desc, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 import { toCsv, formatDateTime } from "@/lib/utils";
 import { voivodeshipName, LEAD_STATUS_LABELS, SOURCE_LABELS } from "@/lib/constants";
 
@@ -39,7 +39,7 @@ export async function GET() {
     ]),
   ];
 
-  await logAudit({ actor: actorLabel(user), action: "eksport_csv", entityType: "leads", details: { count: leads.length } });
+  await logAdminAction(user, { action: "eksport_csv", entityType: "leads", details: { count: leads.length } });
 
   return new Response(toCsv(rows), {
     headers: {

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { desc, eq, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction, actorLabel } from "@/lib/audit";
 import { mailingCampaignSchema, zodErrorMessage } from "@/lib/validators";
 
 export const runtime = "nodejs";
@@ -51,9 +51,7 @@ export async function POST(req: Request) {
     })
     .returning();
 
-  await logAudit({
-    actor: actorLabel(user),
-    action: "mailing_kampania_utworzona",
+  await logAdminAction(user, { action: "mailing_kampania_utworzona",
     entityType: "mailing_campaign",
     entityId: created.id,
     details: { name: created.name, segment: created.segment },

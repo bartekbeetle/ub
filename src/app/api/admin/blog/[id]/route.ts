@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 import { blogPostSchema, zodErrorMessage } from "@/lib/validators";
 import { revalidateTag } from "next/cache";
 import { CACHE_TAGS } from "@/lib/public-cache";
@@ -35,7 +35,7 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
     .set({ ...parsed.data, publishedAt })
     .where(eq(schema.blogPosts.id, postId))
     .returning();
-  await logAudit({ actor: actorLabel(user), action: "post_edytowany", entityType: "blogPost", entityId: postId });
+  await logAdminAction(user, { action: "post_edytowany", entityType: "blogPost", entityId: postId });
   revalidateTag(CACHE_TAGS.blog);
   return NextResponse.json(updated);
 }
@@ -49,7 +49,7 @@ export async function DELETE(_req: Request, { params }: { params: Params }) {
   const db = await getDb();
   const deleted = await db.delete(schema.blogPosts).where(eq(schema.blogPosts.id, postId)).returning();
   if (!deleted[0]) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
-  await logAudit({ actor: actorLabel(user), action: "post_usuniety", entityType: "blogPost", entityId: postId });
+  await logAdminAction(user, { action: "post_usuniety", entityType: "blogPost", entityId: postId });
   revalidateTag(CACHE_TAGS.blog);
   return NextResponse.json({ ok: true });
 }

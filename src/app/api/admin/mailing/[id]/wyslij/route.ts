@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 import { sendCampaignBatch, campaignStats } from "@/lib/mailing";
 
 export const runtime = "nodejs";
@@ -31,9 +31,7 @@ export async function POST(req: Request, { params }: { params: Params }) {
     // Log tylko przy pierwszej i ostatniej partii — inaczej dziennik zalewa się wpisami
     // co 25 adresów i przestaje być czytelny przy audycie.
     if (result.done || stats.oczekuje + result.processed === stats.total) {
-      await logAudit({
-        actor: actorLabel(user),
-        action: result.done ? "mailing_wysylka_zakonczona" : "mailing_wysylka_start",
+      await logAdminAction(user, { action: result.done ? "mailing_wysylka_zakonczona" : "mailing_wysylka_start",
         entityType: "mailing_campaign",
         entityId: id,
         details: { ...stats },

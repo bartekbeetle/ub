@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
 import { getInboxMessage, inboxConfigured, sendFromInbox } from "@/lib/inbox";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -46,9 +46,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: `Nie wysłano: ${message}` }, { status: 502 });
   }
 
-  await logAudit({
-    actor: actorLabel(user),
-    action: replyToUid ? "skrzynka_odpowiedz" : "skrzynka_wyslij",
+  await logAdminAction(user, { action: replyToUid ? "skrzynka_odpowiedz" : "skrzynka_wyslij",
     entityType: "email",
     entityId: replyToUid ?? null,
     details: { to, subject },

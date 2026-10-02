@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 import { courseSchema, zodErrorMessage } from "@/lib/validators";
 import { revalidateTag } from "next/cache";
 import { CACHE_TAGS } from "@/lib/public-cache";
@@ -30,7 +30,7 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
     .where(eq(schema.courses.id, courseId))
     .returning();
   if (!updated) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
-  await logAudit({ actor: actorLabel(user), action: "szkolenie_edytowane", entityType: "course", entityId: courseId });
+  await logAdminAction(user, { action: "szkolenie_edytowane", entityType: "course", entityId: courseId });
   revalidateTag(CACHE_TAGS.courses);
   return NextResponse.json(updated);
 }
@@ -48,7 +48,7 @@ export async function DELETE(_req: Request, { params }: { params: Params }) {
     .where(eq(schema.courses.id, courseId))
     .returning();
   if (!updated) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
-  await logAudit({ actor: actorLabel(user), action: "szkolenie_wycofane", entityType: "course", entityId: courseId });
+  await logAdminAction(user, { action: "szkolenie_wycofane", entityType: "course", entityId: courseId });
   revalidateTag(CACHE_TAGS.courses);
   return NextResponse.json({ ok: true });
 }

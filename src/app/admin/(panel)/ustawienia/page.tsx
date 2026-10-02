@@ -1,12 +1,14 @@
 import { desc, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { getSettings } from "@/lib/settings";
+import { requireSuperadminPage } from "@/lib/auth";
 import { SettingsForm } from "@/components/admin/SettingsForm";
 import { formatDateTime } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 export default async function UstawieniaPage() {
+  await requireSuperadminPage(); // PRZED jakimkolwiek zapytaniem — ustawienia tylko dla superadmina
   const settings = await getSettings();
   const db = await getDb();
   const queued = await db

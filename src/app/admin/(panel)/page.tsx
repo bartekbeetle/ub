@@ -1,12 +1,16 @@
 import Link from "next/link";
 import { and, desc, eq, gte, ne, notInArray, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db";
+import { getSessionUser } from "@/lib/auth";
+import { isSuperadminRole } from "@/lib/roles";
 import { formatDateTime, formatPln } from "@/lib/utils";
 import { LEAD_STATUS_LABELS, LEAD_STATUS_COLORS, voivodeshipName } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
+  // Przychód i rozliczenia widzi tylko superadmin — dla admina nie wykonujemy nawet zapytań.
+  const showBilling = isSuperadminRole((await getSessionUser())?.role);
   const db = await getDb();
 
   const todayStart = new Date();
@@ -33,14 +37,18 @@ export default async function AdminDashboard() {
     db.select({ c: sql<number>`count(*)::int` }).from(schema.leads),
     db.select({ c: sql<number>`count(*)::int` }).from(schema.leads).where(eq(schema.leads.status, "zapisana")),
     db.select({ c: sql<number>`count(*)::int` }).from(schema.trainers).where(eq(schema.trainers.isActive, true)),
-    db
-      .select({ s: sql<number>`coalesce(sum(${schema.leadAssignments.amount}), 0)::int` })
-      .from(schema.leadAssignments)
-      .where(gte(schema.leadAssignments.createdAt, monthStart)),
-    db
-      .select({ c: sql<number>`count(*)::int` })
-      .from(schema.leadAssignments)
-      .where(and(eq(schema.leadAssignments.billingStatus, "do_zafakturowania"), ne(schema.leadAssignments.amount, 0))),
+    showBilling
+      ? db
+          .select({ s: sql<number>`coalesce(sum(${schema.leadAssignments.amount}), 0)::int` })
+          .from(schema.leadAssignments)
+          .where(gte(schema.leadAssignments.createdAt, monthStart))
+      : Promise.resolve([{ s: 0 }]),
+    showBilling
+      ? db
+          .select({ c: sql<number>`count(*)::int` })
+          .from(schema.leadAssignments)
+          .where(and(eq(schema.leadAssignments.billingStatus, "do_zafakturowania"), ne(schema.leadAssignments.amount, 0)))
+      : Promise.resolve([{ c: 0 }]),
     db
       .select({ c: sql<number>`count(*)::int` })
       .from(schema.prospects)
@@ -68,9 +76,13 @@ export default async function AdminDashboard() {
     { label: "Leady dziś", value: String(leadsToday), color: "bg-blue-100 text-blue-700" },
     { label: "Leady w tym miesiącu", value: String(leadsMonth), color: "bg-sand-100 text-sand-700" },
     { label: "Konwersja lead → zapis", value: `${conversion}%`, color: "bg-purple-100 text-purple-700" },
-    { label: "Przychód w tym miesiącu", value: formatPln(revenueMonth), color: "bg-emerald-100 text-emerald-700" },
+    ...(showBilling
+      ? [{ label: "Przychód w tym miesiącu", value: formatPln(revenueMonth), color: "bg-emerald-100 text-emerald-700" }]
+      : []),
     { label: "Aktywne trenerki", value: String(activeTrainers), color: "bg-amber-100 text-amber-700" },
-    { label: "Oczekujące rozliczenia", value: String(pendingBilling), color: "bg-red-100 text-red-700" },
+    ...(showBilling
+      ? [{ label: "Oczekujące rozliczenia", value: String(pendingBilling), color: "bg-red-100 text-red-700" }]
+      : []),
   ];
 
   return (

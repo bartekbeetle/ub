@@ -113,6 +113,20 @@
       "when": 1790703548515,
       "tag": "0015_sleepy_smasher",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1790921703700,
+      "tag": "0016_superadmin_enum",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1790921711676,
+      "tag": "0017_admin_audit_log",
+      "breakpoints": true
     }
   ]
 }

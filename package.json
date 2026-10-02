@@ -20,6 +20,7 @@
     "db:seed-trainer-users": "tsx scripts/seed-trainer-users.ts",
     "db:seed-prospects": "tsx scripts/seed-prospects.ts",
     "admin:reset-password": "tsx scripts/reset-admin-password.ts",
+    "admin:superadmin": "tsx scripts/promote-superadmin.ts",
     "db:fix-taxonomy": "tsx scripts/fix-taxonomy.ts",
     "blog:generuj": "tsx scripts/blog-factory/generuj.ts",
     "blog:qa": "tsx scripts/blog-factory/qa.ts",
@@ -27,7 +28,8 @@
     "db:seed-kursy-ogolne": "tsx scripts/seed-kursy-ogolne.ts",
     "email:preview": "tsx scripts/email-preview.ts",
     "test:wypisanie": "tsx scripts/test-wypisanie.ts",
-    "test:tracking": "tsx scripts/test-tracking.ts"
+    "test:tracking": "tsx scripts/test-tracking.ts",
+    "test:superadmin": "tsx scripts/test-superadmin.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.3.0",

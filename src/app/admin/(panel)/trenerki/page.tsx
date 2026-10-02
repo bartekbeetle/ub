@@ -3,11 +3,14 @@ import { desc } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { TrainerAvatar } from "@/components/TrainerAvatar";
 import { formatPln } from "@/lib/utils";
+import { getSessionUser } from "@/lib/auth";
+import { isSuperadminRole } from "@/lib/roles";
 import { voivodeshipName } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
 export default async function TrenerkiAdminPage() {
+  const showBilling = isSuperadminRole((await getSessionUser())?.role);
   const db = await getDb();
   const trainers = await db.select().from(schema.trainers).orderBy(desc(schema.trainers.createdAt));
 
@@ -25,7 +28,7 @@ export default async function TrenerkiAdminPage() {
               <th className="px-4 py-3 font-semibold">Trenerka</th>
               <th className="px-4 py-3 font-semibold">Specjalizacje</th>
               <th className="px-4 py-3 font-semibold">Lokalizacja</th>
-              <th className="px-4 py-3 font-semibold">Rozliczenie</th>
+              {showBilling && <th className="px-4 py-3 font-semibold">Rozliczenie</th>}
               <th className="px-4 py-3 font-semibold">Status</th>
               <th className="px-4 py-3 font-semibold">Akcje</th>
             </tr>
@@ -44,9 +47,11 @@ export default async function TrenerkiAdminPage() {
                 </td>
                 <td className="max-w-xs px-4 py-3 text-xs">{t.specializations.join(", ")}</td>
                 <td className="px-4 py-3">{t.city ?? "—"}{t.voivodeship ? `, ${voivodeshipName(t.voivodeship)}` : ""}</td>
-                <td className="px-4 py-3 text-xs">
-                  {t.billingModel === "per_lead" ? "za lead" : "za zapis"} · {formatPln(t.rate)}
-                </td>
+                {showBilling && (
+                  <td className="px-4 py-3 text-xs">
+                    {t.billingModel === "per_lead" ? "za lead" : "za zapis"} · {formatPln(t.rate)}
+                  </td>
+                )}
                 <td className="px-4 py-3">
                   <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${t.isActive ? "bg-emerald-100 text-emerald-800" : "bg-gray-200 text-gray-600"}`}>
                     {t.isActive ? "Aktywna" : "Nieaktywna"}

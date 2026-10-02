@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 
 export const runtime = "nodejs";
 
@@ -32,6 +32,6 @@ export async function POST(_req: Request, { params }: { params: Params }) {
     .returning();
   if (!updated) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
 
-  await logAudit({ actor: actorLabel(user), action: "anonimizacja_rodo", entityType: "lead", entityId: leadId });
+  await logAdminAction(user, { action: "anonimizacja_rodo", entityType: "lead", entityId: leadId });
   return NextResponse.json({ ok: true });
 }

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { and, desc, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
+import { getSessionUser } from "@/lib/auth";
+import { isSuperadminRole } from "@/lib/roles";
 import { RevealContact } from "@/components/admin/RevealContact";
 import { LeadStatusSelect } from "@/components/admin/LeadStatusSelect";
 import { AssignTrainer, UnassignButton } from "@/components/admin/AssignTrainer";
@@ -19,6 +21,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   const leadId = Number(id);
   if (!Number.isInteger(leadId)) notFound();
 
+  const showBilling = isSuperadminRole((await getSessionUser())?.role);
   const db = await getDb();
   const [rows, assignments, audit, activeTrainers, zrodloweZgloszenia] = await Promise.all([
     db
@@ -159,14 +162,17 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                   <div>
                     <p className="font-semibold">{trainer.name}</p>
                     <p className="text-xs text-muted">
-                      {trainer.city ?? "—"} · {trainer.billingModel === "per_lead" ? "za lead" : "za zapis"} · stawka {formatPln(trainer.rate)}
+                      {trainer.city ?? "—"}
+                      {showBilling && <> · {trainer.billingModel === "per_lead" ? "za lead" : "za zapis"} · stawka {formatPln(trainer.rate)}</>}
                     </p>
                   </div>
                   <UnassignButton leadId={lead.id} trainerId={trainer.id} />
                 </div>
                 <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
                   <AssignmentStatusSelect assignmentId={assignment.id} current={assignment.status} />
-                  <span className="text-muted">Naliczono: <strong className="text-money-dark">{formatPln(assignment.amount)}</strong></span>
+                  {showBilling && (
+                    <span className="text-muted">Naliczono: <strong className="text-money-dark">{formatPln(assignment.amount)}</strong></span>
+                  )}
                   <span className="text-muted">Przydzielono: {formatDateTime(assignment.createdAt)} ({assignment.assignedBy})</span>
                 </div>
               </div>

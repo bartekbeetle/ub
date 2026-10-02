@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/auth";
+import { requireSuperadmin } from "@/lib/auth";
 import { sendTestEmail } from "@/lib/email";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,8 +20,8 @@ const schema = z.object({
  * Adres podaje admin ręcznie — nigdy nie wysyłamy testu na adres kursantki.
  */
 export async function POST(req: Request) {
-  const user = await requireAdmin();
-  if (!user) return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
+  const user = await requireSuperadmin();
+  if (!user) return NextResponse.json({ error: "Brak uprawnień." }, { status: 403 });
 
   const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
@@ -30,9 +30,7 @@ export async function POST(req: Request) {
 
   const result = await sendTestEmail(parsed.data.to);
 
-  await logAudit({
-    actor: actorLabel(user),
-    action: "test_smtp",
+  await logAdminAction(user, { action: "test_smtp",
     entityType: "settings",
     entityId: 1,
     details: { to: parsed.data.to, ok: result.ok, error: result.error ?? null },

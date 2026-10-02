@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { TrainerForm } from "@/components/admin/TrainerForm";
+import { getSessionUser } from "@/lib/auth";
+import { isSuperadminRole } from "@/lib/roles";
 import { TrainerAccountButton } from "@/components/admin/TrainerAccountButton";
 import { formatDateTime } from "@/lib/utils";
 
@@ -68,7 +70,7 @@ export default async function EdycjaTrenerkiPage({ params }: { params: Promise<{
       </div>
 
       <div className="card mt-6 p-6">
-        <TrainerForm trainer={trainer} />
+        <TrainerForm trainer={trainer} canEditBilling={isSuperadminRole((await getSessionUser())?.role)} />
       </div>
     </div>
   );

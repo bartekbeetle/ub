@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { getDb, schema } from "@/db";
 import { requireAdmin, hashPassword, invalidateUserSessions } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 
 export const runtime = "nodejs";
 
@@ -56,9 +56,7 @@ export async function POST(req: Request, { params }: { params: Params }) {
       .set({ passwordHash, mustChangePassword: true, isActive: true })
       .where(eq(schema.users.id, existing.id));
     await invalidateUserSessions(existing.id);
-    await logAudit({
-      actor: actorLabel(user),
-      action: "trenerka_haslo_zresetowane",
+    await logAdminAction(user, { action: "trenerka_haslo_zresetowane",
       entityType: "user",
       entityId: existing.id,
       details: { trainerId },
@@ -87,9 +85,7 @@ export async function POST(req: Request, { params }: { params: Params }) {
     .values({ email, passwordHash, role: "trenerka", trainerId, mustChangePassword: true, isActive: true })
     .returning();
 
-  await logAudit({
-    actor: actorLabel(user),
-    action: "trenerka_konto_utworzone",
+  await logAdminAction(user, { action: "trenerka_konto_utworzone",
     entityType: "user",
     entityId: created.id,
     details: { trainerId, email },

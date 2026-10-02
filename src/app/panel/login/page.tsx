@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth";
+import { isAdminRole } from "@/lib/roles";
 import { PanelLoginForm } from "@/components/panel/PanelLoginForm";
 
 export const dynamic = "force-dynamic";
@@ -7,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function PanelLoginPage() {
   const user = await getSessionUser();
   if (user?.role === "trenerka" && user.trainerId) redirect("/panel/leady");
-  if (user?.role === "admin") redirect("/admin");
+  if (isAdminRole(user?.role)) redirect("/admin");
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-navy px-4">

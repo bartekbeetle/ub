@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { isSuperadminRole } from "@/lib/roles";
+import { logAdminAction, actorLabel } from "@/lib/audit";
 import { onLeadSigned } from "@/lib/lead-events";
 import { z } from "zod";
 
@@ -25,6 +26,12 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
   const parsed = patchSchema.safeParse(await req.json().catch(() => null));
   if (!Number.isInteger(assignmentId) || !parsed.success) {
     return NextResponse.json({ error: "Nieprawidłowe dane." }, { status: 400 });
+  }
+
+  // Status płatności (rozliczenia) zmienia wyłącznie superadmin. Status przydziału
+  // (przydzielony → zapisana) to praca operacyjna admina i zostaje mu dostępny.
+  if (parsed.data.billingStatus && !isSuperadminRole(user.role)) {
+    return NextResponse.json({ error: "Status płatności zmienia tylko superadmin." }, { status: 403 });
   }
 
   const db = await getDb();
@@ -52,21 +59,26 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
       if (row.trainer.billingModel === "per_zapis") update.amount = row.trainer.rate;
       // eskaluj status leada
       await db.update(schema.leads).set({ status: "zapisana" }).where(eq(schema.leads.id, row.assignment.leadId));
-      await logAudit({
-        actor: actorLabel(user),
-        action: "zmiana_statusu",
+      await logAdminAction(user, { action: "zmiana_statusu",
         entityType: "lead",
         entityId: row.assignment.leadId,
         details: { to: "zapisana", via: `assignment:${assignmentId}` },
       });
       signedLeadId = row.assignment.leadId;
     }
-    await logAudit({
-      actor: actorLabel(user),
-      action: "zmiana_statusu_przydzialu",
+    await logAdminAction(user, { action: "zmiana_statusu_przydzialu",
       entityType: "assignment",
       entityId: assignmentId,
       details: { from: row.assignment.status, to: status, trainerId: row.trainer.id },
+    });
+  }
+
+  if (billingStatus && billingStatus !== row.assignment.billingStatus) {
+    await logAdminAction(user, {
+      action: "zmiana_statusu_platnosci",
+      entityType: "assignment",
+      entityId: assignmentId,
+      details: { from: row.assignment.billingStatus, to: billingStatus, trainerId: row.trainer.id, amount: row.assignment.amount },
     });
   }
 

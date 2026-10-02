@@ -15,7 +15,7 @@ import { relations } from "drizzle-orm";
 
 // ===== ENUMS =====
 
-export const userRoleEnum = pgEnum("user_role", ["admin", "trenerka"]);
+export const userRoleEnum = pgEnum("user_role", ["admin", "trenerka", "superadmin"]);
 
 export const leadStatusEnum = pgEnum("lead_status", [
   "nowy",
@@ -712,6 +712,32 @@ export const auditLog = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [index("audit_entity_idx").on(t.entityType, t.entityId)]
+);
+
+/**
+ * Dziennik działań administracji — kto z zespołu (admin / superadmin) co zmienił w panelu.
+ * Osobny od `audit_log` (ogólny, w tym akcje systemu i trenerek): ten jest czytany wyłącznie
+ * przez superadmina w /admin/zespol/log i wiąże wpis z konkretnym kontem (FK), nie z napisem.
+ * `actor_role` to tekst, nie enum — rola w chwili akcji ma przetrwać późniejszą zmianę roli,
+ * a kolumna enumowa wymusiłaby w tej samej migracji użycie świeżo dodanej wartości `superadmin`.
+ * `actor_user_id` nullable: skrypty (promocja superadmina) działają bez sesji.
+ */
+export const adminAuditLog = pgTable(
+  "admin_audit_log",
+  {
+    id: serial("id").primaryKey(),
+    actorUserId: integer("actor_user_id").references(() => users.id, { onDelete: "set null" }),
+    actorRole: varchar("actor_role", { length: 20 }).notNull(),
+    action: varchar("action", { length: 80 }).notNull(),
+    entityType: varchar("entity_type", { length: 40 }).notNull(),
+    entityId: integer("entity_id"),
+    details: jsonb("details").$type<Record<string, unknown>>().notNull().default({}),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("admin_audit_created_idx").on(t.createdAt),
+    index("admin_audit_actor_idx").on(t.actorUserId, t.createdAt),
+  ]
 );
 
 // ===== ZGŁOSZENIA (kontakt / konsultacja) =====

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 import { z } from "zod";
 
 export const runtime = "nodejs";
@@ -53,9 +53,7 @@ export async function DELETE(_req: Request, { params }: { params: Params }) {
     );
   }
 
-  await logAudit({
-    actor: actorLabel(user),
-    action: "usuniecie_zgloszenia",
+  await logAdminAction(user, { action: "usuniecie_zgloszenia",
     entityType: "submission",
     entityId: subId,
     details: {

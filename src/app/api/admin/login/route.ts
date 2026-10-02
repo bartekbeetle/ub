@@ -4,7 +4,8 @@ import { getDb, schema } from "@/db";
 import { loginSchema } from "@/lib/validators";
 import { rateLimit, getClientIp, isAccountLocked, recordFailedLogin, clearFailedLogins, LOCKOUT_MESSAGE } from "@/lib/ratelimit";
 import { verifyPassword, createSession, DUMMY_PASSWORD_HASH } from "@/lib/auth";
-import { logAudit } from "@/lib/audit";
+import { logAudit, logAdminAction } from "@/lib/audit";
+import { isAdminRole } from "@/lib/roles";
 
 export const runtime = "nodejs";
 
@@ -43,7 +44,11 @@ export async function POST(req: Request) {
   clearFailedLogins(email);
 
   await createSession(user.id); // rotacja: nowa sesja przy każdym logowaniu
-  await logAudit({ actor: `user:${user.id} ${user.email}`, action: "logowanie", entityType: "user", entityId: user.id });
+  if (isAdminRole(user.role)) {
+    await logAdminAction(user, { action: "logowanie", entityType: "user", entityId: user.id });
+  } else {
+    await logAudit({ actor: `user:${user.id} ${user.email}`, action: "logowanie", entityType: "user", entityId: user.id });
+  }
 
   return NextResponse.json({ ok: true, mustChangePassword: user.mustChangePassword, role: user.role });
 }

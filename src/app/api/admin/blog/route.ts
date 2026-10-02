@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { desc } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { logAudit, actorLabel } from "@/lib/audit";
+import { logAdminAction } from "@/lib/audit";
 import { blogPostSchema } from "@/lib/validators";
 import { revalidateTag } from "next/cache";
 import { CACHE_TAGS } from "@/lib/public-cache";
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
         publishedAt: d.status === "opublikowane" ? new Date() : null,
       })
       .returning();
-    await logAudit({ actor: actorLabel(user), action: "post_utworzony", entityType: "blogPost", entityId: created.id });
+    await logAdminAction(user, { action: "post_utworzony", entityType: "blogPost", entityId: created.id });
     revalidateTag(CACHE_TAGS.blog);
     return NextResponse.json(created, { status: 201 });
   } catch {
