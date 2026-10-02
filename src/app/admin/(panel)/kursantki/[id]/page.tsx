@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { and, desc, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { getSessionUser } from "@/lib/auth";
+import { adminMessageLog } from "@/lib/crm-core";
 import { isSuperadminRole } from "@/lib/roles";
 import { RevealContact } from "@/components/admin/RevealContact";
 import { LeadStatusSelect } from "@/components/admin/LeadStatusSelect";
@@ -23,7 +24,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
   const showBilling = isSuperadminRole((await getSessionUser())?.role);
   const db = await getDb();
-  const [rows, assignments, audit, activeTrainers, zrodloweZgloszenia] = await Promise.all([
+  const [rows, assignments, audit, activeTrainers, zrodloweZgloszenia, korespondencja] = await Promise.all([
     db
       .select({ lead: schema.leads, course: schema.courses })
       .from(schema.leads)
@@ -47,6 +48,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       .from(schema.submissions)
       .where(eq(schema.submissions.convertedToLeadId, leadId))
       .limit(1),
+    // Dziennik wiadomości trenerek do tej kursantki (tylko odczyt, bez kwot i rozliczeń).
+    adminMessageLog(db, leadId),
   ]);
   const row = rows[0];
   if (!row) notFound();
@@ -185,6 +188,33 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <AssignTrainer leadId={lead.id} options={options} />
           </div>
         </div>
+      </div>
+
+      {/* KORESPONDENCJA TRENEREK — tylko odczyt */}
+      <div className="card mt-6 p-6">
+        <h2 className="font-serif text-lg font-semibold">Korespondencja trenerek z kursantką ({korespondencja.length})</h2>
+        <p className="mt-1 text-xs text-muted">Podgląd tylko do odczytu. Treść notatek trenerek nie jest tu pokazywana.</p>
+        <ul className="mt-4 space-y-3 text-sm">
+          {korespondencja.map((m) => {
+            const trainerName = assignments.find((a) => a.assignment.id === m.assignmentId)?.trainer.name ?? `trenerka #${m.trainerId}`;
+            return (
+              <li key={m.id} className="rounded-[10px] border border-gray-100 p-4">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
+                  <span className="font-semibold text-ink-soft">{trainerName}</span>
+                  <span>{m.channel === "sms" ? "SMS" : "E-mail"} do {m.toAddress}</span>
+                  <span>{formatDateTime(m.createdAt)}</span>
+                  <span className={`rounded-full px-2 py-0.5 font-semibold ${m.status === "blad" ? "bg-red-50 text-red-700" : m.status === "dry-run" ? "bg-amber-100 text-amber-900" : "bg-sand-100 text-sand-700"}`}>
+                    {m.status === "dry-run" ? "tryb testowy, nie wysłano" : m.status}
+                  </span>
+                </div>
+                {m.subject && <p className="mt-1 font-medium">{m.subject}</p>}
+                <p className="mt-1 whitespace-pre-wrap">{m.body}</p>
+                {m.error && <p className="mt-1 text-xs text-red-700">{m.error}</p>}
+              </li>
+            );
+          })}
+          {korespondencja.length === 0 && <li className="text-muted">Żadna trenerka nie pisała jeszcze do tej kursantki z panelu.</li>}
+        </ul>
       </div>
 
       {/* AUDIT LOG */}

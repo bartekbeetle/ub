@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { logAdminAction } from "@/lib/audit";
+import { purgeCrmForLead } from "@/lib/crm-core";
 
 export const runtime = "nodejs";
 
@@ -31,6 +32,9 @@ export async function POST(_req: Request, { params }: { params: Params }) {
     .where(eq(schema.leads.id, leadId))
     .returning();
   if (!updated) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
+
+  // Korespondencja i notatki trenerek o tej osobie to też jej dane osobowe (CRM trenerki).
+  await purgeCrmForLead(db, leadId);
 
   await logAdminAction(user, { action: "anonimizacja_rodo", entityType: "lead", entityId: leadId });
   return NextResponse.json({ ok: true });

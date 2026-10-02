@@ -134,6 +134,13 @@
       "when": 1790922318074,
       "tag": "0018_porzucone_przypomnienia",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1790922748953,
+      "tag": "0019_crm_trenerki",
+      "breakpoints": true
     }
   ]
 }
