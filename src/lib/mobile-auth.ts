@@ -92,6 +92,5 @@ export async function destroyMobileSession(req: Request): Promise<void> {
   await db.delete(schema.sessions).where(eq(schema.sessions.id, hashToken(token)));
 }
 
-/** Komunikat bramki onboardingu — jeden tekst dla wszystkich tras mobilnych. */
-export const ONBOARDING_GATE_MESSAGE =
-  "Konto czeka na aktywację. Skontaktujemy się telefonicznie przed pierwszym zgłoszeniem.";
+/** Komunikat bramki onboardingu — jeden tekst dla wszystkich tras; źródło w rdzeniu zmiany statusu. */
+export { ONBOARDING_GATE_MESSAGE } from "@/lib/assignment-status-core";

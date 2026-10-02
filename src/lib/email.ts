@@ -15,6 +15,8 @@ export const EMAIL_KIND = {
   KURSANTKA_ZAPIS: "kursantka_zapis",
   /** Do nas (notifyEmail): kursantka zapisana, jest za co fakturować. */
   WEWNETRZNE_ZAPIS: "wewnetrzne_zapis",
+  /** Wiadomość 1:1 trenerki do kursantki z CRM panelu (nie dedupujemy — to korespondencja, nie powiadomienie). */
+  TRENERKA_CRM: "trenerka_crm",
   /** Mailing z propozycjami szkoleń — jedyny rodzaj, który wymaga zgody i linku rezygnacji. */
   MARKETING: "marketing",
   /** Do nas: akademia sama założyła konto na /dla-akademii/rejestracja — jest do kogo zadzwonić. */
@@ -71,6 +73,31 @@ function replyToAddress(): string | undefined {
   return process.env.SMTP_REPLY_TO || "biuro@uniwersytetbeauty.pl";
 }
 
+/** Adres z `SMTP_FROM` w formie `Nazwa <adres@x.pl>` albo samego adresu. */
+export function extractAddress(from: string | undefined): string | undefined {
+  if (!from) return undefined;
+  const m = from.match(/<([^<>]+)>/);
+  return (m ? m[1] : from).trim() || undefined;
+}
+
+/** Nazwa nadawcy bez znaków, którymi dałoby się wstrzyknąć nagłówek (CR/LF) albo rozbić cudzysłów. */
+export function safeDisplayName(name: string): string {
+  return name.replace(/[\r\n"<>]+/g, " ").replace(/\s+/g, " ").trim().slice(0, 150);
+}
+
+/**
+ * Nadawca maila. Domyślnie `SMTP_FROM`. Gdy wiersz kolejki ma `fromName` (CRM trenerki),
+ * zostaje TEN SAM adres (SPF/DKIM skrzynki UB), a zmienia się tylko nazwa wyświetlana:
+ * „Akademia X przez Uniwersytet Beauty". Obiekt `{name, address}` zamiast sklejonego stringa —
+ * nodemailer sam koduje nazwę, więc nazwa akademii nie może rozbić nagłówka.
+ */
+function fromField(fromName?: string | null): string | { name: string; address: string } | undefined {
+  const raw = process.env.SMTP_FROM || process.env.SMTP_USER;
+  const address = extractAddress(raw);
+  if (fromName && address) return { name: fromName, address };
+  return raw;
+}
+
 async function deliver(row: {
   id: number;
   toEmail: string;
@@ -78,6 +105,8 @@ async function deliver(row: {
   body: string;
   attempts: number;
   headers?: Record<string, string> | null;
+  fromName?: string | null;
+  replyTo?: string | null;
 }): Promise<{ sent: boolean }> {
   const db = await getDb();
   try {
@@ -89,8 +118,8 @@ async function deliver(row: {
       auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
     });
     await transport.sendMail({
-      from: process.env.SMTP_FROM || process.env.SMTP_USER,
-      replyTo: replyToAddress(),
+      from: fromField(row.fromName),
+      replyTo: row.replyTo || replyToAddress(),
       to: row.toEmail,
       subject: row.subject,
       text: row.body,
@@ -144,6 +173,10 @@ export async function sendOrQueueEmail(params: {
    * (unikalny indeks po parze kampania + znormalizowany adres).
    */
   dedupe?: boolean;
+  /** Nazwa nadawcy (adres zostaje z `SMTP_FROM`) — CRM trenerki. Zapisywana w kolejce. */
+  fromName?: string;
+  /** Adres zwrotny nadpisujący `SMTP_REPLY_TO` / `biuro@` — CRM trenerki. Zapisywany w kolejce. */
+  replyTo?: string;
 }): Promise<{ sent: boolean; skipped?: boolean; queueId?: number }> {
   const db = await getDb();
   const kind = params.kind ?? "inne";
@@ -168,6 +201,8 @@ export async function sendOrQueueEmail(params: {
       leadId: params.leadId ?? null,
       kind,
       headers: params.headers ?? null,
+      fromName: params.fromName ? safeDisplayName(params.fromName) : null,
+      replyTo: params.replyTo ?? null,
     })
     .returning();
 
@@ -183,6 +218,8 @@ export async function sendOrQueueEmail(params: {
     body: queued.body,
     attempts: queued.attempts,
     headers: params.headers,
+    fromName: queued.fromName,
+    replyTo: queued.replyTo,
   });
   // `queueId` oddajemy ZAWSZE, także po nieudanej próbie: kampania mailingowa czyta
   // przez niego prawdziwy stan doręczenia, a mail po błędzie zostaje w kolejce do ponowienia.
