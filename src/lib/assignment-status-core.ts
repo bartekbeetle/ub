@@ -3,12 +3,13 @@
  * żeby dało się go przetestować na PGlite (`npm run test:crm`).
  * W aplikacji wołaj `updateTrainerAssignmentStatus` z `@/lib/assignment-status`.
  *
- * TO JEST JEDYNE MIEJSCE, w którym trenerka (panel, telefon, CRM) naliczają należność:
+ * TO JEST JEDYNE MIEJSCE, w którym ktokolwiek (trenerka: panel/telefon/CRM, admin: /api/admin/assignments)
+ * naliczą należność i wyjdzie z niej:
  * przejście na „zapisana" ustawia `amount`, eskaluje status leada, pisze do `audit_log`
  * i woła `onSigned` (maile do kursantki i do nas). Treść funkcji jest przeniesiona 1:1
  * z poprzedniej wersji; jedyna zmiana to wstrzyknięcie bazy i `onSigned`.
  */
-import { and, eq } from "drizzle-orm";
+import { and, eq, ne } from "drizzle-orm";
 import { z } from "zod";
 import * as schema from "@/db/schema";
 import type { AnyDb } from "@/lib/admin-audit-core";
@@ -35,7 +36,19 @@ export function statusActorLabel(user: StatusActor | null): string {
   return user ? `user:${user.id} ${user.email}` : "system";
 }
 
-export type OnSigned = (p: { leadId: number; trainerName: string; actor: string }) => Promise<void>;
+export type OnSigned = (p: {
+  leadId: number;
+  assignmentId: number;
+  trainerName: string;
+  actor: string;
+}) => Promise<void>;
+
+export type AuditFn = (p: {
+  action: string;
+  entityType: string;
+  entityId: number;
+  details: Record<string, unknown>;
+}) => Promise<void>;
 
 async function writeAudit(
   db: AnyDb,
@@ -50,27 +63,52 @@ async function writeAudit(
   });
 }
 
-export async function updateTrainerAssignmentStatusCore(
+export const SIGNED_LOCKED_TRAINER =
+  "Zapis jest już naliczony. Jeśli to pomyłka, napisz do biura Uniwersytetu Beauty.";
+export const SIGNED_LOCKED_ADMIN = "Cofnięcie zapisu (zdjęcie naliczenia) może wykonać tylko superadmin.";
+export const SIGNED_LOCKED_BILLED =
+  "Należność jest już zafakturowana lub opłacona. Najpierw cofnij status płatności, potem zapis.";
+
+/** Zakres operacji: trenerka widzi tylko swój przydział; admin każdy, cofnięcie zapisu tylko superadmin. */
+export type StatusScope =
+  | { kind: "trainer"; trainerId: number }
+  | { kind: "admin"; canUndoSigned: boolean };
+
+export type StatusChange = {
+  status?: AssignmentStatusInput["status"];
+  rejectionReason?: string;
+  /** Tylko scope admin (i tylko superadmin — bramka w trasie). Trenerka nie ma na to wejścia. */
+  billingStatus?: "do_zafakturowania" | "zafakturowane" | "oplacone";
+};
+
+/**
+ * JEDNA ścieżka zmiany statusu przydziału. Naliczenie (amount ze stawki trenerki dla per_zapis),
+ * eskalacja `leads.status`, `audit_log` i `onSigned` dzieją się wyłącznie tu i tylko przy realnym
+ * przejściu na „zapisana" (powtórka tego samego statusu jest no-opem).
+ * Wyjście Z „zapisana": trenerka nigdy (409, jak w CRM); admin tylko superadmin, tylko gdy
+ * należność nie jest zafakturowana — wtedy zerujemy `amount` i, gdy to była jedyna zapisana
+ * akademia, cofamy status leada.
+ */
+export async function changeAssignmentStatusCore(
   db: AnyDb,
-  params: {
-    user: StatusActor;
-    trainerId: number;
-    assignmentId: number;
-    input: AssignmentStatusInput;
-  },
-  deps: { onSigned: OnSigned }
+  params: { user: StatusActor; assignmentId: number; scope: StatusScope; change: StatusChange },
+  deps: { onSigned: OnSigned; audit?: AuditFn }
 ): Promise<AssignmentStatusResult> {
-  const { user, trainerId, assignmentId, input } = params;
+  const { user, assignmentId, scope, change } = params;
   if (!Number.isInteger(assignmentId)) {
     return { ok: false, status: 400, error: "Nieprawidłowe dane." };
   }
+  const audit: AuditFn =
+    deps.audit ?? ((p) => writeAudit(db, { actor: statusActorLabel(user), ...p }));
 
-  // izolacja: pobierz przydział TYLKO gdy trainerId zgadza się z sesją
+  // izolacja: trenerka dostaje przydział TYLKO gdy trainerId zgadza się z sesją
+  const conds = [eq(schema.leadAssignments.id, assignmentId)];
+  if (scope.kind === "trainer") conds.push(eq(schema.leadAssignments.trainerId, scope.trainerId));
   const rows = await db
     .select({ assignment: schema.leadAssignments, trainer: schema.trainers })
     .from(schema.leadAssignments)
     .innerJoin(schema.trainers, eq(schema.leadAssignments.trainerId, schema.trainers.id))
-    .where(and(eq(schema.leadAssignments.id, assignmentId), eq(schema.leadAssignments.trainerId, trainerId)))
+    .where(and(...conds))
     .limit(1);
   const row = rows[0];
   if (!row) return { ok: false, status: 404, error: "Nie znaleziono przydziału." };
@@ -79,19 +117,30 @@ export async function updateTrainerAssignmentStatusCore(
   // zanim zostanie aktywowane, nie może dotknąć przydziału — także wtedy, gdy ktoś wyśle
   // PATCH-a z palca, omijając interfejs. Zmiana statusu na „zapisana” uruchamia maile
   // do kursantki i nalicza należność, więc to nie jest tylko kwestia widoczności.
-  if (!row.trainer.isActive) {
+  if (scope.kind === "trainer" && !row.trainer.isActive) {
     return { ok: false, status: 403, error: ONBOARDING_GATE_MESSAGE };
   }
 
-  const { status, rejectionReason } = input;
-  if (status === "odrzucony" && !rejectionReason?.trim()) {
+  const { rejectionReason, billingStatus } = change;
+  const status = change.status ?? row.assignment.status;
+  if (scope.kind === "trainer" && status === "odrzucony" && !rejectionReason?.trim()) {
     return { ok: false, status: 400, error: "Podaj powód odrzucenia." };
   }
 
-  // Ustawiane tylko przy przejściu na „zapisana" — maile wysyłamy PO zapisie przydziału,
-  // bo `onLeadSigned` czyta z bazy przydział o tym statusie (nazwa akademii, kwota).
-  let signedLeadId: number | null = null;
+  const leavingSigned = row.assignment.status === "zapisana" && status !== "zapisana";
+  if (leavingSigned) {
+    if (scope.kind === "trainer") return { ok: false, status: 409, error: SIGNED_LOCKED_TRAINER };
+    if (!scope.canUndoSigned) return { ok: false, status: 403, error: SIGNED_LOCKED_ADMIN };
+    if (row.assignment.billingStatus !== "do_zafakturowania" && billingStatus !== "do_zafakturowania") {
+      return { ok: false, status: 409, error: SIGNED_LOCKED_BILLED };
+    }
+  }
+
+  // Maile wysyłamy PO zapisie przydziału, bo `onLeadSigned` czyta z bazy przydział o statusie „zapisana".
+  let signed = false;
   const update: Partial<typeof schema.leadAssignments.$inferInsert> = {};
+
+  if (billingStatus) update.billingStatus = billingStatus;
   if (status !== row.assignment.status) {
     update.status = status;
     if (status === "odrzucony") update.rejectionReason = rejectionReason?.trim() || null;
@@ -100,21 +149,59 @@ export async function updateTrainerAssignmentStatusCore(
       if (row.trainer.billingModel === "per_zapis") update.amount = row.trainer.rate;
       // eskaluj status leada
       await db.update(schema.leads).set({ status: "zapisana" }).where(eq(schema.leads.id, row.assignment.leadId));
-      await writeAudit(db, {
-        actor: statusActorLabel(user),
+      await audit({
         action: "zmiana_statusu",
         entityType: "lead",
         entityId: row.assignment.leadId,
         details: { to: "zapisana", via: `assignment:${assignmentId}` },
       });
-      signedLeadId = row.assignment.leadId;
+      signed = true;
     }
-    await writeAudit(db, {
-      actor: statusActorLabel(user),
+    if (leavingSigned) {
+      update.amount = 0;
+      const others = await db
+        .select({ id: schema.leadAssignments.id })
+        .from(schema.leadAssignments)
+        .where(
+          and(
+            eq(schema.leadAssignments.leadId, row.assignment.leadId),
+            eq(schema.leadAssignments.status, "zapisana"),
+            ne(schema.leadAssignments.id, assignmentId)
+          )
+        )
+        .limit(1);
+      const [lead] = await db.select().from(schema.leads).where(eq(schema.leads.id, row.assignment.leadId)).limit(1);
+      // Status leada cofamy tylko, gdy żadna inna akademia go nie zapisała i nie jest już rozliczony.
+      if (lead && lead.status === "zapisana" && others.length === 0) {
+        await db.update(schema.leads).set({ status }).where(eq(schema.leads.id, lead.id));
+        await audit({
+          action: "zmiana_statusu",
+          entityType: "lead",
+          entityId: lead.id,
+          details: { from: "zapisana", to: status, via: `assignment:${assignmentId}`, undo: true },
+        });
+      }
+      await audit({
+        action: "cofniecie_zapisu",
+        entityType: "assignment",
+        entityId: assignmentId,
+        details: { to: status, trainerId: row.trainer.id, clearedAmount: row.assignment.amount },
+      });
+    }
+    await audit({
       action: "zmiana_statusu_przydzialu",
       entityType: "assignment",
       entityId: assignmentId,
       details: { from: row.assignment.status, to: status, trainerId: row.trainer.id },
+    });
+  }
+
+  if (billingStatus && billingStatus !== row.assignment.billingStatus) {
+    await audit({
+      action: "zmiana_statusu_platnosci",
+      entityType: "assignment",
+      entityId: assignmentId,
+      details: { from: row.assignment.billingStatus, to: billingStatus, trainerId: row.trainer.id, amount: row.assignment.amount },
     });
   }
 
@@ -126,17 +213,41 @@ export async function updateTrainerAssignmentStatusCore(
     [updated] = await db
       .update(schema.leadAssignments)
       .set(update)
-      .where(and(eq(schema.leadAssignments.id, assignmentId), eq(schema.leadAssignments.trainerId, trainerId)))
+      .where(eq(schema.leadAssignments.id, assignmentId))
       .returning();
   }
 
-  if (signedLeadId !== null) {
+  if (signed) {
     await deps.onSigned({
-      leadId: signedLeadId,
+      leadId: row.assignment.leadId,
+      assignmentId,
       trainerName: row.trainer.name,
       actor: statusActorLabel(user),
     });
   }
 
   return { ok: true, assignment: updated };
+}
+
+/** Wejście trenerki (panel, telefon, CRM) — wąski wrapper na wspólny rdzeń. */
+export async function updateTrainerAssignmentStatusCore(
+  db: AnyDb,
+  params: {
+    user: StatusActor;
+    trainerId: number;
+    assignmentId: number;
+    input: AssignmentStatusInput;
+  },
+  deps: { onSigned: OnSigned; audit?: AuditFn }
+): Promise<AssignmentStatusResult> {
+  return changeAssignmentStatusCore(
+    db,
+    {
+      user: params.user,
+      assignmentId: params.assignmentId,
+      scope: { kind: "trainer", trainerId: params.trainerId },
+      change: { status: params.input.status, rejectionReason: params.input.rejectionReason },
+    },
+    deps
+  );
 }

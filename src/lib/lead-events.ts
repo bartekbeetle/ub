@@ -1,7 +1,7 @@
 import "server-only";
 import { and, desc, eq, inArray } from "drizzle-orm";
 import { getDb, schema } from "@/db";
-import { EMAIL_KIND, renderTemplate, sendOrQueueEmail } from "./email";
+import { EMAIL_KIND, assignmentEmailKey, renderTemplate, type EmailKey, sendOrQueueEmail } from "./email";
 import { greetingName } from "./template";
 import { getSettings } from "./settings";
 import { voivodeshipName } from "./constants";
@@ -61,15 +61,22 @@ export async function sendLeadConfirmation(lead: LeadRow): Promise<void> {
 }
 
 /**
- * Kursantka została oznaczona jako zapisana. Wysyła dwa maile:
- *  1. do kursantki — potwierdzenie i informacja, że organizacja jest po stronie akademii,
- *  2. do nas (notifyEmail) — bo to moment powstania należności (pay-per-result).
+ * Kursantka została oznaczona jako zapisana u konkretnej akademii. Wysyła dwa maile:
+ *  1. do kursantki — potwierdzenie i informacja, że organizacja jest po stronie akademii.
+ *     Dedupe PER LEAD: przy multi-sellu (dwie akademie) dostaje jedno potwierdzenie, bo treść
+ *     jest ta sama („zapis potwierdzony, organizacją zajmuje się akademia"), a drugi
+ *     identyczny mail wyglądałby jak spam albo pomyłka. Szablon i tak nie niesie nic,
+ *     czego pierwszy mail nie powiedział.
+ *  2. do nas (notifyEmail) — moment powstania należności (pay-per-result). Dedupe PER PRZYDZIAŁ
+ *     (lead × trenerka): druga akademia to druga należność i biuro musi o niej wiedzieć.
  *
- * `trainerName` podaj, jeśli masz go pod ręką w wywołującej trasie; gdy go brak,
- * dociągamy nazwę z najnowszego przydziału o statusie „zapisana".
+ * `assignmentId` — przydział, który właśnie przeszedł na „zapisana". Gdy go brak (zbiorcza
+ * zmiana statusu leada przez admina), powiadamiamy o KAŻDYM przydziale „zapisana" tego leada;
+ * dedupe po przydziale sprawia, że powtórka nic nie dubluje.
  */
 export async function onLeadSigned(params: {
   leadId: number;
+  assignmentId?: number | null;
   trainerName?: string | null;
   actor: string;
 }): Promise<void> {
@@ -85,10 +92,7 @@ export async function onLeadSigned(params: {
     // Lead zanonimizowany na żądanie RODO nie ma już adresu — nie ma dokąd pisać.
     if (!lead.email) return;
 
-    let trainerName = params.trainerName ?? null;
-    let amount: number | null = null;
-
-    const assignments = await db
+    const signed = await db
       .select({ assignment: schema.leadAssignments, trainer: schema.trainers })
       .from(schema.leadAssignments)
       .innerJoin(schema.trainers, eq(schema.leadAssignments.trainerId, schema.trainers.id))
@@ -98,16 +102,14 @@ export async function onLeadSigned(params: {
           inArray(schema.leadAssignments.status, ["zapisana"])
         )
       )
-      .orderBy(desc(schema.leadAssignments.id))
-      .limit(1);
-
-    if (assignments[0]) {
-      trainerName = trainerName ?? assignments[0].trainer.name;
-      amount = assignments[0].assignment.amount ?? null;
-    }
+      .orderBy(desc(schema.leadAssignments.id));
+    const targets = params.assignmentId
+      ? signed.filter((r) => r.assignment.id === params.assignmentId)
+      : signed;
 
     const settings = await getSettings();
-    const vars = leadVars(lead, { trenerka: trainerName ?? "szkoleniowa" });
+    const trainerForMail = params.trainerName ?? targets[0]?.trainer.name ?? null;
+    const vars = leadVars(lead, { trenerka: trainerForMail ?? "szkoleniowa" });
 
     await sendOrQueueEmail({
       to: lead.email,
@@ -119,24 +121,35 @@ export async function onLeadSigned(params: {
 
     // Powiadomienie wewnętrzne — świadomie bez szablonu w ustawieniach: to jest sygnał
     // operacyjny dla nas, nie treść dla klienta, więc nie ma czego edytować w panelu.
-    await sendOrQueueEmail({
-      to: settings.notifyEmail,
-      subject: `Kursantka zapisana — ${lead.category}, ${voivodeshipName(lead.voivodeship)}`,
-      body: [
-        "Kursantka została oznaczona jako zapisana — powstała należność do rozliczenia.",
-        "",
-        `Lead: #${lead.id} ${lead.name}`,
-        `Kategoria: ${lead.category}`,
-        `Województwo: ${voivodeshipName(lead.voivodeship)}`,
-        `Akademia: ${trainerName ?? "(nieustalona)"}`,
-        amount !== null ? `Kwota: ${amount} zł` : "Kwota: (nie naliczona — sprawdź model rozliczenia)",
-        `Oznaczył(a): ${params.actor}`,
-        "",
-        "Rozliczenia: /admin/rozliczenia",
-      ].join("\n"),
-      leadId: lead.id,
-      kind: EMAIL_KIND.WEWNETRZNE_ZAPIS,
-    });
+    // Brak przydziału w bazie (nie powinno się zdarzyć) = jedno powiadomienie z kluczem leada.
+    const notices: { key: EmailKey; trainerName: string | null; amount: number | null }[] = targets.length
+      ? targets.map((t) => ({
+          key: assignmentEmailKey(EMAIL_KIND.WEWNETRZNE_ZAPIS, t.assignment.id),
+          trainerName: params.assignmentId ? (params.trainerName ?? t.trainer.name) : t.trainer.name,
+          amount: t.assignment.amount ?? null,
+        }))
+      : [{ key: EMAIL_KIND.WEWNETRZNE_ZAPIS, trainerName: params.trainerName ?? null, amount: null }];
+
+    for (const n of notices) {
+      await sendOrQueueEmail({
+        to: settings.notifyEmail,
+        subject: `Kursantka zapisana — ${lead.category}, ${voivodeshipName(lead.voivodeship)}${n.trainerName ? ` (${n.trainerName})` : ""}`,
+        body: [
+          "Kursantka została oznaczona jako zapisana — powstała należność do rozliczenia.",
+          "",
+          `Lead: #${lead.id} ${lead.name}`,
+          `Kategoria: ${lead.category}`,
+          `Województwo: ${voivodeshipName(lead.voivodeship)}`,
+          `Akademia: ${n.trainerName ?? "(nieustalona)"}`,
+          n.amount !== null ? `Kwota: ${n.amount} zł` : "Kwota: (nie naliczona — sprawdź model rozliczenia)",
+          `Oznaczył(a): ${params.actor}`,
+          "",
+          "Rozliczenia: /admin/rozliczenia",
+        ].join("\n"),
+        leadId: lead.id,
+        kind: n.key,
+      });
+    }
   } catch (err) {
     console.error("[lead-events] Nie udało się obsłużyć zdarzenia zapisu:", err);
   }
