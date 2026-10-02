@@ -29,7 +29,8 @@
     "email:preview": "tsx scripts/email-preview.ts",
     "test:wypisanie": "tsx scripts/test-wypisanie.ts",
     "test:tracking": "tsx scripts/test-tracking.ts",
-    "test:superadmin": "tsx scripts/test-superadmin.ts"
+    "test:superadmin": "tsx scripts/test-superadmin.ts",
+    "test:porzucone": "tsx scripts/test-mailer-porzucone.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.3.0",

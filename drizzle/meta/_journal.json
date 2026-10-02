@@ -127,6 +127,13 @@
       "when": 1790921711676,
       "tag": "0017_admin_audit_log",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1790922318074,
+      "tag": "0018_porzucone_przypomnienia",
+      "breakpoints": true
     }
   ]
 }

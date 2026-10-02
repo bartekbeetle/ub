@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { desc } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { isSuperadminRole } from "@/lib/roles";
+import { isSuperadminRole, stripBilling } from "@/lib/roles";
 import { logAdminAction } from "@/lib/audit";
 import { trainerSchema } from "@/lib/validators";
 import { revalidateTag } from "next/cache";
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       .returning();
     await logAdminAction(user, { action: "trenerka_utworzona", entityType: "trainer", entityId: created.id });
     revalidateTag(CACHE_TAGS.courses);
-    return NextResponse.json(created, { status: 201 });
+    return NextResponse.json(stripBilling(created, user.role), { status: 201 });
   } catch {
     return NextResponse.json({ error: "Slug już istnieje albo dane są nieprawidłowe." }, { status: 409 });
   }

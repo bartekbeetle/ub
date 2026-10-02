@@ -21,6 +21,8 @@ export const EMAIL_KIND = {
   WEWNETRZNE_AKADEMIA: "wewnetrzne_akademia",
   /** Do akademii: potwierdzenie założenia konta i co dzieje się dalej. */
   AKADEMIA_POWITANIE: "akademia_powitanie",
+  /** Do kursantki: przypomnienie o dokończeniu porzuconej aplikacji (jedno na adres, kiedykolwiek). */
+  PORZUCONA_APLIKACJA: "porzucona_aplikacja",
 } as const;
 
 export type EmailKind = (typeof EMAIL_KIND)[keyof typeof EMAIL_KIND];

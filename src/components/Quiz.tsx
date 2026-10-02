@@ -248,6 +248,41 @@ export function Quiz({ courseId, defaultCategory, defaultVoivodeship }: Props) {
   }
 
   /**
+   * Wznowienie z linku w mailu „dokończ aplikację" (`/aplikacja?wznow=<token>`).
+   * Token jest losowy; dane wracają z `/api/quiz-resume`, a nie z adresu URL. Podpinamy się
+   * pod ten sam `sessionKey`, więc dalsze kroki aktualizują ten sam wiersz `quiz_sessions`.
+   * Wszystko best-effort: gdy token wygasł albo aplikacja jest już złożona, formularz
+   * zostaje pusty i działa normalnie.
+   */
+  useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get("wznow");
+    if (!token) return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("wznow");
+    window.history.replaceState(null, "", url.pathname + url.search);
+    void fetch("/api/quiz-resume", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    })
+      .then((r) => r.json())
+      .then((data: { ok?: boolean; sessionKey?: string; step?: number; answers?: Record<string, unknown> }) => {
+        if (!data.ok || !data.sessionKey || !data.answers) return;
+        window.sessionStorage.setItem("ub_quiz_session", data.sessionKey);
+        sessionKey.current = data.sessionKey;
+        const restored: Partial<FormState> = {};
+        for (const key of Object.keys(INITIAL) as (keyof FormState)[]) {
+          if (key !== "website" && key in data.answers) {
+            (restored as Record<string, unknown>)[key] = data.answers[key];
+          }
+        }
+        setForm((f) => ({ ...f, ...restored, website: "" }));
+        setStep(Math.min(Math.max(data.step ?? 1, 1), TOTAL_STEPS));
+      })
+      .catch(() => {});
+  }, []);
+
+  /**
    * Zapis postępu — „kto i gdzie przerwał". Celowo `void` i bez `await`: to jest telemetria,
    * która NIGDY nie może opóźnić ani zablokować przejścia do kolejnego kroku.
    */

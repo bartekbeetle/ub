@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { isSuperadminRole } from "@/lib/roles";
+import { isSuperadminRole, stripBilling } from "@/lib/roles";
 import { logAdminAction, actorLabel } from "@/lib/audit";
 import { onLeadSigned } from "@/lib/lead-events";
 import { z } from "zod";
@@ -96,5 +96,5 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
     });
   }
 
-  return NextResponse.json(updated);
+  return NextResponse.json(stripBilling(updated, user.role));
 }
