@@ -544,6 +544,33 @@ async function main() {
     check(`brak „0 zł" w treściach CRM: ${f.split("/").pop()}`, /(^|[^\d])0 zł/.test(readFileSync(f, "utf8")), false);
   }
 
+  // ===== 10. KANBAN: tylko inny widok, zmiany idą istniejącymi trasami =====
+  const kanbanFiles = [...walk("src/components/kanban"), "src/components/panel/crm/CrmKanban.tsx", "src/components/admin/ProspectKanban.tsx"];
+  check("pliki Kanbana istnieją", kanbanFiles.length >= 5 && kanbanFiles.every((f) => statSync(f).isFile()), true);
+  for (const f of kanbanFiles) {
+    const src = readFileSync(f, "utf8");
+    const name = f.split("/").pop();
+    check(`Kanban nie sięga do bazy ani do rdzenia serwerowego: ${name}`, /@\/db|getDb|drizzle|server-only|@\/lib\/(crm|crm-core|crm-api|auth|prospects)["']|schema\./.test(src), false);
+  }
+  const ck = readFileSync("src/components/panel/crm/CrmKanban.tsx", "utf8");
+  check("Kanban trenerki zmienia etap istniejącą trasą PATCH /api/panel/crm/:id/stage", /\/api\/panel\/crm\/\$\{item\.assignmentId\}\/stage/.test(ck) && /method: "PATCH"/.test(ck), true);
+  check("Kanban trenerki: zapisana pyta o potwierdzenie, rezygnacja o powód, zapisana nie do przeciągania", /kind: to/.test(ck) && /stage !== "zapisana"/.test(ck) && /res\.status === 409/.test(ck), true);
+  check("Kanban trenerki bierze etapy z crm-stages (jedno źródło)", /from "@\/lib\/crm-stages"/.test(ck) && !/"kontakt_podjety"|"rozmowa_umowiona"/.test(ck), true);
+  const pk = readFileSync("src/components/admin/ProspectKanban.tsx", "utf8");
+  check("Kanban admina zmienia status istniejącą trasą PATCH /api/admin/prospekty/:id", /\/api\/admin\/prospekty\/\$\{item\.id\}/.test(pk) && /method: "PATCH"/.test(pk), true);
+  check("nie powstała żadna nowa trasa API dla Kanbana", walk("src/app/api").filter((f) => /kanban/i.test(f)).length, 0);
+  const prospRoute = readFileSync("src/app/api/admin/prospekty/[id]/route.ts", "utf8");
+  check("trasa statusu prospekta: requireAdmin + logAdminAction", /requireAdmin\(\)/.test(prospRoute) && /logAdminAction\(user, \{ action: "prospekt_zmiana_statusu"/.test(prospRoute), true);
+  const trainerPage = readFileSync("src/app/panel/(panel)/leady/page.tsx", "utf8");
+  check("strona trenerki: dane Kanbana z tej samej listy co tabela (bez nowego zapytania)", /<CrmKanban\s+items=\{rows\.map/.test(trainerPage) && !/\.from\(|schema\./.test(trainerPage), true);
+  check("strona trenerki: Kanban nie dostaje telefonu ani e-maila", /phone|email/.test(trainerPage.slice(trainerPage.indexOf("<CrmKanban"), trainerPage.indexOf("/>", trainerPage.indexOf("<CrmKanban")))), false);
+  const adminPage = readFileSync("src/app/admin/(panel)/crm-trenerki/page.tsx", "utf8");
+  const gateAt = adminPage.indexOf('redirect("/admin/login")');
+  check("strona CRM akademii: bramka z przekierowaniem PRZED zapytaniami", gateAt > 0 && gateAt < adminPage.indexOf("getDb()"), true);
+  check("strona CRM akademii: Kanban z tego samego zbioru `prospects` co tabela", /<ProspectKanban\s+items=\{prospects\.map/.test(adminPage), true);
+  const listItem = (await core.listCrmLeads(db, tA.id))[0];
+  check("lista dla Kanbana niesie kurs i ostatnią aktywność", ["courseTitle", "lastActivityAt"].every((k) => listItem && k in listItem), true);
+
   console.log(failed === 0 ? "\nWSZYSTKO OK" : `\nNIEPOWODZENIA: ${failed}`);
   process.exit(failed === 0 ? 0 : 1);
 }

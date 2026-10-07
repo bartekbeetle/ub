@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { and, asc, desc, eq, sql, type SQL } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { formatDate } from "@/lib/utils";
@@ -21,6 +22,10 @@ import {
 } from "@/lib/constants";
 import { ProspectStatusSelect } from "@/components/admin/ProspectStatusSelect";
 import { ProspectQuickActions } from "@/components/admin/ProspectQuickActions";
+import { ProspectKanban } from "@/components/admin/ProspectKanban";
+import { ViewSwitcher } from "@/components/kanban/ViewSwitcher";
+import { getSessionUser } from "@/lib/auth";
+import { isAdminRole } from "@/lib/roles";
 
 export const dynamic = "force-dynamic";
 
@@ -48,6 +53,10 @@ const SORTS = {
 } as const;
 
 export default async function CrmTrenerkiPage({ searchParams }: { searchParams: Search }) {
+  // Bramka na samej stronie (layout renderuje się równolegle): przekierowanie PRZED zapytaniami.
+  const user = await getSessionUser();
+  if (!user || !isAdminRole(user.role)) redirect("/admin/login");
+
   const sp = await searchParams;
   const str = (k: string) => (typeof sp[k] === "string" ? (sp[k] as string) : "");
 
@@ -254,73 +263,96 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
         </p>
       )}
 
-      <div className="card mt-5 overflow-x-auto">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-gray-50 text-xs uppercase tracking-wide text-muted">
-            <tr>
-              <th className="px-4 py-3 font-semibold">Podmiot</th>
-              <th className="px-4 py-3 font-semibold">Lokalizacja</th>
-              <th className="px-4 py-3 font-semibold">Kategorie</th>
-              <th className="px-4 py-3 font-semibold">BUR</th>
-              <th className="px-4 py-3 font-semibold">Status</th>
-              <th className="px-4 py-3 font-semibold">Priorytet</th>
-              <th className="px-4 py-3 font-semibold">Ruch</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {prospects.map((p) => (
-              <tr key={p.id} className={`align-top hover:bg-gray-50 ${p.burSegment === "A" ? "bg-money-bg/40" : ""}`}>
-                <td className="px-4 py-3">
-                  <Link href={`/admin/crm-trenerki/${p.id}`} className="font-semibold text-sand-700 hover:underline">
-                    {p.name}
-                  </Link>
-                  {p.source === "rejestracja" && (
-                    <span className="ml-2 inline-flex rounded-full bg-money-bg px-2 py-0.5 text-xs font-bold text-money-dark">
-                      zgłosiła się sama
-                    </span>
-                  )}
-                  <p className="text-xs text-muted">{p.phone ?? p.email ?? "brak kontaktu"}</p>
-                </td>
-                <td className="px-4 py-3">
-                  {p.city ?? "—"}
-                  {p.voivodeship ? <span className="block text-xs text-muted">{voivodeshipName(p.voivodeship)}</span> : null}
-                </td>
-                <td className="max-w-[220px] px-4 py-3 text-xs">{p.categories.join(", ") || "—"}</td>
-                <td className="px-4 py-3">
-                  <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold ${BUR_SEGMENT_COLORS[p.burSegment]}`}>
-                    {BUR_SEGMENT_SHORT[p.burSegment]}
-                  </span>
-                  {p.burSegment === "A" && (
-                    <p className="mt-1 text-xs text-muted">
-                      {p.burServicesCompleted ?? 0} usług
-                      {p.burRatingX10 ? ` · ${(p.burRatingX10 / 10).toFixed(1)}` : ""}
-                      {p.burReviewCount ? ` (${p.burReviewCount})` : ""}
-                    </p>
-                  )}
-                </td>
-                <td className="px-4 py-3"><ProspectStatusSelect prospectId={p.id} current={p.status} /></td>
-                <td className="px-4 py-3">
-                  <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold ${PROSPECT_PRIORITY_COLORS[p.priority]}`}>
-                    {PROSPECT_PRIORITY_LABELS[p.priority]}
-                  </span>
-                </td>
-                <td className="whitespace-nowrap px-4 py-3 text-xs text-muted">{formatDate(p.updatedAt)}</td>
-              </tr>
-            ))}
-            {prospects.length === 0 && (
+      <ViewSwitcher
+        storageKey={`ub:crm-view:admin:${user.id}`}
+        list={
+        <div className="card mt-5 overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-muted">
               <tr>
-                <td colSpan={7} className="px-4 py-10 text-center text-muted">
-                  {total === 0 ? (
-                    <>Baza prospektów jest pusta. <Link href="/admin/crm-trenerki/nowy" className="font-semibold text-sand-700 hover:underline">Dodaj pierwszy podmiot</Link>.</>
-                  ) : (
-                    "Brak prospektów dla wybranych filtrów."
-                  )}
-                </td>
+                <th className="px-4 py-3 font-semibold">Podmiot</th>
+                <th className="px-4 py-3 font-semibold">Lokalizacja</th>
+                <th className="px-4 py-3 font-semibold">Kategorie</th>
+                <th className="px-4 py-3 font-semibold">BUR</th>
+                <th className="px-4 py-3 font-semibold">Status</th>
+                <th className="px-4 py-3 font-semibold">Priorytet</th>
+                <th className="px-4 py-3 font-semibold">Ruch</th>
               </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {prospects.map((p) => (
+                <tr key={p.id} className={`align-top hover:bg-gray-50 ${p.burSegment === "A" ? "bg-money-bg/40" : ""}`}>
+                  <td className="px-4 py-3">
+                    <Link href={`/admin/crm-trenerki/${p.id}`} className="font-semibold text-sand-700 hover:underline">
+                      {p.name}
+                    </Link>
+                    {p.source === "rejestracja" && (
+                      <span className="ml-2 inline-flex rounded-full bg-money-bg px-2 py-0.5 text-xs font-bold text-money-dark">
+                        zgłosiła się sama
+                      </span>
+                    )}
+                    <p className="text-xs text-muted">{p.phone ?? p.email ?? "brak kontaktu"}</p>
+                  </td>
+                  <td className="px-4 py-3">
+                    {p.city ?? "—"}
+                    {p.voivodeship ? <span className="block text-xs text-muted">{voivodeshipName(p.voivodeship)}</span> : null}
+                  </td>
+                  <td className="max-w-[220px] px-4 py-3 text-xs">{p.categories.join(", ") || "—"}</td>
+                  <td className="px-4 py-3">
+                    <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold ${BUR_SEGMENT_COLORS[p.burSegment]}`}>
+                      {BUR_SEGMENT_SHORT[p.burSegment]}
+                    </span>
+                    {p.burSegment === "A" && (
+                      <p className="mt-1 text-xs text-muted">
+                        {p.burServicesCompleted ?? 0} usług
+                        {p.burRatingX10 ? ` · ${(p.burRatingX10 / 10).toFixed(1)}` : ""}
+                        {p.burReviewCount ? ` (${p.burReviewCount})` : ""}
+                      </p>
+                    )}
+                  </td>
+                  <td className="px-4 py-3"><ProspectStatusSelect prospectId={p.id} current={p.status} /></td>
+                  <td className="px-4 py-3">
+                    <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold ${PROSPECT_PRIORITY_COLORS[p.priority]}`}>
+                      {PROSPECT_PRIORITY_LABELS[p.priority]}
+                    </span>
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-3 text-xs text-muted">{formatDate(p.updatedAt)}</td>
+                </tr>
+              ))}
+              {prospects.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="px-4 py-10 text-center text-muted">
+                    {total === 0 ? (
+                      <>Baza prospektów jest pusta. <Link href="/admin/crm-trenerki/nowy" className="font-semibold text-sand-700 hover:underline">Dodaj pierwszy podmiot</Link>.</>
+                    ) : (
+                      "Brak prospektów dla wybranych filtrów."
+                    )}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        }
+        kanban={
+          // Ten sam, już przefiltrowany zbiór `prospects` co w tabeli (filtry i `?widok=dzis` działają tak samo).
+          <ProspectKanban
+            items={prospects.map((p) => ({
+              id: p.id,
+              name: p.name,
+              status: p.status,
+              city: p.city,
+              voivodeshipName: p.voivodeship ? voivodeshipName(p.voivodeship) : null,
+              priority: p.priority,
+              burSegment: p.burSegment,
+              nextActionLabel: p.nextActionAt ? formatDate(p.nextActionAt) : null,
+              nextActionNote: p.nextActionNote,
+              overdueDays: p.nextActionAt ? Math.max(0, warsawCalendarDaysDiff(p.nextActionAt)) : 0,
+              selfRegistered: p.source === "rejestracja",
+            }))}
+          />
+        }
+      />
     </div>
   );
 }
