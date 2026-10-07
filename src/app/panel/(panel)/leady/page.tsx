@@ -12,6 +12,8 @@ import {
 import { getDb } from "@/db";
 import { formatDate, formatDateTime } from "@/lib/utils";
 import { voivodeshipName } from "@/lib/constants";
+import { ViewSwitcher } from "@/components/kanban/ViewSwitcher";
+import { CrmKanban } from "@/components/panel/crm/CrmKanban";
 
 export const dynamic = "force-dynamic";
 
@@ -85,74 +87,97 @@ export default async function PanelLeadyPage({ searchParams }: { searchParams: P
         ))}
       </nav>
 
-      <div className="card mt-5 overflow-x-auto">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-gray-50 text-xs uppercase tracking-wide text-muted">
-            <tr>
-              <th className="px-4 py-3 font-semibold">Kursantka</th>
-              <th className="px-4 py-3 font-semibold">Kontakt</th>
-              <th className="px-4 py-3 font-semibold">Szkolenie</th>
-              <th className="px-4 py-3 font-semibold">Etap</th>
-              <th className="px-4 py-3 font-semibold">Następny kontakt</th>
-              <th className="px-4 py-3 font-semibold"><span className="sr-only">Karta</span></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {rows.map((r) => (
-              <tr key={r.assignmentId} className="align-top hover:bg-gray-50">
-                <td className="px-4 py-3">
-                  <Link href={`/panel/leady/${r.assignmentId}`} className="font-medium text-ink-soft hover:underline">{r.name}</Link>
-                  <div className="text-xs text-muted">Przydzielona {formatDateTime(r.createdAt)}</div>
-                </td>
-                <td className="px-4 py-3">
-                  {r.anonymized ? (
-                    <span className="text-xs italic text-muted">zanonimizowano (RODO)</span>
-                  ) : (
-                    <div className="space-y-1">
-                      <div><a href={`tel:${r.phone}`} className="font-medium text-sand-700 hover:underline">{r.phone}</a></div>
-                      <div><a href={`mailto:${r.email}`} className="text-sand-700 hover:underline">{r.email}</a></div>
-                      {/* Zgłoszenia sprzed rozdzielenia zgód nie mają odrębnej zgody na telefon i SMS (art. 398 Prawa komunikacji elektronicznej). */}
-                      {!r.phoneConsent && (
-                        <div className="rounded bg-red-50 px-2 py-1 text-xs font-semibold text-red-700">
-                          Brak zgody na telefon i SMS. Kontakt tylko e-mailem.
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </td>
-                <td className="px-4 py-3">
-                  <div>{r.category}</div>
-                  <div className="text-xs text-muted">{r.city ? `${r.city}, ` : ""}{voivodeshipName(r.voivodeship)}</div>
-                </td>
-                <td className="px-4 py-3">
-                  <span className={`inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-bold ${CRM_STAGE_COLORS[r.stage]}`}>{CRM_STAGE_LABELS[r.stage]}</span>
-                </td>
-                <td className="whitespace-nowrap px-4 py-3">
-                  {r.nextContactAt ? (
-                    <span className={r.due ? "font-semibold text-red-700" : "text-ink-soft"}>
-                      {formatDate(r.nextContactAt)}{r.due ? " (dziś lub zaległe)" : ""}
-                    </span>
-                  ) : (
-                    <span className="text-muted">Nie ustawiono</span>
-                  )}
-                </td>
-                <td className="px-4 py-3 text-right">
-                  <Link href={`/panel/leady/${r.assignmentId}`} className="btn-outline !px-4 !py-1.5 !text-sm">Otwórz kartę</Link>
-                </td>
-              </tr>
-            ))}
-            {rows.length === 0 && (
+      <ViewSwitcher
+        storageKey={`ub:crm-view:trener:${trainerId}`}
+        list={
+        <div className="card mt-5 overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-muted">
               <tr>
-                <td colSpan={6} className="px-4 py-10 text-center text-muted">
-                  {all.length === 0
-                    ? "Nie masz jeszcze przydzielonych kursantek. Damy znać mailowo, gdy pojawi się kandydatka."
-                    : "Żadna kursantka nie pasuje do wybranych filtrów."}
-                </td>
+                <th className="px-4 py-3 font-semibold">Kursantka</th>
+                <th className="px-4 py-3 font-semibold">Kontakt</th>
+                <th className="px-4 py-3 font-semibold">Szkolenie</th>
+                <th className="px-4 py-3 font-semibold">Etap</th>
+                <th className="px-4 py-3 font-semibold">Następny kontakt</th>
+                <th className="px-4 py-3 font-semibold"><span className="sr-only">Karta</span></th>
               </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {rows.map((r) => (
+                <tr key={r.assignmentId} className="align-top hover:bg-gray-50">
+                  <td className="px-4 py-3">
+                    <Link href={`/panel/leady/${r.assignmentId}`} className="font-medium text-ink-soft hover:underline">{r.name}</Link>
+                    <div className="text-xs text-muted">Przydzielona {formatDateTime(r.createdAt)}</div>
+                  </td>
+                  <td className="px-4 py-3">
+                    {r.anonymized ? (
+                      <span className="text-xs italic text-muted">zanonimizowano (RODO)</span>
+                    ) : (
+                      <div className="space-y-1">
+                        <div><a href={`tel:${r.phone}`} className="font-medium text-sand-700 hover:underline">{r.phone}</a></div>
+                        <div><a href={`mailto:${r.email}`} className="text-sand-700 hover:underline">{r.email}</a></div>
+                        {/* Zgłoszenia sprzed rozdzielenia zgód nie mają odrębnej zgody na telefon i SMS (art. 398 Prawa komunikacji elektronicznej). */}
+                        {!r.phoneConsent && (
+                          <div className="rounded bg-red-50 px-2 py-1 text-xs font-semibold text-red-700">
+                            Brak zgody na telefon i SMS. Kontakt tylko e-mailem.
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    <div>{r.category}</div>
+                    <div className="text-xs text-muted">{r.city ? `${r.city}, ` : ""}{voivodeshipName(r.voivodeship)}</div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className={`inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-bold ${CRM_STAGE_COLORS[r.stage]}`}>{CRM_STAGE_LABELS[r.stage]}</span>
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-3">
+                    {r.nextContactAt ? (
+                      <span className={r.due ? "font-semibold text-red-700" : "text-ink-soft"}>
+                        {formatDate(r.nextContactAt)}{r.due ? " (dziś lub zaległe)" : ""}
+                      </span>
+                    ) : (
+                      <span className="text-muted">Nie ustawiono</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <Link href={`/panel/leady/${r.assignmentId}`} className="btn-outline !px-4 !py-1.5 !text-sm">Otwórz kartę</Link>
+                  </td>
+                </tr>
+              ))}
+              {rows.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-4 py-10 text-center text-muted">
+                    {all.length === 0
+                      ? "Nie masz jeszcze przydzielonych kursantek. Damy znać mailowo, gdy pojawi się kandydatka."
+                      : "Żadna kursantka nie pasuje do wybranych filtrów."}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        }
+        kanban={
+          // Te same, już zawężone do trenerki i przefiltrowane wiersze co w liście; bez telefonu i e-maila.
+          <CrmKanban
+            items={rows.map((r) => ({
+              assignmentId: r.assignmentId,
+              name: r.name,
+              category: r.category,
+              courseTitle: r.courseTitle,
+              city: r.city,
+              stage: r.stage,
+              nextContactAt: r.nextContactAt,
+              due: r.due,
+              anonymized: r.anonymized,
+              createdAt: r.createdAt,
+              lastActivityAt: r.lastActivityAt,
+            }))}
+          />
+        }
+      />
     </div>
   );
 }

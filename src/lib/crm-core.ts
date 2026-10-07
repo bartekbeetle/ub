@@ -149,6 +149,8 @@ export type CrmListItem = {
   phone: string | null;
   email: string | null;
   category: string;
+  /** Tytuł szkolenia, z którego przyszło zgłoszenie (może być pusty). */
+  courseTitle: string | null;
   city: string | null;
   voivodeship: string;
   stage: CrmStage;
@@ -157,6 +159,8 @@ export type CrmListItem = {
   anonymized: boolean;
   phoneConsent: boolean;
   createdAt: string;
+  /** Ostatnia aktywność trenerki na karcie (notatka, zmiana etapu, wiadomość); null = brak. */
+  lastActivityAt: string | null;
 };
 
 export async function listCrmLeads(
@@ -166,12 +170,39 @@ export async function listCrmLeads(
 ): Promise<CrmListItem[]> {
   const now = opts.now ?? new Date();
   const rows = await db
-    .select({ assignment: schema.leadAssignments, lead: schema.leads })
+    .select({ assignment: schema.leadAssignments, lead: schema.leads, courseTitle: schema.courses.title })
     .from(schema.leadAssignments)
     .innerJoin(schema.leads, eq(schema.leadAssignments.leadId, schema.leads.id))
+    .leftJoin(schema.courses, eq(schema.leads.courseId, schema.courses.id))
     .where(eq(schema.leadAssignments.trainerId, trainerId))
     .orderBy(desc(schema.leadAssignments.createdAt));
-  return rows.map(({ assignment, lead }) => {
+
+  // Ostatnia aktywność: te same trzy tabele co oś czasu, ZAWSZE zawężone do `trainer_id` z sesji.
+  const [noteAct, eventAct, msgAct] = await Promise.all([
+    db
+      .select({ id: schema.crmNotes.assignmentId, at: sql<Date>`max(${schema.crmNotes.createdAt})` })
+      .from(schema.crmNotes)
+      .where(eq(schema.crmNotes.trainerId, trainerId))
+      .groupBy(schema.crmNotes.assignmentId),
+    db
+      .select({ id: schema.crmEvents.assignmentId, at: sql<Date>`max(${schema.crmEvents.createdAt})` })
+      .from(schema.crmEvents)
+      .where(eq(schema.crmEvents.trainerId, trainerId))
+      .groupBy(schema.crmEvents.assignmentId),
+    db
+      .select({ id: schema.crmMessages.assignmentId, at: sql<Date>`max(${schema.crmMessages.createdAt})` })
+      .from(schema.crmMessages)
+      .where(eq(schema.crmMessages.trainerId, trainerId))
+      .groupBy(schema.crmMessages.assignmentId),
+  ]);
+  const lastAct = new Map<number, number>();
+  for (const r of [...noteAct, ...eventAct, ...msgAct]) {
+    if (r.at == null) continue;
+    const t = new Date(r.at).getTime();
+    if (!Number.isNaN(t) && t > (lastAct.get(r.id) ?? 0)) lastAct.set(r.id, t);
+  }
+
+  return rows.map(({ assignment, lead, courseTitle }) => {
     const stage = crmStageOf(assignment.status, assignment.crmSubstage);
     const anonymized = Boolean(lead.anonymizedAt);
     return {
@@ -180,6 +211,7 @@ export async function listCrmLeads(
       phone: anonymized ? null : lead.phone,
       email: anonymized ? null : lead.email,
       category: lead.category,
+      courseTitle: courseTitle ?? null,
       city: lead.city,
       voivodeship: lead.voivodeship,
       stage,
@@ -188,6 +220,7 @@ export async function listCrmLeads(
       anonymized,
       phoneConsent: Boolean(lead.contactConsentAt),
       createdAt: assignment.createdAt.toISOString(),
+      lastActivityAt: lastAct.has(assignment.id) ? new Date(lastAct.get(assignment.id)!).toISOString() : null,
     };
   });
 }
