@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type Item = { href: string; label: string; exact?: boolean; superadminOnly?: boolean };
+type Item = { href: string; label: string; exact?: boolean; superadminOnly?: boolean; telefonOnly?: boolean };
 
 /**
  * Panel obsługuje DWA rozłączne lejki i nawigacja ma to pokazywać na pierwszy rzut oka:
@@ -31,6 +31,8 @@ const GROUPS: { label: string | null; items: Item[] }[] = [
       // Skrzynka `biuro@` (01.10.2026): tu wracają odpowiedzi kursantek na maile automatyczne.
       // Stoi w lejku B2C z tego samego powodu co Mailing — to rozmowa z kursantką.
       { href: "/admin/skrzynka", label: "Skrzynka" },
+      // Telefon UB (SMS + rozmowy z numeru UB) — widoczny tylko przy TELEFON_ENABLED=true.
+      { href: "/admin/telefon", label: "Telefon", telefonOnly: true },
     ],
   },
   {
@@ -62,11 +64,11 @@ function isActive(pathname: string, item: Item): boolean {
  * `isSuperadmin` tylko ukrywa pozycje — to wygoda, nie zabezpieczenie. Dostęp do tych tras
  * egzekwuje layout (przekierowanie), same strony i API (patrz `src/lib/roles.ts`).
  */
-export function AdminNav({ isSuperadmin = false }: { isSuperadmin?: boolean }) {
+export function AdminNav({ isSuperadmin = false, telefon = false }: { isSuperadmin?: boolean; telefon?: boolean }) {
   const pathname = usePathname();
   return (
     <nav aria-label="Nawigacja panelu" className="space-y-5">
-      {GROUPS.map((group) => ({ ...group, items: group.items.filter((i) => isSuperadmin || !i.superadminOnly) }))
+      {GROUPS.map((group) => ({ ...group, items: group.items.filter((i) => (isSuperadmin || !i.superadminOnly) && (telefon || !i.telefonOnly)) }))
         .filter((group) => group.items.length > 0)
         .map((group, gi) => (
         <div key={group.label ?? `grupa-${gi}`}>

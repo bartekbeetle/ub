@@ -31,7 +31,8 @@
     "test:tracking": "tsx scripts/test-tracking.ts",
     "test:superadmin": "tsx scripts/test-superadmin.ts",
     "test:porzucone": "tsx scripts/test-mailer-porzucone.ts",
-    "test:crm": "tsx scripts/test-crm-trenerki.ts"
+    "test:crm": "tsx scripts/test-crm-trenerki.ts",
+    "test:pipeline": "tsx scripts/test-pipeline.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

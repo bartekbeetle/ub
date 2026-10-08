@@ -141,6 +141,20 @@
       "when": 1790922748953,
       "tag": "0019_crm_trenerki",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1791486245995,
+      "tag": "0020_crm_tablice",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1791486256977,
+      "tag": "0021_telefon_admina",
+      "breakpoints": true
     }
   ]
 }

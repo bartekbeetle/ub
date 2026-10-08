@@ -65,7 +65,9 @@ export async function POST(req: Request, { params }: { params: Params }) {
     await db.update(schema.leads).set({ status: "przydzielony" }).where(eq(schema.leads.id, leadId));
   }
 
-  if (trainer.email && !lead.anonymizedAt) {
+  // 🔴 Dane kursantki (imię, telefon, e-mail) wychodzą do trenerki TYLKO po podpisaniu umowy
+  // (`autoAssign` = bramka umowy). Bez umowy przydział istnieje wyłącznie w CRM-ie UB.
+  if (trainer.autoAssign && trainer.email && !lead.anonymizedAt) {
     const vars = {
       trenerka: trainer.name,
       imie: lead.name,

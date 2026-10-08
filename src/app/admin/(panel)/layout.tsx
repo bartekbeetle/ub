@@ -6,6 +6,7 @@ import { isAdminRole, isSuperadminRole, canAccessAdminPath } from "@/lib/roles";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { LogoutButton } from "@/components/admin/LogoutButton";
 import { PanelShell } from "@/components/PanelShell";
+import { telefonEnabled } from "@/lib/telefon/flag";
 
 export const dynamic = "force-dynamic";
 
@@ -40,7 +41,7 @@ export default async function AdminPanelLayout({ children }: { children: React.R
           UB <span className="text-sand-300">{isSuperadminRole(user.role) ? "SUPERADMIN" : "ADMIN"}</span>
         </>
       }
-      nav={<AdminNav isSuperadmin={isSuperadminRole(user.role)} />}
+      nav={<AdminNav isSuperadmin={isSuperadminRole(user.role)} telefon={telefonEnabled()} />}
       footer={
         <>
           <p className="truncate px-4 pb-2 text-xs text-sand-200/50">{user.email}</p>

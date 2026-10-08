@@ -468,6 +468,13 @@ export const leads = pgTable(
     /** Umówiony następny kontakt. Rozmowa bez ustalonej daty kolejnej to rozmowa stracona. */
     nextActionAt: timestamp("next_action_at", { withTimezone: true }),
 
+    /**
+     * LEJEK ADMINA (`/admin/crm-kursantki`): kwalifikacja PRZED przydziałem trenerce —
+     * `nowa` | `zakwalifikowana` | `odrzucona`. Varchar, nie enum, i osobno od `status`,
+     * bo `status` niesie rozliczenia (zapisana/rozliczony), a to jest tylko ocena Bartka po telefonie.
+     */
+    qualification: varchar("qualification", { length: 20 }).notNull().default("nowa"),
+
     anonymizedAt: timestamp("anonymized_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
@@ -479,6 +486,27 @@ export const leads = pgTable(
     index("leads_track_idx").on(t.projectTrack),
     index("leads_reply_idx").on(t.lastReplyAt),
   ]
+);
+
+/**
+ * TABLICE CRM ADMINA — jedna tablica Kanban = jedna trenerka × jedna kategoria kursu
+ * (np. „La Beauty · Stylizacja brwi"). Tyle tablic, ile kampanii do zapełnienia.
+ * `name` jest wolne, żeby później dało się mieć tablicę pod konkretny termin szkolenia.
+ */
+export const crmBoards = pgTable(
+  "crm_boards",
+  {
+    id: serial("id").primaryKey(),
+    trainerId: integer("trainer_id")
+      .notNull()
+      .references(() => trainers.id, { onDelete: "cascade" }),
+    /** Wartość z `CATEGORIES` — ta sama co `leads.category`, inaczej przydział nie trafi na tablicę. */
+    category: varchar("category", { length: 60 }).notNull(),
+    name: varchar("name", { length: 200 }).notNull(),
+    isArchived: boolean("is_archived").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("crm_boards_trainer_cat_uq").on(t.trainerId, t.category)]
 );
 
 export const leadAssignments = pgTable(
@@ -506,9 +534,21 @@ export const leadAssignments = pgTable(
     crmSubstage: varchar("crm_substage", { length: 30 }),
     /** CRM TRENERKI: kiedy trenerka zaplanowała kolejny kontakt z tą kursantką. Per przydział, nigdy per lead. */
     nextContactAt: timestamp("next_contact_at", { withTimezone: true }),
+    /**
+     * CRM ADMINA: tablica (trenerka × kategoria), na której leży karta. NULL = przydział sprzed
+     * tablic albo z automatu — strona tablic dopina go wtedy do tablicy po kategorii leada.
+     */
+    boardId: integer("board_id").references(() => crmBoards.id, { onDelete: "set null" }),
+    /**
+     * CRM ADMINA: etap na tablicy Bartka (`@/lib/pipeline-stages`). Osobne pole, NIE `crmSubstage`
+     * (to należy do CRM trenerki). O rozliczeniu nadal decyduje WYŁĄCZNIE `status` —
+     * mapowanie etap → status siedzi w jednej funkcji `PIPELINE_STAGE_TO_STATUS`.
+     */
+    adminStage: varchar("admin_stage", { length: 30 }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [
+    index("assign_board_idx").on(t.boardId),
     index("assign_lead_idx").on(t.leadId),
     index("assign_trainer_idx").on(t.trainerId),
     index("assign_trainer_next_idx").on(t.trainerId, t.nextContactAt),
@@ -848,6 +888,50 @@ export const adminAuditLog = pgTable(
     index("admin_audit_created_idx").on(t.createdAt),
     index("admin_audit_actor_idx").on(t.actorUserId, t.createdAt),
   ]
+);
+
+// ===== TELEFON ADMINA (SMS przez telefon z kartą SIM UB + dziennik rozmów) =====
+
+/**
+ * Wiadomości SMS wysłane i odebrane na dedykowanym telefonie UB (aplikacja SMS Gateway).
+ * `phone` = numer rozmówcy w E.164. Niezależne od `crm_messages` (to CRM trenerki z limitami
+ * per trenerka) — tu pisze administracja, z jednego numeru, bez przydziałów.
+ * `provider_id` z unikalnym indeksem dla przychodzących: dostawca potrafi powtórzyć webhook,
+ * a ta sama wiadomość nie może wylądować w wątku dwa razy.
+ */
+export const phoneMessages = pgTable(
+  "phone_messages",
+  {
+    id: serial("id").primaryKey(),
+    direction: varchar("direction", { length: 3 }).notNull(), // in | out
+    phone: varchar("phone", { length: 20 }).notNull(),
+    body: text("body").notNull(),
+    status: varchar("status", { length: 20 }).notNull(), // odebrany | wyslany | dostarczony | blad | dry-run
+    provider: varchar("provider", { length: 20 }), // smsgate | dryrun
+    providerId: varchar("provider_id", { length: 80 }),
+    error: text("error"),
+    adminUserId: integer("admin_user_id").references(() => users.id, { onDelete: "set null" }),
+    readAt: timestamp("read_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("phone_messages_phone_idx").on(t.phone, t.createdAt),
+    uniqueIndex("phone_messages_in_provider_uq").on(t.direction, t.providerId),
+  ]
+);
+
+/** Rozmowy telefoniczne zalogowane przez admina jednym tapnięciem po rozmowie. */
+export const phoneCalls = pgTable(
+  "phone_calls",
+  {
+    id: serial("id").primaryKey(),
+    phone: varchar("phone", { length: 20 }).notNull(),
+    outcome: varchar("outcome", { length: 20 }).notNull(), // odebrala | nieodebrala | oddzwonic
+    note: text("note"),
+    adminUserId: integer("admin_user_id").references(() => users.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("phone_calls_phone_idx").on(t.phone, t.createdAt)]
 );
 
 // ===== ZGŁOSZENIA (kontakt / konsultacja) =====
@@ -1212,6 +1296,7 @@ export type CrmNote = typeof crmNotes.$inferSelect;
 export type CrmEvent = typeof crmEvents.$inferSelect;
 export type CrmMessage = typeof crmMessages.$inferSelect;
 export type CrmTemplate = typeof crmTemplates.$inferSelect;
+export type CrmBoard = typeof crmBoards.$inferSelect;
 export type AbandonedReminder = typeof abandonedReminders.$inferSelect;
 export type Settings = typeof settings.$inferSelect;
 export type Prospect = typeof prospects.$inferSelect;
@@ -1221,3 +1306,5 @@ export type Conversation = typeof conversations.$inferSelect;
 export type Message = typeof messages.$inferSelect;
 export type MailingCampaign = typeof mailingCampaigns.$inferSelect;
 export type MailingRecipient = typeof mailingRecipients.$inferSelect;
+export type PhoneMessage = typeof phoneMessages.$inferSelect;
+export type PhoneCall = typeof phoneCalls.$inferSelect;
