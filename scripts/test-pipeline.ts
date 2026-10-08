@@ -232,7 +232,7 @@ async function main() {
   check("rdzeń CRM admina nie importuje maili/SMS", /@\/lib\/email|@\/lib\/sms|lead-events/.test(coreSrc), false);
   const page = readFileSync("src/app/admin/(panel)/crm-kursantki/page.tsx", "utf8");
   const gateAt = page.indexOf('redirect("/admin/login")');
-  check("strona: bramka z przekierowaniem PRZED zapytaniami", gateAt > 0 && gateAt < page.indexOf("pipeline"), true);
+  check("strona: bramka z przekierowaniem PRZED zapytaniami", gateAt > 0 && gateAt < page.indexOf("await pipeline"), true);
   const oldAssign = readFileSync("src/app/api/admin/leads/[id]/assign/route.ts", "utf8");
   check("stara trasa przydziału: mail do trenerki tylko z umową (autoAssign)", /trainer\.autoAssign && trainer\.email/.test(oldAssign), true);
 
