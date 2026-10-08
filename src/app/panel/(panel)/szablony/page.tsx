@@ -1,3 +1,5 @@
+import { crmTrenerkiEnabled } from "@/lib/crm-flag";
+import { notFound } from "next/navigation";
 import { requireTrainerPage } from "@/lib/crm-page";
 import { listTemplates } from "@/lib/crm-core";
 import { getDb } from "@/db";
@@ -6,6 +8,7 @@ import { TemplateManager } from "@/components/panel/crm/TemplateManager";
 export const dynamic = "force-dynamic";
 
 export default async function SzablonyPage() {
+  if (!crmTrenerkiEnabled()) notFound();
   const { trainerId } = await requireTrainerPage();
   const templates = await listTemplates(await getDb(), trainerId);
   return (

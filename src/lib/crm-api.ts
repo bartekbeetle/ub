@@ -2,6 +2,7 @@ import "server-only";
 import { NextResponse } from "next/server";
 import { requireTrainer } from "@/lib/auth";
 import type { User } from "@/db/schema";
+import { crmTrenerkiEnabled } from "@/lib/crm-flag";
 
 /**
  * Wspólny szkielet tras `/api/panel/crm/*`: sesja trenerki (z bramką hasła startowego),
@@ -13,6 +14,7 @@ export async function withTrainer(
   key: "id" | "tid",
   handler: (user: User, id: number) => Promise<NextResponse>
 ): Promise<NextResponse> {
+  if (!crmTrenerkiEnabled()) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
   const user = await requireTrainer();
   if (!user) return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
   const id = Number((await params)[key]);

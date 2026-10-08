@@ -16,9 +16,10 @@ const NAV = [
  * z danymi kursantek — nie dlatego, że to zabezpieczenie (tym są bramki serwerowe w stronach
  * i w API), tylko dlatego, że link prowadzący zawsze do przekierowania wygląda jak awaria.
  */
-export function PanelNav({ pending = false }: { pending?: boolean }) {
+export function PanelNav({ pending = false, crm = false }: { pending?: boolean; crm?: boolean }) {
   const pathname = usePathname();
-  const items = pending ? NAV.filter((i) => i.href === "/panel/start" || i.href === "/panel/profil") : NAV;
+  const visible = crm ? NAV : NAV.filter((i) => i.href !== "/panel/szablony");
+  const items = pending ? visible.filter((i) => i.href === "/panel/start" || i.href === "/panel/profil") : visible;
   return (
     <nav aria-label="Nawigacja panelu trenerki" className="space-y-1">
       {items.map((item) => {

@@ -1,3 +1,4 @@
+import { crmTrenerkiEnabled } from "@/lib/crm-flag";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireTrainerPage } from "@/lib/crm-page";
@@ -25,6 +26,7 @@ const TYPE_LABEL = { notatka: "Notatka", etap: "Zmiana etapu", przypomnienie: "P
 
 export default async function KartaKursantkiPage({ params }: { params: Promise<{ id: string }> }) {
   // BRAMKA przed jakimkolwiek zapytaniem: przekierowanie, nie podmiana widoku.
+  if (!crmTrenerkiEnabled()) notFound();
   const { user, trainerId } = await requireTrainerPage();
   const { id } = await params;
   const assignmentId = Number(id);

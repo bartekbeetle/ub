@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import { getSessionUser } from "@/lib/auth";
 import { getDb, schema } from "@/db";
 import { PanelNav } from "@/components/panel/PanelNav";
+import { crmTrenerkiEnabled } from "@/lib/crm-flag";
 import { PanelLogoutButton } from "@/components/panel/PanelLogoutButton";
 import { PanelShell } from "@/components/PanelShell";
 
@@ -52,7 +53,7 @@ export default async function TrainerPanelLayout({ children }: { children: React
           UB <span className="text-sand-300">PANEL</span>
         </>
       }
-      nav={<PanelNav pending={pending} />}
+      nav={<PanelNav pending={pending} crm={crmTrenerkiEnabled()} />}
       footer={
         <>
           <p className="truncate px-4 pb-0.5 text-xs font-semibold text-sand-200/80">

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getDb } from "@/db";
 import { requireTrainerMobile, ONBOARDING_GATE_MESSAGE } from "@/lib/mobile-auth";
 import { getCrmDetail } from "@/lib/crm-core";
+import { crmTrenerkiEnabled } from "@/lib/crm-flag";
 
 export const runtime = "nodejs";
 
@@ -14,6 +15,7 @@ type Params = Promise<{ id: string }>;
  * jeszcze nie ma. Zmiana etapu na „zapisana" nadal idzie przez istniejące PATCH `/api/mobile/leady/[id]`.
  */
 export async function GET(req: Request, { params }: { params: Params }) {
+  if (!crmTrenerkiEnabled()) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
   const auth = await requireTrainerMobile(req);
   if (!auth) return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
   if (!auth.trainer.isActive) return NextResponse.json({ error: ONBOARDING_GATE_MESSAGE }, { status: 403 });

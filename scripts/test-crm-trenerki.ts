@@ -523,7 +523,7 @@ async function main() {
     check(`trasa nie czyta trainerId z żądania: ${f.replace("src/app/api/panel/crm/", "")}`, /body\.trainerId|parsed\.data\.trainerId|searchParams/.test(src), false);
   }
   const pages = [
-    "src/app/panel/(panel)/leady/page.tsx",
+    "src/app/panel/(panel)/leady/crm-page.tsx",
     "src/app/panel/(panel)/leady/[id]/page.tsx",
     "src/app/panel/(panel)/szablony/page.tsx",
   ];
@@ -561,7 +561,7 @@ async function main() {
   check("nie powstała żadna nowa trasa API dla Kanbana", walk("src/app/api").filter((f) => /kanban/i.test(f)).length, 0);
   const prospRoute = readFileSync("src/app/api/admin/prospekty/[id]/route.ts", "utf8");
   check("trasa statusu prospekta: requireAdmin + logAdminAction", /requireAdmin\(\)/.test(prospRoute) && /logAdminAction\(user, \{ action: "prospekt_zmiana_statusu"/.test(prospRoute), true);
-  const trainerPage = readFileSync("src/app/panel/(panel)/leady/page.tsx", "utf8");
+  const trainerPage = readFileSync("src/app/panel/(panel)/leady/crm-page.tsx", "utf8");
   check("strona trenerki: dane Kanbana z tej samej listy co tabela (bez nowego zapytania)", /<CrmKanban\s+items=\{rows\.map/.test(trainerPage) && !/\.from\(|schema\./.test(trainerPage), true);
   check("strona trenerki: Kanban nie dostaje telefonu ani e-maila", /phone|email/.test(trainerPage.slice(trainerPage.indexOf("<CrmKanban"), trainerPage.indexOf("/>", trainerPage.indexOf("<CrmKanban")))), false);
   const adminPage = readFileSync("src/app/admin/(panel)/crm-trenerki/page.tsx", "utf8");
