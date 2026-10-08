@@ -32,6 +32,7 @@
     "test:superadmin": "tsx scripts/test-superadmin.ts",
     "test:porzucone": "tsx scripts/test-mailer-porzucone.ts",
     "test:crm": "tsx scripts/test-crm-trenerki.ts",
+    "test:telefon": "tsx scripts/test-telefon.ts",
     "test:pipeline": "tsx scripts/test-pipeline.ts"
   },
   "dependencies": {
