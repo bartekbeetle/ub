@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { CATEGORIES, SUBSIDY_RANGE, VOIVODESHIPS } from "@/lib/constants";
 import { LEAD_SEGMENT_KEY } from "@/components/LeadConversion";
@@ -303,8 +304,17 @@ const QUESTIONS: Question[] = [
   },
 ];
 
+/**
+ * Persona: „Hania — wirtualna recepcja". Zdjęcie wygenerowane (Ideogram, 09.10.2026; kandydatki
+ * w `Sejf/Marketing/studio/photos/ub-czat/`), więc rozmowa MÓWI WPROST, że to automat — w nagłówku
+ * i w pierwszym zdaniu. Twarz + imię podnoszą klikalność, ale udawanie człowieka podcięłoby
+ * zaufanie przy pierwszym telefonie („to z kim ja pisałam?") i kłóciłoby się z jawnością
+ * wobec użytkownika, której wymaga art. 50 AI Act przy botach.
+ */
+const PERSONA = { name: "Hania", role: "wirtualna recepcja", avatar: "/images/czat/hania-192.jpg" };
+
 const GREETING = [
-  "Cześć! Jestem doradcą Uniwersytetu Beauty.",
+  `Cześć! Jestem ${PERSONA.name}, wirtualna recepcja Uniwersytetu Beauty. Nie jestem człowiekiem — zbieram Twoje odpowiedzi, a oddzwania prawdziwa osoba.`,
   "W 2 minuty sprawdzę, czy przysługuje Ci dofinansowanie do szkolenia, i dobiorę certyfikowaną akademię. Zaczynamy?",
 ];
 
@@ -552,16 +562,19 @@ export function ChatDoradca() {
         <div
           role="dialog"
           aria-modal="false"
-          aria-label="Czat z doradcą Uniwersytetu Beauty"
+          aria-label={`Czat: ${PERSONA.name}, ${PERSONA.role} Uniwersytetu Beauty`}
           className="fixed inset-0 z-[60] flex flex-col bg-cream md:inset-auto md:bottom-6 md:right-6 md:h-[min(640px,calc(100vh-8rem))] md:w-[380px] md:overflow-hidden md:rounded-2xl md:border md:border-sand-200 md:shadow-2xl"
         >
           <div className="flex items-center gap-3 border-b border-sand-200 bg-white px-4 py-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sand-400 font-serif text-sm font-bold text-ink-soft" aria-hidden>
-              UB
+            <span className="relative shrink-0">
+              <Image src={PERSONA.avatar} alt="" width={40} height={40} className="h-10 w-10 rounded-full object-cover" />
+              <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-money-bright" aria-hidden />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-bold text-ink">Doradca dofinansowań</p>
-              <p className="text-xs text-muted">Uniwersytet Beauty · odpowiadamy w 24 h</p>
+              <p className="text-sm font-bold text-ink">
+                {PERSONA.name} <span className="font-normal text-muted">· {PERSONA.role}</span>
+              </p>
+              <p className="text-xs text-muted">Automat UB · człowiek oddzwania w 24 h</p>
             </div>
             <button
               type="button"
@@ -593,7 +606,7 @@ export function ChatDoradca() {
               </div>
             ))}
             {typing && (
-              <div className="flex justify-start" aria-label="Doradca pisze">
+              <div className="flex justify-start" aria-label={`${PERSONA.name} pisze`}>
                 <span className="flex gap-1 rounded-2xl rounded-tl-sm bg-white px-3.5 py-3 shadow-sm">
                   {[0, 1, 2].map((d) => (
                     <span key={d} className="h-1.5 w-1.5 animate-pulse rounded-full bg-sand-600" style={{ animationDelay: `${d * 150}ms` }} />
@@ -752,8 +765,11 @@ export function ChatDoradca() {
 
       {/* DYMEK ZACHĘTY */}
       {teaser && !open && (
-        <div className="fixed bottom-[10.5rem] right-4 z-40 w-64 rounded-2xl rounded-br-sm border border-sand-200 bg-white p-3.5 pr-9 text-sm text-ink shadow-xl md:bottom-24 md:right-6">
+        <div className="fixed bottom-[11.5rem] right-4 z-40 w-72 rounded-2xl rounded-br-sm border border-sand-200 bg-white p-3.5 pr-9 text-sm text-ink shadow-xl md:bottom-28 md:right-6">
           <button type="button" onClick={openChat} className="text-left">
+            <span className="mb-1 block text-xs font-semibold text-muted">
+              {PERSONA.name} · {PERSONA.role}
+            </span>
             <span className="font-semibold">Masz pytanie o dofinansowanie?</span>{" "}
             Sprawdzę w 2 minuty, ile możesz dostać na szkolenie.
           </button>
@@ -770,21 +786,41 @@ export function ChatDoradca() {
         </div>
       )}
 
-      {/* IKONKA — na telefonie nad paskiem „Bezpłatna Konsultacja" (StickyConsultationCta) */}
+      {/* IKONKA — zdjęcie Hani zamiast generycznego dymka: twarz wyróżnia się na beżowej stronie.
+          Na telefonie nad paskiem „Bezpłatna Konsultacja" (StickyConsultationCta). */}
       {!open && (
         <button
           ref={launcherRef}
           type="button"
           onClick={openChat}
-          aria-label="Otwórz czat z doradcą dofinansowań"
-          className="fixed bottom-24 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-sand-400 text-ink-soft shadow-lg transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand-700 motion-reduce:transition-none md:bottom-6 md:right-6"
+          aria-label={`Otwórz czat: ${PERSONA.name}, ${PERSONA.role}`}
+          className="group fixed bottom-24 right-4 z-40 flex items-center gap-2 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sand-700 md:bottom-6 md:right-6"
         >
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-            <path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z" />
-          </svg>
-          {index > -1 && index < QUESTIONS.length && (
-            <span className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-money" aria-hidden />
+          {/* Pigułka z tekstem tylko na desktopie i nie razem z dymkiem — ten sam komunikat dwa razy to szum */}
+          {!teaser && (
+            <span className="hidden rounded-full bg-white px-4 py-2 text-sm font-semibold text-ink shadow-lg ring-1 ring-sand-200 md:block">
+              Zapytaj o dofinansowanie
+            </span>
           )}
+          <span className="relative block h-16 w-16 shrink-0">
+            {/* Pulsujący pierścień tylko dopóki nikt nie otworzył czatu i bez prefers-reduced-motion */}
+            {index === -1 && (
+              <span className="absolute inset-0 animate-ping rounded-full bg-sand-400 opacity-40 motion-reduce:hidden" aria-hidden />
+            )}
+            <Image
+              src={PERSONA.avatar}
+              alt=""
+              width={64}
+              height={64}
+              className="relative h-16 w-16 rounded-full object-cover shadow-xl ring-[3px] ring-sand-400 transition-transform group-hover:scale-105 motion-reduce:transition-none"
+            />
+            <span className="absolute -bottom-0.5 -left-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-sand-700 text-white ring-2 ring-white" aria-hidden>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z" />
+              </svg>
+            </span>
+            <span className="absolute right-0 top-0 h-4 w-4 rounded-full border-2 border-white bg-money-bright" aria-hidden />
+          </span>
         </button>
       )}
     </>
