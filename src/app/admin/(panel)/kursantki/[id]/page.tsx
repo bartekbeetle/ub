@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { KANAL_LABELS, kanalLeada } from "@/lib/lead-channel";
 import { notFound } from "next/navigation";
 import { and, desc, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
@@ -105,7 +106,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               </>
             )}
             <dt className="text-muted">Źródło</dt>
-            <dd>{SOURCE_LABELS[lead.source]}{course ? <> — <Link className="text-sand-700 hover:underline" href={`/kurs/${course.slug}`}>{course.title}</Link></> : null}</dd>
+            <dd>{kanalLeada(lead) ? KANAL_LABELS[kanalLeada(lead)!] : SOURCE_LABELS[lead.source]}{course ? <> — <Link className="text-sand-700 hover:underline" href={`/kurs/${course.slug}`}>{course.title}</Link></> : null}</dd>
             <dt className="text-muted">UTM</dt>
             <dd className="text-xs">{[lead.utmSource, lead.utmMedium, lead.utmCampaign].filter(Boolean).join(" / ") || "—"}</dd>
             {zgloszenie && (

@@ -7,6 +7,7 @@ import { CATEGORIES, SUBSIDY_RANGE, VOIVODESHIPS } from "@/lib/constants";
 import { LEAD_SEGMENT_KEY } from "@/components/LeadConversion";
 import { CONSENT_EVENT, readConsent } from "@/lib/consent";
 import { trackEvent } from "@/lib/tracking-events";
+import { CHAT_CHANNEL_NOTE } from "@/lib/lead-channel";
 import {
   AGE_OPTIONS,
   ELIGIBILITY_NONE,
@@ -323,7 +324,6 @@ const HIDDEN_PREFIXES = ["/aplikacja", "/poradnik-wlasny-salon", "/dziekujemy", 
 
 const SESSION_KEY = "ub_czat_session";
 const TEASER_KEY = "ub_czat_teaser"; // localStorage: dymek pokazany/zamknięty — nie wracamy z nim co wizytę
-const CHANNEL_NOTE = "Kanał: czat na stronie (doradca)";
 
 type Msg = { from: "bot" | "me"; text: React.ReactNode };
 
@@ -516,7 +516,7 @@ export function ChatDoradca() {
     setError(null);
     const eventId = crypto.randomUUID();
     const adConsent = readConsent()?.marketing === true;
-    const payload = buildLeadPayload(f, { eventId, adConsent, channelNote: CHANNEL_NOTE });
+    const payload = buildLeadPayload(f, { eventId, adConsent, channelNote: CHAT_CHANNEL_NOTE });
     try {
       const res = await fetch("/api/lead", {
         method: "POST",

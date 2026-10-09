@@ -8,6 +8,7 @@ import { LeadStatusSelect } from "@/components/admin/LeadStatusSelect";
 import { SubmissionToggle } from "@/components/admin/SubmissionToggle";
 import { DeleteRecordButton } from "@/components/admin/DeleteRecordButton";
 import { formatDateTime, maskEmail, maskPhone } from "@/lib/utils";
+import { CHAT_PREFIX, KANAL_LABELS, kanalLeada, kanalSesji, type Kanal } from "@/lib/lead-channel";
 import { reminderStatusByEmail, normalizeEmail, type ReminderInfo } from "@/lib/abandoned-core";
 import {
   CATEGORIES,
@@ -69,6 +70,24 @@ const KROKI_APLIKACJI = [
   "Złożenie aplikacji",
 ];
 
+/** Kanał leada z quizu — patrz `lib/lead-channel.ts` (czat dopisuje prefiks w pierwszej linii `message`). */
+const leadZCzatuSql = sql`${schema.leads.source} = 'quiz' and coalesce(${schema.leads.message}, '') like ${CHAT_PREFIX + "%"}`;
+const leadZAplikacjiSql = sql`${schema.leads.source} = 'quiz' and coalesce(${schema.leads.message}, '') not like ${CHAT_PREFIX + "%"}`;
+
+function KanalBadge({ kanal }: { kanal: Kanal }) {
+  return (
+    <span
+      className={
+        kanal === "czat"
+          ? "inline-flex rounded-full bg-navy px-2.5 py-0.5 text-[11px] font-bold text-white"
+          : "inline-flex rounded-full bg-sand-100 px-2.5 py-0.5 text-[11px] font-bold text-sand-700"
+      }
+    >
+      {KANAL_LABELS[kanal]}
+    </span>
+  );
+}
+
 export default async function KursantkiPage({ searchParams }: { searchParams: Search }) {
   const sp = await searchParams;
   const str = (k: string) => (typeof sp[k] === "string" ? (sp[k] as string) : "");
@@ -117,7 +136,10 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
     leadConditions.push(eq(schema.leads.status, statusEfektywny as (typeof LEAD_STATUSES)[number]));
   if (stan === "do_zrobienia") leadConditions.push(inArray(schema.leads.status, [...LEAD_STATUSES_OPEN]));
   if (stan === "obsluzone") leadConditions.push(inArray(schema.leads.status, [...LEAD_STATUSES_CLOSED]));
-  if (leadSource) leadConditions.push(eq(schema.leads.source, leadSource as (typeof LEAD_SOURCES)[number]));
+  // `lead:quiz` = sam formularz /aplikacja, `lead:czat` = czat Hani — oba mają w bazie `source: quiz`.
+  if (leadSource === "czat") leadConditions.push(leadZCzatuSql);
+  else if (leadSource === "quiz") leadConditions.push(leadZAplikacjiSql);
+  else if (leadSource) leadConditions.push(eq(schema.leads.source, leadSource as (typeof LEAD_SOURCES)[number]));
   // Wejście 1 = aplikacja (źródło `quiz`), wejście 2 = cała reszta formularzy.
   if (etapZlozone) leadConditions.push(eq(schema.leads.source, "quiz"));
   if (etapInneWejscia) leadConditions.push(sql`${schema.leads.source} <> 'quiz'`);
@@ -300,8 +322,9 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
           <option value="">Źródło: wszystkie</option>
           <optgroup label="Lead">
             {LEAD_SOURCES.map((s) => (
-              <option key={s} value={`lead:${s}`}>{SOURCE_LABELS[s]}</option>
+              <option key={s} value={`lead:${s}`}>{s === "quiz" ? "Aplikacja (formularz)" : SOURCE_LABELS[s]}</option>
             ))}
+            <option value="lead:czat">Czat (Hania)</option>
           </optgroup>
           <optgroup label="Zgłoszenie">
             {SUBMISSION_TYPES.map((t) => (
@@ -468,7 +491,7 @@ function WierszPorzuconej({ sesja, przypomnienie }: { sesja: QuizSession; przypo
           )}
         </div>
       </td>
-      <td className="px-4 py-3 text-xs text-muted">Aplikacja</td>
+      <td className="px-4 py-3 text-xs text-muted"><KanalBadge kanal={kanalSesji(sesja)} /></td>
       <td className="px-4 py-3">
         {sesja.category ? (
           <>
@@ -543,7 +566,7 @@ function StanPrzypomnienia({ info }: { info?: ReminderInfo }) {
  * wydajnościowej z 18.09 nie wracamy do mielenia setek wierszy w pamięci.
  */
 async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
-  const [wgKroku, wgStatusu, przydzielone, wgZrodla, zgodyPorzuconych] =
+  const [wgKroku, wgStatusu, przydzielone, wgZrodla, zgodyPorzuconych, zCzatu] =
     await Promise.all([
       db
         .select({
@@ -576,14 +599,17 @@ async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
             isNotNull(schema.quizSessions.contactConsentAt)
           )
         ),
+      db.select({ c: sql<number>`count(*)::int` }).from(schema.leads).where(leadZCzatuSql),
     ]);
 
   const statusy = new Map(wgStatusu.map((r) => [r.status as string, r.c]));
   const ile = (...s: string[]) => s.reduce((sum, k) => sum + (statusy.get(k) ?? 0), 0);
 
   const leadyRazem = wgStatusu.reduce((sum, r) => sum + r.c, 0);
-  const leadyZAplikacji = wgZrodla.find((r) => r.zrodlo === "quiz")?.c ?? 0;
-  const leadyZInnych = leadyRazem - leadyZAplikacji;
+  const leadyZQuizu = wgZrodla.find((r) => r.zrodlo === "quiz")?.c ?? 0;
+  const leadyZCzatu = zCzatu[0]?.c ?? 0;
+  const leadyZAplikacji = leadyZQuizu - leadyZCzatu;
+  const leadyZInnych = leadyRazem - leadyZQuizu;
   const zPrzydzialem = przydzielone[0]?.c ?? 0;
 
   // Kroki aplikacji nie mają już własnego kafla (usunięty 22.09), ale licznik porzuconych
@@ -606,7 +632,7 @@ async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
       etykieta: "Lead — komplet danych",
       liczba: leadyRazem,
       procent: 100,
-      opis: `${leadyZAplikacji} z aplikacji · ${leadyZInnych} z pozostałych wejść`,
+      opis: `${leadyZAplikacji} z aplikacji · ${leadyZCzatu} z czatu · ${leadyZInnych} z pozostałych wejść`,
     },
     {
       klucz: "bez-przydzialu",
@@ -714,7 +740,9 @@ function WierszLeada({
         )}
         <DeleteRecordButton id={lead.id} kind="lead" name={lead.name} />
       </td>
-      <td className="px-4 py-3 text-xs text-muted">{SOURCE_LABELS[lead.source] ?? lead.source}</td>
+      <td className="px-4 py-3 text-xs text-muted">
+        {kanalLeada(lead) ? <KanalBadge kanal={kanalLeada(lead)!} /> : (SOURCE_LABELS[lead.source] ?? lead.source)}
+      </td>
       <td className="px-4 py-3">
         <span className="block">{lead.category}</span>
         <span className="block text-xs text-muted">{voivodeshipName(lead.voivodeship)}</span>

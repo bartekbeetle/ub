@@ -1,4 +1,5 @@
 import { desc, eq } from "drizzle-orm";
+import { KANAL_LABELS, kanalLeada } from "@/lib/lead-channel";
 import { getDb, schema } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { logAdminAction } from "@/lib/audit";
@@ -30,7 +31,7 @@ export async function GET() {
       lead.category,
       lead.employmentStatus,
       LEAD_STATUS_LABELS[lead.status] ?? lead.status,
-      SOURCE_LABELS[lead.source] ?? lead.source,
+      kanalLeada(lead) ? KANAL_LABELS[kanalLeada(lead)!] : (SOURCE_LABELS[lead.source] ?? lead.source),
       course?.title ?? "",
       lead.utmSource,
       lead.utmMedium,
