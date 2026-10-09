@@ -215,7 +215,7 @@ const QUESTIONS: Question[] = [
     id: "phone",
     kind: "text",
     quizStep: 6,
-    ask: () => ["Pod jaki numer może zadzwonić trenerka?"],
+    ask: () => ["Pod jaki numer może zadzwonić konsultant?"],
     field: "phone",
     placeholder: "np. 512 345 678",
     inputType: "tel",
