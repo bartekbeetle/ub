@@ -306,15 +306,15 @@ const QUESTIONS: Question[] = [
 
 /**
  * Persona: „Hania — wirtualna recepcjonistka". Zdjęcie wygenerowane (Ideogram, 09.10.2026; kandydatki
- * w `Sejf/Marketing/studio/photos/ub-czat/`), więc rozmowa MÓWI WPROST, że to automat — w nagłówku
- * i w pierwszym zdaniu. Twarz + imię podnoszą klikalność, ale udawanie człowieka podcięłoby
+ * w `Sejf/Marketing/studio/photos/ub-czat/`), więc rozmowa MÓWI WPROST, że to automat — „wirtualna
+ * recepcjonistka" w nagłówku i w pierwszym zdaniu (dłuższe zastrzeżenia Bartek wyciął 09.10; tego minimum nie ruszamy). Twarz + imię podnoszą klikalność, ale udawanie człowieka podcięłoby
  * zaufanie przy pierwszym telefonie („to z kim ja pisałam?") i kłóciłoby się z jawnością
  * wobec użytkownika, której wymaga art. 50 AI Act przy botach.
  */
 const PERSONA = { name: "Hania", role: "wirtualna recepcjonistka", avatar: "/images/czat/hania-192.jpg" };
 
 const GREETING = [
-  `Cześć! Jestem ${PERSONA.name}, wirtualna recepcjonistka Uniwersytetu Beauty. Nie jestem człowiekiem — zbieram Twoje odpowiedzi, a oddzwania prawdziwa osoba.`,
+  `Cześć! Jestem ${PERSONA.name}, wirtualna recepcjonistka Uniwersytetu Beauty.`,
   "W 2 minuty sprawdzę, czy przysługuje Ci dofinansowanie do szkolenia, i dobiorę certyfikowaną akademię. Zaczynamy?",
 ];
 
