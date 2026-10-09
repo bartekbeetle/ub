@@ -3,6 +3,7 @@ import { Footer } from "@/components/layout/Footer";
 import { StickyConsultationCta } from "@/components/layout/StickyConsultationCta";
 import { JsonLd } from "@/components/JsonLd";
 import { CookieConsent } from "@/components/CookieConsent";
+import { ChatDoradca } from "@/components/chat/ChatDoradca";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
@@ -22,6 +23,8 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
       <Footer />
       {/* Sticky CTA na mobile — ukrywa się sama na /aplikacja, patrz komponent */}
       <StickyConsultationCta />
+      {/* Czat „doradca" — ta sama aplikacja co /aplikacja w formie rozmowy; sam się chowa tam, gdzie przeszkadza */}
+      <ChatDoradca />
       <CookieConsent />
     </>
   );
