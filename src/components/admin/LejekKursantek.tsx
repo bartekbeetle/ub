@@ -69,8 +69,8 @@ export function LejekKursantek({
   naStole,
 }: {
   wspolny: EtapLejka[];
-  /** Leady bez trenerki × stawka — pieniądz leżący bez adresata. */
-  naStole: { leadow: number; kwota: number };
+  /** Osoby bez trenerki × stawka — pieniądz leżący bez adresata (`lead-metrics-core`). */
+  naStole: { leadow: number; rekordow: number; kwota: number };
 }) {
   return (
     <section className="space-y-5">
@@ -84,7 +84,8 @@ export function LejekKursantek({
           <p className="text-sm">
             <strong className="text-money-dark">{naStole.kwota.toLocaleString("pl-PL")} zł</strong> leży
             bez adresata — <strong>{naStole.leadow}</strong>{" "}
-            {naStole.leadow === 1 ? "lead nie ma" : "leadów nie ma"} przypisanej trenerki.{" "}
+            {naStole.leadow === 1 ? "osoba nie ma" : "osób nie ma"} przypisanej trenerki
+            {naStole.rekordow !== naStole.leadow && ` (${naStole.rekordow} rekordów — część wysłała formularz kilka razy)`}.{" "}
             <Link href="/admin/kursantki?etap=bez-przydzialu" className="font-semibold underline">
               Pokaż
             </Link>

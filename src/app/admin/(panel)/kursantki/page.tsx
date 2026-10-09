@@ -2,6 +2,7 @@ import Link from "next/link";
 import { and, desc, eq, gte, ilike, inArray, isNotNull, isNull, lte, or, sql, type SQL } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import type { Lead, QuizSession, Submission } from "@/db/schema";
+import { liczLeady, STAWKA_ZA_ZAPIS, warunekBezAdresata } from "@/lib/lead-metrics-core";
 import { LejekKursantek, type EtapLejka } from "@/components/admin/LejekKursantek";
 import { RevealContact } from "@/components/admin/RevealContact";
 import { LeadStatusSelect } from "@/components/admin/LeadStatusSelect";
@@ -56,7 +57,6 @@ type Row =
   | { kind: "porzucona"; id: number; createdAt: Date; sesja: QuizSession };
 
 /** Stawka modelu pay-per-result: 500 zł naliczane przy statusie „zapisana". */
-const STAWKA_ZA_ZAPIS = 500;
 
 /** Kroki aplikacji — etykiety muszą odpowiadać krokom w `src/components/Quiz.tsx`. */
 const KROKI_APLIKACJI = [
@@ -121,6 +121,7 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
   // Wejście 1 = aplikacja (źródło `quiz`), wejście 2 = cała reszta formularzy.
   if (etapZlozone) leadConditions.push(eq(schema.leads.source, "quiz"));
   if (etapInneWejscia) leadConditions.push(sql`${schema.leads.source} <> 'quiz'`);
+  if (etapBezPrzydzialu) leadConditions.push(warunekBezAdresata(db));
   if (woj) leadConditions.push(eq(schema.leads.voivodeship, woj));
   if (kategoria) leadConditions.push(eq(schema.leads.category, kategoria));
   if (from) leadConditions.push(gte(schema.leads.createdAt, new Date(from)));
@@ -267,7 +268,7 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-muted">Szybko:</span>
         <Link href="/admin/kursantki?stan=do_zrobienia" className="rounded-full border px-3 py-1 hover:bg-sand-50">
-          Do obsłużenia <strong>{liczniki.doObsluzenia}</strong>
+          Do obsłużenia (leady + zgłoszenia) <strong>{liczniki.doObsluzenia}</strong>
         </Link>
         <Link href="/admin/kursantki?etap=porzucone" className="rounded-full border px-3 py-1 hover:bg-sand-50">
           Porzucone aplikacje <strong>{lejek.porzuconeRazem}</strong>
@@ -543,7 +544,7 @@ function StanPrzypomnienia({ info }: { info?: ReminderInfo }) {
  * wydajnościowej z 18.09 nie wracamy do mielenia setek wierszy w pamięci.
  */
 async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
-  const [wgKroku, wgStatusu, przydzielone, wgZrodla, zgodyPorzuconych] =
+  const [wgKroku, m, wgZrodla, zgodyPorzuconych] =
     await Promise.all([
       db
         .select({
@@ -553,16 +554,7 @@ async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
         })
         .from(schema.quizSessions)
         .groupBy(schema.quizSessions.maxStepReached, schema.quizSessions.completed),
-      db
-        .select({
-          status: schema.leads.status,
-          c: sql<number>`count(*)::int`,
-        })
-        .from(schema.leads)
-        .groupBy(schema.leads.status),
-      db
-        .select({ c: sql<number>`count(distinct ${schema.leadAssignments.leadId})::int` })
-        .from(schema.leadAssignments),
+      liczLeady(db),
       db
         .select({ zrodlo: schema.leads.source, c: sql<number>`count(*)::int` })
         .from(schema.leads)
@@ -578,13 +570,11 @@ async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
         ),
     ]);
 
-  const statusy = new Map(wgStatusu.map((r) => [r.status as string, r.c]));
-  const ile = (...s: string[]) => s.reduce((sum, k) => sum + (statusy.get(k) ?? 0), 0);
-
-  const leadyRazem = wgStatusu.reduce((sum, r) => sum + r.c, 0);
+  // Liczby o leadach z `lead-metrics-core` — te same co dashboard i CRM kursantek.
+  const leadyRazem = m.rekordy;
   const leadyZAplikacji = wgZrodla.find((r) => r.zrodlo === "quiz")?.c ?? 0;
   const leadyZInnych = leadyRazem - leadyZAplikacji;
-  const zPrzydzialem = przydzielone[0]?.c ?? 0;
+  const zPrzydzialem = m.zPrzydzialem;
 
   // Kroki aplikacji nie mają już własnego kafla (usunięty 22.09), ale licznik porzuconych
   // nad tabelą dalej z nich żyje — stąd te dwa pomocnicze liczenia zostają.
@@ -593,10 +583,13 @@ async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
     wgKroku.filter((r) => r.krok >= k).reduce((sum, r) => sum + r.c, 0);
 
   // --- DROGA OD LEADA DO PRZYCHODU ---
-  const zapisane = ile("zapisana", "rozliczony");
-  const rozliczone = ile("rozliczony");
-  const skontaktowane = ile("skontaktowany", "zapisana", "rozliczony");
-  const bezPrzydzialu = leadyRazem - zPrzydzialem;
+  const zapisane = m.zapisane;
+  const rozliczone = m.rozliczone;
+  const skontaktowane = m.skontaktowane;
+  // „Bez adresata" = do przydzielenia, NIE „rekordy minus przydzielone": odrzucone
+  // i zanonimizowane nie czekają na trenerkę i nie są warte 500 zł.
+  const bezPrzydzialu = m.bezAdresata.rekordy;
+  const odpadly = leadyRazem - zPrzydzialem - bezPrzydzialu;
 
   const pct = (n: number) => (leadyRazem ? Math.round((n / leadyRazem) * 100) : 0);
 
@@ -606,16 +599,22 @@ async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
       etykieta: "Lead — komplet danych",
       liczba: leadyRazem,
       procent: 100,
-      opis: `${leadyZAplikacji} z aplikacji · ${leadyZInnych} z pozostałych wejść`,
+      opis: `${m.osoby} osób · ${leadyZAplikacji} z aplikacji · ${leadyZInnych} z pozostałych wejść`,
     },
     {
       klucz: "bez-przydzialu",
       etykieta: "Przydzielona trenerce",
       liczba: zPrzydzialem,
       procent: pct(zPrzydzialem),
-      ubytek: bezPrzydzialu,
+      ubytek: leadyRazem - zPrzydzialem,
       alarm: bezPrzydzialu > 0,
-      opis: bezPrzydzialu > 0 ? `${bezPrzydzialu} czeka bez adresata` : undefined,
+      opis:
+        [
+          bezPrzydzialu > 0 ? `${bezPrzydzialu} czeka bez adresata` : "",
+          odpadly > 0 ? `${odpadly} odrzuconych/usuniętych` : "",
+        ]
+          .filter(Boolean)
+          .join(" · ") || undefined,
     },
     {
       klucz: "skontaktowany",
@@ -644,7 +643,7 @@ async function policzLejek(db: Awaited<ReturnType<typeof getDb>>) {
 
   return {
     wspolny,
-    naStole: { leadow: bezPrzydzialu, kwota: bezPrzydzialu * STAWKA_ZA_ZAPIS },
+    naStole: { leadow: m.bezAdresata.osoby, rekordow: m.bezAdresata.rekordy, kwota: m.bezAdresata.kwota },
     zgodyPorzuconych: zgodyPorzuconych[0]?.c ?? 0,
     porzuconeRazem: sesjeRazem - doszloDoKroku(7),
   };

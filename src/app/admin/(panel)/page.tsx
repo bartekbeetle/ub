@@ -4,6 +4,7 @@ import { getDb, schema } from "@/db";
 import { getSessionUser } from "@/lib/auth";
 import { isSuperadminRole } from "@/lib/roles";
 import { formatDateTime, formatPln } from "@/lib/utils";
+import { liczLeady, naplywDzienny } from "@/lib/lead-metrics-core";
 import { LEAD_STATUS_LABELS, LEAD_STATUS_COLORS, voivodeshipName } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
@@ -13,29 +14,21 @@ export default async function AdminDashboard() {
   const showBilling = isSuperadminRole((await getSessionUser())?.role);
   const db = await getDb();
 
-  const todayStart = new Date();
-  todayStart.setHours(0, 0, 0, 0);
   const monthStart = new Date();
   monthStart.setDate(1);
   monthStart.setHours(0, 0, 0, 0);
-  const days30 = new Date(Date.now() - 30 * 86400000);
 
+  // Liczby o leadach — wyłącznie z `lead-metrics-core`, żeby dashboard i lejek nie rozjeżdżały się znowu.
   const [
-    [{ c: leadsToday }],
-    [{ c: leadsMonth }],
-    [{ c: leadsTotal }],
-    [{ c: signedTotal }],
+    m,
     [{ c: activeTrainers }],
     [{ s: revenueMonth }],
     [{ c: pendingBilling }],
     [{ c: prospectsActive }],
     recentLeads,
-    dailyRaw,
+    chart,
   ] = await Promise.all([
-    db.select({ c: sql<number>`count(*)::int` }).from(schema.leads).where(gte(schema.leads.createdAt, todayStart)),
-    db.select({ c: sql<number>`count(*)::int` }).from(schema.leads).where(gte(schema.leads.createdAt, monthStart)),
-    db.select({ c: sql<number>`count(*)::int` }).from(schema.leads),
-    db.select({ c: sql<number>`count(*)::int` }).from(schema.leads).where(eq(schema.leads.status, "zapisana")),
+    liczLeady(db),
     db.select({ c: sql<number>`count(*)::int` }).from(schema.trainers).where(eq(schema.trainers.isActive, true)),
     showBilling
       ? db
@@ -54,28 +47,27 @@ export default async function AdminDashboard() {
       .from(schema.prospects)
       .where(notInArray(schema.prospects.status, ["odrzucony", "parking"])),
     db.select().from(schema.leads).orderBy(desc(schema.leads.createdAt)).limit(10),
-    db
-      .select({ day: sql<string>`to_char(${schema.leads.createdAt}, 'YYYY-MM-DD')`, c: sql<number>`count(*)::int` })
-      .from(schema.leads)
-      .where(gte(schema.leads.createdAt, days30))
-      .groupBy(sql`to_char(${schema.leads.createdAt}, 'YYYY-MM-DD')`),
+    naplywDzienny(db, 30),
   ]);
 
-  const conversion = leadsTotal > 0 ? Math.round((signedTotal / leadsTotal) * 100) : 0;
-
-  // wykres 30 dni (czyste divy, bez biblioteki)
-  const byDay = new Map(dailyRaw.map((d) => [d.day, d.c]));
-  const chart: { day: string; count: number }[] = [];
-  for (let i = 29; i >= 0; i--) {
-    const d = new Date(Date.now() - i * 86400000).toISOString().slice(0, 10);
-    chart.push({ day: d, count: byDay.get(d) ?? 0 });
-  }
   const maxCount = Math.max(1, ...chart.map((c) => c.count));
 
   const stats = [
-    { label: "Leady dziś", value: String(leadsToday), color: "bg-blue-100 text-blue-700" },
-    { label: "Leady w tym miesiącu", value: String(leadsMonth), color: "bg-sand-100 text-sand-700" },
-    { label: "Konwersja lead → zapis", value: `${conversion}%`, color: "bg-purple-100 text-purple-700" },
+    { label: "Leady dziś", value: String(m.dzis), color: "bg-blue-100 text-blue-700" },
+    { label: "Leady w tym miesiącu", value: String(m.miesiac), color: "bg-sand-100 text-sand-700" },
+    {
+      label: "Leady razem",
+      value: String(m.rekordy),
+      hint: `${m.osoby} osób (bez duplikatów)`,
+      color: "bg-sand-100 text-sand-700",
+    },
+    {
+      label: "Bez trenerki",
+      value: String(m.bezAdresata.osoby),
+      hint: m.bezAdresata.rekordy !== m.bezAdresata.osoby ? `${m.bezAdresata.rekordy} rekordów` : undefined,
+      color: "bg-red-100 text-red-700",
+    },
+    { label: "Konwersja osoba → zapis", value: `${m.konwersja}%`, color: "bg-purple-100 text-purple-700" },
     ...(showBilling
       ? [{ label: "Przychód w tym miesiącu", value: formatPln(revenueMonth), color: "bg-emerald-100 text-emerald-700" }]
       : []),
@@ -102,6 +94,7 @@ export default async function AdminDashboard() {
           <div key={s.label} className="card p-5">
             <span className={`inline-flex rounded-lg px-2.5 py-1 text-xs font-bold ${s.color}`}>{s.label}</span>
             <p className="mt-3 font-serif text-3xl font-bold text-ink-soft">{s.value}</p>
+            {"hint" in s && s.hint && <p className="mt-1 text-xs text-muted">{s.hint}</p>}
           </div>
         ))}
       </div>
