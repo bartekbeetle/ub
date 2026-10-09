@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { CATEGORIES, SUBSIDY_RANGE, VOIVODESHIPS } from "@/lib/constants";
 import { LEAD_SEGMENT_KEY } from "@/components/LeadConversion";
-import { readConsent } from "@/lib/consent";
+import { CONSENT_EVENT, readConsent } from "@/lib/consent";
 import { trackEvent } from "@/lib/tracking-events";
 import {
   AGE_OPTIONS,
@@ -305,16 +305,16 @@ const QUESTIONS: Question[] = [
 ];
 
 /**
- * Persona: „Hania — wirtualna recepcja". Zdjęcie wygenerowane (Ideogram, 09.10.2026; kandydatki
+ * Persona: „Hania — wirtualna recepcjonistka". Zdjęcie wygenerowane (Ideogram, 09.10.2026; kandydatki
  * w `Sejf/Marketing/studio/photos/ub-czat/`), więc rozmowa MÓWI WPROST, że to automat — w nagłówku
  * i w pierwszym zdaniu. Twarz + imię podnoszą klikalność, ale udawanie człowieka podcięłoby
  * zaufanie przy pierwszym telefonie („to z kim ja pisałam?") i kłóciłoby się z jawnością
  * wobec użytkownika, której wymaga art. 50 AI Act przy botach.
  */
-const PERSONA = { name: "Hania", role: "wirtualna recepcja", avatar: "/images/czat/hania-192.jpg" };
+const PERSONA = { name: "Hania", role: "wirtualna recepcjonistka", avatar: "/images/czat/hania-192.jpg" };
 
 const GREETING = [
-  `Cześć! Jestem ${PERSONA.name}, wirtualna recepcja Uniwersytetu Beauty. Nie jestem człowiekiem — zbieram Twoje odpowiedzi, a oddzwania prawdziwa osoba.`,
+  `Cześć! Jestem ${PERSONA.name}, wirtualna recepcjonistka Uniwersytetu Beauty. Nie jestem człowiekiem — zbieram Twoje odpowiedzi, a oddzwania prawdziwa osoba.`,
   "W 2 minuty sprawdzę, czy przysługuje Ci dofinansowanie do szkolenia, i dobiorę certyfikowaną akademię. Zaczynamy?",
 ];
 
@@ -323,7 +323,6 @@ const HIDDEN_PREFIXES = ["/aplikacja", "/poradnik-wlasny-salon", "/dziekujemy", 
 
 const SESSION_KEY = "ub_czat_session";
 const TEASER_KEY = "ub_czat_teaser"; // localStorage: dymek pokazany/zamknięty — nie wracamy z nim co wizytę
-const TEASER_DELAY_MS = 8000;
 const CHANNEL_NOTE = "Kanał: czat na stronie (doradca)";
 
 type Msg = { from: "bot" | "me"; text: React.ReactNode };
@@ -370,14 +369,20 @@ export function ChatDoradca() {
   const hidden = HIDDEN_PREFIXES.some((p) => pathname?.startsWith(p));
   const question = index >= 0 && index < QUESTIONS.length ? QUESTIONS[index] : null;
 
-  // Dymek zachęty: raz, po kilku sekundach i dopiero gdy baner cookies jest już rozstrzygnięty —
-  // inaczej dwa elementy walczą o ten sam róg ekranu w pierwszych sekundach wizyty.
+  // Dymek zachęty: od razu po wejściu (decyzja Bartka 09.10). Wyjątek: telefon z nierozstrzygniętym
+  // banerem cookies — tam oba elementy wchodzą na siebie, więc dymek czeka na kliknięcie w banerze.
+  // Zamknięty krzyżykiem albo po otwarciu czatu nie wraca (`TEASER_KEY`).
   useEffect(() => {
     if (hidden || open || safeGet("local", TEASER_KEY)) return;
-    const t = window.setTimeout(() => {
-      if (readConsent() !== null && !safeGet("local", TEASER_KEY)) setTeaser(true);
-    }, TEASER_DELAY_MS);
-    return () => window.clearTimeout(t);
+    const show = () => {
+      if (!safeGet("local", TEASER_KEY)) setTeaser(true);
+    };
+    if (readConsent() !== null || window.matchMedia("(min-width: 768px)").matches) {
+      show();
+      return;
+    }
+    window.addEventListener(CONSENT_EVENT, show);
+    return () => window.removeEventListener(CONSENT_EVENT, show);
   }, [hidden, open, pathname]);
 
   useEffect(() => {
@@ -574,7 +579,7 @@ export function ChatDoradca() {
               <p className="text-sm font-bold text-ink">
                 {PERSONA.name} <span className="font-normal text-muted">· {PERSONA.role}</span>
               </p>
-              <p className="text-xs text-muted">Automat UB · człowiek oddzwania w 24 h</p>
+              <p className="text-xs text-muted">Uniwersytet Beauty · człowiek oddzwania w 24 h</p>
             </div>
             <button
               type="button"
