@@ -1,10 +1,11 @@
 ---
-title: "Kurs przedłużania rzęs Gdańsk: cena i dofinansowanie"
+title: "Kursy przedłużania rzęs Trójmiasto i Gdańsk: cena"
 slug: "kurs-przedluzanie-rzes-gdansk"
+nadpisz_w_bazie: true
 category: "Poradniki"
 excerpt: "Ile kosztuje kurs przedłużania rzęs w Gdańsku, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie pomorskim."
-metaTitle: "Kurs przedłużania rzęs Gdańsk: cena i dofinansowanie"
-metaDescription: "Kurs przedłużania rzęs w Gdańsku: rynkowa cena 1800-3400 zł, przy dofinansowaniu z BUR wkład własny zwykle 90-680 zł. Program i zasady naboru."
+metaTitle: "Kursy przedłużania rzęs Trójmiasto i Gdańsk: cena"
+metaDescription: "Kursy przedłużania rzęs w Gdańsku i Trójmieście: cena 1800-3400 zł, wkład własny z dofinansowaniem BUR (nawet do 95%) zwykle 90-680 zł. Program i nabór."
 data: 2026-09-29
 reading_minutes: 4
 target: kursantka (B2C)
@@ -15,7 +16,7 @@ generator: blog-factory
 wariant: 5
 ---
 
-# Kurs przedłużania rzęs w Gdańsku: cena, program i dofinansowanie
+# Kurs przedłużania rzęs w Gdańsku i Trójmieście: cena, program, dofinansowanie
 
 Uzupełnienia stanowią z czasem większość kalendarza stylistki rzęs, i to one, a nie nowe klientki, decydują o stabilności przychodu.
 

@@ -1,10 +1,11 @@
 ---
-title: "Kurs stylizacji paznokci Poznań: cena i dofinansowanie"
+title: "Kurs stylizacji paznokci Poznań: cena, dofinansowanie"
 slug: "kurs-stylizacja-paznokci-poznan"
+nadpisz_w_bazie: true
 category: "Poradniki"
 excerpt: "Ile kosztuje kurs stylizacji paznokci w Poznaniu, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie wielkopolskim."
-metaTitle: "Kurs stylizacji paznokci Poznań: cena i dofinansowanie"
-metaDescription: "Kurs stylizacji paznokci w Poznaniu: rynkowa cena 1800-4300 zł, przy dofinansowaniu z BUR wkład własny zwykle 90-860 zł. Program i zasady naboru."
+metaTitle: "Kurs stylizacji paznokci Poznań: cena, dofinansowanie"
+metaDescription: "Kurs stylizacji paznokci w Poznaniu: cena 1800-4300 zł, wkład własny z dofinansowaniem BUR (nawet do 95%) zwykle 90-860 zł. Program kursu i zasady naboru."
 data: 2026-09-29
 reading_minutes: 4
 target: kursantka (B2C)

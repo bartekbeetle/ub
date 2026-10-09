@@ -1,10 +1,11 @@
 ---
-title: "Kurs przedłużania rzęs Wrocław: cena i dofinansowanie"
+title: "Kurs przedłużania i zagęszczania rzęs Wrocław: cena"
 slug: "kurs-przedluzanie-rzes-wroclaw"
+nadpisz_w_bazie: true
 category: "Poradniki"
 excerpt: "Ile kosztuje kurs przedłużania rzęs we Wrocławiu, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie dolnośląskim."
-metaTitle: "Kurs przedłużania rzęs Wrocław: cena i dofinansowanie"
-metaDescription: "Kurs przedłużania rzęs we Wrocławiu: rynkowa cena 1800-3400 zł, przy dofinansowaniu z BUR wkład własny zwykle 90-680 zł. Program i zasady naboru."
+metaTitle: "Kurs przedłużania i zagęszczania rzęs Wrocław: cena"
+metaDescription: "Kurs przedłużania i zagęszczania rzęs we Wrocławiu (1:1 i 2D-5D): cena 1800-3400 zł, wkład własny z dofinansowaniem BUR (nawet do 95%) zwykle 90-680 zł."
 data: 2026-09-29
 reading_minutes: 4
 target: kursantka (B2C)
@@ -15,7 +16,7 @@ generator: blog-factory
 wariant: 0
 ---
 
-# Kurs przedłużania rzęs we Wrocławiu: cena, program i dofinansowanie
+# Kurs przedłużania i zagęszczania rzęs we Wrocławiu: cena, program, dofinansowanie
 
 Przedłużanie rzęs jest usługą, którą klientka uzupełnia co trzy do czterech tygodni, dlatego stylistka buduje przewidywalny kalendarz szybciej niż w kategoriach opartych na jednorazowych zabiegach.
 

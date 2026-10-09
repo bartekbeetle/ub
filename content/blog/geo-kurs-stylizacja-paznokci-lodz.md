@@ -1,10 +1,11 @@
 ---
-title: "Kurs stylizacji paznokci Łódź: cena i dofinansowanie"
+title: "Kurs stylizacji paznokci Łódź: cena, program, dofinansowanie"
 slug: "kurs-stylizacja-paznokci-lodz"
+nadpisz_w_bazie: true
 category: "Poradniki"
 excerpt: "Ile kosztuje kurs stylizacji paznokci w Łodzi, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie łódzkim."
-metaTitle: "Kurs stylizacji paznokci Łódź: cena i dofinansowanie"
-metaDescription: "Kurs stylizacji paznokci w Łodzi: rynkowa cena 1800-4300 zł, przy dofinansowaniu z BUR wkład własny zwykle 90-860 zł. Program i zasady naboru."
+metaTitle: "Kurs stylizacji paznokci Łódź: cena, program, dofinansowanie"
+metaDescription: "Kurs stylizacji paznokci w Łodzi: cena 1800-4300 zł, wkład własny z dofinansowaniem BUR (nawet do 95%) zwykle 90-860 zł. Program kursu i zasady naboru."
 data: 2026-09-29
 reading_minutes: 4
 target: kursantka (B2C)

@@ -1,10 +1,11 @@
 ---
-title: "Kurs makijażu permanentnego Wrocław: cena i dofinansowanie"
+title: "Kurs makijażu permanentnego Wrocław: szkolenia, cena"
 slug: "kurs-makijaz-permanentny-wroclaw"
+nadpisz_w_bazie: true
 category: "Poradniki"
 excerpt: "Ile kosztuje kurs makijażu permanentnego we Wrocławiu, co obejmuje program i jak wygląda ścieżka dofinansowania z Bazy Usług Rozwojowych w województwie dolnośląskim."
-metaTitle: "Kurs makijażu permanentnego Wrocław: cena i dofinansowanie"
-metaDescription: "Kurs makijażu permanentnego we Wrocławiu: rynkowa cena 5500-7000 zł, przy dofinansowaniu z BUR wkład własny zwykle 280-1400 zł. Program i zasady naboru."
+metaTitle: "Kurs makijażu permanentnego Wrocław: szkolenia, cena"
+metaDescription: "Szkolenia z makijażu permanentnego we Wrocławiu: cena kursu 5500-7000 zł, wkład własny z dofinansowaniem BUR (nawet do 95%) zwykle 280-1400 zł."
 data: 2026-09-29
 reading_minutes: 4
 target: kursantka (B2C)
@@ -15,7 +16,7 @@ generator: blog-factory
 wariant: 1
 ---
 
-# Kurs makijażu permanentnego we Wrocławiu: cena, program i dofinansowanie
+# Kurs makijażu permanentnego we Wrocławiu: szkolenia, cena i dofinansowanie
 
 Pigment w skórze zostaje na lata, a poprawka po źle wykonanym zabiegu kosztuje więcej niż sam zabieg, dlatego wybór szkolenia z PMU jest decyzją innej wagi niż przy usługach odwracalnych.
 

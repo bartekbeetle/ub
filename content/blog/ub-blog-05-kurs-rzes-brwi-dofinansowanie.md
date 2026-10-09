@@ -1,11 +1,12 @@
 ---
-title: "Kurs rzęs i brwi z dofinansowaniem - ile dopłacasz"
+title: "Kurs przedłużania rzęs z dofinansowaniem: ile dopłacasz"
 slug: "kurs-rzes-brwi-z-dofinansowaniem-ile-doplacasz"
+nadpisz_w_bazie: true
 category: "Dofinansowania"
 excerpt: "Ile realnie kosztuje kurs rzęs i brwi w 2026 i ile dopłacasz po dofinansowaniu z BUR. Konkretne widełki, wyliczenie przed/po i odpowiedź, czy musisz być bezrobotna."
 meta_description: "Dofinansowanie na kurs rzęs i brwi z BUR - ile realnie dopłacasz. Widełki cen 2026, wyliczenie przed/po, kto się kwalifikuje i od czego zacząć karierę."
-metaTitle: "Kurs rzęs i brwi z dofinansowaniem - ile dopłacasz"
-metaDescription: "Dofinansowanie na kurs rzęs i brwi z BUR - ile realnie dopłacasz. Widełki cen 2026, wyliczenie przed/po, kto się kwalifikuje i od czego zacząć."
+metaTitle: "Kurs przedłużania rzęs z dofinansowaniem: ile dopłacasz"
+metaDescription: "Kurs przedłużania rzęs z dofinansowaniem BUR: nawet do 95% ceny. Widełki cen 2026, wyliczenie przed i po, kto się kwalifikuje, od czego zacząć."
 data: 2026-07-18
 target: kursantka (B2C)
 fraza_glowna: "dofinansowanie na kurs rzęs"
@@ -14,7 +15,7 @@ rola: podtemat
 reading_minutes: 8
 ---
 
-# Dofinansowanie na kurs rzęs i brwi - realny koszt dla Ciebie
+# Kurs przedłużania rzęs (i brwi) z dofinansowaniem - realny koszt dla Ciebie
 
 Reklamy „kurs rzęs za 0 zł" wymagają sprostowania. W większości przypadków szkolenie nie kosztuje zera złotych - dofinansowanie z BUR pokrywa nawet do 95% ceny, zależnie od województwa i naboru, a resztę dopłacasz sama. Przy kursach rzęs i brwi ta reszta to zwykle kilkaset złotych zamiast pełnej ceny kursu. Różnica jest na tyle duża, że opłaca się ją policzyć dokładnie, na konkretnych kwotach.
 
