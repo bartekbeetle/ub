@@ -579,7 +579,7 @@ export function ChatDoradca() {
               <p className="text-sm font-bold text-ink">
                 {PERSONA.name} <span className="font-normal text-muted">· {PERSONA.role}</span>
               </p>
-              <p className="text-xs text-muted">Uniwersytet Beauty · człowiek oddzwania w 24 h</p>
+              <p className="text-xs text-muted">Uniwersytet Beauty</p>
             </div>
             <button
               type="button"
