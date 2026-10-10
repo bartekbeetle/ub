@@ -5,13 +5,24 @@ import { useRouter } from "next/navigation";
 import { CATEGORIES } from "@/lib/constants";
 
 /** Kategorie dodatkowe kursantki — inne kursy, o które pytała. Główna (z formularza) jest nieedytowalna. */
-export function LeadExtraCategories({ leadId, main, initial }: { leadId: number; main: string; initial: string[] }) {
+export function LeadExtraCategories({
+  leadId,
+  main,
+  initial,
+  compact = false,
+}: {
+  leadId: number;
+  main: string;
+  initial: string[];
+  /** Wersja do wiersza listy: zwinięta pod „+ dodatkowa”, rozwija się na klik. */
+  compact?: boolean;
+}) {
   const router = useRouter();
   const [picked, setPicked] = useState<string[]>(initial);
   const [state, setState] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const dirty = [...picked].sort().join("|") !== [...initial].sort().join("|");
 
-  return (
+  const editor = (
     <div>
       <div className="flex flex-wrap gap-1.5">
         {CATEGORIES.filter((c) => c !== main).map((c) => {
@@ -58,5 +69,15 @@ export function LeadExtraCategories({ leadId, main, initial }: { leadId: number;
         </div>
       )}
     </div>
+  );
+
+  if (!compact) return editor;
+  return (
+    <details className="mt-1">
+      <summary className="cursor-pointer list-none text-xs font-semibold text-sand-700 hover:underline">
+        {initial.length ? "zmień dodatkowe" : "+ dodatkowa"}
+      </summary>
+      <div className="mt-2 w-[260px]">{editor}</div>
+    </details>
   );
 }

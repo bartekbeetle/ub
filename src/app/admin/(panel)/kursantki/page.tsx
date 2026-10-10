@@ -7,6 +7,7 @@ import { RevealContact } from "@/components/admin/RevealContact";
 import { LeadStatusSelect } from "@/components/admin/LeadStatusSelect";
 import { SubmissionToggle } from "@/components/admin/SubmissionToggle";
 import { DeleteRecordButton } from "@/components/admin/DeleteRecordButton";
+import { LeadExtraCategories } from "@/components/admin/LeadExtraCategories";
 import { formatDateTime, maskEmail, maskPhone } from "@/lib/utils";
 import { CHAT_PREFIX, KANAL_LABELS, kanalLeada, kanalSesji, type Kanal } from "@/lib/lead-channel";
 import { reminderStatusByEmail, normalizeEmail, type ReminderInfo } from "@/lib/abandoned-core";
@@ -422,7 +423,7 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
               <th className="px-4 py-3 font-semibold">Imię i nazwisko</th>
               <th className="px-4 py-3 font-semibold">Kontakt</th>
               <th className="px-4 py-3 font-semibold">Źródło</th>
-              <th className="px-4 py-3 font-semibold">Kwalifikacja</th>
+              <th className="px-4 py-3 font-semibold">Kategoria (główna + dodatkowe)</th>
               <th className="px-4 py-3 font-semibold">Status</th>
               <th className="px-4 py-3 font-semibold">Przydział / akcja</th>
             </tr>
@@ -748,11 +749,18 @@ function WierszLeada({
         {kanalLeada(lead) ? <KanalBadge kanal={kanalLeada(lead)!} /> : (SOURCE_LABELS[lead.source] ?? lead.source)}
       </td>
       <td className="px-4 py-3">
-        <span className="block">{lead.category}</span>
+        <span className="block font-semibold" title="Kategoria główna — pierwotny wybór w formularzu">{lead.category}</span>
         {lead.extraCategories.length > 0 && (
-          <span className="block text-xs text-sand-700" title="Kategoria dodatkowa">+ {lead.extraCategories.join(", ")}</span>
+          <span className="mt-1 flex max-w-[240px] flex-wrap gap-1" title="Kategoria dodatkowa">
+            {lead.extraCategories.map((c) => (
+              <span key={c} className="rounded-full bg-sand-50 px-2 py-0.5 text-[11px] font-semibold text-sand-700 ring-1 ring-sand-200">
+                + {c}
+              </span>
+            ))}
+          </span>
         )}
-        <span className="block text-xs text-muted">{voivodeshipName(lead.voivodeship)}</span>
+        <span className="mt-1 block text-xs text-muted">{voivodeshipName(lead.voivodeship)}</span>
+        <LeadExtraCategories leadId={lead.id} main={lead.category} initial={lead.extraCategories} compact />
       </td>
       <td className="px-4 py-3"><LeadStatusSelect leadId={lead.id} current={lead.status} /></td>
       <td className="px-4 py-3 text-xs">{trenerki.join(", ") || <span className="text-muted">—</span>}</td>
