@@ -483,6 +483,7 @@ function WierszPorzuconej({ sesja, przypomnienie }: { sesja: QuizSession; przypo
       </td>
       <td className="px-4 py-3 font-medium">
         {sesja.name || <span className="text-muted">— (nie zdążyła podać)</span>}
+        <DeleteRecordButton id={sesja.id} kind="porzucona" name={sesja.name || `porzucona aplikacja #${sesja.id}`} />
       </td>
       <td className="px-4 py-3">
         <div className="space-y-1">

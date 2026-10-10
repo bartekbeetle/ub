@@ -16,7 +16,7 @@ export function DeleteRecordButton({
   redirectTo,
 }: {
   id: number;
-  kind: "lead" | "zgloszenie" | "prospekt";
+  kind: "lead" | "zgloszenie" | "prospekt" | "porzucona";
   name: string;
   /** Po usunięciu przejdź tutaj zamiast odświeżać (np. z karty, która właśnie przestała istnieć). */
   redirectTo?: string;
@@ -31,7 +31,9 @@ export function DeleteRecordButton({
       ? `/api/admin/leads/${id}`
       : kind === "prospekt"
         ? `/api/admin/prospekty/${id}`
-        : `/api/admin/zgloszenia/${id}`;
+        : kind === "porzucona"
+          ? `/api/admin/porzucone/${id}`
+          : `/api/admin/zgloszenia/${id}`;
 
   async function remove() {
     setBusy(true);
