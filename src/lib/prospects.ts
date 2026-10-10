@@ -352,28 +352,50 @@ export async function freeTrainerSlug(name: string): Promise<string> {
 // którą akademia szkoli, z województwa akademii albo z tych, które obsługuje (`servesVoivodeships`).
 // Jedno zgrupowane zapytanie na stronę, dopasowanie w pamięci — bez N zapytań na wiersz.
 
-export type UnassignedLeadPool = Map<string, { total: number; phoneOk: number }>;
+/**
+ * Wolne leady jako lista (nie zgrupowane liczniki): od 10.10.2026 lead ma kategorię główną
+ * i dodatkowe, więc dopasowanie liczy każdą kursantkę RAZ, nawet gdy akademia pasuje do kilku
+ * jej kategorii. Wolnych leadów są dziesiątki–setki, więc pamięć wystarcza.
+ */
+export type UnassignedLeadPool = {
+  id: number;
+  voivodeship: string;
+  category: string;
+  extraCategories: string[];
+  phoneOk: boolean;
+}[];
 
-const poolKey = (voivodeship: string, category: string) => `${voivodeship}|${category}`;
+const unassignedLeadWhere = () =>
+  and(
+    sql`${schema.leads.status} <> 'odrzucony'`,
+    sql`not exists (select 1 from ${schema.leadAssignments} where ${schema.leadAssignments.leadId} = ${schema.leads.id})`
+  );
 
 export async function getUnassignedLeadPool(): Promise<UnassignedLeadPool> {
   const db = await getDb();
   const rows = await db
     .select({
+      id: schema.leads.id,
       voivodeship: schema.leads.voivodeship,
       category: schema.leads.category,
-      total: sql<number>`count(*)::int`,
-      phoneOk: sql<number>`count(${schema.leads.contactConsentAt})::int`,
+      extraCategories: schema.leads.extraCategories,
+      contactConsentAt: schema.leads.contactConsentAt,
     })
     .from(schema.leads)
-    .where(
-      and(
-        sql`${schema.leads.status} <> 'odrzucony'`,
-        sql`not exists (select 1 from ${schema.leadAssignments} where ${schema.leadAssignments.leadId} = ${schema.leads.id})`
-      )
-    )
-    .groupBy(schema.leads.voivodeship, schema.leads.category);
-  return new Map(rows.map((r) => [poolKey(r.voivodeship, r.category), { total: r.total, phoneOk: r.phoneOk }]));
+    .where(unassignedLeadWhere());
+  return rows.map((r) => ({ ...r, phoneOk: r.contactConsentAt !== null }));
+}
+
+/** Czy lead pasuje kategorią główną („main”), dodatkową („extra”), czy wcale. */
+function leadMatch(
+  l: { voivodeship: string; category: string; extraCategories: string[] },
+  voivs: string[],
+  cats: string[]
+): "main" | "extra" | null {
+  if (!voivs.includes(l.voivodeship)) return null;
+  if (cats.includes(l.category)) return "main";
+  if (l.extraCategories.some((c) => cats.includes(c))) return "extra";
+  return null;
 }
 
 /** Województwa, z których akademia przyjmie kursantkę: własne + zadeklarowany zasięg. */
@@ -384,22 +406,22 @@ export function prospectVoivodeships(p: Pick<ProspectRow, "voivodeship" | "serve
 export function matchingLeadCount(
   pool: UnassignedLeadPool,
   p: Pick<ProspectRow, "voivodeship" | "servesVoivodeships" | "categories">
-): { total: number; phoneOk: number } {
+): { total: number; phoneOk: number; viaExtra: number } {
+  const voivs = prospectVoivodeships(p);
   let total = 0;
   let phoneOk = 0;
-  for (const v of prospectVoivodeships(p)) {
-    for (const c of p.categories) {
-      const hit = pool.get(poolKey(v, c));
-      if (hit) {
-        total += hit.total;
-        phoneOk += hit.phoneOk;
-      }
-    }
+  let viaExtra = 0;
+  for (const l of pool) {
+    const m = leadMatch(l, voivs, p.categories);
+    if (!m) continue;
+    total++;
+    if (l.phoneOk) phoneOk++;
+    if (m === "extra") viaExtra++;
   }
-  return { total, phoneOk };
+  return { total, phoneOk, viaExtra };
 }
 
-/** Lista konkretnych leadów dla karty akademii (kto dokładnie czeka). */
+/** Lista konkretnych leadów dla karty akademii (kto dokładnie czeka i czy przez kategorię dodatkową). */
 export async function getMatchingUnassignedLeads(
   p: Pick<ProspectRow, "voivodeship" | "servesVoivodeships" | "categories">,
   limit = 30
@@ -407,25 +429,22 @@ export async function getMatchingUnassignedLeads(
   const voivs = prospectVoivodeships(p);
   if (voivs.length === 0 || p.categories.length === 0) return [];
   const db = await getDb();
-  return db
+  const rows = await db
     .select({
       id: schema.leads.id,
       name: schema.leads.name,
       city: schema.leads.city,
       voivodeship: schema.leads.voivodeship,
       category: schema.leads.category,
+      extraCategories: schema.leads.extraCategories,
       createdAt: schema.leads.createdAt,
       contactConsentAt: schema.leads.contactConsentAt,
     })
     .from(schema.leads)
-    .where(
-      and(
-        inArray(schema.leads.voivodeship, voivs),
-        inArray(schema.leads.category, p.categories),
-        sql`${schema.leads.status} <> 'odrzucony'`,
-        sql`not exists (select 1 from ${schema.leadAssignments} where ${schema.leadAssignments.leadId} = ${schema.leads.id})`
-      )
-    )
-    .orderBy(desc(schema.leads.createdAt))
-    .limit(limit);
+    .where(and(inArray(schema.leads.voivodeship, voivs), unassignedLeadWhere()))
+    .orderBy(desc(schema.leads.createdAt));
+  return rows
+    .map((l) => ({ ...l, match: leadMatch(l, voivs, p.categories) }))
+    .filter((l): l is typeof l & { match: "main" | "extra" } => l.match !== null)
+    .slice(0, limit);
 }

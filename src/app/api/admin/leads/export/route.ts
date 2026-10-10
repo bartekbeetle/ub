@@ -20,7 +20,7 @@ export async function GET() {
     .orderBy(desc(schema.leads.createdAt));
 
   const rows: (string | number | null)[][] = [
-    ["ID", "Data", "Imię i nazwisko", "Telefon", "Email", "Województwo", "Kategoria", "Status zawodowy", "Status", "Źródło", "Kurs", "UTM source", "UTM medium", "UTM campaign", "Notatki"],
+    ["ID", "Data", "Imię i nazwisko", "Telefon", "Email", "Województwo", "Kategoria główna", "Kategoria dodatkowa", "Status zawodowy", "Status", "Źródło", "Kurs", "UTM source", "UTM medium", "UTM campaign", "Notatki"],
     ...leads.map(({ lead, course }) => [
       lead.id,
       formatDateTime(lead.createdAt),
@@ -29,6 +29,7 @@ export async function GET() {
       lead.email,
       voivodeshipName(lead.voivodeship),
       lead.category,
+      lead.extraCategories.join(", "),
       lead.employmentStatus,
       LEAD_STATUS_LABELS[lead.status] ?? lead.status,
       kanalLeada(lead) ? KANAL_LABELS[kanalLeada(lead)!] : (SOURCE_LABELS[lead.source] ?? lead.source),

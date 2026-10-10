@@ -144,7 +144,11 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
   if (etapZlozone) leadConditions.push(eq(schema.leads.source, "quiz"));
   if (etapInneWejscia) leadConditions.push(sql`${schema.leads.source} <> 'quiz'`);
   if (woj) leadConditions.push(eq(schema.leads.voivodeship, woj));
-  if (kategoria) leadConditions.push(eq(schema.leads.category, kategoria));
+  // Filtr łapie kategorię główną ORAZ dodatkową — „kto chce brwi” to obie grupy.
+  if (kategoria)
+    leadConditions.push(
+      or(eq(schema.leads.category, kategoria), sql`${schema.leads.extraCategories} ? ${kategoria}`)!
+    );
   if (from) leadConditions.push(gte(schema.leads.createdAt, new Date(from)));
   if (to) leadConditions.push(lte(schema.leads.createdAt, new Date(to + "T23:59:59")));
   if (q) {
@@ -745,6 +749,9 @@ function WierszLeada({
       </td>
       <td className="px-4 py-3">
         <span className="block">{lead.category}</span>
+        {lead.extraCategories.length > 0 && (
+          <span className="block text-xs text-sand-700" title="Kategoria dodatkowa">+ {lead.extraCategories.join(", ")}</span>
+        )}
         <span className="block text-xs text-muted">{voivodeshipName(lead.voivodeship)}</span>
       </td>
       <td className="px-4 py-3"><LeadStatusSelect leadId={lead.id} current={lead.status} /></td>

@@ -583,9 +583,16 @@ async function main() {
   await lead({ name: "Inna kategoria", voivodeship: "lubuskie", category: "Stylizacja rzęs" });
   const pool = await prospectsLib.getUnassignedLeadPool();
   const kapusta = { voivodeship: "lubuskie", servesVoivodeships: [] as string[], categories: [cat] };
-  check("od ręki: tylko nieprzydzielone i nieodrzucone z jej kategorii i województwa", prospectsLib.matchingLeadCount(pool, kapusta), { total: 2, phoneOk: 1 });
+  check("od ręki: tylko nieprzydzielone i nieodrzucone z jej kategorii i województwa", prospectsLib.matchingLeadCount(pool, kapusta), { total: 2, phoneOk: 1, viaExtra: 0 });
   check("od ręki: obsługiwane województwo poszerza pulę", prospectsLib.matchingLeadCount(pool, { ...kapusta, servesVoivodeships: ["dolnoslaskie"] }).total, 3);
   check("od ręki: lista na karcie = ten sam zbiór co licznik", (await prospectsLib.getMatchingUnassignedLeads(kapusta)).map((l) => l.name).sort(), ["Wolna bez zgody tel.", "Wolna z telefonem"]);
+  await lead({ name: "Rzęsy + PMU dodatkowo", voivodeship: "lubuskie", category: "Stylizacja rzęs", extraCategories: [cat] });
+  await lead({ name: "PMU + brwi dodatkowo", voivodeship: "lubuskie", category: cat, extraCategories: ["Stylizacja brwi"] });
+  const pool2 = await prospectsLib.getUnassignedLeadPool();
+  check("od ręki: kategoria dodatkowa się liczy, oznaczona osobno", prospectsLib.matchingLeadCount(pool2, kapusta), { total: 4, phoneOk: 3, viaExtra: 1 });
+  check("od ręki: kursantka pasująca główną i dodatkową liczy się RAZ", prospectsLib.matchingLeadCount(pool2, { ...kapusta, categories: [cat, "Stylizacja brwi"] }).total, 4);
+  const naKarcie = await prospectsLib.getMatchingUnassignedLeads(kapusta);
+  check("od ręki: karta pokazuje, że dopasowanie jest przez dodatkową", naKarcie.find((l) => l.name === "Rzęsy + PMU dodatkowo")?.match, "extra");
   check("od ręki: akademia bez kategorii = 0", prospectsLib.matchingLeadCount(pool, { ...kapusta, categories: [] }).total, 0);
 
   console.log(failed === 0 ? "\nWSZYSTKO OK" : `\nNIEPOWODZENIA: ${failed}`);

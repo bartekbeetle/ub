@@ -1,0 +1,1 @@
+ALTER TABLE "leads" ADD COLUMN IF NOT EXISTS "extra_categories" jsonb DEFAULT '[]'::jsonb NOT NULL;

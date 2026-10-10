@@ -186,7 +186,14 @@ export default async function ProspektPage({ params }: { params: Promise<{ id: s
                   {l.name}
                 </Link>
                 <span className="text-xs text-muted">
-                  {l.category} · {l.city ? `${l.city}, ` : ""}
+                  {l.match === "extra" ? (
+                    <span className="font-semibold text-sand-700">
+                      dodatkowa: {l.extraCategories.filter((c) => prospect.categories.includes(c)).join(", ")} (główna: {l.category})
+                    </span>
+                  ) : (
+                    l.category
+                  )}{" "}
+                  · {l.city ? `${l.city}, ` : ""}
                   {voivodeshipName(l.voivodeship)} · {formatDate(l.createdAt)}
                   {!l.contactConsentAt && <span className="ml-2 font-semibold text-red-700">brak zgody na telefon</span>}
                 </span>

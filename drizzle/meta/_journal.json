@@ -148,6 +148,13 @@
       "when": 1790922808953,
       "tag": "0020_prospekt_kontakty_linki",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1790922868953,
+      "tag": "0021_lead_kategorie_dodatkowe",
+      "breakpoints": true
     }
   ]
 }

@@ -385,7 +385,13 @@ export const leads = pgTable(
     phone: varchar("phone", { length: 40 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
     voivodeship: varchar("voivodeship", { length: 40 }).notNull(),
+    /** Kategoria główna = pierwotny wybór kursantki w formularzu. Nie nadpisujemy jej. */
     category: varchar("category", { length: 60 }).notNull(),
+    /**
+     * Kategorie dodatkowe (10.10.2026) — inne kursy, o które pytała (rozmowa, czat, notatka).
+     * Uzupełnia biuro; liczą się w „leadach od ręki” dla akademii.
+     */
+    extraCategories: jsonb("extra_categories").$type<string[]>().notNull().default([]),
     employmentStatus: varchar("employment_status", { length: 60 }).notNull(),
     preferredDate: varchar("preferred_date", { length: 120 }),
     message: text("message"),

@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/auth";
 import { logAdminAction, actorLabel } from "@/lib/audit";
 import { updateAssignmentStatusAsAdmin } from "@/lib/assignment-status";
 import { leadStatusUpdateSchema } from "@/lib/validators";
+import { CATEGORIES } from "@/lib/constants";
 import { z } from "zod";
 
 export const runtime = "nodejs";
@@ -27,6 +28,7 @@ export async function GET(_req: Request, { params }: { params: Params }) {
 const patchSchema = z.union([
   leadStatusUpdateSchema.extend({ notes: z.string().max(4000).optional() }),
   z.object({ notes: z.string().max(4000) }),
+  z.object({ extraCategories: z.array(z.enum(CATEGORIES as unknown as [string, ...string[]])).max(CATEGORIES.length) }),
 ]);
 
 export async function PATCH(req: Request, { params }: { params: Params }) {
@@ -47,6 +49,15 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
   const data = parsed.data;
   const update: Partial<typeof schema.leads.$inferInsert> = {};
   if ("notes" in data && data.notes !== undefined) update.notes = data.notes;
+  if ("extraCategories" in data) {
+    // Główna zostaje główną — nie dublujemy jej w dodatkowych.
+    update.extraCategories = [...new Set(data.extraCategories)].filter((c) => c !== lead.category);
+    await logAdminAction(user, { action: "kategorie_dodatkowe",
+      entityType: "lead",
+      entityId: leadId,
+      details: { from: lead.extraCategories, to: update.extraCategories },
+    });
+  }
 
   if ("status" in data && data.status && data.status !== lead.status) {
     update.status = data.status;

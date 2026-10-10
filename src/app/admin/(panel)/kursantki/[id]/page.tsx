@@ -11,6 +11,7 @@ import { LeadStatusSelect } from "@/components/admin/LeadStatusSelect";
 import { AssignTrainer, UnassignButton } from "@/components/admin/AssignTrainer";
 import { AssignmentStatusSelect } from "@/components/admin/AssignmentStatusSelect";
 import { LeadNotes } from "@/components/admin/LeadNotes";
+import { LeadExtraCategories } from "@/components/admin/LeadExtraCategories";
 import { AnonymizeButton } from "@/components/admin/AnonymizeButton";
 import { QuizAnswers } from "@/components/admin/QuizAnswers";
 import { formatDateTime, maskEmail, maskPhone, formatPln } from "@/lib/utils";
@@ -93,8 +94,16 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <dd>{lead.anonymizedAt ? "—" : <RevealContact masked={maskEmail(lead.email)} full={lead.email} />}</dd>
             <dt className="text-muted">Województwo</dt>
             <dd>{voivodeshipName(lead.voivodeship)}</dd>
-            <dt className="text-muted">Kategoria</dt>
-            <dd>{lead.category}</dd>
+            <dt className="text-muted">Kategoria główna</dt>
+            <dd>
+              <span className="font-semibold">{lead.category}</span>
+              <span className="block text-xs text-muted">pierwotny wybór w formularzu</span>
+            </dd>
+            <dt className="text-muted">Kategoria dodatkowa</dt>
+            <dd>
+              <LeadExtraCategories leadId={lead.id} main={lead.category} initial={lead.extraCategories} />
+              <span className="mt-1 block text-xs text-muted">inne kursy, o które pytała — liczą się w „leadach od ręki” akademii</span>
+            </dd>
             <dt className="text-muted">Status zawodowy</dt>
             <dd>{lead.employmentStatus}</dd>
             <dt className="text-muted">Preferowany termin</dt>

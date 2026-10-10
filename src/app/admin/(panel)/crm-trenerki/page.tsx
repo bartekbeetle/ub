@@ -51,15 +51,16 @@ function telHref(phone: string): string {
 }
 
 /** „Ile kursantek mogę jej dać od razu” — leady bez przydziału z jej kategorii i województwa. */
-function LeadyOdReki({ total, phoneOk }: { total: number; phoneOk: number }) {
+function LeadyOdReki({ total, phoneOk, viaExtra }: { total: number; phoneOk: number; viaExtra: number }) {
   if (total === 0) return <span className="text-xs text-muted">0 leadów od ręki</span>;
   return (
     <span
       className="inline-flex rounded-full bg-money-bg px-2 py-0.5 text-xs font-bold text-money-dark"
-      title={`${total} leadów bez przydziału z jej kategorii i województwa, w tym ${phoneOk} ze zgodą na telefon`}
+      title={`${total} leadów bez przydziału z jej kategorii i województwa (w tym ${viaExtra} przez kategorię dodatkową), ${phoneOk} ze zgodą na telefon`}
     >
       {total} {total === 1 ? "lead" : total < 5 ? "leady" : "leadów"} od ręki
       {phoneOk < total ? ` (${phoneOk} tel.)` : ""}
+      {viaExtra > 0 ? ` · ${viaExtra} z dodatk.` : ""}
     </span>
   );
 }
