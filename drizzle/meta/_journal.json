@@ -155,6 +155,13 @@
       "when": 1790922868953,
       "tag": "0021_lead_kategorie_dodatkowe",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1790922928953,
+      "tag": "0022_lead_kategorie_dodatkowe_z_quizu",
+      "breakpoints": true
     }
   ]
 }

@@ -595,6 +595,21 @@ async function main() {
   check("od ręki: karta pokazuje, że dopasowanie jest przez dodatkową", naKarcie.find((l) => l.name === "Rzęsy + PMU dodatkowo")?.match, "extra");
   check("od ręki: akademia bez kategorii = 0", prospectsLib.matchingLeadCount(pool, { ...kapusta, categories: [] }).total, 0);
 
+  // ===== KATEGORIE DODATKOWE Z QUIZU + PARSER WIADOMOŚCI (10.10.2026) =====
+  const lm = await import("../src/lib/lead-message");
+  const msg = "Kanał: czat na stronie\nInteresuje ją też (multi-sell): Stylizacja brwi, Stylizacja rzęs, Nieznana\nWiek: 25–34\nPracuje już w beauty: nie\nSkąd wie o nas: Instagram";
+  check("parser: wiek", lm.messageAge(msg), "25–34");
+  check("parser: skąd wie", lm.messageHeardFrom(msg), "Instagram");
+  check("parser: praca w beauty", lm.messageWorksInBeauty(msg), "nie");
+  check("parser: interesuje ją też = tylko znane, bez głównej", lm.messageAlsoInterested(msg, "Stylizacja rzęs"), ["Stylizacja brwi"]);
+  const stary = await lead({ name: "Stary lead z multi-sell", category: "Stylizacja rzęs", message: msg });
+  const juzMa = await lead({ name: "Ręcznie uzupełniona", category: "Stylizacja rzęs", message: msg, extraCategories: ["Masaż"] });
+  await client.exec(readFileSync("drizzle/0022_lead_kategorie_dodatkowe_z_quizu.sql", "utf8").split("--> statement-breakpoint").join(";"));
+  const [poStary] = await db.select().from(schema.leads).where(eq(schema.leads.id, stary.id));
+  const [poJuzMa] = await db.select().from(schema.leads).where(eq(schema.leads.id, juzMa.id));
+  check("migracja 0022: uzupełnia dodatkowe z wiadomości — tylko znane, bez głównej", poStary.extraCategories, ["Stylizacja brwi"]);
+  check("migracja 0022: nie nadpisuje ręcznie ustawionych", poJuzMa.extraCategories, ["Masaż"]);
+
   console.log(failed === 0 ? "\nWSZYSTKO OK" : `\nNIEPOWODZENIA: ${failed}`);
   process.exit(failed === 0 ? 0 : 1);
 }

@@ -24,6 +24,7 @@ const GROUPS: { label: string | null; items: Item[] }[] = [
       // (porzucona aplikacja to ten sam człowiek o krok wcześniej). Rozbicie tego na
       // zakładki ukrywało jedyne, co się liczy: w którym miejscu ucieka pieniądz.
       { href: "/admin/kursantki", label: "Kursantki — lejek" },
+      { href: "/admin/statystyki", label: "Statystyki" },
       { href: "/admin/rozliczenia", label: "Rozliczenia", superadminOnly: true },
       // Mailing stoi w lejku B2C, a nie w „Serwisie": to jest kontakt z kursantkami,
       // a nie ustawienie techniczne. Obok lejka widać, do ilu z nich wolno w ogóle pisać.

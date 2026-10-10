@@ -244,6 +244,7 @@ export function buildLeadPayload(
     email: form.email.trim(),
     voivodeship: form.voivodeship,
     category: form.category,
+    alsoInterestedIn: form.alsoInterestedIn.filter((c) => c !== form.category),
     employmentStatus: employmentOption?.employmentStatus ?? "inna",
     preferredDate: form.preferredDate.trim(),
     city: form.city.trim(),

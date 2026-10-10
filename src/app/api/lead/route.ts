@@ -1,4 +1,5 @@
 import { NextResponse, after } from "next/server";
+import { messageAlsoInterested } from "@/lib/lead-message";
 import { getDb, schema } from "@/db";
 import { leadSchema } from "@/lib/validators";
 import { rateLimit, getClientIp } from "@/lib/ratelimit";
@@ -49,6 +50,14 @@ export async function POST(req: Request) {
       email: data.email,
       voivodeship: data.voivodeship,
       category: data.category,
+      // Z pola quizu, a gdy klient wysłał stary payload — z linii „Interesuje ją też” w wiadomości.
+      extraCategories: [
+        ...new Set(
+          (data.alsoInterestedIn?.length ? data.alsoInterestedIn : messageAlsoInterested(data.message)).filter(
+            (c) => c !== data.category
+          )
+        ),
+      ],
       employmentStatus: data.employmentStatus,
       preferredDate: data.preferredDate || null,
       city: data.city || null,
