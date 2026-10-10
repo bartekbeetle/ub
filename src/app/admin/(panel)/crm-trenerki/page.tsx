@@ -23,6 +23,7 @@ import {
 import { ProspectStatusSelect } from "@/components/admin/ProspectStatusSelect";
 import { ProspectQuickActions } from "@/components/admin/ProspectQuickActions";
 import { ProspectKanban } from "@/components/admin/ProspectKanban";
+import { DeleteRecordButton } from "@/components/admin/DeleteRecordButton";
 import { ViewSwitcher } from "@/components/kanban/ViewSwitcher";
 import { getSessionUser } from "@/lib/auth";
 import { isAdminRole } from "@/lib/roles";
@@ -192,6 +193,7 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
                       </td>
                       <td className="px-4 py-3">
                         <ProspectQuickActions prospectId={p.id} />
+                        <DeleteRecordButton id={p.id} kind="prospekt" name={p.name} />
                       </td>
                     </tr>
                   );
@@ -292,6 +294,9 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
                       </span>
                     )}
                     <p className="text-xs text-muted">{p.phone ?? p.email ?? "brak kontaktu"}</p>
+                    {p.status !== "umowa" && p.status !== "aktywna" && (
+                      <DeleteRecordButton id={p.id} kind="prospekt" name={p.name} />
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     {p.city ?? "—"}

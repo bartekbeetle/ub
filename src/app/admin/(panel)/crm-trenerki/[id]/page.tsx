@@ -8,6 +8,7 @@ import { ProspectActivityForm } from "@/components/admin/ProspectActivityForm";
 import { ProspectNextActionForm } from "@/components/admin/ProspectNextActionForm";
 import { ProspectQuickActions } from "@/components/admin/ProspectQuickActions";
 import { PromoteProspectButton } from "@/components/admin/PromoteProspectButton";
+import { DeleteRecordButton } from "@/components/admin/DeleteRecordButton";
 import { warsawCalendarDaysDiff } from "@/lib/prospects";
 import { formatDate, formatDateTime } from "@/lib/utils";
 import {
@@ -77,6 +78,14 @@ export default async function ProspektPage({ params }: { params: Promise<{ id: s
           <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold ${PROSPECT_PRIORITY_COLORS[prospect.priority]}`}>
             Priorytet: {PROSPECT_PRIORITY_LABELS[prospect.priority]}
           </span>
+          {prospect.status !== "umowa" && prospect.status !== "aktywna" && (
+            <DeleteRecordButton
+              id={prospect.id}
+              kind="prospekt"
+              name={prospect.name}
+              redirectTo="/admin/crm-trenerki"
+            />
+          )}
         </div>
       </div>
 

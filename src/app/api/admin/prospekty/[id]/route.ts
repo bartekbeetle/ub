@@ -152,3 +152,42 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
 
   return NextResponse.json(updated);
 }
+
+export async function DELETE(_req: Request, { params }: { params: Params }) {
+  const user = await requireAdmin();
+  if (!user) return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
+  const { id } = await params;
+  const prospectId = Number(id);
+  if (!Number.isInteger(prospectId)) return NextResponse.json({ error: "Nieprawidłowe ID." }, { status: 400 });
+
+  const db = await getDb();
+  const rows = await db.select().from(schema.prospects).where(eq(schema.prospects.id, prospectId)).limit(1);
+  const prospect = rows[0];
+  if (!prospect) return NextResponse.json({ error: "Nie znaleziono." }, { status: 404 });
+
+  // Podpisana albo aktywna akademia to klientka, nie śmieć z researchu — jednym kliknięciem
+  // nie kasujemy historii współpracy. Najpierw świadoma zmiana statusu.
+  if (prospect.status === "umowa" || prospect.status === "aktywna") {
+    return NextResponse.json(
+      { error: `Status „${PROSPECT_STATUS_LABELS[prospect.status]}" — zmień status, zanim usuniesz.` },
+      { status: 409 }
+    );
+  }
+
+  await logAdminAction(user, { action: "usuniecie_prospekta",
+    entityType: "prospect",
+    entityId: prospectId,
+    details: {
+      name: prospect.name,
+      status: prospect.status,
+      source: prospect.source,
+      trainerId: prospect.trainerId,
+    },
+  });
+
+  // Oś czasu (`prospect_activities`) leci kaskadą. Profil trenerki (`trainerId`) zostaje —
+  // dezaktywuje się go osobno w Katalogu trenerek.
+  await db.delete(schema.prospects).where(eq(schema.prospects.id, prospectId));
+
+  return NextResponse.json({ ok: true });
+}

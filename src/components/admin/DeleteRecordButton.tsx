@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 /**
- * Trwałe usunięcie rekordu z listy kursantek — rekordy testowe i śmieciowe.
+ * Trwałe usunięcie rekordu (kursantka, zgłoszenie, prospekt z CRM trenerek) — rekordy testowe i śmieciowe.
  *
  * Potwierdzenie jest dwustopniowe i inline, celowo BEZ `window.confirm`: modal przeglądarki
  * blokuje stronę i odklikuje się odruchowo, a tu kasujemy nieodwracalnie.
@@ -13,23 +13,32 @@ export function DeleteRecordButton({
   id,
   kind,
   name,
+  redirectTo,
 }: {
   id: number;
-  kind: "lead" | "zgloszenie";
+  kind: "lead" | "zgloszenie" | "prospekt";
   name: string;
+  /** Po usunięciu przejdź tutaj zamiast odświeżać (np. z karty, która właśnie przestała istnieć). */
+  redirectTo?: string;
 }) {
   const router = useRouter();
   const [armed, setArmed] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const endpoint = kind === "lead" ? `/api/admin/leads/${id}` : `/api/admin/zgloszenia/${id}`;
+  const endpoint =
+    kind === "lead"
+      ? `/api/admin/leads/${id}`
+      : kind === "prospekt"
+        ? `/api/admin/prospekty/${id}`
+        : `/api/admin/zgloszenia/${id}`;
 
   async function remove() {
     setBusy(true);
     setError(null);
     const res = await fetch(endpoint, { method: "DELETE" });
     if (res.ok) {
+      if (redirectTo) router.push(redirectTo);
       router.refresh();
       return;
     }
