@@ -115,95 +115,6 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
         </div>
       </div>
 
-      {/* ☎️ DO ZADZWONIENIA — zaległe/dzisiejsze terminy + rozmowy zaczęte i porzucone bez ustalonego kroku */}
-      {callQueue.total === 0 ? (
-        <p className="mt-6 text-sm text-muted">Nic nie czeka na telefon.</p>
-      ) : (
-        <div className="card mt-6 overflow-hidden border-2 border-sand-300">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-sand-200 bg-sand-50 px-4 py-3">
-            <h2 className="font-serif text-lg font-semibold">
-              ☎️ Do zadzwonienia{" "}
-              <span className="text-sm font-normal text-muted">
-                ({callQueue.rows.length} z {callQueue.total})
-              </span>
-            </h2>
-            <Link href="/admin/crm-trenerki?widok=dzis" className="text-xs font-semibold text-sand-700 hover:underline">
-              Pokaż w pełnej tabeli →
-            </Link>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-gray-50 text-xs uppercase tracking-wide text-muted">
-                <tr>
-                  <th className="px-4 py-3 font-semibold">Podmiot</th>
-                  <th className="px-4 py-3 font-semibold">Kontakt</th>
-                  <th className="px-4 py-3 font-semibold">BUR</th>
-                  <th className="px-4 py-3 font-semibold">Następny ruch</th>
-                  <th className="px-4 py-3 font-semibold">Szybka akcja</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {callQueue.rows.map((p) => {
-                  const overdueDays = p.nextActionAt ? warsawCalendarDaysDiff(p.nextActionAt) : 0;
-                  return (
-                    <tr key={p.id} className="align-top hover:bg-gray-50">
-                      <td className="px-4 py-3">
-                        <Link href={`/admin/crm-trenerki/${p.id}`} className="font-semibold text-sand-700 hover:underline">
-                          {p.name}
-                        </Link>
-                        {/* Akademia, która sama założyła konto, dzwoni się inaczej niż kontakt
-                            z researchu: zna ofertę, zostawiła dane dobrowolnie i CZEKA na telefon.
-                            Dlatego wyróżniamy ją w kolejce, zamiast chować w kolumnie „źródło". */}
-                        {p.source === "rejestracja" && (
-                          <span className="mt-1 inline-flex rounded-full bg-money-bg px-2 py-0.5 text-xs font-bold text-money-dark">
-                            zgłosiła się sama
-                          </span>
-                        )}
-                        <p className="text-xs text-muted">
-                          {p.city ?? "—"}
-                          {p.voivodeship ? `, ${voivodeshipName(p.voivodeship)}` : ""}
-                        </p>
-                        <p className="max-w-[200px] text-xs text-muted">{p.categories.join(", ") || "—"}</p>
-                      </td>
-                      <td className="px-4 py-3">
-                        {p.phone ? (
-                          <a href={telHref(p.phone)} className="font-semibold text-sand-700 hover:underline">
-                            {p.phone}
-                          </a>
-                        ) : (
-                          <span className="text-muted">brak numeru</span>
-                        )}
-                        <p className="text-xs text-muted">ostatni kontakt: {lastContactLabel(p.lastContactAt)}</p>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold ${BUR_SEGMENT_COLORS[p.burSegment]}`}>
-                          {BUR_SEGMENT_SHORT[p.burSegment]}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        {p.nextActionAt ? (
-                          <p className={overdueDays > 0 ? "font-semibold text-red-700" : "text-ink-soft"}>
-                            {formatDate(p.nextActionAt)}
-                            {overdueDays > 0 && <span className="block text-xs">zaległe o {overdueDays} dni</span>}
-                          </p>
-                        ) : (
-                          <p className="text-muted">brak terminu — status „{PROSPECT_STATUS_LABELS[p.status]}"</p>
-                        )}
-                        {p.nextActionNote && <p className="mt-1 max-w-[220px] text-xs text-muted">{p.nextActionNote}</p>}
-                      </td>
-                      <td className="px-4 py-3">
-                        <ProspectQuickActions prospectId={p.id} />
-                        <DeleteRecordButton id={p.id} kind="prospekt" name={p.name} />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
       {/* LICZNIKI LEJKA */}
       <div className="mt-6 grid gap-3 sm:grid-cols-4 xl:grid-cols-7">
         {PROSPECT_PIPELINE_ORDER.map((s) => {
@@ -254,7 +165,7 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
         </div>
         <label className="flex items-center gap-2 text-xs font-semibold text-ink-soft sm:col-span-3 lg:col-span-6">
           <input type="checkbox" name="widok" value="dzis" defaultChecked={widokDzis} className="h-4 w-4 rounded border-gray-300" />
-          Tylko dziś do zadzwonienia (ten sam zbiór co blok „Do zadzwonienia" powyżej)
+          Tylko dziś do zadzwonienia (ten sam zbiór co blok „Do zadzwonienia" na dole strony)
         </label>
       </form>
 
@@ -358,6 +269,95 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
           />
         }
       />
+
+      {/* ☎️ DO ZADZWONIENIA — zaległe/dzisiejsze terminy + rozmowy zaczęte i porzucone bez ustalonego kroku */}
+      {callQueue.total === 0 ? (
+        <p className="mt-6 text-sm text-muted">Nic nie czeka na telefon.</p>
+      ) : (
+        <div className="card mt-6 overflow-hidden border-2 border-sand-300">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-sand-200 bg-sand-50 px-4 py-3">
+            <h2 className="font-serif text-lg font-semibold">
+              ☎️ Do zadzwonienia{" "}
+              <span className="text-sm font-normal text-muted">
+                ({callQueue.rows.length} z {callQueue.total})
+              </span>
+            </h2>
+            <Link href="/admin/crm-trenerki?widok=dzis" className="text-xs font-semibold text-sand-700 hover:underline">
+              Pokaż w pełnej tabeli →
+            </Link>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-gray-50 text-xs uppercase tracking-wide text-muted">
+                <tr>
+                  <th className="px-4 py-3 font-semibold">Podmiot</th>
+                  <th className="px-4 py-3 font-semibold">Kontakt</th>
+                  <th className="px-4 py-3 font-semibold">BUR</th>
+                  <th className="px-4 py-3 font-semibold">Następny ruch</th>
+                  <th className="px-4 py-3 font-semibold">Szybka akcja</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {callQueue.rows.map((p) => {
+                  const overdueDays = p.nextActionAt ? warsawCalendarDaysDiff(p.nextActionAt) : 0;
+                  return (
+                    <tr key={p.id} className="align-top hover:bg-gray-50">
+                      <td className="px-4 py-3">
+                        <Link href={`/admin/crm-trenerki/${p.id}`} className="font-semibold text-sand-700 hover:underline">
+                          {p.name}
+                        </Link>
+                        {/* Akademia, która sama założyła konto, dzwoni się inaczej niż kontakt
+                            z researchu: zna ofertę, zostawiła dane dobrowolnie i CZEKA na telefon.
+                            Dlatego wyróżniamy ją w kolejce, zamiast chować w kolumnie „źródło". */}
+                        {p.source === "rejestracja" && (
+                          <span className="mt-1 inline-flex rounded-full bg-money-bg px-2 py-0.5 text-xs font-bold text-money-dark">
+                            zgłosiła się sama
+                          </span>
+                        )}
+                        <p className="text-xs text-muted">
+                          {p.city ?? "—"}
+                          {p.voivodeship ? `, ${voivodeshipName(p.voivodeship)}` : ""}
+                        </p>
+                        <p className="max-w-[200px] text-xs text-muted">{p.categories.join(", ") || "—"}</p>
+                      </td>
+                      <td className="px-4 py-3">
+                        {p.phone ? (
+                          <a href={telHref(p.phone)} className="font-semibold text-sand-700 hover:underline">
+                            {p.phone}
+                          </a>
+                        ) : (
+                          <span className="text-muted">brak numeru</span>
+                        )}
+                        <p className="text-xs text-muted">ostatni kontakt: {lastContactLabel(p.lastContactAt)}</p>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold ${BUR_SEGMENT_COLORS[p.burSegment]}`}>
+                          {BUR_SEGMENT_SHORT[p.burSegment]}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        {p.nextActionAt ? (
+                          <p className={overdueDays > 0 ? "font-semibold text-red-700" : "text-ink-soft"}>
+                            {formatDate(p.nextActionAt)}
+                            {overdueDays > 0 && <span className="block text-xs">zaległe o {overdueDays} dni</span>}
+                          </p>
+                        ) : (
+                          <p className="text-muted">brak terminu — status „{PROSPECT_STATUS_LABELS[p.status]}"</p>
+                        )}
+                        {p.nextActionNote && <p className="mt-1 max-w-[220px] text-xs text-muted">{p.nextActionNote}</p>}
+                      </td>
+                      <td className="px-4 py-3">
+                        <ProspectQuickActions prospectId={p.id} />
+                        <DeleteRecordButton id={p.id} kind="prospekt" name={p.name} />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
