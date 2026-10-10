@@ -640,6 +640,14 @@ export const prospects = pgTable(
     website: text("website"),
     instagram: text("instagram"),
     facebook: text("facebook"),
+    /**
+     * Osoby kontaktowe (10.10.2026): akademia to zwykle kilka osób — właścicielka, biuro,
+     * trenerka prowadząca. Jedno pole `phone`/`email` wyżej zostaje jako „numer główny”
+     * (po nim działa kolejka telefonów), tu cała reszta z researchu.
+     */
+    contacts: jsonb("contacts").$type<ProspectContact[]>().notNull().default([]),
+    /** Pozostałe linki z researchu: TikTok, Booksy, Google Maps, YouTube, druga strona, cennik… */
+    links: jsonb("links").$type<ProspectLink[]>().notNull().default([]),
 
     // --- pipeline ---
     status: prospectStatusEnum("status").notNull().default("potencjalny"),
@@ -1214,6 +1222,14 @@ export type CrmMessage = typeof crmMessages.$inferSelect;
 export type CrmTemplate = typeof crmTemplates.$inferSelect;
 export type AbandonedReminder = typeof abandonedReminders.$inferSelect;
 export type Settings = typeof settings.$inferSelect;
+export type ProspectContact = {
+  name: string;
+  role?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  note?: string | null;
+};
+export type ProspectLink = { label: string; url: string };
 export type Prospect = typeof prospects.$inferSelect;
 export type ProspectActivity = typeof prospectActivities.$inferSelect;
 export type ResearchJob = typeof researchJobs.$inferSelect;

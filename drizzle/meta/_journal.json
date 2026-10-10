@@ -141,6 +141,13 @@
       "when": 1790922748953,
       "tag": "0019_crm_trenerki",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1790922808953,
+      "tag": "0020_prospekt_kontakty_linki",
+      "breakpoints": true
     }
   ]
 }

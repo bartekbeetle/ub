@@ -296,6 +296,28 @@ export const prospectSchema = z.object({
   website: optionalText(300),
   instagram: optionalText(300),
   facebook: optionalText(300),
+  contacts: z
+    .array(
+      z.object({
+        name: z.string().trim().min(1, "Osoba kontaktowa: podaj imię albo funkcję").max(120),
+        role: optionalText(120).or(z.null()),
+        phone: optionalText(40).or(z.null()),
+        email: z.string().trim().email("Osoba kontaktowa: niepoprawny e-mail").max(255).optional().or(z.literal("")).or(z.null()),
+        note: optionalText(300).or(z.null()),
+      })
+    )
+    .max(30)
+    .optional(),
+  links: z
+    .array(
+      z.object({
+        label: z.string().trim().min(1, "Link: podaj opis").max(80),
+        // Tylko http(s): link renderuje się jako <a href>, `javascript:` nie może tu wejść.
+        url: z.string().trim().max(500).regex(/^https?:\/\//i, "Link musi zaczynać się od http:// lub https://"),
+      })
+    )
+    .max(40)
+    .optional(),
 
   status: z.enum(PROSPECT_STATUSES as unknown as [string, ...string[]]).default("potencjalny"),
   priority: z.enum(PROSPECT_PRIORITIES as unknown as [string, ...string[]]).default("sredni"),

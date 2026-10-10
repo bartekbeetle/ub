@@ -1,0 +1,2 @@
+ALTER TABLE "prospects" ADD COLUMN IF NOT EXISTS "contacts" jsonb DEFAULT '[]'::jsonb NOT NULL;--> statement-breakpoint
+ALTER TABLE "prospects" ADD COLUMN IF NOT EXISTS "links" jsonb DEFAULT '[]'::jsonb NOT NULL;

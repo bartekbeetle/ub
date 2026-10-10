@@ -27,6 +27,12 @@ import {
 
 export const dynamic = "force-dynamic";
 
+
+/** `tel:` chce samych cyfr i ewentualnego `+` — numery w bazie bywają wpisane ze spacjami. */
+function telHref(phone: string): string {
+  return `tel:${phone.replace(/[^\d+]/g, "")}`;
+}
+
 export default async function ProspektPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const prospectId = Number(id);
@@ -170,9 +176,26 @@ export default async function ProspektPage({ params }: { params: Promise<{ id: s
             <dt className="text-muted">KRS</dt>
             <dd className="font-mono text-sm">{prospect.krs ?? "—"}</dd>
             <dt className="text-muted">Telefon</dt>
-            <dd>{prospect.phone ?? "—"}</dd>
+            <dd>{prospect.phone ? <a href={telHref(prospect.phone)} className="text-sand-700 hover:underline">{prospect.phone}</a> : "—"}</dd>
             <dt className="text-muted">E-mail</dt>
-            <dd className="break-all">{prospect.email ?? "—"}</dd>
+            <dd className="break-all">{prospect.email ? <a href={`mailto:${prospect.email}`} className="text-sand-700 hover:underline">{prospect.email}</a> : "—"}</dd>
+            <dt className="text-muted">Osoby</dt>
+            <dd>
+              {prospect.contacts.length === 0 && "—"}
+              <ul className="space-y-2">
+                {prospect.contacts.map((c, i) => (
+                  <li key={i}>
+                    <span className="font-semibold">{c.name}</span>
+                    {c.role && <span className="text-muted"> · {c.role}</span>}
+                    <span className="block text-xs">
+                      {c.phone && <a href={telHref(c.phone)} className="mr-3 text-sand-700 hover:underline">{c.phone}</a>}
+                      {c.email && <a href={`mailto:${c.email}`} className="break-all text-sand-700 hover:underline">{c.email}</a>}
+                    </span>
+                    {c.note && <span className="block text-xs text-muted">{c.note}</span>}
+                  </li>
+                ))}
+              </ul>
+            </dd>
             <dt className="text-muted">Kategorie</dt>
             <dd>{prospect.categories.join(", ") || "—"}</dd>
             <dt className="text-muted">Linki</dt>
@@ -180,7 +203,10 @@ export default async function ProspektPage({ params }: { params: Promise<{ id: s
               {prospect.website && <a href={prospect.website} target="_blank" rel="noreferrer" className="text-sand-700 hover:underline">WWW</a>}
               {prospect.instagram && <a href={prospect.instagram} target="_blank" rel="noreferrer" className="text-sand-700 hover:underline">Instagram</a>}
               {prospect.facebook && <a href={prospect.facebook} target="_blank" rel="noreferrer" className="text-sand-700 hover:underline">Facebook</a>}
-              {!prospect.website && !prospect.instagram && !prospect.facebook && "—"}
+              {prospect.links.map((l, i) => (
+                <a key={i} href={l.url} target="_blank" rel="noreferrer" className="text-sand-700 hover:underline">{l.label}</a>
+              ))}
+              {!prospect.website && !prospect.instagram && !prospect.facebook && prospect.links.length === 0 && "—"}
             </dd>
           </dl>
 

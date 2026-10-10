@@ -127,6 +127,18 @@ export function prospectValuesFromPayload(d: Record<string, unknown>): ProspectV
   text("nextActionNote", d.nextActionNote);
 
   if (Array.isArray(d.categories)) out.categories = d.categories as string[];
+  if (Array.isArray(d.contacts)) {
+    out.contacts = (d.contacts as Record<string, unknown>[]).map((c) => {
+      const t = (v: unknown) => (typeof v === "string" && v.trim() !== "" ? v.trim() : null);
+      return { name: String(c.name ?? "").trim(), role: t(c.role), phone: t(c.phone), email: t(c.email), note: t(c.note) };
+    });
+  }
+  if (Array.isArray(d.links)) {
+    out.links = (d.links as Record<string, unknown>[]).map((l) => ({
+      label: String(l.label ?? "").trim(),
+      url: String(l.url ?? "").trim(),
+    }));
+  }
   if (typeof d.status === "string") out.status = d.status as typeof schema.prospects.$inferInsert.status;
   if (typeof d.priority === "string") out.priority = d.priority as typeof schema.prospects.$inferInsert.priority;
   if (typeof d.source === "string") out.source = d.source;

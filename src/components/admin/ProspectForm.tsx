@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { Prospect } from "@/db/schema";
+import type { Prospect, ProspectContact, ProspectLink } from "@/db/schema";
 import {
   BUR_SEGMENTS,
   BUR_SEGMENT_LABELS,
@@ -28,6 +28,13 @@ export function ProspectForm({ prospect }: { prospect?: Prospect }) {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [categories, setCategories] = useState<string[]>(prospect?.categories ?? []);
+  const [contacts, setContacts] = useState<ProspectContact[]>(prospect?.contacts ?? []);
+  const [links, setLinks] = useState<ProspectLink[]>(prospect?.links ?? []);
+
+  const setContact = (i: number, key: keyof ProspectContact, value: string) =>
+    setContacts(contacts.map((c, j) => (j === i ? { ...c, [key]: value } : c)));
+  const setLink = (i: number, key: keyof ProspectLink, value: string) =>
+    setLinks(links.map((l, j) => (j === i ? { ...l, [key]: value } : l)));
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -48,6 +55,9 @@ export function ProspectForm({ prospect }: { prospect?: Prospect }) {
       website: String(fd.get("website") ?? ""),
       instagram: String(fd.get("instagram") ?? ""),
       facebook: String(fd.get("facebook") ?? ""),
+      // Puste wiersze (dodane i niewypełnione) pomijamy, zamiast blokować zapis walidacją.
+      contacts: contacts.filter((c) => [c.name, c.phone, c.email].some((v) => (v ?? "").trim() !== "")),
+      links: links.filter((l) => l.url.trim() !== ""),
       status: String(fd.get("status") ?? "potencjalny"),
       priority: String(fd.get("priority") ?? "sredni"),
       source: String(fd.get("source") ?? "reczny"),
@@ -162,6 +172,40 @@ export function ProspectForm({ prospect }: { prospect?: Prospect }) {
             <label className="label" htmlFor="p-fb">Facebook</label>
             <input id="p-fb" name="facebook" maxLength={300} defaultValue={prospect?.facebook ?? ""} className="input" />
           </div>
+        </div>
+        <p className="mt-2 text-xs text-muted">Telefon i e-mail wyżej = numer główny (po nim działa kolejka telefonów).</p>
+
+        <div className="mt-5">
+          <span className="label">Osoby kontaktowe</span>
+          {contacts.map((c, i) => (
+            <div key={i} className="mt-2 grid gap-2 rounded-lg border border-gray-100 p-3 sm:grid-cols-5">
+              <input aria-label="Imię i nazwisko" placeholder="Imię i nazwisko" value={c.name} onChange={(e) => setContact(i, "name", e.target.value)} className="input !py-2 !text-sm" />
+              <input aria-label="Funkcja" placeholder="Funkcja (właścicielka, biuro…)" value={c.role ?? ""} onChange={(e) => setContact(i, "role", e.target.value)} className="input !py-2 !text-sm" />
+              <input aria-label="Telefon" placeholder="Telefon" value={c.phone ?? ""} onChange={(e) => setContact(i, "phone", e.target.value)} className="input !py-2 !text-sm" />
+              <input aria-label="E-mail" placeholder="E-mail" type="email" value={c.email ?? ""} onChange={(e) => setContact(i, "email", e.target.value)} className="input !py-2 !text-sm" />
+              <div className="flex gap-2">
+                <input aria-label="Notatka" placeholder="Notatka / źródło" value={c.note ?? ""} onChange={(e) => setContact(i, "note", e.target.value)} className="input !py-2 !text-sm" />
+                <button type="button" onClick={() => setContacts(contacts.filter((_, j) => j !== i))} aria-label="Usuń osobę" className="px-2 text-muted hover:text-red-700">✕</button>
+              </div>
+            </div>
+          ))}
+          <button type="button" onClick={() => setContacts([...contacts, { name: "" }])} className="mt-2 text-sm font-semibold text-sand-700 hover:underline">
+            + Dodaj osobę
+          </button>
+        </div>
+
+        <div className="mt-5">
+          <span className="label">Inne linki (TikTok, Booksy, Google Maps, cennik…)</span>
+          {links.map((l, i) => (
+            <div key={i} className="mt-2 grid gap-2 sm:grid-cols-[180px_1fr_auto]">
+              <input aria-label="Opis linku" placeholder="Opis" value={l.label} onChange={(e) => setLink(i, "label", e.target.value)} className="input !py-2 !text-sm" />
+              <input aria-label="Adres" placeholder="https://…" value={l.url} onChange={(e) => setLink(i, "url", e.target.value)} className="input !py-2 !text-sm" />
+              <button type="button" onClick={() => setLinks(links.filter((_, j) => j !== i))} aria-label="Usuń link" className="px-2 text-muted hover:text-red-700">✕</button>
+            </div>
+          ))}
+          <button type="button" onClick={() => setLinks([...links, { label: "", url: "" }])} className="mt-2 text-sm font-semibold text-sand-700 hover:underline">
+            + Dodaj link
+          </button>
         </div>
       </fieldset>
 
