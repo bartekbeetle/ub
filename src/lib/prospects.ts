@@ -343,3 +343,88 @@ export async function freeTrainerSlug(name: string): Promise<string> {
   }
   return `${base}-${Date.now()}`;
 }
+
+// ===== LEADY „OD RĘKI” DLA AKADEMII (10.10.2026) =====
+//
+// Bartek przy każdej akademii w CRM chce widzieć, ile kursantek może jej dać od razu.
+// „Od razu” = lead bez żadnego przydziału (`lead_assignments`), nieodrzucony, z kategorią,
+// którą akademia szkoli, z województwa akademii albo z tych, które obsługuje (`servesVoivodeships`).
+// Jedno zgrupowane zapytanie na stronę, dopasowanie w pamięci — bez N zapytań na wiersz.
+
+export type UnassignedLeadPool = Map<string, { total: number; phoneOk: number }>;
+
+const poolKey = (voivodeship: string, category: string) => `${voivodeship}|${category}`;
+
+export async function getUnassignedLeadPool(): Promise<UnassignedLeadPool> {
+  const db = await getDb();
+  const rows = await db
+    .select({
+      voivodeship: schema.leads.voivodeship,
+      category: schema.leads.category,
+      total: sql<number>`count(*)::int`,
+      phoneOk: sql<number>`count(${schema.leads.contactConsentAt})::int`,
+    })
+    .from(schema.leads)
+    .where(
+      and(
+        sql`${schema.leads.status} <> 'odrzucony'`,
+        sql`not exists (select 1 from ${schema.leadAssignments} where ${schema.leadAssignments.leadId} = ${schema.leads.id})`
+      )
+    )
+    .groupBy(schema.leads.voivodeship, schema.leads.category);
+  return new Map(rows.map((r) => [poolKey(r.voivodeship, r.category), { total: r.total, phoneOk: r.phoneOk }]));
+}
+
+/** Województwa, z których akademia przyjmie kursantkę: własne + zadeklarowany zasięg. */
+export function prospectVoivodeships(p: Pick<ProspectRow, "voivodeship" | "servesVoivodeships">): string[] {
+  return [...new Set([p.voivodeship, ...p.servesVoivodeships].filter((v): v is string => Boolean(v)))];
+}
+
+export function matchingLeadCount(
+  pool: UnassignedLeadPool,
+  p: Pick<ProspectRow, "voivodeship" | "servesVoivodeships" | "categories">
+): { total: number; phoneOk: number } {
+  let total = 0;
+  let phoneOk = 0;
+  for (const v of prospectVoivodeships(p)) {
+    for (const c of p.categories) {
+      const hit = pool.get(poolKey(v, c));
+      if (hit) {
+        total += hit.total;
+        phoneOk += hit.phoneOk;
+      }
+    }
+  }
+  return { total, phoneOk };
+}
+
+/** Lista konkretnych leadów dla karty akademii (kto dokładnie czeka). */
+export async function getMatchingUnassignedLeads(
+  p: Pick<ProspectRow, "voivodeship" | "servesVoivodeships" | "categories">,
+  limit = 30
+) {
+  const voivs = prospectVoivodeships(p);
+  if (voivs.length === 0 || p.categories.length === 0) return [];
+  const db = await getDb();
+  return db
+    .select({
+      id: schema.leads.id,
+      name: schema.leads.name,
+      city: schema.leads.city,
+      voivodeship: schema.leads.voivodeship,
+      category: schema.leads.category,
+      createdAt: schema.leads.createdAt,
+      contactConsentAt: schema.leads.contactConsentAt,
+    })
+    .from(schema.leads)
+    .where(
+      and(
+        inArray(schema.leads.voivodeship, voivs),
+        inArray(schema.leads.category, p.categories),
+        sql`${schema.leads.status} <> 'odrzucony'`,
+        sql`not exists (select 1 from ${schema.leadAssignments} where ${schema.leadAssignments.leadId} = ${schema.leads.id})`
+      )
+    )
+    .orderBy(desc(schema.leads.createdAt))
+    .limit(limit);
+}
