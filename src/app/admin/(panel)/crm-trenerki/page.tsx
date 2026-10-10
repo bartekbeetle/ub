@@ -3,7 +3,13 @@ import { redirect } from "next/navigation";
 import { and, asc, desc, eq, sql, type SQL } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { formatDate } from "@/lib/utils";
-import { callQueueCondition, getCallQueue, warsawCalendarDaysDiff } from "@/lib/prospects";
+import {
+  callQueueCondition,
+  getCallQueue,
+  getUnassignedLeadPool,
+  matchingLeadCount,
+  warsawCalendarDaysDiff,
+} from "@/lib/prospects";
 import {
   BUR_SEGMENTS,
   BUR_SEGMENT_COLORS,
@@ -44,6 +50,20 @@ function telHref(phone: string): string {
   return `tel:${phone.replace(/[^\d+]/g, "")}`;
 }
 
+/** „Ile kursantek mogę jej dać od razu” — leady bez przydziału z jej kategorii i województwa. */
+function LeadyOdReki({ total, phoneOk }: { total: number; phoneOk: number }) {
+  if (total === 0) return <span className="text-xs text-muted">0 leadów od ręki</span>;
+  return (
+    <span
+      className="inline-flex rounded-full bg-money-bg px-2 py-0.5 text-xs font-bold text-money-dark"
+      title={`${total} leadów bez przydziału z jej kategorii i województwa, w tym ${phoneOk} ze zgodą na telefon`}
+    >
+      {total} {total === 1 ? "lead" : total < 5 ? "leady" : "leadów"} od ręki
+      {phoneOk < total ? ` (${phoneOk} tel.)` : ""}
+    </span>
+  );
+}
+
 type Search = Promise<{ [key: string]: string | string[] | undefined }>;
 
 const SORTS = {
@@ -80,7 +100,7 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
   // AND-owane z resztą filtrów, żeby dało się np. połączyć z wybranym województwem.
   if (widokDzis) conditions.push(callQueueCondition());
 
-  const [prospects, counts, callQueue] = await Promise.all([
+  const [prospects, counts, callQueue, leadPool] = await Promise.all([
     db
       .select()
       .from(schema.prospects)
@@ -92,6 +112,7 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
       .from(schema.prospects)
       .groupBy(schema.prospects.status),
     getCallQueue(25),
+    getUnassignedLeadPool(),
   ]);
 
   const countByStatus = new Map(counts.map((c) => [c.status as string, c.c]));
@@ -186,6 +207,7 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
                 <th className="px-4 py-3 font-semibold">Podmiot</th>
                 <th className="px-4 py-3 font-semibold">Lokalizacja</th>
                 <th className="px-4 py-3 font-semibold">Kategorie</th>
+                <th className="px-4 py-3 font-semibold">Leady od ręki</th>
                 <th className="px-4 py-3 font-semibold">BUR</th>
                 <th className="px-4 py-3 font-semibold">Status</th>
                 <th className="px-4 py-3 font-semibold">Priorytet</th>
@@ -214,6 +236,7 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
                     {p.voivodeship ? <span className="block text-xs text-muted">{voivodeshipName(p.voivodeship)}</span> : null}
                   </td>
                   <td className="max-w-[220px] px-4 py-3 text-xs">{p.categories.join(", ") || "—"}</td>
+                  <td className="px-4 py-3"><LeadyOdReki {...matchingLeadCount(leadPool, p)} /></td>
                   <td className="px-4 py-3">
                     <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold ${BUR_SEGMENT_COLORS[p.burSegment]}`}>
                       {BUR_SEGMENT_SHORT[p.burSegment]}
@@ -237,7 +260,7 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
               ))}
               {prospects.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-10 text-center text-muted">
+                  <td colSpan={8} className="px-4 py-10 text-center text-muted">
                     {total === 0 ? (
                       <>Baza prospektów jest pusta. <Link href="/admin/crm-trenerki/nowy" className="font-semibold text-sand-700 hover:underline">Dodaj pierwszy podmiot</Link>.</>
                     ) : (
@@ -319,6 +342,7 @@ export default async function CrmTrenerkiPage({ searchParams }: { searchParams: 
                           {p.voivodeship ? `, ${voivodeshipName(p.voivodeship)}` : ""}
                         </p>
                         <p className="max-w-[200px] text-xs text-muted">{p.categories.join(", ") || "—"}</p>
+                        <div className="mt-1"><LeadyOdReki {...matchingLeadCount(leadPool, p)} /></div>
                       </td>
                       <td className="px-4 py-3">
                         {p.phone ? (

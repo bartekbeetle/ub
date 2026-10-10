@@ -127,6 +127,7 @@ export function prospectValuesFromPayload(d: Record<string, unknown>): ProspectV
   text("nextActionNote", d.nextActionNote);
 
   if (Array.isArray(d.categories)) out.categories = d.categories as string[];
+  if (Array.isArray(d.servesVoivodeships)) out.servesVoivodeships = d.servesVoivodeships as string[];
   if (Array.isArray(d.contacts)) {
     out.contacts = (d.contacts as Record<string, unknown>[]).map((c) => {
       const t = (v: unknown) => (typeof v === "string" && v.trim() !== "" ? v.trim() : null);

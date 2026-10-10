@@ -9,7 +9,7 @@ import { ProspectNextActionForm } from "@/components/admin/ProspectNextActionFor
 import { ProspectQuickActions } from "@/components/admin/ProspectQuickActions";
 import { PromoteProspectButton } from "@/components/admin/PromoteProspectButton";
 import { DeleteRecordButton } from "@/components/admin/DeleteRecordButton";
-import { warsawCalendarDaysDiff } from "@/lib/prospects";
+import { getMatchingUnassignedLeads, prospectVoivodeships, warsawCalendarDaysDiff } from "@/lib/prospects";
 import { formatDate, formatDateTime } from "@/lib/utils";
 import {
   BUR_SEGMENT_COLORS,
@@ -57,6 +57,8 @@ export default async function ProspektPage({ params }: { params: Promise<{ id: s
     .orderBy(desc(schema.prospectActivities.createdAt));
 
   const burLink = prospect.burUrl || burProviderUrl(prospect.burProviderId);
+  const matchingLeads = await getMatchingUnassignedLeads(prospect);
+  const matchVoivs = prospectVoivodeships(prospect);
 
   return (
     <div className="max-w-5xl">
@@ -161,6 +163,36 @@ export default async function ProspektPage({ params }: { params: Promise<{ id: s
             Profil publiczny powstaje dopiero przy statusie „Umowa”. Do tego czasu podmiot żyje wyłącznie w CRM
             i nie pojawia się nigdzie w serwisie.
           </p>
+        )}
+      </div>
+
+      {/* LEADY OD RĘKI — kto z nieprzypisanych pasuje do jej kategorii i województwa */}
+      <div className="card mt-6 border-2 border-money-bg p-5">
+        <h2 className="font-serif text-lg font-semibold">
+          Leady od ręki: {matchingLeads.length}
+          {matchingLeads.length === 30 ? "+" : ""}
+        </h2>
+        <p className="mt-1 text-sm text-muted">
+          Kursantki bez przydziału z kategorii{" "}
+          <strong>{prospect.categories.join(", ") || "— brak kategorii —"}</strong> i województw{" "}
+          <strong>{matchVoivs.map(voivodeshipName).join(", ") || "— brak województwa —"}</strong>. Zasięg poszerzysz w
+          polu „obsługiwane województwa”.
+        </p>
+        {matchingLeads.length > 0 && (
+          <ul className="mt-3 divide-y divide-gray-100 text-sm">
+            {matchingLeads.map((l) => (
+              <li key={l.id} className="flex flex-wrap items-center justify-between gap-2 py-2">
+                <Link href={`/admin/kursantki/${l.id}`} className="font-semibold text-sand-700 hover:underline">
+                  {l.name}
+                </Link>
+                <span className="text-xs text-muted">
+                  {l.category} · {l.city ? `${l.city}, ` : ""}
+                  {voivodeshipName(l.voivodeship)} · {formatDate(l.createdAt)}
+                  {!l.contactConsentAt && <span className="ml-2 font-semibold text-red-700">brak zgody na telefon</span>}
+                </span>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
 

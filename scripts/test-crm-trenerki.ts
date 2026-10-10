@@ -571,6 +571,23 @@ async function main() {
   const listItem = (await core.listCrmLeads(db, tA.id))[0];
   check("lista dla Kanbana niesie kurs i ostatnią aktywność", ["courseTitle", "lastActivityAt"].every((k) => listItem && k in listItem), true);
 
+  // ===== LEADY OD RĘKI DLA AKADEMII (10.10.2026) =====
+  const prospectsLib = await import("../src/lib/prospects");
+  const cat = "PMU / Makijaż permanentny";
+  await lead({ name: "Wolna z telefonem", voivodeship: "lubuskie", category: cat });
+  await lead({ name: "Wolna bez zgody tel.", voivodeship: "lubuskie", category: cat, contactConsentAt: null });
+  await lead({ name: "Odrzucona", voivodeship: "lubuskie", category: cat, status: "odrzucony" });
+  const zajeta = await lead({ name: "Już przydzielona", voivodeship: "lubuskie", category: cat });
+  await db.insert(schema.leadAssignments).values({ leadId: zajeta.id, trainerId: tA.id } as never);
+  await lead({ name: "Wolna z Wrocławia", voivodeship: "dolnoslaskie", category: cat });
+  await lead({ name: "Inna kategoria", voivodeship: "lubuskie", category: "Stylizacja rzęs" });
+  const pool = await prospectsLib.getUnassignedLeadPool();
+  const kapusta = { voivodeship: "lubuskie", servesVoivodeships: [] as string[], categories: [cat] };
+  check("od ręki: tylko nieprzydzielone i nieodrzucone z jej kategorii i województwa", prospectsLib.matchingLeadCount(pool, kapusta), { total: 2, phoneOk: 1 });
+  check("od ręki: obsługiwane województwo poszerza pulę", prospectsLib.matchingLeadCount(pool, { ...kapusta, servesVoivodeships: ["dolnoslaskie"] }).total, 3);
+  check("od ręki: lista na karcie = ten sam zbiór co licznik", (await prospectsLib.getMatchingUnassignedLeads(kapusta)).map((l) => l.name).sort(), ["Wolna bez zgody tel.", "Wolna z telefonem"]);
+  check("od ręki: akademia bez kategorii = 0", prospectsLib.matchingLeadCount(pool, { ...kapusta, categories: [] }).total, 0);
+
   console.log(failed === 0 ? "\nWSZYSTKO OK" : `\nNIEPOWODZENIA: ${failed}`);
   process.exit(failed === 0 ? 0 : 1);
 }

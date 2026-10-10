@@ -28,6 +28,7 @@ export function ProspectForm({ prospect }: { prospect?: Prospect }) {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [categories, setCategories] = useState<string[]>(prospect?.categories ?? []);
+  const [serves, setServes] = useState<string[]>(prospect?.servesVoivodeships ?? []);
   const [contacts, setContacts] = useState<ProspectContact[]>(prospect?.contacts ?? []);
   const [links, setLinks] = useState<ProspectLink[]>(prospect?.links ?? []);
 
@@ -50,6 +51,7 @@ export function ProspectForm({ prospect }: { prospect?: Prospect }) {
       city: String(fd.get("city") ?? ""),
       voivodeship: String(fd.get("voivodeship") ?? ""),
       categories,
+      servesVoivodeships: serves,
       phone: String(fd.get("phone") ?? ""),
       email: String(fd.get("email") ?? ""),
       website: String(fd.get("website") ?? ""),
@@ -145,6 +147,27 @@ export function ProspectForm({ prospect }: { prospect?: Prospect }) {
               </label>
             ))}
           </div>
+        </div>
+      </fieldset>
+
+      {/* ZASIĘG */}
+      <fieldset className="card !shadow-none border border-gray-100 p-5">
+        <legend className="label px-2">Obsługiwane województwa (poza własnym)</legend>
+        <p className="mb-2 text-xs text-muted">
+          Np. filie i szkolenia wyjazdowe. Z tych województw liczą się „leady od ręki” na liście CRM.
+        </p>
+        <div className="grid gap-2 sm:grid-cols-4">
+          {VOIVODESHIPS.map((v) => (
+            <label key={v.slug} className="flex cursor-pointer items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={serves.includes(v.slug)}
+                onChange={(e) => setServes(e.target.checked ? [...serves, v.slug] : serves.filter((x) => x !== v.slug))}
+                className="h-4 w-4 accent-sand-500"
+              />
+              {v.name}
+            </label>
+          ))}
         </div>
       </fieldset>
 

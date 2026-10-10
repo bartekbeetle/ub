@@ -296,6 +296,7 @@ export const prospectSchema = z.object({
   website: optionalText(300),
   instagram: optionalText(300),
   facebook: optionalText(300),
+  servesVoivodeships: z.array(z.enum(voivodeshipSlugs)).max(16).optional(),
   contacts: z
     .array(
       z.object({
