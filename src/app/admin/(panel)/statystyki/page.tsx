@@ -63,15 +63,15 @@ function BarList({ title, rows, total, empty, foot }: { title: string; rows: Row
       {rows.length === 0 ? (
         <p className="mt-3 text-sm text-muted">{empty ?? "Brak danych w tym okresie."}</p>
       ) : (
-        <ul className="mt-4 space-y-1.5">
-          {rows.map((r) => (
+        <ul data-reveal className="mt-4 space-y-1.5">
+          {rows.map((r, i) => (
             <li
               key={r.label}
               title={`${r.label}: ${r.value} (${pct(r.value, total)}%)${r.note ? ` · ${r.note}` : ""}`}
               className="grid grid-cols-[minmax(0,9.5rem)_1fr_auto] items-center gap-3 rounded-md px-1 py-1 text-sm hover:bg-sand-50"
             >
               <span className="truncate text-ink-soft">{r.label}</span>
-              <span className="h-2.5 rounded-r-[4px] bg-sand-600" style={{ width: `${Math.max(2, (r.value / max) * 100)}%` }} />
+              <span className="anim-bar-x h-2.5 rounded-r-[4px] bg-sand-600" style={{ width: `${Math.max(2, (r.value / max) * 100)}%`, ["--i" as string]: i }} />
               <span className="whitespace-nowrap text-right tabular-nums text-ink-soft">
                 <strong>{r.value}</strong> <span className="text-xs text-muted">{pct(r.value, total)}%</span>
                 {r.note && <span className="ml-2 text-xs text-money-dark">{r.note}</span>}
@@ -90,16 +90,16 @@ function Weekly({ weeks }: { weeks: { label: string; value: number }[] }) {
   return (
     <section className="card p-5">
       <h2 className="font-serif text-lg font-semibold">Leady tygodniowo</h2>
-      <div className="mt-4 flex h-40 items-end gap-1 border-b border-gray-200" role="list">
-        {weeks.map((w) => (
+      <div data-reveal className="mt-4 flex h-40 items-end gap-1 border-b border-gray-200" role="list">
+        {weeks.map((w, i) => (
           <div
             key={w.label}
             role="listitem"
             title={`tydzień od ${w.label}: ${w.value}`}
             className="group flex h-full flex-1 flex-col items-center justify-end"
           >
-            <span className="mb-1 text-[11px] tabular-nums text-muted opacity-0 group-hover:opacity-100">{w.value}</span>
-            <span className="w-full max-w-[28px] rounded-t-[4px] bg-sand-600" style={{ height: `${(w.value / max) * 100}%`, minHeight: w.value ? 3 : 0 }} />
+            <span className="mb-1 text-[11px] tabular-nums text-muted opacity-0 transition-opacity duration-150 group-hover:opacity-100">{w.value}</span>
+            <span className="anim-bar-y w-full max-w-[28px] rounded-t-[4px] bg-sand-600" style={{ height: `${(w.value / max) * 100}%`, minHeight: w.value ? 3 : 0, ["--i" as string]: i }} />
           </div>
         ))}
       </div>

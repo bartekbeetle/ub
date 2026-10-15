@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { MotionConfig, motion } from "motion/react";
 
 type Item = { href: string; label: string; exact?: boolean; superadminOnly?: boolean };
 
@@ -66,6 +67,7 @@ function isActive(pathname: string, item: Item): boolean {
 export function AdminNav({ isSuperadmin = false }: { isSuperadmin?: boolean }) {
   const pathname = usePathname();
   return (
+    <MotionConfig reducedMotion="user">
     <nav aria-label="Nawigacja panelu" className="space-y-5">
       {GROUPS.map((group) => ({ ...group, items: group.items.filter((i) => isSuperadmin || !i.superadminOnly) }))
         .filter((group) => group.items.length > 0)
@@ -84,11 +86,19 @@ export function AdminNav({ isSuperadmin = false }: { isSuperadmin?: boolean }) {
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
-                    active ? "bg-sand-400 text-ink-soft" : "text-sand-200/70 hover:bg-white/5 hover:text-white"
+                  className={`relative flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
+                    active ? "text-ink-soft" : "text-sand-200/70 hover:bg-white/5 hover:text-white"
                   }`}
                 >
-                  {item.label}
+                  {/* Jedno tło aktywnej pozycji, które przejeżdża między zakładkami (layoutId). */}
+                  {active && (
+                    <motion.span
+                      layoutId="admin-nav-active"
+                      className="absolute inset-0 rounded-lg bg-sand-400"
+                      transition={{ type: "spring", stiffness: 500, damping: 38, mass: 0.8 }}
+                    />
+                  )}
+                  <span className="relative">{item.label}</span>
                 </Link>
               );
             })}
@@ -96,5 +106,6 @@ export function AdminNav({ isSuperadmin = false }: { isSuperadmin?: boolean }) {
         </div>
       ))}
     </nav>
+    </MotionConfig>
   );
 }

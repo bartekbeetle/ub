@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { AnimatedNumber } from "@/components/ui/ViewMotion";
 import { and, desc, eq, gte, ne, notInArray, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { getSessionUser } from "@/lib/auth";
 import { isSuperadminRole } from "@/lib/roles";
-import { formatDateTime, formatPln } from "@/lib/utils";
+import { formatDateTime } from "@/lib/utils";
 import { LEAD_STATUS_LABELS, LEAD_STATUS_COLORS, voivodeshipName } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
@@ -73,15 +74,15 @@ export default async function AdminDashboard() {
   const maxCount = Math.max(1, ...chart.map((c) => c.count));
 
   const stats = [
-    { label: "Leady dziś", value: String(leadsToday), color: "bg-blue-100 text-blue-700" },
-    { label: "Leady w tym miesiącu", value: String(leadsMonth), color: "bg-sand-100 text-sand-700" },
-    { label: "Konwersja lead → zapis", value: `${conversion}%`, color: "bg-purple-100 text-purple-700" },
+    { label: "Leady dziś", value: leadsToday, kind: "int" as const, color: "bg-blue-100 text-blue-700" },
+    { label: "Leady w tym miesiącu", value: leadsMonth, kind: "int" as const, color: "bg-sand-100 text-sand-700" },
+    { label: "Konwersja lead → zapis", value: conversion, kind: "pct" as const, color: "bg-purple-100 text-purple-700" },
     ...(showBilling
-      ? [{ label: "Przychód w tym miesiącu", value: formatPln(revenueMonth), color: "bg-emerald-100 text-emerald-700" }]
+      ? [{ label: "Przychód w tym miesiącu", value: revenueMonth, kind: "pln" as const, color: "bg-emerald-100 text-emerald-700" }]
       : []),
-    { label: "Aktywne trenerki", value: String(activeTrainers), color: "bg-amber-100 text-amber-700" },
+    { label: "Aktywne trenerki", value: activeTrainers, kind: "int" as const, color: "bg-amber-100 text-amber-700" },
     ...(showBilling
-      ? [{ label: "Oczekujące rozliczenia", value: String(pendingBilling), color: "bg-red-100 text-red-700" }]
+      ? [{ label: "Oczekujące rozliczenia", value: pendingBilling, kind: "int" as const, color: "bg-red-100 text-red-700" }]
       : []),
   ];
 
@@ -101,7 +102,7 @@ export default async function AdminDashboard() {
         {stats.map((s) => (
           <div key={s.label} className="card p-5">
             <span className={`inline-flex rounded-lg px-2.5 py-1 text-xs font-bold ${s.color}`}>{s.label}</span>
-            <p className="mt-3 font-serif text-3xl font-bold text-ink-soft">{s.value}</p>
+            <p className="mt-3 font-serif text-3xl font-bold text-ink-soft"><AnimatedNumber value={s.value} kind={s.kind} /></p>
           </div>
         ))}
       </div>
@@ -114,21 +115,21 @@ export default async function AdminDashboard() {
           <span className="inline-flex rounded-lg bg-sand-100 px-2.5 py-1 text-xs font-bold text-sand-700">
             Prospekty w pipeline
           </span>
-          <p className="mt-3 font-serif text-3xl font-bold text-ink-soft">{prospectsActive}</p>
+          <p className="mt-3 font-serif text-3xl font-bold text-ink-soft"><AnimatedNumber value={prospectsActive} /></p>
           <p className="mt-1 text-xs text-muted">Akademie i trenerki w lejku B2B (bez odrzuconych i parkingu) →</p>
         </Link>
       </div>
 
       <div className="card mt-6 p-6">
         <h2 className="font-serif text-lg font-semibold">Leady — ostatnie 30 dni</h2>
-        <div className="mt-4 flex h-36 items-end gap-[3px]" role="img" aria-label={`Wykres leadów z 30 dni, maksymalnie ${maxCount} dziennie`}>
-          {chart.map((c) => (
+        <div data-reveal className="mt-4 flex h-36 items-end gap-[3px]" role="img" aria-label={`Wykres leadów z 30 dni, maksymalnie ${maxCount} dziennie`}>
+          {chart.map((c, i) => (
             <div key={c.day} className="group relative flex-1">
               <div
-                className="w-full rounded-t bg-sand-400 transition-colors group-hover:bg-sand-600"
-                style={{ height: `${Math.max(3, (c.count / maxCount) * 130)}px` }}
+                className="anim-bar-y w-full rounded-t bg-sand-400 transition-colors group-hover:bg-sand-600"
+                style={{ height: `${Math.max(3, (c.count / maxCount) * 130)}px`, ["--i" as string]: i }}
               />
-              <span className="pointer-events-none absolute -top-8 left-1/2 z-10 hidden -translate-x-1/2 whitespace-nowrap rounded bg-navy px-2 py-0.5 text-xs text-white group-hover:block">
+              <span className="chart-tip pointer-events-none absolute -top-8 left-1/2 z-10 whitespace-nowrap rounded bg-navy px-2 py-0.5 text-xs text-white group-hover:block">
                 {c.day}: {c.count}
               </span>
             </div>
@@ -158,7 +159,7 @@ export default async function AdminDashboard() {
           </thead>
           <tbody className="divide-y divide-gray-100">
             {recentLeads.map((l) => (
-              <tr key={l.id} className="hover:bg-gray-50">
+              <tr key={l.id} className="transition-colors duration-150 hover:bg-sand-50/70">
                 <td className="px-6 py-3 text-muted">{formatDateTime(l.createdAt)}</td>
                 <td className="px-6 py-3 font-medium">
                   <Link href={`/admin/kursantki/${l.id}`} className="text-sand-700 hover:underline">{l.name}</Link>
