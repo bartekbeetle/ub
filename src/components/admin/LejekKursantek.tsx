@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AnimatedNumber } from "@/components/ui/ViewMotion";
 
 /**
  * LEJEK KURSANTEK — droga od leada do zapłaty. Tylko ta jedna.
@@ -31,7 +32,7 @@ export type EtapLejka = {
   alarm?: boolean;
 };
 
-function Pasek({ e }: { e: EtapLejka }) {
+function Pasek({ e, i }: { e: EtapLejka; i: number }) {
   return (
     <Link
       href={`/admin/kursantki?etap=${e.klucz}`}
@@ -44,12 +45,12 @@ function Pasek({ e }: { e: EtapLejka }) {
 
       <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-sand-100">
         <span
-          className="block h-full rounded-full bg-money"
-          style={{ width: `${Math.max(e.procent, e.liczba > 0 ? 2 : 0)}%` }}
+          className="anim-bar-x block h-full rounded-full bg-money"
+          style={{ width: `${Math.max(e.procent, e.liczba > 0 ? 2 : 0)}%`, ["--i" as string]: i }}
         />
       </span>
 
-      <span className="w-16 shrink-0 text-right text-sm font-bold tabular-nums">{e.liczba}</span>
+      <AnimatedNumber value={e.liczba} className="w-16 shrink-0 text-right text-sm font-bold" />
 
       <span className="w-24 shrink-0 text-right text-xs tabular-nums">
         {e.kwota ? (
@@ -99,9 +100,9 @@ export function LejekKursantek({
             wszystkie wejścia zbiegają się na leadzie · 500 zł naliczamy dopiero przy statusie „zapisana"
           </p>
         </div>
-        <div className="divide-y">
-          {wspolny.map((e) => (
-            <Pasek key={e.klucz} e={e} />
+        <div data-reveal className="divide-y">
+          {wspolny.map((e, i) => (
+            <Pasek key={e.klucz} e={e} i={i} />
           ))}
         </div>
       </div>

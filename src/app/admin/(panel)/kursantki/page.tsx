@@ -1,4 +1,8 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import { PanelLink, PanelRow, UrlDrawer } from "@/components/ui/Drawer";
+import { SkeletonLeadDetail } from "@/components/ui/Skeleton";
+import { LeadDetail } from "@/components/admin/LeadDetail";
 import { and, desc, eq, gte, ilike, inArray, isNotNull, isNull, lte, or, sql, type SQL } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import type { Lead, QuizSession, Submission } from "@/db/schema";
@@ -103,6 +107,8 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
   const stan = ["do_zrobienia", "obsluzone"].includes(str("stan")) ? str("stan") : "";
   const przydzial = ["brak", "jest"].includes(str("przydzial")) ? str("przydzial") : "";
   const q = str("q").trim().slice(0, 100);
+  // Panel szczegółów nad listą: `?panel=kursantka&id=123` (odświeżenie i link otwierają to samo).
+  const panelId = str("panel") === "kursantka" && /^\d+$/.test(str("id")) ? str("id") : null;
   const from = str("od");
   const to = str("do");
 
@@ -457,6 +463,20 @@ export default async function KursantkiPage({ searchParams }: { searchParams: Se
           </tbody>
         </table>
       </div>
+
+      <UrlDrawer
+        name="kursantka"
+        contentId={panelId}
+        title="Kursantka"
+        fullHref="/admin/kursantki/{id}"
+        fallback={<SkeletonLeadDetail />}
+      >
+        {panelId && (
+          <Suspense key={panelId} fallback={<SkeletonLeadDetail />}>
+            <LeadDetail leadId={Number(panelId)} variant="drawer" />
+          </Suspense>
+        )}
+      </UrlDrawer>
     </div>
   );
 }
@@ -718,7 +738,7 @@ function WierszLeada({
   zeZgloszenia?: number;
 }) {
   return (
-    <tr className="align-top hover:bg-gray-50">
+    <PanelRow name="kursantka" id={lead.id} className="align-top hover:bg-sand-50/70">
       <td className="whitespace-nowrap px-4 py-3 text-muted">{formatDateTime(lead.createdAt)}</td>
       <td className="px-4 py-3">
         <span className="inline-flex rounded-full bg-money-bg px-2.5 py-0.5 text-[11px] font-bold text-money-dark">
@@ -726,9 +746,9 @@ function WierszLeada({
         </span>
       </td>
       <td className="px-4 py-3 font-medium">
-        <Link href={`/admin/kursantki/${lead.id}`} className="text-sand-700 hover:underline">
+        <PanelLink name="kursantka" id={lead.id} className="text-sand-700 hover:underline">
           {lead.name}
-        </Link>
+        </PanelLink>
         {zeZgloszenia && (
           <span className="mt-0.5 block text-[11px] text-muted">
             z uzupełnienia zgłoszenia #{zeZgloszenia}
@@ -765,7 +785,7 @@ function WierszLeada({
       </td>
       <td className="px-4 py-3"><LeadStatusSelect leadId={lead.id} current={lead.status} /></td>
       <td className="px-4 py-3 text-xs">{trenerki.join(", ") || <span className="text-muted">—</span>}</td>
-    </tr>
+    </PanelRow>
   );
 }
 
