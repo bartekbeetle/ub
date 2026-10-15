@@ -5,7 +5,6 @@ category: "Poradnik"
 excerpt: "Szybki kurs weekendowy kosztuje kilka tysięcy złotych, szkoła policealna jest bezpłatna, ale trwa dwa lata. Porównanie kosztu, czasu i tego, co daje każda droga - oraz trzecia opcja: krótki kurs z Bazy Usług Rozwojowych z dofinansowaniem nawet do 95%."
 meta_description: "Kurs weekendowy czy szkoła policealna kosmetyczna? Porównanie kosztu, czasu nauki i uprawnień oraz kurs z dofinansowaniem BUR jako trzecia droga do zawodu beauty."
 metaTitle: "Kurs weekendowy czy szkoła policealna kosmetyczna?"
-nadpisz_w_bazie: true
 metaDescription: "Kurs weekendowy czy szkoła policealna kosmetyczna? Porównanie kosztu, czasu nauki i uprawnień oraz kurs z dofinansowaniem BUR jako trzecia droga do zawodu beauty."
 data: 2026-10-15
 target: kursantka (B2C)
