@@ -26,7 +26,9 @@ export function ViewEnter({ children }: { children: ReactNode }) {
       let i = 0;
       root.querySelectorAll<HTMLElement>(".card").forEach((el) => {
         if (el.closest("[role=status]")) return;
-        el.style.setProperty("--i", String(Math.min(i++, 10)));
+        // Raz nadany numer zostaje — zmiana opóźnienia po animacji cofnęłaby kartę do stanu „przed”.
+        if (!el.style.getPropertyValue("--i")) el.style.setProperty("--i", String(Math.min(i, 10)));
+        i++;
       });
     };
     number();
