@@ -22,7 +22,7 @@ const SAMPLE = {
   imie: "Anna Nowak",
   email: "anna@example.com",
   kategoria: "Stylizacja brwi",
-  wojewodztwo: "śląskie",
+  wojewodztwo: "Śląskie",
 };
 
 type Segment = {

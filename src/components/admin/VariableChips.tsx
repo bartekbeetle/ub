@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useLayoutEffect, useRef } from "react";
 
 export type TemplateVar = { key: string; label: string };
 
@@ -18,9 +18,22 @@ export function useVariableInsert(fields: {
   const subjectRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
   const last = useRef<"subject" | "body">("body");
+  // Kursor ustawiamy PO przerenderowaniu — kontrolowane pole przy zmianie wartości skacze na koniec.
+  const caret = useRef<{ el: Field; pos: number } | null>(null);
+  useLayoutEffect(() => {
+    if (!caret.current) return;
+    const { el, pos } = caret.current;
+    caret.current = null;
+    el.focus();
+    el.setSelectionRange(pos, pos);
+  });
 
   const insert = useCallback(
     (key: string) => {
+      // Pigułka nie zabiera fokusu (preventDefault na mousedown), więc aktywne pole jest pewniejsze niż onFocus.
+      const active = typeof document !== "undefined" ? document.activeElement : null;
+      if (active === subjectRef.current) last.current = "subject";
+      else if (active === bodyRef.current) last.current = "body";
       const which = last.current;
       const el: Field | null = which === "subject" ? subjectRef.current : bodyRef.current;
       const { value, set } = fields[which];
@@ -28,11 +41,8 @@ export function useVariableInsert(fields: {
       if (!el) return set(value + token);
       const start = el.selectionStart ?? value.length;
       const end = el.selectionEnd ?? value.length;
+      caret.current = { el, pos: start + token.length };
       set(value.slice(0, start) + token + value.slice(end));
-      requestAnimationFrame(() => {
-        el.focus();
-        el.setSelectionRange(start + token.length, start + token.length);
-      });
     },
     [fields]
   );
