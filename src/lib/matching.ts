@@ -2,7 +2,8 @@ import "server-only";
 import { and, eq, gte, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { getSettings } from "./settings";
-import { sendOrQueueEmail, renderTemplate } from "./email";
+import { EMAIL_KIND, sendOrQueueEmail, renderTemplate } from "./email";
+import { isAutomationEnabled } from "./automations";
 import { logAudit } from "./audit";
 import { voivodeshipName } from "./constants";
 import type { Lead, Trainer } from "@/db/schema";
@@ -81,7 +82,7 @@ export async function distributeLead(lead: Lead): Promise<{ assignedTo: Trainer[
       amount,
     });
 
-    if (trainer.email) {
+    if (trainer.email && (await isAutomationEnabled(EMAIL_KIND.TRENERKA_LEAD))) {
       const vars = {
         trenerka: trainer.name,
         imie: lead.name,
@@ -96,8 +97,10 @@ export async function distributeLead(lead: Lead): Promise<{ assignedTo: Trainer[
         subject: renderTemplate(settings.leadEmailSubject, vars),
         body: renderTemplate(settings.leadEmailTemplate, vars),
         leadId: lead.id,
-        // Bez `kind` — ten sam lead trafia świadomie do kilku trenerek (multi-sell),
-        // więc idempotencja per (lead, kind) zablokowałaby drugie powiadomienie.
+        // `kind` tylko do statystyk pulpitu. Dedupe wyłączony — ten sam lead trafia świadomie
+        // do kilku trenerek (multi-sell), więc idempotencja per (lead, kind) zablokowałaby drugie powiadomienie.
+        kind: EMAIL_KIND.TRENERKA_LEAD,
+        dedupe: false,
       });
     }
 

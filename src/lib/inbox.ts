@@ -23,7 +23,44 @@ import { simpleParser } from "mailparser";
  *    czytać człowiek w programie pocztowym i nie wolno mu podbierać stanu „nowe".
  */
 
-export type InboxFolder = "odebrane" | "wyslane";
+/**
+ * `automat` = INBOX skrzynki `szkolenia@`, z której wychodzą automaty (16.10.2026).
+ * Ktoś, kto kliknie „Odpowiedz” w kliencie ignorującym Reply-To (albo na starym mailu bez niego),
+ * pisze właśnie tam — bez tego folderu takie odpowiedzi lądowały tylko w webmailu LH.
+ * Logowanie tymi samymi danymi co SMTP (`SMTP_USER` / `SMTP_PASS`), więc nie wymaga nowych zmiennych.
+ */
+export type InboxFolder = "odebrane" | "wyslane" | "automat";
+
+type Account = { user: string; pass: string; address: string };
+
+function biuroAccount(): Account | null {
+  if (!process.env.INBOX_USER || !process.env.INBOX_PASS) return null;
+  return { user: process.env.INBOX_USER, pass: process.env.INBOX_PASS, address: process.env.INBOX_USER };
+}
+
+function automatAccount(): Account | null {
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) return null;
+  return { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS, address: process.env.SMTP_USER };
+}
+
+function accountFor(folder: InboxFolder): Account {
+  const acc = folder === "automat" ? automatAccount() : biuroAccount();
+  if (!acc) throw new Error(folder === "automat" ? "Brak SMTP_USER / SMTP_PASS." : "Brak INBOX_USER / INBOX_PASS.");
+  return acc;
+}
+
+export function automatInboxConfigured(): boolean {
+  return automatAccount() !== null;
+}
+
+export function automatAddress(): string {
+  return process.env.SMTP_USER || "szkolenia@uniwersytetbeauty.pl";
+}
+
+/** Konto, z którego idą odpowiedzi z panelu: `biuro@`, a gdy nie jest podpięte — `szkolenia@`. */
+export function replyAccountLabel(): string {
+  return biuroAccount() ? inboxAddress() : automatAddress();
+}
 
 export type InboxListItem = {
   uid: number;
@@ -54,12 +91,12 @@ export function inboxConfigured(): boolean {
   return Boolean(process.env.INBOX_USER && process.env.INBOX_PASS);
 }
 
-function client(): ImapFlow {
+function client(acc: Account): ImapFlow {
   const c = new ImapFlow({
     host: process.env.INBOX_IMAP_HOST || DEFAULT_IMAP_HOST,
     port: Number(process.env.INBOX_IMAP_PORT || 993),
     secure: true,
-    auth: { user: process.env.INBOX_USER!, pass: process.env.INBOX_PASS! },
+    auth: { user: acc.user, pass: acc.pass },
     logger: false,
     // Wolny serwer pocztowy nie może zawiesić renderu panelu.
     connectionTimeout: 10_000,
@@ -72,8 +109,8 @@ function client(): ImapFlow {
   return c;
 }
 
-async function withClient<T>(fn: (c: ImapFlow) => Promise<T>): Promise<T> {
-  const c = client();
+async function withClient<T>(acc: Account, fn: (c: ImapFlow) => Promise<T>): Promise<T> {
+  const c = client(acc);
   await c.connect();
   try {
     return await fn(c);
@@ -124,7 +161,7 @@ function toItem(m: FetchMessageObject, folder: InboxFolder): InboxListItem {
 
 /** Ostatnie `limit` wiadomości z folderu, najnowsze pierwsze. Same koperty, bez treści. */
 export async function listInbox(folder: InboxFolder = "odebrane", limit = 50): Promise<InboxListItem[]> {
-  return withClient(async (c) => {
+  return withClient(accountFor(folder), async (c) => {
     const path = await folderPath(c, folder);
     if (!path) return [];
     const lock = await c.getMailboxLock(path, { readOnly: true });
@@ -146,7 +183,7 @@ export async function listInbox(folder: InboxFolder = "odebrane", limit = 50): P
 
 /** Jedna wiadomość z treścią tekstową. `null`, gdy UID nie istnieje. Nie zmienia flag. */
 export async function getInboxMessage(folder: InboxFolder, uid: number): Promise<InboxMessage | null> {
-  return withClient(async (c) => {
+  return withClient(accountFor(folder), async (c) => {
     const path = await folderPath(c, folder);
     if (!path) return null;
     const lock = await c.getMailboxLock(path, { readOnly: true });
@@ -188,7 +225,12 @@ export async function sendFromInbox(params: {
   references?: string[];
   /** UID oryginału w INBOX — po wysłaniu dostaje flagę \Answered. */
   answeredUid?: number;
+  /** Folder oryginału — flagę \Answered stawiamy w skrzynce, z której pochodzi. */
+  answeredFolder?: InboxFolder;
 }): Promise<void> {
+  // Odpowiadamy z `biuro@`; gdy nie jest podpięte, z `szkolenia@` (to samo konto co SMTP).
+  const acc = biuroAccount() ?? automatAccount();
+  if (!acc) throw new Error("Brak skonfigurowanej skrzynki do wysyłki.");
   const nodemailer = (await import("nodemailer")).default;
   const MailComposer = (await import("nodemailer/lib/mail-composer")).default;
   const port = Number(process.env.INBOX_SMTP_PORT || process.env.SMTP_PORT || 587);
@@ -196,10 +238,10 @@ export async function sendFromInbox(params: {
     host: process.env.INBOX_SMTP_HOST || process.env.SMTP_HOST || "mail16.lh.pl",
     port,
     secure: port === 465,
-    auth: { user: process.env.INBOX_USER, pass: process.env.INBOX_PASS },
+    auth: { user: acc.user, pass: acc.pass },
   });
 
-  const address = inboxAddress();
+  const address = acc.address;
   // Wiadomość składamy RAZ: ten sam surowy MIME idzie do adresatki i do „Wysłanych".
   // Osobne `sendMail` + `MailComposer` nadawałyby dwa różne Message-ID i kopia nie
   // zgadzałaby się z tym, co realnie dostała kursantka (wątki, odpowiedzi na odpowiedź).
@@ -218,18 +260,20 @@ export async function sendFromInbox(params: {
   // Kopia w „Wysłanych" i flaga \Answered — po to, żeby człowiek czytający skrzynkę
   // w programie pocztowym widział, że ktoś już odpisał. Błąd tutaj nie cofa wysyłki.
   try {
-    await withClient(async (c) => {
+    await withClient(acc, async (c) => {
       const sent = await sentPath(c, true);
       if (sent) await c.append(sent, raw, ["\\Seen"]);
-      if (params.answeredUid) {
+    });
+    if (params.answeredUid) {
+      await withClient(accountFor(params.answeredFolder ?? "odebrane"), async (c) => {
         const lock = await c.getMailboxLock("INBOX");
         try {
           await c.messageFlagsAdd(String(params.answeredUid), ["\\Answered", "\\Seen"], { uid: true });
         } finally {
           lock.release();
         }
-      }
-    });
+      });
+    }
   } catch (err) {
     console.error("[inbox] Wysłane, ale nie udało się odłożyć kopii / flagi:", err);
   }

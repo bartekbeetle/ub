@@ -12,12 +12,14 @@ export function InboxComposer({
   subject: initialSubject,
   text: initialText,
   replyToUid,
+  replyFolder,
   backHref,
 }: {
   to: string;
   subject: string;
   text: string;
   replyToUid?: number;
+  replyFolder?: "odebrane" | "automat";
   backHref: string;
 }) {
   const router = useRouter();
@@ -33,7 +35,7 @@ export function InboxComposer({
     const res = await fetch("/api/admin/skrzynka/wyslij", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ to, subject, text, replyToUid }),
+      body: JSON.stringify({ to, subject, text, replyToUid, replyFolder }),
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {

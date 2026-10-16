@@ -99,44 +99,45 @@ export async function findCandidates(db: AnyDb, now: Date, limit = MAX_PER_RUN):
  * „nawet do 95%", forma bezosobowa redakcji, adresat „Ty", bez myślnika-pauzy.
  * Wysyłamy tekst bez HTML — tak jak pozostałe maile transakcyjne (`deliver` używa `text`).
  */
+export const REMINDER_TEMPLATE = [
+  "Dzień dobry {{imie}},",
+  "",
+  "{{zakres}} Zostało kilka kroków, a odpowiedzi, które już podałaś, są zapisane.",
+  "",
+  "Po złożeniu aplikacji sprawdzamy, jakie dofinansowanie przysługuje Ci w Twoim województwie (nawet do 95%, zależnie od naboru i sytuacji zawodowej), i dobieramy akademię z wpisem do Bazy Usług Rozwojowych.",
+  "",
+  "Dokończ aplikację od miejsca, w którym przerwałaś:",
+  "{{resume}}",
+  "",
+  "To jedyne przypomnienie w tej sprawie. Jeśli aplikacja była pomyłką, wystarczy nie robić nic.",
+  "",
+  "Zespół Uniwersytet Beauty",
+  "biuro@uniwersytetbeauty.pl · uniwersytetbeauty.pl",
+  "",
+  "Dostajesz tę wiadomość, bo w aplikacji zaznaczyłaś zgodę na kontakt w jej sprawie, w tym przypomnienie o dokończeniu.",
+  "Nie chcesz więcej wiadomości od nas? {{unsub}}",
+    ].join("\n");
+
+/** `template` = treść edytowana w panelu (Mailing → Automatyzacje); brak = domyślna z kodu. */
 export function buildReminderMessage(params: {
   name: string | null;
   category: string | null;
   resumeUrl: string;
   unsubUrl: string;
+  template?: { subject: string; body: string } | null;
 }): { subject: string; body: string } {
   const zakres = params.category
     ? `Zaczęłaś aplikację na szkolenie z zakresu: ${params.category}.`
     : "Zaczęłaś aplikację na szkolenie z dofinansowaniem.";
-  const body = renderTemplate(
-    [
-      "Dzień dobry {{imie}},",
-      "",
-      "{{zakres}} Zostało kilka kroków, a odpowiedzi, które już podałaś, są zapisane.",
-      "",
-      "Po złożeniu aplikacji sprawdzamy, jakie dofinansowanie przysługuje Ci w Twoim województwie (nawet do 95%, zależnie od naboru i sytuacji zawodowej), i dobieramy akademię z wpisem do Bazy Usług Rozwojowych.",
-      "",
-      "Dokończ aplikację od miejsca, w którym przerwałaś:",
-      "{{resume}}",
-      "",
-      "To jedyne przypomnienie w tej sprawie. Jeśli aplikacja była pomyłką, wystarczy nie robić nic.",
-      "",
-      "Zespół Uniwersytet Beauty",
-      "biuro@uniwersytetbeauty.pl · uniwersytetbeauty.pl",
-      "",
-      "Dostajesz tę wiadomość, bo w aplikacji zaznaczyłaś zgodę na kontakt w jej sprawie, w tym przypomnienie o dokończeniu.",
-      "Nie chcesz więcej wiadomości od nas? {{unsub}}",
-    ].join("\n"),
-    {
-      imie: greetingName(params.name) || "",
+  const body = renderTemplate(params.template?.body ?? REMINDER_TEMPLATE, {
+    imie: greetingName(params.name) || "",
       zakres,
       resume: params.resumeUrl,
       unsub: params.unsubUrl,
-    }
-  )
+    })
     // Brak imienia: „Dzień dobry ," → „Dzień dobry,"
     .replace("Dzień dobry ,", "Dzień dobry,");
-  return { subject: REMINDER_SUBJECT, body };
+  return { subject: params.template?.subject ?? REMINDER_SUBJECT, body };
 }
 
 export type EnqueueFn = (m: {
@@ -153,6 +154,7 @@ export type RunDeps = {
   /** Token do linku wypisania (istniejący mechanizm `marketing_suppression`). */
   unsubscribeToken: (email: string) => Promise<string>;
   enqueue: EnqueueFn;
+  template?: { subject: string; body: string } | null;
 };
 
 export type RunResult = { enabled: boolean; candidates: number; queued: number; skipped: number; failed: number };
@@ -190,6 +192,7 @@ export async function runAbandonedMailerCore(db: AnyDb, deps: RunDeps): Promise<
         category: c.category,
         resumeUrl: `${deps.siteUrl}/aplikacja?wznow=${token}`,
         unsubUrl,
+        template: deps.template,
       });
       const res = await deps.enqueue({
         to: c.email,

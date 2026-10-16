@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
-import { getInboxMessage, inboxConfigured, sendFromInbox } from "@/lib/inbox";
+import { automatInboxConfigured, getInboxMessage, inboxConfigured, sendFromInbox } from "@/lib/inbox";
 import { logAdminAction } from "@/lib/audit";
 
 export const runtime = "nodejs";
@@ -13,14 +13,16 @@ const schema = z.object({
   text: z.string().trim().min(1, "Treść nie może być pusta").max(20_000),
   /** UID wiadomości w INBOX, na którą odpowiadamy. Nagłówki wątku bierzemy z serwera, nie od klienta. */
   replyToUid: z.number().int().positive().optional(),
+  /** Skrzynka oryginału: `odebrane` (biuro@) albo `automat` (szkolenia@). */
+  replyFolder: z.enum(["odebrane", "automat"]).optional(),
 });
 
 /** Wysyłka z `biuro@` — odpowiedź na maila albo nowa wiadomość do kursantki. */
 export async function POST(req: Request) {
   const user = await requireAdmin();
   if (!user) return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
-  if (!inboxConfigured()) {
-    return NextResponse.json({ error: "Skrzynka nieskonfigurowana (INBOX_USER / INBOX_PASS)." }, { status: 503 });
+  if (!inboxConfigured() && !automatInboxConfigured()) {
+    return NextResponse.json({ error: "Skrzynka nieskonfigurowana (INBOX_USER / INBOX_PASS ani SMTP_USER / SMTP_PASS)." }, { status: 503 });
   }
 
   const parsed = schema.safeParse(await req.json().catch(() => null));
@@ -28,18 +30,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: parsed.error.errors[0]?.message ?? "Nieprawidłowe dane." }, { status: 400 });
   }
   const { to, subject, text, replyToUid } = parsed.data;
+  const replyFolder = parsed.data.replyFolder ?? "odebrane";
 
   try {
     let inReplyTo: string | null = null;
     let references: string[] = [];
     if (replyToUid) {
-      const original = await getInboxMessage("odebrane", replyToUid);
+      const original = await getInboxMessage(replyFolder, replyToUid);
       if (original?.messageId) {
         inReplyTo = original.messageId;
         references = [...original.references, original.messageId];
       }
     }
-    await sendFromInbox({ to, subject, text, inReplyTo, references, answeredUid: replyToUid });
+    await sendFromInbox({ to, subject, text, inReplyTo, references, answeredUid: replyToUid, answeredFolder: replyFolder });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("[inbox] Błąd wysyłki:", err);

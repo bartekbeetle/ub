@@ -5,6 +5,7 @@ import { EMAIL_KIND, assignmentEmailKey, renderTemplate, type EmailKey, sendOrQu
 import { greetingName } from "./template";
 import { getSettings } from "./settings";
 import { voivodeshipName } from "./constants";
+import { isAutomationEnabled } from "./automations";
 
 /**
  * Zdarzenia w cyklu życia leada, które powodują wysyłkę maili.
@@ -46,6 +47,7 @@ function leadVars(lead: LeadRow, extra: Record<string, string> = {}) {
  */
 export async function sendLeadConfirmation(lead: LeadRow): Promise<void> {
   try {
+    if (!(await isAutomationEnabled(EMAIL_KIND.KURSANTKA_POTWIERDZENIE))) return;
     const settings = await getSettings();
     const vars = leadVars(lead);
     await sendOrQueueEmail({
@@ -111,13 +113,16 @@ export async function onLeadSigned(params: {
     const trainerForMail = params.trainerName ?? targets[0]?.trainer.name ?? null;
     const vars = leadVars(lead, { trenerka: trainerForMail ?? "szkoleniowa" });
 
-    await sendOrQueueEmail({
-      to: lead.email,
-      subject: renderTemplate(settings.signupEmailSubject, vars),
-      body: renderTemplate(settings.signupEmailTemplate, vars),
-      leadId: lead.id,
-      kind: EMAIL_KIND.KURSANTKA_ZAPIS,
-    });
+    // Wyłączony automat zatrzymuje tylko mail do kursantki — powiadomienie biura o należności idzie zawsze.
+    if (await isAutomationEnabled(EMAIL_KIND.KURSANTKA_ZAPIS)) {
+      await sendOrQueueEmail({
+        to: lead.email,
+        subject: renderTemplate(settings.signupEmailSubject, vars),
+        body: renderTemplate(settings.signupEmailTemplate, vars),
+        leadId: lead.id,
+        kind: EMAIL_KIND.KURSANTKA_ZAPIS,
+      });
+    }
 
     // Powiadomienie wewnętrzne — świadomie bez szablonu w ustawieniach: to jest sygnał
     // operacyjny dla nas, nie treść dla klienta, więc nie ma czego edytować w panelu.

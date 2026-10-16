@@ -7,7 +7,8 @@ import { hashPassword } from "@/lib/auth";
 import { logAudit } from "@/lib/audit";
 import { findMatchingProspect, freeTrainerSlug, logProspectActivity } from "@/lib/prospects";
 import { getSettings } from "@/lib/settings";
-import { sendOrQueueEmail, EMAIL_KIND } from "@/lib/email";
+import { sendOrQueueEmail, EMAIL_KIND, renderTemplate } from "@/lib/email";
+import { resolveAutomation } from "@/lib/automations";
 import { CONSENT_VERSION, voivodeshipName } from "@/lib/constants";
 import { shouldSendCapi } from "@/lib/meta-capi-core";
 import { sendMetaCapiEvent, extractMetaClientSignals } from "@/lib/meta-capi";
@@ -277,24 +278,17 @@ export async function POST(req: Request) {
       `Następny ruch: telefon. Kolejka: /admin/crm-trenerki`,
   });
 
-  await sendOrQueueEmail({
-    to: email,
-    kind: EMAIL_KIND.AKADEMIA_POWITANIE,
-    subject: "Konto w Uniwersytecie Beauty założone — co dalej",
-    body:
-      `Dzień dobry,\n\n` +
-      `dziękujemy za zgłoszenie akademii ${d.name}. Konto w panelu jest już aktywne — ` +
-      `logujesz się adresem ${email} i hasłem ustawionym przy rejestracji: https://uniwersytetbeauty.pl/panel/login\n\n` +
-      `Co dzieje się dalej:\n\n` +
-      `1. Sprawdzamy Twój wpis w Bazie Usług Rozwojowych. Bez niego kursantka nie rozliczy dofinansowania, ` +
-      `dlatego robimy to zanim przekażemy pierwszy kontakt.\n` +
-      `2. Dzwonimy — zwykle w ciągu 1-2 dni roboczych. Ustalamy zakres szkoleń, region i zasady rozliczenia.\n` +
-      `3. Podpisujemy umowę partnerską. Dopiero od tego momentu wolno nam przekazać Ci dane kontaktowe kursantki — ` +
-      `wcześniej nie pozwala na to RODO.\n\n` +
-      `W międzyczasie warto uzupełnić profil akademii w panelu (zakładka „Mój profil”). ` +
-      `Korzystamy z niego, dobierając kursantki do akademii — im konkretniej opiszesz zakres, tym trafniej.\n\n` +
-      `Pozdrawiamy,\nZespół Uniwersytet Beauty\nbiuro@uniwersytetbeauty.pl`,
-  });
+  // Treść i włącznik: Mailing → Automatyzacje (`src/lib/automations.ts`).
+  const powitanie = await resolveAutomation(EMAIL_KIND.AKADEMIA_POWITANIE);
+  if (powitanie.enabled) {
+    const vars = { akademia: d.name, email, login_url: "https://uniwersytetbeauty.pl/panel/login" };
+    await sendOrQueueEmail({
+      to: email,
+      kind: EMAIL_KIND.AKADEMIA_POWITANIE,
+      subject: renderTemplate(powitanie.subject, vars),
+      body: renderTemplate(powitanie.body, vars),
+    });
+  }
 
   // Meta Conversions API — SubmitApplication. Ta sama reguła co w `/api/lead`: tylko ze zgodą
   // marketingową z banera i tylko z `eventId` klienta (deduplikacja z `AcademyRegistrationForm.tsx`).

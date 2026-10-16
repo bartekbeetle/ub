@@ -29,12 +29,26 @@ function toggle<T>(list: T[], value: T): T[] {
  * Licznik jest tu celowo, a nie dopiero po zapisaniu: bez niego admin pisze wiadomość
  * do listy, której rozmiaru nie zna, i dowiaduje się po fakcie, że segment jest pusty.
  */
-export function MailingComposer() {
+export type ComposerInitial = { id: number; name: string; subject: string; body: string; segment: Record<string, unknown> };
+
+function toSegment(raw: Record<string, unknown> | undefined): Segment {
+  const arr = (v: unknown) => (Array.isArray(v) ? (v as string[]) : []);
+  return {
+    sources: arr(raw?.sources) as Segment["sources"],
+    categories: arr(raw?.categories),
+    voivodeships: arr(raw?.voivodeships),
+    since: typeof raw?.since === "string" ? raw.since : "",
+  };
+}
+
+/** `initial` = edycja istniejącego szkicu (PATCH), bez niego = nowa kampania (POST). */
+export function MailingComposer({ initial }: { initial?: ComposerInitial } = {}) {
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [subject, setSubject] = useState("");
-  const [body, setBody] = useState("");
-  const [segment, setSegment] = useState<Segment>(EMPTY);
+  const [name, setName] = useState(initial?.name ?? "");
+  const [subject, setSubject] = useState(initial?.subject ?? "");
+  const [body, setBody] = useState(initial?.body ?? "");
+  const [segment, setSegment] = useState<Segment>(initial ? toSegment(initial.segment) : EMPTY);
+  const [savedAt, setSavedAt] = useState<string | null>(null);
   const [audience, setAudience] = useState<Audience | null>(null);
   const [counting, setCounting] = useState(false);
   const [preview, setPreview] = useState<{ subject: string; body: string } | null>(null);
@@ -86,8 +100,8 @@ export function MailingComposer() {
     e.preventDefault();
     setState("saving");
     setError(null);
-    const res = await fetch("/api/admin/mailing", {
-      method: "POST",
+    const res = await fetch(initial ? `/api/admin/mailing/${initial.id}` : "/api/admin/mailing", {
+      method: initial ? "PATCH" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name,
@@ -103,8 +117,11 @@ export function MailingComposer() {
     });
     const data = await res.json();
     setState("idle");
-    if (res.ok) router.push(`/admin/mailing/${data.id}`);
-    else setError(data.error ?? "Nie udało się zapisać kampanii.");
+    if (!res.ok) return setError(data.error ?? "Nie udało się zapisać kampanii.");
+    if (initial) {
+      setSavedAt(new Date().toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" }));
+      router.refresh();
+    } else router.push(`/admin/mailing/${data.id}`);
   }
 
   return (
@@ -312,8 +329,9 @@ export function MailingComposer() {
 
       <div className="flex flex-wrap items-center gap-3">
         <button type="submit" className="btn-primary" disabled={state === "saving"}>
-          {state === "saving" ? "Zapisuję…" : "Zapisz kampanię"}
+          {state === "saving" ? "Zapisuję…" : initial ? "Zapisz zmiany" : "Zapisz kampanię"}
         </button>
+        {savedAt && <span className="self-center text-sm text-emerald-700">Zapisane o {savedAt}</span>}
         <button
           type="button"
           className="btn-outline"

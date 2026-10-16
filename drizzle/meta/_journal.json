@@ -162,6 +162,13 @@
       "when": 1790922928953,
       "tag": "0022_lead_kategorie_dodatkowe_z_quizu",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1792133964140,
+      "tag": "0023_mailer_pulpit",
+      "breakpoints": true
     }
   ]
 }

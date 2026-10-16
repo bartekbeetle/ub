@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
+import { inboxConfigured } from "@/lib/inbox";
 
-// `/admin/skrzynka` = odebrane. Osobna trasa folderu trzyma jeden widok dla obu list.
+// `/admin/skrzynka` = odebrane `biuro@`; gdy nie jest podpięte, od razu odpowiedzi na automaty (`szkolenia@`).
 export default function SkrzynkaIndex() {
-  redirect("/admin/skrzynka/odebrane");
+  redirect(inboxConfigured() ? "/admin/skrzynka/odebrane" : "/admin/skrzynka/automat");
 }

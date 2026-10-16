@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
-import { inboxAddress, inboxConfigured, listInbox, type InboxFolder, type InboxListItem } from "@/lib/inbox";
+import { automatAddress, automatInboxConfigured, inboxAddress, inboxConfigured, listInbox, type InboxFolder, type InboxListItem } from "@/lib/inbox";
 import { senderContext } from "@/lib/inbox-context";
 import { formatDateTime } from "@/lib/utils";
 import { LEAD_STATUS_LABELS } from "@/lib/constants";
@@ -11,33 +11,24 @@ export const dynamic = "force-dynamic";
 const FOLDERS: { key: InboxFolder; label: string }[] = [
   { key: "odebrane", label: "Odebrane" },
   { key: "wyslane", label: "Wysłane" },
+  { key: "automat", label: "Odpowiedzi na automaty" },
 ];
 
 export default async function SkrzynkaPage({ params }: { params: Promise<{ folder: string }> }) {
   // Strażnik w samej stronie, nie tylko w layoucie — patrz komentarz w layoucie panelu.
   if (!(await requireAdmin())) redirect("/admin/login");
   const { folder } = await params;
-  if (folder !== "odebrane" && folder !== "wyslane") notFound();
+  if (folder !== "odebrane" && folder !== "wyslane" && folder !== "automat") notFound();
 
-  if (!inboxConfigured()) {
-    return (
-      <div className="max-w-3xl">
-        <h1 className="font-serif text-2xl font-bold">Skrzynka</h1>
-        <div className="card mt-6 border border-amber-300 bg-amber-50 p-5 text-sm text-amber-900">
-          <strong>Skrzynka nie jest podpięta.</strong> W zmiennych środowiskowych brakuje{" "}
-          <code>INBOX_USER</code> i <code>INBOX_PASS</code> (konto <code>biuro@uniwersytetbeauty.pl</code> w LH).
-          Po ich ustawieniu aplikacja wymaga restartu w Coolify.
-        </div>
-      </div>
-    );
-  }
-
+  const connected = folder === "automat" ? automatInboxConfigured() : inboxConfigured();
   let items: InboxListItem[] = [];
   let error: string | null = null;
-  try {
-    items = await listInbox(folder);
-  } catch (err) {
-    error = err instanceof Error ? err.message : String(err);
+  if (connected) {
+    try {
+      items = await listInbox(folder);
+    } catch (err) {
+      error = err instanceof Error ? err.message : String(err);
+    }
   }
   const ctx = await senderContext(items.map((i) => i.from));
   const unread = folder === "odebrane" ? items.filter((i) => !i.seen).length : 0;
@@ -48,13 +39,17 @@ export default async function SkrzynkaPage({ params }: { params: Promise<{ folde
         <div>
           <h1 className="font-serif text-2xl font-bold">Skrzynka</h1>
           <p className="mt-1 text-sm text-muted">
-            {inboxAddress()} — tu trafiają odpowiedzi kursantek na maile automatyczne (Reply-To) i wycofania zgód.
+            {folder === "automat"
+              ? `${automatAddress()} — skrzynka, z której wychodzą automaty. Tu lądują odpowiedzi od osób, których program pocztowy pominął Reply-To.`
+              : `${inboxAddress()} — tu trafiają odpowiedzi kursantek na maile automatyczne (Reply-To) i wycofania zgód.`}
           </p>
         </div>
-        <Link href="/admin/skrzynka/nowa" className="btn-primary !px-5 !py-2 !text-sm">Napisz</Link>
+        {(inboxConfigured() || automatInboxConfigured()) && (
+          <Link href="/admin/skrzynka/nowa" className="btn-primary !px-5 !py-2 !text-sm">Napisz</Link>
+        )}
       </div>
 
-      <div className="mt-5 flex gap-2">
+      <div className="mt-5 flex flex-wrap gap-2">
         {FOLDERS.map((f) => (
           <Link
             key={f.key}
@@ -70,12 +65,29 @@ export default async function SkrzynkaPage({ params }: { params: Promise<{ folde
         ))}
       </div>
 
+      {!connected && (
+        <div className="card mt-6 border border-amber-300 bg-amber-50 p-5 text-sm text-amber-900">
+          <strong>Skrzynka {folder === "automat" ? automatAddress() : "biuro@uniwersytetbeauty.pl"} nie jest podpięta.</strong>{" "}
+          {folder === "automat" ? (
+            <>Brakuje <code>SMTP_USER</code> / <code>SMTP_PASS</code>.</>
+          ) : (
+            <>
+              W zmiennych środowiskowych brakuje <code>INBOX_USER</code> i <code>INBOX_PASS</code> (konto{" "}
+              <code>biuro@uniwersytetbeauty.pl</code> w LH). Po ich ustawieniu aplikacja wymaga restartu w Coolify.
+              Do tego czasu odpowiedzi na <code>biuro@</code> widać tylko w poczta.lh.pl, a odpowiedzi na{" "}
+              <code>szkolenia@</code> są w zakładce „Odpowiedzi na automaty”.
+            </>
+          )}
+        </div>
+      )}
+
       {error && (
         <div role="alert" className="card mt-6 border border-red-200 bg-red-50 p-5 text-sm text-red-800">
           Nie udało się połączyć ze skrzynką: <code>{error}</code>
         </div>
       )}
 
+      {connected && (
       <ul className="card mt-6 divide-y divide-gray-100">
         {items.map((m) => {
           const c = ctx.get(m.from.toLowerCase());
@@ -110,7 +122,8 @@ export default async function SkrzynkaPage({ params }: { params: Promise<{ folde
         })}
         {!error && items.length === 0 && <li className="px-5 py-6 text-sm text-muted">Pusto.</li>}
       </ul>
-      <p className="mt-2 text-xs text-muted">Ostatnie 50 wiadomości. Otwarcie maila tutaj nie oznacza go jako przeczytanego.</p>
+      )}
+      {connected && <p className="mt-2 text-xs text-muted">Ostatnie 50 wiadomości. Otwarcie maila tutaj nie oznacza go jako przeczytanego.</p>}
     </div>
   );
 }

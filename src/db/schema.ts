@@ -905,6 +905,9 @@ export const settings = pgTable("settings", {
   defaultRatePerLead: integer("default_rate_per_lead").notNull().default(100),
   defaultRatePerSignup: integer("default_rate_per_signup").notNull().default(500),
   notifyEmail: varchar("notify_email", { length: 255 }).notNull().default("biuro@uniwersytetbeauty.pl"),
+  /** Piksel otwarć i przekierowanie kliknięć w mailach do kursantek i akademii. Domyślnie OFF —
+   *  włączyć po dopisaniu śledzenia do polityki prywatności (RODO, obowiązek informacyjny). */
+  trackingEnabled: boolean("tracking_enabled").notNull().default(false),
   leadEmailSubject: text("lead_email_subject")
     .notNull()
     .default("Nowy lead z Uniwersytet Beauty — {{kategoria}}, {{wojewodztwo}}"),
@@ -1031,12 +1034,42 @@ export const emailQueue = pgTable(
     replyTo: varchar("reply_to", { length: 255 }),
     sentAt: timestamp("sent_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    /**
+     * Śledzenie (16.10.2026, pulpit mailera). Token trafia do piksela i linków w części HTML;
+     * NULL = mail wysłany bez śledzenia (śledzenie wyłączone w ustawieniach albo mail wewnętrzny).
+     * ⚠️ Otwarcia są zawyżone przez Apple Mail Privacy Protection (pobiera piksel sam) —
+     * kliknięcia są pewniejszym sygnałem.
+     */
+    trackToken: varchar("track_token", { length: 40 }),
+    openedAt: timestamp("opened_at", { withTimezone: true }),
+    openCount: integer("open_count").notNull().default(0),
+    clickedAt: timestamp("clicked_at", { withTimezone: true }),
+    clickCount: integer("click_count").notNull().default(0),
   },
   (t) => [
     index("email_queue_status_idx").on(t.status),
     index("email_queue_lead_kind_idx").on(t.leadId, t.kind),
+    uniqueIndex("email_queue_track_token_idx").on(t.trackToken),
+    index("email_queue_created_idx").on(t.createdAt),
   ]
 );
+
+// ===== SZABLONY AUTOMATÓW (pulpit mailera, 16.10.2026) =====
+
+/**
+ * Nadpisania treści i włącznik automatów. Wiersz istnieje tylko dla automatu, który ktoś
+ * zmienił w panelu — brak wiersza = treść domyślna z kodu i automat włączony.
+ * Potwierdzenie zgłoszenia, zapisu i mail do trenerki trzymają treść dalej w `settings`
+ * (tam była od początku); tu mają tylko włącznik. Rejestr: `src/lib/automations.ts`.
+ */
+export const emailTemplates = pgTable("email_templates", {
+  kind: varchar("kind", { length: 40 }).primaryKey(),
+  subject: text("subject"),
+  body: text("body"),
+  enabled: boolean("enabled").notNull().default(true),
+  updatedBy: varchar("updated_by", { length: 160 }),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
 
 // ===== PRZYPOMNIENIA „DOKOŃCZ APLIKACJĘ" =====
 

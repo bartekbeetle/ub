@@ -6,6 +6,9 @@ import { campaignStats } from "@/lib/mailing";
 import { isSmtpConfigured } from "@/lib/email";
 import { formatDateTime } from "@/lib/utils";
 import { MailingRunner } from "@/components/admin/MailingRunner";
+import { MailingComposer } from "@/components/admin/MailingComposer";
+import { MailerTabs } from "@/components/admin/MailerTabs";
+import { campaignTracking, rates } from "@/lib/mailer-stats";
 
 export const dynamic = "force-dynamic";
 
@@ -38,11 +41,14 @@ export default async function KampaniaPage({ params }: { params: Promise<{ id: s
     .limit(200);
 
   const smtpReady = isSmtpConfigured();
+  const tracked = (await campaignTracking()).get(id);
+  const tr = tracked ? rates(tracked) : null;
 
   return (
     <div>
-      <Link href="/admin/mailing" className="text-sm text-muted underline underline-offset-2">
-        ← Mailing
+      <MailerTabs active="kampanie" />
+      <Link href="/admin/mailing/kampanie" className="mt-4 inline-block text-sm text-muted underline underline-offset-2">
+        ← Kampanie
       </Link>
       <h1 className="mt-2 font-serif text-2xl font-bold">{campaign.name}</h1>
       <p className="mt-1 text-sm text-muted">
@@ -50,6 +56,30 @@ export default async function KampaniaPage({ params }: { params: Promise<{ id: s
         {campaign.createdBy ? ` przez ${campaign.createdBy}` : ""}
       </p>
 
+      {tracked && tracked.sent > 0 && (
+        <div className="mt-6 grid gap-4 sm:grid-cols-3">
+          {[
+            ["Wysłane", String(tracked.sent)],
+            ["Otwarcia", tr?.openRate != null ? `${tr.openRate}% (${tracked.opened})` : "bez śledzenia"],
+            ["Kliknięcia", tr?.clickRate != null ? `${tr.clickRate}% (${tracked.clicked})` : "bez śledzenia"],
+          ].map(([l, v]) => (
+            <div key={l} className="card p-5">
+              <p className="text-xs font-bold uppercase tracking-wide text-muted">{l}</p>
+              <p className="mt-2 font-serif text-2xl font-bold tabular-nums">{v}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {campaign.status === "szkic" ? (
+        <div className="card mt-6 p-6">
+          <h2 className="font-serif text-lg font-semibold">Edytuj szkic</h2>
+          <p className="mt-1 text-xs text-muted">Treść da się zmieniać do zamrożenia listy odbiorców.</p>
+          <MailingComposer
+            initial={{ id, name: campaign.name, subject: campaign.subject, body: campaign.body, segment: campaign.segment }}
+          />
+        </div>
+      ) : (
       <div className="card mt-6 p-6">
         <h2 className="font-serif text-lg font-semibold">Wiadomość</h2>
         <p className="mt-3 font-semibold">{campaign.subject}</p>
@@ -61,6 +91,7 @@ export default async function KampaniaPage({ params }: { params: Promise<{ id: s
           rezygnacji oraz nagłówki <code className="font-mono">List-Unsubscribe</code>.
         </p>
       </div>
+      )}
 
       <MailingRunner
         campaignId={id}

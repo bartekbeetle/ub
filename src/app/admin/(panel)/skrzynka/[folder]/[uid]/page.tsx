@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
-import { getInboxMessage, inboxConfigured, quoteOriginal, replySubject } from "@/lib/inbox";
+import { automatInboxConfigured, getInboxMessage, inboxConfigured, quoteOriginal, replyAccountLabel, replySubject } from "@/lib/inbox";
 import { senderContext } from "@/lib/inbox-context";
 import { InboxComposer } from "@/components/admin/InboxComposer";
 import { SenderContextCard } from "@/components/admin/SenderContextCard";
@@ -13,8 +13,8 @@ export default async function WiadomoscPage({ params }: { params: Promise<{ fold
   if (!(await requireAdmin())) redirect("/admin/login");
   const { folder, uid: rawUid } = await params;
   const uid = Number(rawUid);
-  if ((folder !== "odebrane" && folder !== "wyslane") || !Number.isInteger(uid) || uid <= 0) notFound();
-  if (!inboxConfigured()) redirect("/admin/skrzynka/odebrane");
+  if ((folder !== "odebrane" && folder !== "wyslane" && folder !== "automat") || !Number.isInteger(uid) || uid <= 0) notFound();
+  if (!(folder === "automat" ? automatInboxConfigured() : inboxConfigured())) redirect(`/admin/skrzynka/${folder}`);
 
   const msg = await getInboxMessage(folder, uid);
   if (!msg) notFound();
@@ -44,15 +44,17 @@ export default async function WiadomoscPage({ params }: { params: Promise<{ fold
             )}
           </div>
 
-          {folder === "odebrane" && (
+          {folder !== "wyslane" && (
             <div className="card p-6">
               <h2 className="font-serif text-lg font-semibold">Odpowiedz</h2>
+              <p className="mt-1 text-xs text-muted">Wyjdzie z {replyAccountLabel()}.</p>
               <div className="mt-4">
                 <InboxComposer
                   to={msg.from}
                   subject={replySubject(msg.subject)}
                   text={`Dzień dobry,\n\n\n\nPozdrawiamy\nZespół Uniwersytetu Beauty${quoteOriginal(msg)}`}
                   replyToUid={msg.uid}
+                  replyFolder={folder}
                   backHref={back}
                 />
               </div>

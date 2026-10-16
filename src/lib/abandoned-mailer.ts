@@ -3,6 +3,7 @@ import { getDb } from "@/db";
 import { EMAIL_KIND, sendOrQueueEmail } from "@/lib/email";
 import { getOrCreateUnsubscribeToken } from "@/lib/marketing-list";
 import { runAbandonedMailerCore, type RunResult } from "@/lib/abandoned-core";
+import { isAutomationEnabled, resolveAutomation } from "@/lib/automations";
 
 /**
  * Przypomnienie „dokończ aplikację" — wiring na prawdziwą bazę i prawdziwą kolejkę maili.
@@ -12,7 +13,11 @@ import { runAbandonedMailerCore, type RunResult } from "@/lib/abandoned-core";
 export async function runAbandonedMailer(): Promise<RunResult> {
   const db = await getDb();
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://uniwersytetbeauty.pl";
+  const tpl = await resolveAutomation(EMAIL_KIND.PORZUCONA_APLIKACJA);
   return runAbandonedMailerCore(db, {
+    // Wyłącznik z panelu + dotychczasowy kill-switch z env (ten drugi sprawdza `isAutomationEnabled`).
+    enabled: await isAutomationEnabled(EMAIL_KIND.PORZUCONA_APLIKACJA),
+    template: tpl.customized ? { subject: tpl.subject, body: tpl.body } : null,
     siteUrl,
     unsubscribeToken: getOrCreateUnsubscribeToken,
     enqueue: async (m) => {

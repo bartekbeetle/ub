@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { requireAdmin } from "@/lib/auth";
 import { getDb, schema } from "@/db";
-import { inboxConfigured } from "@/lib/inbox";
+import { automatInboxConfigured, inboxConfigured } from "@/lib/inbox";
 import { senderContext } from "@/lib/inbox-context";
 import { InboxComposer } from "@/components/admin/InboxComposer";
 import { SenderContextCard } from "@/components/admin/SenderContextCard";
@@ -20,7 +20,7 @@ export default async function NowaWiadomoscPage({
   searchParams: Promise<{ lead?: string; zgloszenie?: string }>;
 }) {
   if (!(await requireAdmin())) redirect("/admin/login");
-  if (!inboxConfigured()) redirect("/admin/skrzynka/odebrane");
+  if (!inboxConfigured() && !automatInboxConfigured()) redirect("/admin/skrzynka");
   const sp = await searchParams;
   const db = await getDb();
 

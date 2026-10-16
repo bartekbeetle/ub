@@ -1,6 +1,9 @@
 import "server-only";
 import { and, eq, gte, inArray, lt, or, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db";
+import { randomBytes } from "crypto";
+import { buildTrackedHtml, isTrackedKind } from "./email-html";
+import { getSettings } from "./settings";
 
 /**
  * Rodzaje maili wychodzących. Wartość trafia do `email_queue.kind` i jest kluczem
@@ -42,6 +45,18 @@ export function assignmentEmailKey(kind: EmailKind, assignmentId: number): Email
 
 /** Po tylu nieudanych próbach worker przestaje ponawiać i zostawia maila jako „blad". */
 export const MAX_EMAIL_ATTEMPTS = 5;
+
+function siteUrl(): string {
+  return process.env.NEXT_PUBLIC_SITE_URL || "https://uniwersytetbeauty.pl";
+}
+
+async function trackingEnabled(): Promise<boolean> {
+  try {
+    return (await getSettings()).trackingEnabled;
+  } catch {
+    return false;
+  }
+}
 
 function smtpConfigured(): boolean {
   return Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
@@ -118,9 +133,20 @@ export async function deliver(row: {
   headers?: Record<string, string> | null;
   fromName?: string | null;
   replyTo?: string | null;
+  kind?: string | null;
+  trackToken?: string | null;
 }): Promise<{ sent: boolean }> {
   const db = await getDb();
   try {
+    // Śledzenie otwarć/kliknięć — tylko gdy włączone w Ustawieniach i tylko dla maili do ludzi z zewnątrz.
+    let html: string | undefined;
+    if (isTrackedKind(row.kind) && (await trackingEnabled())) {
+      const token = row.trackToken ?? randomBytes(16).toString("hex");
+      if (!row.trackToken) {
+        await db.update(schema.emailQueue).set({ trackToken: token }).where(eq(schema.emailQueue.id, row.id));
+      }
+      html = buildTrackedHtml(row.body, { siteUrl: siteUrl(), token });
+    }
     const nodemailer = (await import("nodemailer")).default;
     const transport = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
@@ -134,6 +160,7 @@ export async function deliver(row: {
       to: row.toEmail,
       subject: row.subject,
       text: row.body,
+      html,
       headers: row.headers ?? undefined,
     });
     await db
@@ -231,6 +258,7 @@ export async function sendOrQueueEmail(params: {
     headers: params.headers,
     fromName: queued.fromName,
     replyTo: queued.replyTo,
+    kind: queued.kind,
   });
   // `queueId` oddajemy ZAWSZE, także po nieudanej próbie: kampania mailingowa czyta
   // przez niego prawdziwy stan doręczenia, a mail po błędzie zostaje w kolejce do ponowienia.
@@ -278,6 +306,9 @@ export async function sendTestEmail(to: string): Promise<{ ok: boolean; error?: 
     await transport.verify();
     await transport.sendMail({
       from: process.env.SMTP_FROM || process.env.SMTP_USER,
+      // Ten sam Reply-To co w prawdziwych mailach — odpowiedź na test ma trafić tam, gdzie
+      // trafiają odpowiedzi kursantek (do 16.10 test go nie miał i odpowiedź szła na szkolenia@).
+      replyTo: replyToAddress(),
       to,
       subject: "Test wysyłki — Uniwersytet Beauty",
       text: [

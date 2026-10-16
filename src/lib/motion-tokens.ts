@@ -34,3 +34,6 @@ export const SHIFT = {
 
 /** Próg zamknięcia panelu przeciągnięciem w prawo (mobile). */
 export const SWIPE_CLOSE = { offset: 120, velocity: 500 } as const;
+
+/** Sprężyna przełączników (gałka toggle'a) — lekki overshoot, bez bujania. */
+export const SPRING = { type: "spring", stiffness: 520, damping: 32, mass: 0.7 } as const;
