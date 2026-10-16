@@ -109,7 +109,7 @@ function fromField(fromName?: string | null): string | { name: string; address: 
   return raw;
 }
 
-async function deliver(row: {
+export async function deliver(row: {
   id: number;
   toEmail: string;
   subject: string;

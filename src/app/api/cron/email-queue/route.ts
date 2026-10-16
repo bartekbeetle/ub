@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { timingSafeEqual } from "crypto";
 import { flushEmailQueue, isSmtpConfigured } from "@/lib/email";
 import { runAbandonedMailer } from "@/lib/abandoned-mailer";
+import { sendOverdueConfirmations } from "@/lib/overdue-confirmations";
 
 export const runtime = "nodejs";
 // Kolejka ma być opróżniana na żądanie, nigdy z cache'u odpowiedzi.
@@ -33,6 +34,13 @@ export async function GET(req: Request) {
   const b = Buffer.from(secret);
   if (a.length !== b.length || !timingSafeEqual(a, b)) {
     return NextResponse.json({ error: "Brak autoryzacji." }, { status: 401 });
+  }
+
+  // Jednorazowe: zaległe potwierdzenia zgłoszeń sprzed startu SMTP, z własną treścią
+  // (`src/lib/overdue-confirmations.ts`). `&dryRun=1` pokazuje listę bez wysyłki.
+  if (url.searchParams.get("task") === "zalegle-potwierdzenia") {
+    const dryRun = url.searchParams.get("dryRun") === "1";
+    return NextResponse.json(await sendOverdueConfirmations({ dryRun }));
   }
 
   // Domyślnie pomijamy maile starsze niż 7 dni (zaległości sprzed konfiguracji SMTP —
