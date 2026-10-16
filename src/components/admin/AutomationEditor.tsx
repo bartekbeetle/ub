@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { renderTemplate } from "@/lib/template";
 import { Switch } from "@/components/ui/Switch";
 import { Toast } from "@/components/ui/Toast";
+import { VariableChips, useVariableInsert } from "@/components/admin/VariableChips";
 
 type State = { subject: string; body: string; enabled: boolean; customized: boolean };
 
@@ -42,7 +43,6 @@ export function AutomationEditor({
   const [toast, setToast] = useState<string | null>(null);
   const [flash, setFlash] = useState(false);
   const [testTo, setTestTo] = useState(defaultTestTo);
-  const bodyRef = useRef<HTMLTextAreaElement>(null);
   const clearToast = useCallback(() => setToast(null), []);
 
   const dirty = subject !== saved.subject || body !== saved.body;
@@ -118,19 +118,11 @@ export function AutomationEditor({
     else setError(json.error ?? "Nie udało się wysłać testu.");
   }
 
-  function insert(key: string) {
-    const el = bodyRef.current;
-    const token = `{{${key}}}`;
-    if (!el) return setBody((b) => b + token);
-    const start = el.selectionStart ?? body.length;
-    const end = el.selectionEnd ?? body.length;
-    const next = body.slice(0, start) + token + body.slice(end);
-    setBody(next);
-    requestAnimationFrame(() => {
-      el.focus();
-      el.setSelectionRange(start + token.length, start + token.length);
-    });
-  }
+  const fields = useMemo(
+    () => ({ subject: { value: subject, set: setSubject }, body: { value: body, set: setBody } }),
+    [subject, body]
+  );
+  const { insert, subjectProps, bodyProps } = useVariableInsert(fields);
 
   return (
     <>
@@ -157,7 +149,7 @@ export function AutomationEditor({
         <div className="card p-6">
           <h3 className="font-serif text-lg font-semibold">Treść</h3>
           <label className="label mt-4" htmlFor="a-subject">Temat</label>
-          <input id="a-subject" className="input" value={subject} onChange={(e) => setSubject(e.target.value)} />
+          <input id="a-subject" {...subjectProps} className="input" value={subject} onChange={(e) => setSubject(e.target.value)} />
           {subject !== saved.subject && (
             <p className="mt-1 text-xs text-muted">było: {saved.subject}</p>
           )}
@@ -165,29 +157,14 @@ export function AutomationEditor({
           <label className="label mt-4" htmlFor="a-body">Wiadomość</label>
           <textarea
             id="a-body"
-            ref={bodyRef}
+            {...bodyProps}
             rows={16}
             className="input resize-y font-mono text-sm"
             value={body}
             onChange={(e) => setBody(e.target.value)}
           />
 
-          <p className="mt-3 text-xs font-semibold text-muted">Wstaw pole (kliknij):</p>
-          <div className="mt-1.5 flex flex-wrap gap-1.5">
-            {placeholders.map((p) => (
-              <button
-                key={p.key}
-                type="button"
-                onClick={() => insert(p.key)}
-                title={p.label}
-                className={`press rounded-md px-2 py-1 font-mono text-xs ${
-                  required.includes(p.key) ? "bg-amber-100 text-amber-800" : "bg-sand-100 text-sand-700"
-                } hover:bg-sand-200`}
-              >
-                {`{{${p.key}}}`} <span className="font-sans text-muted">· {p.label}</span>
-              </button>
-            ))}
-          </div>
+          <VariableChips vars={placeholders} onInsert={insert} required={required} />
 
           {missing.length > 0 && (
             <p className="mt-3 text-sm text-red-700">

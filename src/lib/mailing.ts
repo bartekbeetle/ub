@@ -188,6 +188,7 @@ export function recipientVars(row: {
   return {
     imie_wolacz: greetingName(row.name) || "Pani",
     imie: row.name ?? "",
+    imie_samo: (row.name ?? "").trim().split(/\s+/)[0] ?? "",
     email: row.email,
     kategoria: row.category ?? "",
     wojewodztwo: voivodeshipName(row.voivodeship),

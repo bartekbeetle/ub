@@ -1,8 +1,29 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CATEGORIES, VOIVODESHIPS } from "@/lib/constants";
+import { renderTemplate } from "@/lib/template";
+import { VariableChips, useVariableInsert } from "@/components/admin/VariableChips";
+
+/** Klucze muszą istnieć w `recipientVars` (src/lib/mailing.ts) — tam wysyłka je podstawia. */
+const CAMPAIGN_VARS = [
+  { key: "imie_wolacz", label: "Imię (Anno)" },
+  { key: "imie_samo", label: "Imię (Anna)" },
+  { key: "imie", label: "Imię i nazwisko" },
+  { key: "kategoria", label: "Kurs" },
+  { key: "wojewodztwo", label: "Województwo" },
+];
+
+/** Te same przykładowe dane co mail testowy (Anna Nowak, brwi, śląskie). */
+const SAMPLE = {
+  imie_wolacz: "Anno",
+  imie_samo: "Anna",
+  imie: "Anna Nowak",
+  email: "anna@example.com",
+  kategoria: "Stylizacja brwi",
+  wojewodztwo: "śląskie",
+};
 
 type Segment = {
   sources: ("lead" | "aplikacja")[];
@@ -54,6 +75,11 @@ export function MailingComposer({ initial }: { initial?: ComposerInitial } = {})
   const [preview, setPreview] = useState<{ subject: string; body: string } | null>(null);
   const [state, setState] = useState<"idle" | "saving">("idle");
   const [error, setError] = useState<string | null>(null);
+  const fields = useMemo(
+    () => ({ subject: { value: subject, set: setSubject }, body: { value: body, set: setBody } }),
+    [subject, body]
+  );
+  const { insert, subjectProps, bodyProps } = useVariableInsert(fields);
 
   const refreshAudience = useCallback(async () => {
     setCounting(true);
@@ -142,6 +168,7 @@ export function MailingComposer({ initial }: { initial?: ComposerInitial } = {})
           <label className="label" htmlFor="m-subject">Temat wiadomości</label>
           <input
             id="m-subject"
+            {...subjectProps}
             className="input"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
@@ -155,20 +182,31 @@ export function MailingComposer({ initial }: { initial?: ComposerInitial } = {})
         <label className="label" htmlFor="m-body">Treść</label>
         <textarea
           id="m-body"
+          {...bodyProps}
           className="input min-h-[220px] font-mono text-sm"
           value={body}
           onChange={(e) => setBody(e.target.value)}
           placeholder={"Dzień dobry {{imie_wolacz}},\n\n..."}
           required
         />
-        <p className="mt-1.5 text-xs text-muted">
-          Zmienne: <code className="font-mono">{"{{imie_wolacz}}"}</code> (imię w wołaczu),{" "}
-          <code className="font-mono">{"{{imie}}"}</code>,{" "}
-          <code className="font-mono">{"{{kategoria}}"}</code>,{" "}
-          <code className="font-mono">{"{{wojewodztwo}}"}</code>. Wiadomość wychodzi jako
-          czysty tekst — formatowanie HTML nie zadziała. Stopkę z linkiem rezygnacji
-          dokładamy automatycznie.
+        <VariableChips vars={CAMPAIGN_VARS} onInsert={insert} />
+        <p className="mt-2 text-xs text-muted">
+          Wiadomość wychodzi jako czysty tekst — formatowanie HTML nie zadziała. Stopkę z linkiem
+          rezygnacji dokładamy automatycznie. Gdy osoba nie podała imienia, „Imię (Anno)” zamienia się w „Pani”.
         </p>
+        {(subject || body) && (
+          <div className="mt-4 rounded-[12px] border border-gray-200 bg-white">
+            <div className="border-b border-gray-100 px-4 py-2.5">
+              <p className="text-xs font-bold uppercase tracking-wide text-muted">
+                Podgląd na żywo — tak zobaczy to Anna Nowak (brwi, śląskie)
+              </p>
+              <p className="mt-1 font-semibold">{renderTemplate(subject, SAMPLE) || "(bez tematu)"}</p>
+            </div>
+            <pre className="max-h-[360px] overflow-y-auto whitespace-pre-wrap break-words px-4 py-3 font-sans text-sm text-ink">
+              {renderTemplate(body, SAMPLE)}
+            </pre>
+          </div>
+        )}
       </div>
 
       <fieldset className="rounded-[12px] border border-gray-100 p-4">
@@ -312,7 +350,7 @@ export function MailingComposer({ initial }: { initial?: ComposerInitial } = {})
       {preview && (
         <div className="rounded-[12px] border border-gray-200 bg-white p-4">
           <p className="text-xs font-bold uppercase tracking-wide text-muted">
-            Podgląd — dokładnie to wyjdzie
+            Podgląd z serwera — dokładnie to wyjdzie (ze stopką)
           </p>
           <p className="mt-2 font-semibold">{preview.subject}</p>
           <pre className="mt-2 whitespace-pre-wrap break-words font-sans text-sm text-ink">
